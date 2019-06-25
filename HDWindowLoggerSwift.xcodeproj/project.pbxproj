@@ -116,7 +116,6 @@
 				E48AABFF22C05EF700CC5F1C /* Assets.xcassets */,
 				E48AAC0122C05EF700CC5F1C /* LaunchScreen.storyboard */,
 				E48AAC0422C05EF700CC5F1C /* Info.plist */,
-				E48AAC2F22C0817000CC5F1C /* Localizable.strings */,
 			);
 			path = HDWindowLoggerSwift;
 			sourceTree = "<group>";
@@ -142,6 +141,7 @@
 		E48AAC2622C05F0B00CC5F1C /* HDWindowLoggerSwift */ = {
 			isa = PBXGroup;
 			children = (
+				E48AAC2F22C0817000CC5F1C /* Localizable.strings */,
 				E48AAC2722C05F5300CC5F1C /* HDWindowLoggerSwift.swift */,
 				E48AAC2922C05F8000CC5F1C /* HDLoggerSwiftTableViewCell.swift */,
 			);
