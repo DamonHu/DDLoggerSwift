@@ -29,11 +29,11 @@ public enum HDLogType : Int {
 }
 
 ///log的内容
-class HDWindowLoggerItem {
-    var mLogItemType = HDLogType.kHDLogTypeNormal
-    var mLogContent: AnyObject?
-    var mCreateDate = Date()
-    func getFullContentString() -> String {
+public class HDWindowLoggerItem {
+    public var mLogItemType = HDLogType.kHDLogTypeNormal
+    public var mLogContent: AnyObject?
+    public var mCreateDate = Date()
+    public func getFullContentString() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "HH:mm:ss.SSS"
         let dateStr = dateFormatter.string(from: mCreateDate)
@@ -56,7 +56,7 @@ class HDWindowLoggerItem {
 ///log的输出
 public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
     public static let defaultWindowLogger = HDWindowLoggerSwift(frame: CGRect(x: 0, y: UIApplication.shared.statusBarFrame.size.height, width: UIScreen.main.bounds.size.width, height: 300))
-    private(set) var mLogDataArray  = [HDWindowLoggerItem]()
+    public private(set) var mLogDataArray  = [HDWindowLoggerItem]()
     private var mFilterLogDataArray = [HDWindowLoggerItem]()
     private var mMaxLogCount = 100
     
@@ -267,7 +267,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         self.mTableView.reloadData()
         if self.mFilterLogDataArray.count > 0 && self.mAutoScrollSwitch.isOn {
             let indexPath = IndexPath(row: self.mFilterLogDataArray.count - 1, section: 0)
-            self.mTableView.scrollToRow(at: indexPath, at: UITableView.ScrollPosition.bottom, animated: false)
+            self.mTableView.scrollToRow(at: indexPath, at: UITableView.ScrollPosition.bottom, animated: true)
         }
     }
     
