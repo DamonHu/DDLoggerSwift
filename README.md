@@ -65,10 +65,10 @@ HDWindowLoggerSwift.defaultWindowLogger.mLogDataArray
 3, according to the output type of the log to output the corresponding log, different log types are not the same color
 
 ```
-HDWindowLoggerSwift.printLog(log: "mmmmmm" as AnyObject, logType: HDLogType.kHDLogTypeNormal)
+HDWindowLoggerSwift.printLog(log: "mmmmmm", logType: HDLogType.kHDLogTypeNormal)
 
 ///The same effect can be achieved with a simple function.
-HDNormalLog(log: "mmmmmmm" as AnyObject)
+HDNormalLog("mmmmmmm")
 ```
 
 4, delete the log
@@ -110,8 +110,8 @@ HDErrorLog(log)
 The following two ways of using the output log are equivalent.
 
 ```
-HDWindowLoggerSwift.printLog(log: "mmmmmm" as AnyObject, logType: HDLogType.kHDLogTypeNormal)
-HDWarnLog(log: "mmmmmmm" as AnyObject)
+HDWindowLoggerSwift.printLog(log: "mmmmmm", logType: HDLogType.kHDLogTypeNormal)
+HDWarnLog("mmmmmmm")
 ```
 
 ## III. Other instructions
@@ -172,10 +172,10 @@ HDWindowLoggerSwift.defaultWindowLogger.mLogDataArray
 3、根据日志的输出类型去输出相应的日志，不同日志类型颜色不一样
 
 ```
-HDWindowLoggerSwift.printLog(log: "mmmmmm" as AnyObject, logType: HDLogType.kHDLogTypeNormal)
+HDWindowLoggerSwift.printLog(log: "mmmmmm", logType: HDLogType.kHDLogTypeNormal)
 
 ///使用简单函数也可以同样的效果
-HDNormalLog(log: "mmmmmmm" as AnyObject)
+HDNormalLog("mmmmmmm")
 ```
 
 4、删除log
@@ -217,8 +217,8 @@ HDErrorLog(log)
 输出日志下面两种使用方式是等效的
 
 ```
-HDWindowLoggerSwift.printLog(log: "mmmmmm" as AnyObject, logType: HDLogType.kHDLogTypeNormal)
-HDWarnLog(log: "mmmmmmm" as AnyObject)
+HDWindowLoggerSwift.printLog(log: "mmmmmm", logType: HDLogType.kHDLogTypeNormal)
+HDWarnLog("mmmmmmm")
 ```
 
 ## 三、其他说明
