@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E4885A7122C60E5100B9BC8B /* LogContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4885A7022C60E5100B9BC8B /* LogContent.swift */; };
 		E48AABF722C05EF600CC5F1C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48AABF622C05EF600CC5F1C /* AppDelegate.swift */; };
 		E48AABF922C05EF600CC5F1C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48AABF822C05EF600CC5F1C /* SceneDelegate.swift */; };
 		E48AABFB22C05EF600CC5F1C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48AABFA22C05EF600CC5F1C /* ViewController.swift */; };
@@ -38,6 +39,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E4885A7022C60E5100B9BC8B /* LogContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogContent.swift; sourceTree = "<group>"; };
 		E48AABF322C05EF600CC5F1C /* HDWindowLoggerSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HDWindowLoggerSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E48AABF622C05EF600CC5F1C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E48AABF822C05EF600CC5F1C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -144,6 +146,7 @@
 				E48AAC2F22C0817000CC5F1C /* Localizable.strings */,
 				E48AAC2722C05F5300CC5F1C /* HDWindowLoggerSwift.swift */,
 				E48AAC2922C05F8000CC5F1C /* HDLoggerSwiftTableViewCell.swift */,
+				E4885A7022C60E5100B9BC8B /* LogContent.swift */,
 			);
 			path = HDWindowLoggerSwift;
 			sourceTree = "<group>";
@@ -281,6 +284,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4885A7122C60E5100B9BC8B /* LogContent.swift in Sources */,
 				E48AAC2A22C05F8000CC5F1C /* HDLoggerSwiftTableViewCell.swift in Sources */,
 				E48AABFB22C05EF600CC5F1C /* ViewController.swift in Sources */,
 				E48AAC2822C05F5300CC5F1C /* HDWindowLoggerSwift.swift in Sources */,
