@@ -9,16 +9,16 @@
 import UIKit
 
 ///快速输出log
-public func HDNormalLog(log:AnyObject) -> Void {
-    HDWindowLoggerSwift.printLog(log: log, logType: HDLogType.kHDLogTypeNormal)
+public func HDNormalLog(_ log:LogContent) -> Void {
+    HDWindowLoggerSwift.printLog(log: log.logStringValue, logType: HDLogType.kHDLogTypeNormal)
 }
 
-public func HDWarnLog(log:AnyObject) -> Void {
-    HDWindowLoggerSwift.printLog(log: log, logType: HDLogType.kHDLogTypeWarn)
+public func HDWarnLog(_ log:LogContent) -> Void {
+    HDWindowLoggerSwift.printLog(log: log.logStringValue, logType: HDLogType.kHDLogTypeWarn)
 }
 
-public func HDErrorLog(log:AnyObject) -> Void {
-    HDWindowLoggerSwift.printLog(log: log, logType: HDLogType.kHDLogTypeError)
+public func HDErrorLog(_ log:LogContent) -> Void {
+    HDWindowLoggerSwift.printLog(log: log.logStringValue, logType: HDLogType.kHDLogTypeError)
 }
 
 ///log的级别，对应不同的颜色
@@ -31,7 +31,7 @@ public enum HDLogType : Int {
 ///log的内容
 public class HDWindowLoggerItem {
     public var mLogItemType = HDLogType.kHDLogTypeNormal
-    public var mLogContent: AnyObject?
+    public var mLogContent: String?
     public var mCreateDate = Date()
     public func getFullContentString() -> String {
         let dateFormatter = DateFormatter()
@@ -39,15 +39,7 @@ public class HDWindowLoggerItem {
         let dateStr = dateFormatter.string(from: mCreateDate)
         var contentString = ""
         if let mContent = mLogContent  {
-            if (mLogContent is Dictionary<String, Any>) || (mLogContent is Array<Any>)   {
-                let data = try? JSONSerialization.data(withJSONObject: mContent, options:JSONSerialization.WritingOptions.prettyPrinted)
-                let defaultData = Data()
-                contentString = String(data: data ?? defaultData, encoding: String.Encoding.utf8)!
-            } else if mContent is String {
-                contentString = mContent as! String
-            } else {
-                contentString = NSLocalizedString("不支持该内容类型的转换", comment: "")
-            }
+            contentString = mContent
         }
         return dateStr + "  >   " + contentString
     }
@@ -234,7 +226,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         dateFormatter.dateFormat = "HH:mm:ss.SSS"
         let dateStr = dateFormatter.string(from: loggerItem.mCreateDate)
         let tipString = dateStr + " " + NSLocalizedString("日志已拷贝到剪切板", comment: "")
-        HDWarnLog(log: tipString as AnyObject)
+        HDWarnLog(tipString)
     }
     
     //UISearchBarDelegate
@@ -304,11 +296,13 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "HH:mm:ss.SSS"
-        var mutableArray = [AnyObject]()
+        var mutableArray = [String]()
         for item in self.mLogDataArray {
             let dateStr = dateFormatter.string(from: item.mCreateDate)
-            mutableArray.append(dateStr as AnyObject)
-            mutableArray.append(item.mLogContent!)
+            mutableArray.append(dateStr)
+            if let content = item.mLogContent {
+                mutableArray.append(content)
+            }
         }
         
         //写入文件
@@ -364,18 +358,18 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     /// 根据日志的输出类型去输出相应的日志，不同日志类型颜色不一样
     /// - Parameter log: 日志内容
     /// - Parameter logType: 日志类型
-    public class func printLog(log:AnyObject, logType:HDLogType) -> Void {
+    public class func printLog(log:LogContent, logType:HDLogType) -> Void {
         if self.defaultWindowLogger.mLogDataArray.isEmpty {
             let loggerItem = HDWindowLoggerItem()
             loggerItem.mLogItemType = HDLogType.kHDLogTypeWarn
             loggerItem.mCreateDate = Date()
-            loggerItem.mLogContent = NSLocalizedString("HDWindowLogger: 点击对应日志可快速复制", comment: "") as AnyObject
+            loggerItem.mLogContent = NSLocalizedString("HDWindowLogger: 点击对应日志可快速复制", comment: "")
             self.defaultWindowLogger.mLogDataArray.append(loggerItem)
         }
         let loggerItem = HDWindowLoggerItem()
         loggerItem.mLogItemType = logType
         loggerItem.mCreateDate = Date()
-        loggerItem.mLogContent = log
+        loggerItem.mLogContent = log.logStringValue
         self.defaultWindowLogger.mLogDataArray.append(loggerItem)
         if self.defaultWindowLogger.mMaxLogCount > 0 && self.defaultWindowLogger.mMaxLogCount > self.defaultWindowLogger.mMaxLogCount {
             self.defaultWindowLogger.mLogDataArray.removeFirst()
