@@ -9,16 +9,16 @@
 import UIKit
 
 ///快速输出log
-public func HDNormalLog(_ log:LogContent) -> Void {
-    HDWindowLoggerSwift.printLog(log: log.logStringValue, logType: HDLogType.kHDLogTypeNormal)
+public func HDNormalLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
+    HDWindowLoggerSwift.printLog(log: log, logType: HDLogType.kHDLogTypeNormal, file:file, funcName:funcName, lineNum:lineNum)
 }
 
-public func HDWarnLog(_ log:LogContent) -> Void {
-    HDWindowLoggerSwift.printLog(log: log.logStringValue, logType: HDLogType.kHDLogTypeWarn)
+public func HDWarnLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
+    HDWindowLoggerSwift.printLog(log: log, logType: HDLogType.kHDLogTypeWarn, file:file, funcName:funcName, lineNum:lineNum)
 }
 
-public func HDErrorLog(_ log:LogContent) -> Void {
-    HDWindowLoggerSwift.printLog(log: log.logStringValue, logType: HDLogType.kHDLogTypeError)
+public func HDErrorLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
+    HDWindowLoggerSwift.printLog(log: log, logType: HDLogType.kHDLogTypeError, file:file, funcName:funcName, lineNum:lineNum)
 }
 
 ///log的级别，对应不同的颜色
@@ -47,6 +47,9 @@ public class HDWindowLoggerItem {
 
 ///log的输出
 public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
+    public static var mCompleteLogOut = false  //是否完整输出日志文件名等调试内容
+    public static var mDebugAreaLogOut = true  //是否在xcode底部的调试栏同步输出内容
+    
     public static let defaultWindowLogger = HDWindowLoggerSwift(frame: CGRect(x: 0, y: UIApplication.shared.statusBarFrame.size.height, width: UIScreen.main.bounds.size.width, height: 300))
     public private(set) var mLogDataArray  = [HDWindowLoggerItem]()
     private var mFilterLogDataArray = [HDWindowLoggerItem]()
@@ -322,7 +325,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     
     private func p_getCurrentVC() -> UIViewController {
         var window = UIApplication.shared.keyWindow
-        if window?.windowLevel != UIWindow.Level.normal {
+        if window == nil || window?.windowLevel != UIWindow.Level.normal {
             let windowArray = UIApplication.shared.windows
             for tmpWin in windowArray {
                 if tmpWin.windowLevel == UIWindow.Level.normal {
@@ -358,7 +361,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     /// 根据日志的输出类型去输出相应的日志，不同日志类型颜色不一样
     /// - Parameter log: 日志内容
     /// - Parameter logType: 日志类型
-    public class func printLog(log:LogContent, logType:HDLogType) -> Void {
+    public class func printLog(log:Any, logType:HDLogType, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
         if self.defaultWindowLogger.mLogDataArray.isEmpty {
             let loggerItem = HDWindowLoggerItem()
             loggerItem.mLogItemType = HDLogType.kHDLogTypeWarn
@@ -369,7 +372,25 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         let loggerItem = HDWindowLoggerItem()
         loggerItem.mLogItemType = logType
         loggerItem.mCreateDate = Date()
-        loggerItem.mLogContent = log.logStringValue
+        if self.mCompleteLogOut {
+            let fileName = (file as NSString).lastPathComponent;
+            if log is LogContent {
+                loggerItem.mLogContent = "[File:\(fileName)]:[Line:\(lineNum):[Function:\(funcName)]]-Log:\n" + (log as! LogContent).logStringValue
+            } else {
+                loggerItem.mLogContent = "[File:\(fileName)]:[Line:\(lineNum):[Function:\(funcName)]]-Log:\n\(log)"
+            }
+        } else {
+            if log is LogContent {
+               loggerItem.mLogContent = (log as! LogContent).logStringValue
+            } else {
+                loggerItem.mLogContent = "\(log)"
+            }
+        }
+        if self.mDebugAreaLogOut {
+            if let content = loggerItem.mLogContent {
+                print(content)
+            }
+        }
         self.defaultWindowLogger.mLogDataArray.append(loggerItem)
         if self.defaultWindowLogger.mMaxLogCount > 0 && self.defaultWindowLogger.mMaxLogCount > self.defaultWindowLogger.mMaxLogCount {
             self.defaultWindowLogger.mLogDataArray.removeFirst()

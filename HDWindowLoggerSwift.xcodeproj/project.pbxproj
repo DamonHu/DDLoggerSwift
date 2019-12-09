@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		E4885A7122C60E5100B9BC8B /* LogContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4885A7022C60E5100B9BC8B /* LogContent.swift */; };
 		E48AABF722C05EF600CC5F1C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48AABF622C05EF600CC5F1C /* AppDelegate.swift */; };
-		E48AABF922C05EF600CC5F1C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48AABF822C05EF600CC5F1C /* SceneDelegate.swift */; };
 		E48AABFB22C05EF600CC5F1C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48AABFA22C05EF600CC5F1C /* ViewController.swift */; };
 		E48AABFE22C05EF600CC5F1C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E48AABFC22C05EF600CC5F1C /* Main.storyboard */; };
 		E48AAC0022C05EF700CC5F1C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E48AABFF22C05EF700CC5F1C /* Assets.xcassets */; };
@@ -42,7 +41,6 @@
 		E4885A7022C60E5100B9BC8B /* LogContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogContent.swift; sourceTree = "<group>"; };
 		E48AABF322C05EF600CC5F1C /* HDWindowLoggerSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HDWindowLoggerSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E48AABF622C05EF600CC5F1C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		E48AABF822C05EF600CC5F1C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		E48AABFA22C05EF600CC5F1C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		E48AABFD22C05EF600CC5F1C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E48AABFF22C05EF700CC5F1C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -112,7 +110,6 @@
 			children = (
 				E48AAC2622C05F0B00CC5F1C /* HDWindowLoggerSwift */,
 				E48AABF622C05EF600CC5F1C /* AppDelegate.swift */,
-				E48AABF822C05EF600CC5F1C /* SceneDelegate.swift */,
 				E48AABFA22C05EF600CC5F1C /* ViewController.swift */,
 				E48AABFC22C05EF600CC5F1C /* Main.storyboard */,
 				E48AABFF22C05EF700CC5F1C /* Assets.xcassets */,
@@ -289,7 +286,6 @@
 				E48AABFB22C05EF600CC5F1C /* ViewController.swift in Sources */,
 				E48AAC2822C05F5300CC5F1C /* HDWindowLoggerSwift.swift in Sources */,
 				E48AABF722C05EF600CC5F1C /* AppDelegate.swift in Sources */,
-				E48AABF922C05EF600CC5F1C /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -477,6 +473,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = HDWindowLoggerSwift/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -494,6 +491,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = HDWindowLoggerSwift/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
