@@ -50,7 +50,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     public static var mCompleteLogOut = false  //是否完整输出日志文件名等调试内容
     public static var mDebugAreaLogOut = true  //是否在xcode底部的调试栏同步输出内容
     
-    public static let defaultWindowLogger = HDWindowLoggerSwift(frame: CGRect(x: 0, y: UIApplication.shared.statusBarFrame.size.height, width: UIScreen.main.bounds.size.width, height: 300))
+    public static let defaultWindowLogger = HDWindowLoggerSwift(frame: CGRect.zero)
     public private(set) var mLogDataArray  = [HDWindowLoggerItem]()
     private var mFilterLogDataArray = [HDWindowLoggerItem]()
     private var mMaxLogCount = 100
@@ -153,6 +153,15 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         self.isUserInteractionEnabled = true
         self.createUI()
         self.p_bindClick()
+        DispatchQueue.main.async {
+            var statusBarHeight: CGFloat = 0
+            if #available(iOS 13.0, *) {
+                statusBarHeight = self.windowScene?.statusBarManager?.statusBarFrame.size.height ?? 0
+            } else {
+                statusBarHeight = UIApplication.shared.statusBarFrame.size.height
+            }
+            self.frame = CGRect(x: 0, y: statusBarHeight, width: UIScreen.main.bounds.size.width, height: 300)
+        }
     }
     
     required init?(coder: NSCoder) {
