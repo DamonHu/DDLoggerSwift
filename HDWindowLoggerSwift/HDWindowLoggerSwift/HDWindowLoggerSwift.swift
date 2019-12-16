@@ -67,7 +67,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         tableView.delegate = self
         tableView.showsHorizontalScrollIndicator = false
         tableView.showsVerticalScrollIndicator = true
-        tableView.keyboardDismissMode = UIScrollView.KeyboardDismissMode.interactive
+        tableView.keyboardDismissMode = UIScrollView.KeyboardDismissMode.onDrag
         tableView.backgroundColor = UIColor.clear
         tableView.separatorColor = UIColor(red: 242.0/255.0, green: 242.0/255.0, blue: 240.0/255.0, alpha: 1.0)
         tableView.separatorStyle = UITableViewCell.SeparatorStyle.singleLine
@@ -139,7 +139,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         searchBar.placeholder = NSLocalizedString("内容过滤查找", comment: "")
         searchBar.barStyle = UIBarStyle.default
         searchBar.backgroundImage = UIImage()
-        searchBar.backgroundColor = UIColor.clear
+        searchBar.backgroundColor = UIColor.white
         searchBar.delegate = self
         return searchBar
     }()
@@ -147,12 +147,6 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
-        self.rootViewController = UIViewController()
-        self.windowLevel = UIWindow.Level.alert
-        self.backgroundColor = UIColor.clear
-        self.isUserInteractionEnabled = true
-        self.createUI()
-        self.p_bindClick()
         DispatchQueue.main.async {
             var statusBarHeight: CGFloat = 0
             if #available(iOS 13.0, *) {
@@ -160,7 +154,13 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
             } else {
                 statusBarHeight = UIApplication.shared.statusBarFrame.size.height
             }
-            self.frame = CGRect(x: 0, y: statusBarHeight, width: UIScreen.main.bounds.size.width, height: 300)
+            self.frame = CGRect(x: 0, y: statusBarHeight, width: UIScreen.main.bounds.size.width, height: 302)
+            self.rootViewController = UIViewController()
+            self.windowLevel = UIWindow.Level.alert
+            self.backgroundColor = UIColor.clear
+            self.isUserInteractionEnabled = true
+            self.createUI()
+            self.p_bindClick()
         }
     }
     
