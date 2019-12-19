@@ -53,7 +53,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     public static let defaultWindowLogger = HDWindowLoggerSwift(frame: CGRect.zero)
     public private(set) var mLogDataArray  = [HDWindowLoggerItem]()
     private var mFilterLogDataArray = [HDWindowLoggerItem]()
-    private var mMaxLogCount = 100
+    private var mMaxLogCount = 0        //限制日志数，默认为0不限制
     
     private lazy var mBGView: UIView = {
         let mBGView = UIView()
@@ -259,7 +259,8 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     //私有函数
     private func p_reloadFilter() {
         self.mFilterLogDataArray.removeAll()
-        for item in self.mLogDataArray {
+        let dataList = self.mLogDataArray
+        for item in dataList {
             if self.mSearchBar.text != nil &&  !(self.mSearchBar.text!.isEmpty) {
                 if item.getFullContentString().contains(self.mSearchBar.text!) {
                     self.mFilterLogDataArray.append(item)
