@@ -129,7 +129,7 @@ HDWindowLoggerSwift.hide()
 HDWindowLoggerSwift.hideLogWindow()
 ```
 
-### 7、set the log maximum number of records, the default 100, 0 is not limited
+### 7、set the log maximum number of records,  0 is not limited, default value is 0
 
 ```
 HDWindowLoggerSwift.setMaxLogCount(logCount: 100)
@@ -274,7 +274,7 @@ HDWindowLoggerSwift.hide()
 HDWindowLoggerSwift.hideLogWindow()
 ```
 
-### 7、设置log最大记录数，默认100条，0为不限制
+### 7、设置log最大记录数，0为不限制, 默认为0不限制
 
 ```
 HDWindowLoggerSwift.setMaxLogCount(logCount: 100)
