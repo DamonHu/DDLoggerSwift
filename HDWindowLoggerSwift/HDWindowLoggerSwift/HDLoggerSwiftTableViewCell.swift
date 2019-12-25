@@ -45,13 +45,16 @@ class HDLoggerSwiftTableViewCell: UITableViewCell {
         self.mContentLabel.text = loggerItem.getFullContentString()
         switch loggerItem.mLogItemType {
         case .kHDLogTypeNormal:
-            self.mContentLabel.textColor = UIColor(red: 93.0/255.0, green: 174.0/255.0, blue: 139.0/255.0, alpha: 1.0)
+            self.mContentLabel.textColor = UIColor(red: 80.0/255.0, green: 216.0/255.0, blue: 144.0/255.0, alpha: 1.0)
             break
         case .kHDLogTypeWarn:
             self.mContentLabel.textColor = UIColor(red: 246.0/255.0, green: 244.0/255.0, blue: 157.0/255.0, alpha: 1.0)
             break
         case .kHDLogTypeError:
             self.mContentLabel.textColor = UIColor(red: 255.0/255.0, green: 118.0/255.0, blue: 118.0/255.0, alpha: 1.0)
+            break
+        case .kHDLogTypePrivacy:
+            self.mContentLabel.textColor = UIColor(red: 66.0/255.0, green: 230.0/255.0, blue: 164.0/255.0, alpha: 1.0)
             break
         }
         let size = self.mContentLabel.sizeThatFits(CGSize(width: UIScreen.main.bounds.size.width, height: CGFloat(MAXFLOAT)))
