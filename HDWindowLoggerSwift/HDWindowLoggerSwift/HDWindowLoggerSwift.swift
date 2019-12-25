@@ -39,7 +39,7 @@ public enum HDLogType : Int {
 public class HDWindowLoggerItem {
     public var mLogItemType = HDLogType.kHDLogTypeNormal    //log类型
     public var mLogDebugContent: String = ""                //log在文件中的调试内容
-    public var mLogContent: String?                         //log的内容
+    public var mLogContent: Any?                         //log的内容
     
     public var mCreateDate = Date()
     public func getFullContentString() -> String {
@@ -51,23 +51,37 @@ public class HDWindowLoggerItem {
         var contentString = ""
         if self.mLogItemType == .kHDLogTypePrivacy {
             if let mContent = mLogContent  {
-                contentString = HDWindowLoggerTools().AES256Encrypt(text: mContent, password: HDWindowLoggerSwift.mPrivacyPassword)
+                if mContent is LogContent {
+                    contentString = (mContent as! LogContent).logStringValue
+                } else {
+                    contentString = "\(mContent)"
+                }
+                contentString = HDWindowLoggerTools().AES256Encrypt(text: contentString, password: HDWindowLoggerSwift.mPrivacyPassword)
                 if HDWindowLoggerSwift.mPasswordCorrect {
                     contentString = HDWindowLoggerTools().AES256Decrypt(text: contentString, password: HDWindowLoggerSwift.mPrivacyPassword)
                 }
             }
         } else {
             if let mContent = mLogContent  {
-                contentString = mContent
+                if mContent is LogContent {
+                    contentString = (mContent as! LogContent).logStringValue
+                } else {
+                    contentString = "\(mContent)"
+                }
             }
         }
-        return dateStr + "  >   " +  mLogDebugContent + contentString
+        if HDWindowLoggerSwift.mCompleteLogOut {
+            return dateStr + "  >   " +  mLogDebugContent + "\n" + contentString
+        } else {
+            return dateStr + "  >   " + contentString
+        }
+        
     }
 }
 
 ///log的输出
 public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UITextFieldDelegate {
-    public static var mCompleteLogOut = false  //是否完整输出日志文件名等调试内容
+    public static var mCompleteLogOut = true  //是否完整输出日志文件名等调试内容
     public static var mDebugAreaLogOut = true  //是否在xcode底部的调试栏同步输出内容
     public static var mPrivacyPassword = "123456"    //解密隐私数据的密码，默认为123456
     public static let defaultWindowLogger = HDWindowLoggerSwift(frame: CGRect.zero)
@@ -360,13 +374,21 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     @objc private func p_share() {
         let paths = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)
         let documentDirectory = paths.first
-        let logFilePath = "" + (documentDirectory ?? "") + "/HDWindowLogger.json"
+        let logFilePath = "" + (documentDirectory ?? "") + "/HDWindowLogger.txt"
         let logFilePathURL = URL(fileURLWithPath: logFilePath)
         
-        var mutableArray = [String]()
+        //保存的内容
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH:mm:ss.SSS"
+        
+        var mutableArray = [Any]()
         for item in self.mLogDataArray {
+            let dateStr = dateFormatter.string(from: item.mCreateDate) +  "  >   " +  item.mLogDebugContent
+            mutableArray.append(dateStr)
             mutableArray.append(item.mLogContent ?? "")
         }
+        //end
+        
         //写入文件
         let jsonData = try? JSONSerialization.data(withJSONObject: mutableArray, options: JSONSerialization.WritingOptions.prettyPrinted)
         try? jsonData?.write(to: logFilePathURL, options: Data.WritingOptions.atomic)
@@ -457,22 +479,10 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         loggerItem.mLogItemType = logType
         loggerItem.mCreateDate = Date()
 
-        if self.mCompleteLogOut {
-            let fileName = (file as NSString).lastPathComponent;
-            loggerItem.mLogDebugContent = "[File:\(fileName)]:[Line:\(lineNum):[Function:\(funcName)]]-Log:\n"
-            if log is LogContent {
-                loggerItem.mLogContent = (log as! LogContent).logStringValue
-            } else {
-                loggerItem.mLogContent = "\(log)"
-            }
-        } else {
-            loggerItem.mLogDebugContent = ""
-            if log is LogContent {
-               loggerItem.mLogContent = (log as! LogContent).logStringValue
-            } else {
-                loggerItem.mLogContent = "\(log)"
-            }
-        }
+        let fileName = (file as NSString).lastPathComponent;
+        loggerItem.mLogDebugContent = "[File:\(fileName)]:[Line:\(lineNum):[Function:\(funcName)]]-Log:"
+        loggerItem.mLogContent = log
+        
         if self.mDebugAreaLogOut {
             print(loggerItem.getFullContentString())
         }
