@@ -31,17 +31,21 @@ class ViewController: UIViewController {
         HDWindowLoggerSwift.show()
         HDWindowLoggerSwift.mCompleteLogOut = true
 //        HDWindowLoggerSwift.mPrivacyPassword = "123456"
-        HDNormalLog("收到就好丰盛的金凤凰就水电费交mmm换机时间开始的回复是砍价的回复四大皆空回复速度快解放后搜的飞机开会接口是点击开发还是手机打开混分巨兽地方收到就好丰盛的金凤凰就水电费交换机时间开始的回复是砍价的回复四大皆空回复速度快解放后搜的飞机开会接口是点击开发还是手机打开混分巨兽地方收到就好丰盛的金凤凰就水电费交换机时间开始的回复是砍价的回复四大皆空回复速度快解放后搜的飞机开会接口是点击开发还是手机打开混分巨兽地方")
-        
-        HDPrivacyLog("这个是加密数据的测试数据")
     }
 
     @objc func onClickButton() {
+        //普通输出
         HDNormalLog("点击了按钮111")
+        //输出警告内容
+        HDWarnLog("警告提示")
+        //输出错误内容
+        HDErrorLog("错误出现")
+        //输出加密内容
         HDPrivacyLog("这个是加密数据的测试数据222")
-        HDWindowLoggerSwift.printLog(log: "点击了按钮警告类型", logType: HDLogType.kHDLogTypeError)
+        //输出字典
         let dicObj = ["hhhhhhh":"撒旦法是打发斯蒂芬是打发斯蒂芬","77777":"数据库的复健科花见花开会尽快圣诞节开发和金黄色的费四大皆空回复就开始和豆腐是砍价的回复斯柯达金凤凰"]
         HDNormalLog(dicObj)
+        //输出数组
         let arrayObj = ["1111111","22222222","sdjkhfsjkdfjkhsdhjfk","3333sjdhgfhjg"]
         HDNormalLog(arrayObj)
     }
