@@ -27,8 +27,10 @@ class ViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        //配置HDWindowLoggerSwift
         HDWindowLoggerSwift.show()
         HDWindowLoggerSwift.mCompleteLogOut = true
+//        HDWindowLoggerSwift.mPrivacyPassword = "123456"
         HDNormalLog("收到就好丰盛的金凤凰就水电费交mmm换机时间开始的回复是砍价的回复四大皆空回复速度快解放后搜的飞机开会接口是点击开发还是手机打开混分巨兽地方收到就好丰盛的金凤凰就水电费交换机时间开始的回复是砍价的回复四大皆空回复速度快解放后搜的飞机开会接口是点击开发还是手机打开混分巨兽地方收到就好丰盛的金凤凰就水电费交换机时间开始的回复是砍价的回复四大皆空回复速度快解放后搜的飞机开会接口是点击开发还是手机打开混分巨兽地方")
         
         HDPrivacyLog("这个是加密数据的测试数据")
