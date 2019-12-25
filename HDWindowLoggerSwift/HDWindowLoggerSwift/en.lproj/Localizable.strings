@@ -15,3 +15,4 @@
 "内容过滤查找" = "Log filter and search";
 "解密" = "Decrypt";
 "输入密码查看加密数据" = "Enter password to view";
+"该内容已加密，请解密后查看" = "This content is encrypted, please view it after decryption";
