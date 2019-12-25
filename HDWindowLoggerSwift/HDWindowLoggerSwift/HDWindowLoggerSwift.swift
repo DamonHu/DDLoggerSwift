@@ -56,9 +56,8 @@ public class HDWindowLoggerItem {
                 } else {
                     contentString = "\(mContent)"
                 }
-                contentString = HDWindowLoggerTools().AES256Encrypt(text: contentString, password: HDWindowLoggerSwift.mPrivacyPassword)
-                if HDWindowLoggerSwift.mPasswordCorrect {
-                    contentString = HDWindowLoggerTools().AES256Decrypt(text: contentString, password: HDWindowLoggerSwift.mPrivacyPassword)
+                if !HDWindowLoggerSwift.defaultWindowLogger.mPasswordCorrect {
+                    contentString = NSLocalizedString("该内容已加密，请解密后查看", comment: "")
                 }
             }
         } else {
@@ -83,10 +82,16 @@ public class HDWindowLoggerItem {
 public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UITextFieldDelegate {
     public static var mCompleteLogOut = true  //是否完整输出日志文件名等调试内容
     public static var mDebugAreaLogOut = true  //是否在xcode底部的调试栏同步输出内容
-    public static var mPrivacyPassword = "123456"    //解密隐私数据的密码，默认为123456
+    public static var mPrivacyPassword = ""    //解密隐私数据的密码，默认为空不加密
     public static let defaultWindowLogger = HDWindowLoggerSwift(frame: CGRect.zero)
     public private(set) var mLogDataArray  = [HDWindowLoggerItem]()
-    fileprivate static var mPasswordCorrect = false   //密码解锁正确
+    
+    //密码解锁是否正确
+    fileprivate var mPasswordCorrect: Bool {
+        get {
+            return self.mPasswordTextField.text ?? "" == HDWindowLoggerSwift.mPrivacyPassword
+        }
+    }
     
     private var mFilterLogDataArray = [HDWindowLoggerItem]()
     private var mMaxLogCount = 0        //限制日志数，默认为0不限制
@@ -137,7 +142,8 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     lazy var mPasswordTextField: UITextField = {
         let tTextField = UITextField()
         tTextField.delegate = self
-        tTextField.placeholder = NSLocalizedString("输入密码查看加密数据", comment: "")
+        let arrtibutedString = NSMutableAttributedString(string: NSLocalizedString("输入密码查看加密数据", comment: ""), attributes: [NSAttributedString.Key.foregroundColor : UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 0.7), NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14)])
+        tTextField.attributedPlaceholder = arrtibutedString
         tTextField.textColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0)
         tTextField.layer.masksToBounds = true
         tTextField.layer.borderColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0).cgColor
@@ -149,7 +155,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         let button = UIButton(type: UIButton.ButtonType.custom)
         button.backgroundColor = UIColor(red: 66.0/255.0, green: 230.0/255.0, blue: 164.0/255.0, alpha: 1.0)
         button.setTitleColor(UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0), for: UIControl.State.normal)
-        button.setTitle(NSLocalizedString("确定", comment: ""), for: UIControl.State.normal)
+        button.setTitle(NSLocalizedString("解密", comment: ""), for: UIControl.State.normal)
         button.layer.masksToBounds = true
         button.layer.borderColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0).cgColor
         button.layer.borderWidth = 1.0
@@ -260,6 +266,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     
     //MAKR:UITextFieldDelegate
     public func textFieldDidEndEditing(_ textField: UITextField) {
+        textField.resignFirstResponder()
         self.p_decrypt()
     }
     
@@ -391,7 +398,16 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         
         //写入文件
         let jsonData = try? JSONSerialization.data(withJSONObject: mutableArray, options: JSONSerialization.WritingOptions.prettyPrinted)
-        try? jsonData?.write(to: logFilePathURL, options: Data.WritingOptions.atomic)
+        
+        if HDWindowLoggerSwift.defaultWindowLogger.mPasswordCorrect {
+            try? jsonData?.write(to: logFilePathURL, options: Data.WritingOptions.atomic)
+        } else {
+            let data = HDWindowLoggerTools().p_crypt(data: jsonData ?? Data(), password: HDWindowLoggerSwift.mPrivacyPassword, option: CCOperation(kCCEncrypt))
+            let string = data.base64EncodedString()
+            try? string.write(to: logFilePathURL, atomically: true, encoding: String.Encoding.utf8)
+        }
+        
+        
         
         //分享
         let activityVC = UIActivityViewController(activityItems: [logFilePathURL,jsonData as Any], applicationActivities: nil)
@@ -406,27 +422,9 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     
     //解密
     @objc private func p_decrypt() {
-        if let text = self.mPasswordTextField.text {
-            if text == HDWindowLoggerSwift.mPrivacyPassword {
-                HDWindowLoggerSwift.mPasswordCorrect = true
-                self.mTableView.reloadData()
-            } else {
-                if HDWindowLoggerSwift.mPasswordCorrect == true {
-                    HDWindowLoggerSwift.mPasswordCorrect = false
-                    self.mTableView.reloadData()
-                } else {
-                    HDWindowLoggerSwift.mPasswordCorrect = false
-                }
-            }
-        } else {
-            if HDWindowLoggerSwift.mPasswordCorrect == true {
-                HDWindowLoggerSwift.mPasswordCorrect = false
-                self.mTableView.reloadData()
-            } else {
-                HDWindowLoggerSwift.mPasswordCorrect = false
-            }
+        if self.mPasswordTextField.text != nil {
+            self.mTableView.reloadData()
         }
-        
     }
     
     private func p_getCurrentVC() -> UIViewController {
@@ -532,11 +530,6 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
 
 fileprivate class HDWindowLoggerTools: NSObject {
     let ivString = "abcdefghijklmnop";
-    let keyString = "12345678901234561234567890123456"
-    
-    let kPBKDFRounds: UInt32 = 10000;  // ~80ms on an iPhone 4
-    static let saltBuff = [0,1,2,3,4,5,6,7,8,9,0xA,0xB,0xC,0xD,0xE,0xF];
-//    static let ivBuff[]: Byte   = {0xA,1,0xB,5,4,0xF,7,9,0x17,3,1,6,8,0xC,0xD,91};
     
     //AES256加密
     func AES256Encrypt(text: String, password: String) -> String {
@@ -554,7 +547,7 @@ fileprivate class HDWindowLoggerTools: NSObject {
     
     func p_crypt(data: Data, password: String, option: CCOperation) -> Data {
         guard let iv = ivString.data(using:String.Encoding.utf8) else { return Data() }
-        guard let key = keyString.data(using:String.Encoding.utf8) else { return Data() }
+        guard let key = password.data(using:String.Encoding.utf8) else { return Data() }
         
         let cryptLength = data.count + kCCBlockSizeAES128
         var cryptData   = Data(count: cryptLength)
