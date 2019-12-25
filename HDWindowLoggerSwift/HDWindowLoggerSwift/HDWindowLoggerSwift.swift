@@ -7,53 +7,77 @@
 //
 
 import UIKit
+import CommonCrypto
 
 ///快速输出log
+//普通类型的输出
 public func HDNormalLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
     HDWindowLoggerSwift.printLog(log: log, logType: HDLogType.kHDLogTypeNormal, file:file, funcName:funcName, lineNum:lineNum)
 }
-
+//警告类型的输出
 public func HDWarnLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
     HDWindowLoggerSwift.printLog(log: log, logType: HDLogType.kHDLogTypeWarn, file:file, funcName:funcName, lineNum:lineNum)
 }
-
+//错误类型的输出
 public func HDErrorLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
     HDWindowLoggerSwift.printLog(log: log, logType: HDLogType.kHDLogTypeError, file:file, funcName:funcName, lineNum:lineNum)
+}
+//保密类型的输出
+public func HDPrivacyLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
+    HDWindowLoggerSwift.printLog(log: log, logType: HDLogType.kHDLogTypePrivacy, file:file, funcName:funcName, lineNum:lineNum)
 }
 
 ///log的级别，对应不同的颜色
 public enum HDLogType : Int {
-    case kHDLogTypeNormal = 0
+    case kHDLogTypeNormal = 0   //textColor #50d890
     case kHDLogTypeWarn         //textColor #f6f49d
     case kHDLogTypeError        //textColor #ff7676
+    case kHDLogTypePrivacy      //textColor #42e6a4
 }
 
 ///log的内容
 public class HDWindowLoggerItem {
-    public var mLogItemType = HDLogType.kHDLogTypeNormal
-    public var mLogContent: String?
+    public var mLogItemType = HDLogType.kHDLogTypeNormal    //log类型
+    public var mLogDebugContent: String = ""                //log在文件中的调试内容
+    public var mLogContent: String?                         //log的内容
+    
     public var mCreateDate = Date()
     public func getFullContentString() -> String {
+        //日期
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "HH:mm:ss.SSS"
         let dateStr = dateFormatter.string(from: mCreateDate)
+        //内容
         var contentString = ""
-        if let mContent = mLogContent  {
-            contentString = mContent
+        if self.mLogItemType == .kHDLogTypePrivacy {
+            if let mContent = mLogContent  {
+                contentString = HDWindowLoggerTools().AES256Encrypt(text: mContent, password: HDWindowLoggerSwift.mPrivacyPassword)
+                if HDWindowLoggerSwift.mPasswordCorrect {
+                    contentString = HDWindowLoggerTools().AES256Decrypt(text: contentString, password: HDWindowLoggerSwift.mPrivacyPassword)
+                }
+            }
+        } else {
+            if let mContent = mLogContent  {
+                contentString = mContent
+            }
         }
-        return dateStr + "  >   " + contentString
+        return dateStr + "  >   " +  mLogDebugContent + contentString
     }
 }
 
 ///log的输出
-public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
+public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UITextFieldDelegate {
     public static var mCompleteLogOut = false  //是否完整输出日志文件名等调试内容
     public static var mDebugAreaLogOut = true  //是否在xcode底部的调试栏同步输出内容
-    
+    public static var mPrivacyPassword = "123456"    //解密隐私数据的密码，默认为123456
     public static let defaultWindowLogger = HDWindowLoggerSwift(frame: CGRect.zero)
     public private(set) var mLogDataArray  = [HDWindowLoggerItem]()
+    fileprivate static var mPasswordCorrect = false   //密码解锁正确
+    
     private var mFilterLogDataArray = [HDWindowLoggerItem]()
     private var mMaxLogCount = 0        //限制日志数，默认为0不限制
+    
+    
     
     private lazy var mBGView: UIView = {
         let mBGView = UIView()
@@ -96,6 +120,43 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         return button
     }()
     
+    lazy var mPasswordTextField: UITextField = {
+        let tTextField = UITextField()
+        tTextField.delegate = self
+        tTextField.placeholder = NSLocalizedString("输入密码查看加密数据", comment: "")
+        tTextField.textColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0)
+        tTextField.layer.masksToBounds = true
+        tTextField.layer.borderColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0).cgColor
+        tTextField.layer.borderWidth = 1.0
+        return tTextField
+    }()
+    
+    private lazy var mPasswordButton: UIButton = {
+        let button = UIButton(type: UIButton.ButtonType.custom)
+        button.backgroundColor = UIColor(red: 66.0/255.0, green: 230.0/255.0, blue: 164.0/255.0, alpha: 1.0)
+        button.setTitleColor(UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0), for: UIControl.State.normal)
+        button.setTitle(NSLocalizedString("确定", comment: ""), for: UIControl.State.normal)
+        button.layer.masksToBounds = true
+        button.layer.borderColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0).cgColor
+        button.layer.borderWidth = 1.0
+        return button
+    }()
+    
+    private lazy var mAutoScrollSwitch: UISwitch = {
+        let autoScrollSwitch = UISwitch()
+        autoScrollSwitch.setOn(true, animated: false)
+        return autoScrollSwitch
+    }()
+    
+    private lazy var mSwitchLabel: UILabel = {
+        let switchLabel = UILabel()
+        switchLabel.text = NSLocalizedString("自动滚动", comment: "")
+        switchLabel.textAlignment = NSTextAlignment.left
+        switchLabel.font = UIFont.systemFont(ofSize: 13)
+        switchLabel.textColor = UIColor.white
+        return switchLabel
+    }()
+    
     private lazy var mFloatWindow: UIWindow = {
         let floatWidow = UIWindow(frame: CGRect(x: UIScreen.main.bounds.size.width - 70, y: 50, width: 60, height: 60))
         floatWidow.rootViewController = UIViewController()
@@ -119,21 +180,6 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         return floatWidow
     }()
     
-    private lazy var mAutoScrollSwitch: UISwitch = {
-        let autoScrollSwitch = UISwitch()
-        autoScrollSwitch.setOn(true, animated: false)
-        return autoScrollSwitch
-    }()
-    
-    private lazy var mSwitchLabel: UILabel = {
-        let switchLabel = UILabel()
-        switchLabel.text = NSLocalizedString("日志自动滚动", comment: "")
-        switchLabel.textAlignment = NSTextAlignment.right
-        switchLabel.font = UIFont.systemFont(ofSize: 13)
-        switchLabel.textColor = UIColor.white
-        return switchLabel
-    }()
-    
     private lazy var mSearchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.placeholder = NSLocalizedString("内容过滤查找", comment: "")
@@ -154,7 +200,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
             } else {
                 statusBarHeight = UIApplication.shared.statusBarFrame.size.height
             }
-            self.frame = CGRect(x: 0, y: statusBarHeight, width: UIScreen.main.bounds.size.width, height: 302)
+            self.frame = CGRect(x: 0, y: statusBarHeight, width: UIScreen.main.bounds.size.width, height: 342)
             self.rootViewController = UIViewController()
             self.windowLevel = UIWindow.Level.alert
             self.backgroundColor = UIColor.clear
@@ -179,23 +225,31 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         self.mShareButton.frame = CGRect(x: UIScreen.main.bounds.size.width/3.0, y: 0, width: UIScreen.main.bounds.size.width/3.0, height: 40)
         self.mBGView.addSubview(self.mCleanButton)
         self.mCleanButton.frame = CGRect(x: UIScreen.main.bounds.size.width*2.0/3.0, y: 0, width: UIScreen.main.bounds.size.width/3.0, height: 40)
-        
+        //私密解锁
+        self.mBGView.addSubview(self.mPasswordTextField)
+        self.mPasswordTextField.frame = CGRect(x: 0, y: 40, width: UIScreen.main.bounds.size.width/3.0 + 50, height: 40)
+        self.mBGView.addSubview(self.mPasswordButton)
+        self.mPasswordButton.frame = CGRect(x: UIScreen.main.bounds.size.width/3.0 + 50, y: 40, width: UIScreen.main.bounds.size.width/3.0 - 50, height: 40)
+        //开关视图
+        self.mBGView.addSubview(self.mSwitchLabel)
+        self.mSwitchLabel.frame = CGRect(x: UIScreen.main.bounds.size.width*2.0/3.0 + 6, y: 40, width: 90, height: 40)
+        self.mBGView.addSubview(self.mAutoScrollSwitch)
+        self.mAutoScrollSwitch.frame = CGRect(x: UIScreen.main.bounds.size.width - 60, y: 45, width: 60, height: 40)
         //滚动日志窗
         self.mBGView.addSubview(self.mTableView)
-        self.mTableView.frame = CGRect(x: 0, y: 40, width: UIScreen.main.bounds.size.width, height: 300-80)
-        
-        //开关视图
-        self.mBGView.addSubview(self.mAutoScrollSwitch)
-        self.mAutoScrollSwitch.frame = CGRect(x: UIScreen.main.bounds.size.width - 60, y: 40, width: 60, height: 40)
-        self.mBGView.addSubview(self.mSwitchLabel)
-        self.mSwitchLabel.frame = CGRect(x: UIScreen.main.bounds.size.width-155, y: 40, width: 90, height: 30)
+        self.mTableView.frame = CGRect(x: 0, y: 80, width: UIScreen.main.bounds.size.width, height: 220)
         
         //搜索框
         self.mBGView.addSubview(self.mSearchBar)
-        self.mSearchBar.frame = CGRect(x: 0, y: 300-40, width: UIScreen.main.bounds.size.width, height: 40)
+        self.mSearchBar.frame = CGRect(x: 0, y: 300, width: UIScreen.main.bounds.size.width, height: 40)
     }
     
+    //MAKR:UITextFieldDelegate
+    public func textFieldDidEndEditing(_ textField: UITextField) {
+        self.p_decrypt()
+    }
     
+    //MARK:UITableViewDelegate
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.mFilterLogDataArray.count
     }
@@ -256,7 +310,8 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     }
     
     
-    //私有函数
+    
+    //MARK:私有函数
     private func p_reloadFilter() {
         self.mFilterLogDataArray.removeAll()
         let dataList = self.mLogDataArray
@@ -280,6 +335,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         self.mHideButton.addTarget(self, action: #selector(p_hideLogWindow), for: UIControl.Event.touchUpInside)
         self.mCleanButton.addTarget(self, action: #selector(p_cleanLog), for: UIControl.Event.touchUpInside)
         self.mShareButton.addTarget(self, action: #selector(p_share), for: UIControl.Event.touchUpInside)
+        self.mPasswordButton.addTarget(self, action: #selector(p_decrypt), for: UIControl.Event.touchUpInside)
     }
     
     @objc func p_touchMove(p:UIPanGestureRecognizer) {
@@ -304,20 +360,13 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     @objc private func p_share() {
         let paths = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)
         let documentDirectory = paths.first
-        let logFilePath = "" + (documentDirectory ?? "") + "/HDWindowLogger.txt"
+        let logFilePath = "" + (documentDirectory ?? "") + "/HDWindowLogger.json"
         let logFilePathURL = URL(fileURLWithPath: logFilePath)
         
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "HH:mm:ss.SSS"
         var mutableArray = [String]()
         for item in self.mLogDataArray {
-            let dateStr = dateFormatter.string(from: item.mCreateDate)
-            mutableArray.append(dateStr)
-            if let content = item.mLogContent {
-                mutableArray.append(content)
-            }
+            mutableArray.append(item.mLogContent ?? "")
         }
-        
         //写入文件
         let jsonData = try? JSONSerialization.data(withJSONObject: mutableArray, options: JSONSerialization.WritingOptions.prettyPrinted)
         try? jsonData?.write(to: logFilePathURL, options: Data.WritingOptions.atomic)
@@ -331,6 +380,31 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         }
         self.p_hideLogWindow()
         self.p_getCurrentVC().present(activityVC, animated: true, completion: nil)
+    }
+    
+    //解密
+    @objc private func p_decrypt() {
+        if let text = self.mPasswordTextField.text {
+            if text == HDWindowLoggerSwift.mPrivacyPassword {
+                HDWindowLoggerSwift.mPasswordCorrect = true
+                self.mTableView.reloadData()
+            } else {
+                if HDWindowLoggerSwift.mPasswordCorrect == true {
+                    HDWindowLoggerSwift.mPasswordCorrect = false
+                    self.mTableView.reloadData()
+                } else {
+                    HDWindowLoggerSwift.mPasswordCorrect = false
+                }
+            }
+        } else {
+            if HDWindowLoggerSwift.mPasswordCorrect == true {
+                HDWindowLoggerSwift.mPasswordCorrect = false
+                self.mTableView.reloadData()
+            } else {
+                HDWindowLoggerSwift.mPasswordCorrect = false
+            }
+        }
+        
     }
     
     private func p_getCurrentVC() -> UIViewController {
@@ -382,14 +456,17 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         let loggerItem = HDWindowLoggerItem()
         loggerItem.mLogItemType = logType
         loggerItem.mCreateDate = Date()
+
         if self.mCompleteLogOut {
             let fileName = (file as NSString).lastPathComponent;
+            loggerItem.mLogDebugContent = "[File:\(fileName)]:[Line:\(lineNum):[Function:\(funcName)]]-Log:\n"
             if log is LogContent {
-                loggerItem.mLogContent = "[File:\(fileName)]:[Line:\(lineNum):[Function:\(funcName)]]-Log:\n" + (log as! LogContent).logStringValue
+                loggerItem.mLogContent = (log as! LogContent).logStringValue
             } else {
-                loggerItem.mLogContent = "[File:\(fileName)]:[Line:\(lineNum):[Function:\(funcName)]]-Log:\n\(log)"
+                loggerItem.mLogContent = "\(log)"
             }
         } else {
+            loggerItem.mLogDebugContent = ""
             if log is LogContent {
                loggerItem.mLogContent = (log as! LogContent).logStringValue
             } else {
@@ -397,9 +474,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
             }
         }
         if self.mDebugAreaLogOut {
-            if let content = loggerItem.mLogContent {
-                print(content)
-            }
+            print(loggerItem.getFullContentString())
         }
         self.defaultWindowLogger.mLogDataArray.append(loggerItem)
         if self.defaultWindowLogger.mMaxLogCount > 0 && self.defaultWindowLogger.mMaxLogCount > self.defaultWindowLogger.mMaxLogCount {
@@ -443,4 +518,58 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         self.defaultWindowLogger.mMaxLogCount = logCount
     }
     
+}
+
+fileprivate class HDWindowLoggerTools: NSObject {
+    let ivString = "abcdefghijklmnop";
+    let keyString = "12345678901234561234567890123456"
+    
+    let kPBKDFRounds: UInt32 = 10000;  // ~80ms on an iPhone 4
+    static let saltBuff = [0,1,2,3,4,5,6,7,8,9,0xA,0xB,0xC,0xD,0xE,0xF];
+//    static let ivBuff[]: Byte   = {0xA,1,0xB,5,4,0xF,7,9,0x17,3,1,6,8,0xC,0xD,91};
+    
+    //AES256加密
+    func AES256Encrypt(text: String, password: String) -> String {
+        guard let data = text.data(using:String.Encoding.utf8) else { return "" }
+        let encryptData = self.p_crypt(data: data, password: password, option: CCOperation(kCCEncrypt))
+        return encryptData.base64EncodedString()
+    }
+    
+    //AES256解密
+    func AES256Decrypt(text: String, password: String) -> String {
+        guard let data = Data(base64Encoded: text) else { return "" }
+        let encryptData = self.p_crypt(data: data, password: password, option: CCOperation(kCCDecrypt))
+        return String(data: encryptData, encoding: String.Encoding.utf8) ?? ""
+    }
+    
+    func p_crypt(data: Data, password: String, option: CCOperation) -> Data {
+        guard let iv = ivString.data(using:String.Encoding.utf8) else { return Data() }
+        guard let key = keyString.data(using:String.Encoding.utf8) else { return Data() }
+        
+        let cryptLength = data.count + kCCBlockSizeAES128
+        var cryptData   = Data(count: cryptLength)
+
+        let keyLength = kCCKeySizeAES256
+        let options   = CCOptions(kCCOptionPKCS7Padding)
+
+        var bytesLength = Int(0)
+
+        let status = cryptData.withUnsafeMutableBytes { cryptBytes in
+            data.withUnsafeBytes { dataBytes in
+                iv.withUnsafeBytes { ivBytes in
+                    key.withUnsafeBytes { keyBytes in
+                    CCCrypt(option, CCAlgorithm(kCCAlgorithmAES), options, keyBytes.baseAddress, keyLength, ivBytes.baseAddress, dataBytes.baseAddress, data.count, cryptBytes.baseAddress, cryptLength, &bytesLength)
+                    }
+                }
+            }
+        }
+
+        guard UInt32(status) == UInt32(kCCSuccess) else {
+            debugPrint("Error: Failed to crypt data. Status \(status)")
+            return Data()
+        }
+
+        cryptData.removeSubrange(bytesLength..<cryptData.count)
+        return cryptData
+    }
 }
