@@ -152,8 +152,8 @@ extension URL: LogContent {
 If there is sensitive information that you don't want users to see when debugging, you can set encryption in two simple steps
 
 ```
-// 1. Set the encryption password, don't exceed 32 characters
-HDWindowLoggerSwift.mPrivacyPassword = "123456"
+// 1. Set the encryption password,  32 characters
+HDWindowLoggerSwift.mPrivacyPassword = "12345678901234561234567890123456"
 
 // 2, output encrypted content
 HDPrivacyLog ("This is test data 222 for encrypted data")
@@ -337,8 +337,8 @@ extension URL: LogContent {
 如果存在敏感信息，不希望用户或者手机调试时看到，简单两步就可以设置加密
 
 ```
-//1、设置加密密码，不要超过32个字符数字
-HDWindowLoggerSwift.mPrivacyPassword = "123456"
+//1、设置加密密码，32个字符数字
+HDWindowLoggerSwift.mPrivacyPassword = "12345678901234561234567890123456"
 
 //2、输出加密内容
 HDPrivacyLog("这个是加密数据的测试数据222")
