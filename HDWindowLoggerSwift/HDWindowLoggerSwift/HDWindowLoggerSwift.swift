@@ -59,6 +59,9 @@ public class HDWindowLoggerItem {
                 if !HDWindowLoggerSwift.defaultWindowLogger.mPasswordCorrect {
                     contentString = NSLocalizedString("该内容已加密，请解密后查看", comment: "")
                 }
+                if !HDWindowLoggerSwift.mPrivacyPassword.isEmpty && HDWindowLoggerSwift.mPrivacyPassword.count != kCCKeySizeAES256 {
+                    contentString = NSLocalizedString("密码设置长度错误，需要32个字符", comment: "")
+                }
             }
         } else {
             if let mContent = mLogContent  {
@@ -82,13 +85,7 @@ public class HDWindowLoggerItem {
 public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UITextFieldDelegate {
     public static var mCompleteLogOut = true  //是否完整输出日志文件名等调试内容
     public static var mDebugAreaLogOut = true  //是否在xcode底部的调试栏同步输出内容
-    public static var mPrivacyPassword = "" {
-        willSet {
-            if newValue.count != kCCKeySizeAES256 {
-                HDErrorLog(NSLocalizedString("密码设置长度错误，需要32个字符", comment: ""))
-            }
-        }
-    }    //解密隐私数据的密码，默认为空不加密
+    public static var mPrivacyPassword = ""    //解密隐私数据的密码，默认为空不加密
     public static let defaultWindowLogger = HDWindowLoggerSwift(frame: CGRect.zero)
     public private(set) var mLogDataArray  = [HDWindowLoggerItem]()
     
