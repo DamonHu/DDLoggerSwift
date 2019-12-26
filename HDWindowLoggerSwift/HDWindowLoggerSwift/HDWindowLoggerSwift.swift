@@ -82,7 +82,13 @@ public class HDWindowLoggerItem {
 public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UITextFieldDelegate {
     public static var mCompleteLogOut = true  //是否完整输出日志文件名等调试内容
     public static var mDebugAreaLogOut = true  //是否在xcode底部的调试栏同步输出内容
-    public static var mPrivacyPassword = ""    //解密隐私数据的密码，默认为空不加密
+    public static var mPrivacyPassword = "" {
+        willSet {
+            if newValue.count != kCCKeySizeAES256 {
+                HDErrorLog(NSLocalizedString("密码设置长度错误，需要32个字符", comment: ""))
+            }
+        }
+    }    //解密隐私数据的密码，默认为空不加密
     public static let defaultWindowLogger = HDWindowLoggerSwift(frame: CGRect.zero)
     public private(set) var mLogDataArray  = [HDWindowLoggerItem]()
     
@@ -265,9 +271,10 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     }
     
     //MAKR:UITextFieldDelegate
-    public func textFieldDidEndEditing(_ textField: UITextField) {
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         self.p_decrypt()
+        return true
     }
     
     //MARK:UITableViewDelegate
@@ -422,6 +429,8 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     
     //解密
     @objc private func p_decrypt() {
+        self.mPasswordTextField.resignFirstResponder()
+        self.mSearchBar.resignFirstResponder()
         if self.mPasswordTextField.text != nil {
             self.mTableView.reloadData()
         }

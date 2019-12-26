@@ -30,7 +30,7 @@ class ViewController: UIViewController {
         //配置HDWindowLoggerSwift
         HDWindowLoggerSwift.show()
         HDWindowLoggerSwift.mCompleteLogOut = true
-        HDWindowLoggerSwift.mPrivacyPassword = "123456" //设置加密内容密码
+        HDWindowLoggerSwift.mPrivacyPassword = "12345678901234561234567890123456" //设置加密内容密码
     }
 
     @objc func onClickButton() {
