@@ -18,7 +18,7 @@ extension Dictionary: LogContent {
     public var logStringValue: String {
         let data = try? JSONSerialization.data(withJSONObject: self, options:JSONSerialization.WritingOptions.prettyPrinted)
         let defaultData = Data()
-        return String(data: data ?? defaultData, encoding: String.Encoding.utf8) ?? "不支持json解析的Dictionary"
+        return String(data: data ?? defaultData, encoding: String.Encoding.utf8) ?? "\(self)"
     }
 }
 
@@ -26,7 +26,7 @@ extension Array: LogContent {
     public var logStringValue: String {
         let data = try? JSONSerialization.data(withJSONObject: self, options:JSONSerialization.WritingOptions.prettyPrinted)
         let defaultData = Data()
-        return String(data: data ?? defaultData, encoding: String.Encoding.utf8) ?? "不支持json解析的array类型"
+        return String(data: data ?? defaultData, encoding: String.Encoding.utf8) ?? "\(self)"
     }
 }
 

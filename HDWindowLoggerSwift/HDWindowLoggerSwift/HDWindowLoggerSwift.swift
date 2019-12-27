@@ -53,6 +53,9 @@ public class HDWindowLoggerItem {
             if let mContent = mLogContent  {
                 if mContent is LogContent {
                     contentString = (mContent as! LogContent).logStringValue
+                } else if JSONSerialization.isValidJSONObject(mContent) {
+                    let data = try? JSONSerialization.data(withJSONObject: mContent, options:JSONSerialization.WritingOptions.prettyPrinted)
+                    contentString =  String(data: data ?? Data(), encoding: String.Encoding.utf8) ?? "\(mContent)"
                 } else {
                     contentString = "\(mContent)"
                 }
@@ -67,6 +70,9 @@ public class HDWindowLoggerItem {
             if let mContent = mLogContent  {
                 if mContent is LogContent {
                     contentString = (mContent as! LogContent).logStringValue
+                }  else if JSONSerialization.isValidJSONObject(mContent) {
+                    let data = try? JSONSerialization.data(withJSONObject: mContent, options:JSONSerialization.WritingOptions.prettyPrinted)
+                    contentString =  String(data: data ?? Data(), encoding: String.Encoding.utf8) ?? "\(mContent)"
                 } else {
                     contentString = "\(mContent)"
                 }
