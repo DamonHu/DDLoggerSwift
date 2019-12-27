@@ -472,29 +472,31 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     /// - Parameter log: 日志内容
     /// - Parameter logType: 日志类型
     public class func printLog(log:Any, logType:HDLogType, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-        if self.defaultWindowLogger.mLogDataArray.isEmpty {
+        DispatchQueue.main.async {
+            if self.defaultWindowLogger.mLogDataArray.isEmpty {
+                let loggerItem = HDWindowLoggerItem()
+                loggerItem.mLogItemType = HDLogType.kHDLogTypeWarn
+                loggerItem.mCreateDate = Date()
+                loggerItem.mLogContent = NSLocalizedString("HDWindowLogger: 点击对应日志可快速复制", comment: "")
+                self.defaultWindowLogger.mLogDataArray.append(loggerItem)
+            }
             let loggerItem = HDWindowLoggerItem()
-            loggerItem.mLogItemType = HDLogType.kHDLogTypeWarn
+            loggerItem.mLogItemType = logType
             loggerItem.mCreateDate = Date()
-            loggerItem.mLogContent = NSLocalizedString("HDWindowLogger: 点击对应日志可快速复制", comment: "")
+            
+            let fileName = (file as NSString).lastPathComponent;
+            loggerItem.mLogDebugContent = "[File:\(fileName)]:[Line:\(lineNum):[Function:\(funcName)]]-Log:"
+            loggerItem.mLogContent = log
+            
+            if self.mDebugAreaLogOut {
+                print(loggerItem.getFullContentString())
+            }
             self.defaultWindowLogger.mLogDataArray.append(loggerItem)
+            if self.defaultWindowLogger.mMaxLogCount > 0 && self.defaultWindowLogger.mMaxLogCount > self.defaultWindowLogger.mMaxLogCount {
+                self.defaultWindowLogger.mLogDataArray.removeFirst()
+            }
+            self.defaultWindowLogger.p_reloadFilter()
         }
-        let loggerItem = HDWindowLoggerItem()
-        loggerItem.mLogItemType = logType
-        loggerItem.mCreateDate = Date()
-
-        let fileName = (file as NSString).lastPathComponent;
-        loggerItem.mLogDebugContent = "[File:\(fileName)]:[Line:\(lineNum):[Function:\(funcName)]]-Log:"
-        loggerItem.mLogContent = log
-        
-        if self.mDebugAreaLogOut {
-            print(loggerItem.getFullContentString())
-        }
-        self.defaultWindowLogger.mLogDataArray.append(loggerItem)
-        if self.defaultWindowLogger.mMaxLogCount > 0 && self.defaultWindowLogger.mMaxLogCount > self.defaultWindowLogger.mMaxLogCount {
-            self.defaultWindowLogger.mLogDataArray.removeFirst()
-        }
-        self.defaultWindowLogger.p_reloadFilter()
     }
     
     ///  删除log日志
