@@ -41,8 +41,7 @@ class HDLoggerSwiftTableViewCell: UITableViewCell {
         self.contentView.addSubview(self.mContentLabel)
     }
     
-    func updateWithLoggerItem(loggerItem:HDWindowLoggerItem) {
-        self.mContentLabel.text = loggerItem.getFullContentString()
+    func updateWithLoggerItem(loggerItem:HDWindowLoggerItem, searchText:String) {
         switch loggerItem.mLogItemType {
         case .kHDLogTypeNormal:
             self.mContentLabel.textColor = UIColor(red: 80.0/255.0, green: 216.0/255.0, blue: 144.0/255.0, alpha: 1.0)
@@ -56,6 +55,22 @@ class HDLoggerSwiftTableViewCell: UITableViewCell {
         case .kHDLogTypePrivacy:
             self.mContentLabel.textColor = UIColor(red: 66.0/255.0, green: 230.0/255.0, blue: 164.0/255.0, alpha: 1.0)
             break
+        }
+        
+        if searchText.isEmpty {
+            self.mContentLabel.text = loggerItem.getFullContentString()
+        } else {
+            let contentString = loggerItem.getFullContentString()
+            let attributedString = NSMutableAttributedString(string: contentString)
+            let regx = try? NSRegularExpression(pattern: searchText, options: NSRegularExpression.Options.caseInsensitive)
+            if let searchRegx = regx {
+                searchRegx.enumerateMatches(in: contentString, options: NSRegularExpression.MatchingOptions.reportProgress, range: NSRange(location: 0, length: contentString.count)) { (result: NSTextCheckingResult?, flag, stop) in
+                    attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor(red: 255.0/255.0, green: 0.0, blue: 0.0, alpha: 1.0), range: result?.range ?? NSRange(location: 0, length: 0))
+                    self.mContentLabel.attributedText = attributedString
+                }
+            } else {
+                self.mContentLabel.text = loggerItem.getFullContentString()
+            }
         }
         let size = self.mContentLabel.sizeThatFits(CGSize(width: UIScreen.main.bounds.size.width, height: CGFloat(MAXFLOAT)))
         self.mContentLabel.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)

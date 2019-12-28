@@ -35,9 +35,3 @@ extension String: LogContent {
         return self
     }
 }
-
-extension URL: LogContent {
-    public var logStringValue: String {
-        return self.absoluteString
-    }
-}

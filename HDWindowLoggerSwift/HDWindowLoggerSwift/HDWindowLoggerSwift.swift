@@ -299,7 +299,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
             loggerCell?.backgroundColor = UIColor.clear
         }
         if loggerCell != nil {
-            loggerCell!.updateWithLoggerItem(loggerItem: loggerItem)
+            loggerCell!.updateWithLoggerItem(loggerItem: loggerItem, searchText: self.mSearchBar.text ?? "")
         }
         return loggerCell ?? UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: identifier)
     }
@@ -348,7 +348,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         let dataList = self.mLogDataArray
         for item in dataList {
             if self.mSearchBar.text != nil &&  !(self.mSearchBar.text!.isEmpty) {
-                if item.getFullContentString().contains(self.mSearchBar.text!) {
+                if item.getFullContentString().localizedCaseInsensitiveContains(self.mSearchBar.text!) {
                     self.mFilterLogDataArray.append(item)
                 }
             } else {
