@@ -98,14 +98,14 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     //密码解锁是否正确
     fileprivate var mPasswordCorrect: Bool {
         get {
-            return self.mPasswordTextField.text ?? "" == HDWindowLoggerSwift.mPrivacyPassword
+            return self.mTextPassword == HDWindowLoggerSwift.mPrivacyPassword
         }
     }
     
-    private var mFilterLogDataArray = [HDWindowLoggerItem]()
+    private var mFilterIndexArray = [IndexPath]()
     private var mMaxLogCount = 0        //限制日志数，默认为0不限制
-    
-    
+    private var mTextPassword = ""      //输入的密码
+    private var mCurrentSearchIndex = 0 //当前搜索到的索引
     
     private lazy var mBGView: UIView = {
         let mBGView = UIView()
@@ -214,11 +214,42 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         searchBar.placeholder = NSLocalizedString("内容过滤查找", comment: "")
         searchBar.barStyle = UIBarStyle.default
         searchBar.backgroundImage = UIImage()
-        searchBar.backgroundColor = UIColor.white
+        searchBar.backgroundColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0)
         searchBar.delegate = self
         return searchBar
     }()
     
+    private lazy var mPreviousButton: UIButton = {
+        let button = UIButton(type: UIButton.ButtonType.custom)
+        button.backgroundColor = UIColor(red: 255.0/255.0, green: 118.0/255.0, blue: 118.0/255.0, alpha: 1.0)
+        button.setTitleColor(UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0), for: UIControl.State.normal)
+        button.setTitleColor(UIColor(red: 102.0/255.0, green: 102.0/255.0, blue: 102.0/255.0, alpha: 1.0), for: UIControl.State.disabled)
+        button.setTitle(NSLocalizedString("上一条", comment: ""), for: UIControl.State.normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+        button.isEnabled = false
+        return button
+    }()
+    
+    private lazy var mNextButton: UIButton = {
+        let button = UIButton(type: UIButton.ButtonType.custom)
+        button.backgroundColor = UIColor(red: 93.0/255.0, green: 174.0/255.0, blue: 139.0/255.0, alpha: 1.0)
+        button.setTitleColor(UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0), for: UIControl.State.normal)
+        button.setTitleColor(UIColor(red: 102.0/255.0, green: 102.0/255.0, blue: 102.0/255.0, alpha: 1.0), for: UIControl.State.disabled)
+        button.setTitle(NSLocalizedString("下一条", comment: ""), for: UIControl.State.normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+        button.isEnabled = false
+        return button
+    }()
+    
+    private lazy var mSearchNumLabel: UILabel = {
+        let tLabel = UILabel()
+        tLabel.text = NSLocalizedString("0条结果", comment: "")
+        tLabel.textAlignment = NSTextAlignment.center
+        tLabel.font = UIFont.systemFont(ofSize: 12)
+        tLabel.textColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0)
+        tLabel.backgroundColor = UIColor(red: 57.0/255.0, green: 74.0/255.0, blue: 81.0/255.0, alpha: 1.0)
+        return tLabel
+    }()
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -270,24 +301,34 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         
         //搜索框
         self.mBGView.addSubview(self.mSearchBar)
-        self.mSearchBar.frame = CGRect(x: 0, y: 300, width: UIScreen.main.bounds.size.width, height: 40)
+        self.mSearchBar.frame = CGRect(x: 0, y: 300, width: UIScreen.main.bounds.size.width - 180, height: 40)
+        
+        self.mBGView.addSubview(self.mPreviousButton)
+        self.mPreviousButton.frame = CGRect(x: UIScreen.main.bounds.size.width - 180, y: 300, width: 60, height: 40)
+        
+        self.mBGView.addSubview(self.mNextButton)
+        self.mNextButton.frame = CGRect(x: UIScreen.main.bounds.size.width - 120, y: 300, width: 60, height: 40)
+        
+        self.mBGView.addSubview(self.mSearchNumLabel)
+        self.mSearchNumLabel.frame = CGRect(x: UIScreen.main.bounds.size.width - 60, y: 300, width: 60, height: 40)
     }
     
     //MAKR:UITextFieldDelegate
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
+        self.mTextPassword = textField.text ?? ""
         self.p_decrypt()
         return true
     }
     
     //MARK:UITableViewDelegate
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.mFilterLogDataArray.count
+        return self.mLogDataArray.count
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let identifier = "loggerCellIdentifier"
-        let loggerItem = self.mFilterLogDataArray[indexPath.row]
+        let loggerItem = self.mLogDataArray[indexPath.row]
         var loggerCell = tableView.dequeueReusableCell(withIdentifier: identifier) as? HDLoggerSwiftTableViewCell
         if loggerCell == nil {
             loggerCell = HDLoggerSwiftTableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: identifier)
@@ -305,7 +346,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     }
     
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let loggerItem = self.mFilterLogDataArray[indexPath.row]
+        let loggerItem = self.mLogDataArray[indexPath.row]
         let label = UILabel()
         label.numberOfLines = 0
         label.font = UIFont.systemFont(ofSize: 13)
@@ -315,7 +356,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     }
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let loggerItem = self.mFilterLogDataArray[indexPath.row]
+        let loggerItem = self.mLogDataArray[indexPath.row]
         let pasteboard = UIPasteboard.general
         pasteboard.string = loggerItem.getFullContentString()
         
@@ -344,21 +385,55 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     
     //MARK:私有函数
     private func p_reloadFilter() {
-        self.mFilterLogDataArray.removeAll()
-        let dataList = self.mLogDataArray
-        for item in dataList {
-            if self.mSearchBar.text != nil &&  !(self.mSearchBar.text!.isEmpty) {
-                if item.getFullContentString().localizedCaseInsensitiveContains(self.mSearchBar.text!) {
-                    self.mFilterLogDataArray.append(item)
-                }
-            } else {
-                self.mFilterLogDataArray.append(item)
+        if self.mFilterIndexArray.count > 0 {
+            UIView.performWithoutAnimation {
+                self.mTableView.reloadRows(at: self.mFilterIndexArray, with: UITableView.RowAnimation.none)
             }
         }
-        self.mTableView.reloadData()
-        if self.mFilterLogDataArray.count > 0 && self.mAutoScrollSwitch.isOn {
-            let indexPath = IndexPath(row: self.mFilterLogDataArray.count - 1, section: 0)
-            self.mTableView.scrollToRow(at: indexPath, at: UITableView.ScrollPosition.bottom, animated: true)
+        
+        self.mFilterIndexArray.removeAll()
+        self.mPreviousButton.isEnabled = false
+        self.mNextButton.isEnabled = false
+        self.mSearchNumLabel.text = NSLocalizedString("0条结果", comment: "");
+        
+        let searchText = self.mSearchBar.text ?? "";
+        if !searchText.isEmpty {
+            let dataList = self.mLogDataArray
+            for (index, item) in dataList.enumerated() {
+                if item.getFullContentString().localizedCaseInsensitiveContains(searchText) {
+                    let indexPath = IndexPath(row: index, section: 0)
+                    self.mFilterIndexArray.append(indexPath)
+                    UIView.performWithoutAnimation {
+                        self.mTableView.reloadRows(at: self.mFilterIndexArray, with: UITableView.RowAnimation.none)
+                    }
+                    self.mPreviousButton.isEnabled = true
+                    self.mNextButton.isEnabled = true
+                    self.mCurrentSearchIndex = self.mFilterIndexArray.count - 1;
+                    self.mSearchNumLabel.text = "\(self.mCurrentSearchIndex + 1)/\(self.mFilterIndexArray.count)"
+                }
+            }
+        }
+    }
+    
+    @objc func p_previous() -> Void {
+        if (self.mFilterIndexArray.count > 0) {
+            self.mCurrentSearchIndex = self.mCurrentSearchIndex - 1;
+            if (self.mCurrentSearchIndex < 0) {
+                self.mCurrentSearchIndex = self.mFilterIndexArray.count - 1;
+            }
+            self.mSearchNumLabel.text = "\(self.mCurrentSearchIndex + 1)/\(self.mFilterIndexArray.count)"
+            self.mTableView .scrollToRow(at: IndexPath(row: self.mCurrentSearchIndex, section: 0), at: UITableView.ScrollPosition.top, animated: true)
+        }
+    }
+    
+    @objc func p_next() -> Void {
+        if (self.mFilterIndexArray.count > 0) {
+            self.mCurrentSearchIndex = self.mCurrentSearchIndex + 1;
+            if (self.mCurrentSearchIndex == self.mFilterIndexArray.count) {
+                self.mCurrentSearchIndex = 0;
+            }
+            self.mSearchNumLabel.text = "\(self.mCurrentSearchIndex + 1)/\(self.mFilterIndexArray.count)"
+            self.mTableView .scrollToRow(at: IndexPath(row: self.mCurrentSearchIndex, section: 0), at: UITableView.ScrollPosition.top, animated: true)
         }
     }
     
@@ -367,6 +442,8 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         self.mCleanButton.addTarget(self, action: #selector(p_cleanLog), for: UIControl.Event.touchUpInside)
         self.mShareButton.addTarget(self, action: #selector(p_share), for: UIControl.Event.touchUpInside)
         self.mPasswordButton.addTarget(self, action: #selector(p_decrypt), for: UIControl.Event.touchUpInside)
+        self.mPreviousButton.addTarget(self, action: #selector(p_previous), for: UIControl.Event.touchUpInside)
+        self.mNextButton.addTarget(self, action: #selector(p_next), for: UIControl.Event.touchUpInside)
     }
     
     @objc func p_touchMove(p:UIPanGestureRecognizer) {
@@ -501,6 +578,12 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
             if self.defaultWindowLogger.mMaxLogCount > 0 && self.defaultWindowLogger.mMaxLogCount > self.defaultWindowLogger.mMaxLogCount {
                 self.defaultWindowLogger.mLogDataArray.removeFirst()
             }
+            self.defaultWindowLogger.mTableView.reloadData()
+            if self.defaultWindowLogger.mLogDataArray.count > 0 && self.defaultWindowLogger.mAutoScrollSwitch.isOn {
+                DispatchQueue.main.async {
+                    self.defaultWindowLogger.mTableView.scrollToRow(at: IndexPath(row: self.defaultWindowLogger.mLogDataArray.count - 1, section: 0), at: UITableView.ScrollPosition.bottom, animated: true)
+                }
+            }
             self.defaultWindowLogger.p_reloadFilter()
         }
     }
@@ -508,7 +591,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     ///  删除log日志
     public class func cleanLog() {
         self.defaultWindowLogger.mLogDataArray.removeAll()
-        self.defaultWindowLogger.mFilterLogDataArray.removeAll()
+        self.defaultWindowLogger.mFilterIndexArray.removeAll()
         self.defaultWindowLogger.mTableView.reloadData()
     }
     
