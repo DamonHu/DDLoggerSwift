@@ -40,8 +40,33 @@ public class HDWindowLoggerItem {
     public var mLogItemType = HDLogType.kHDLogTypeNormal    //log类型
     public var mLogDebugContent: String = ""                //log在文件中的调试内容
     public var mLogContent: Any?                         //log的内容
+    public var mCreateDate = Date()                      //log日期
     
-    public var mCreateDate = Date()
+    public var mCellHeight: CGFloat {
+        get {
+            if mTextHeight == 0 {
+                let label = UILabel()
+                label.numberOfLines = 0
+                label.font = UIFont.systemFont(ofSize: 13)
+                let contentString = self.getFullContentString()
+                let newString = NSMutableAttributedString(string: contentString, attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 13)])
+                label.attributedText = newString
+                let size = label.sizeThatFits(CGSize(width: UIScreen.main.bounds.size.width, height: CGFloat(MAXFLOAT)))
+                mTextHeight = CGFloat(ceil(size.height) + 1)
+            }
+            return mTextHeight
+        }
+        set {
+            mTextHeight = newValue
+        }
+    }//通过内容获取高度
+    
+    private var mTextHeight: CGFloat = 0.0
+    private var mCurrentHighlightString = ""            //当前需要高亮的字符串
+    private var mCacheHasHighlightString = false        //上次查询是否包含高亮的字符串
+    var mCacheHighlightCompleteString = NSMutableAttributedString()   //上次包含高亮支付的富文本
+    
+    
     public func getFullContentString() -> String {
         //日期
         let dateFormatter = DateFormatter()
@@ -83,7 +108,41 @@ public class HDWindowLoggerItem {
         } else {
             return dateStr + "  >   " + contentString
         }
-        
+    }
+    
+    //根据需要高亮内容查询组装高亮内容
+    public func getHighlightAttributedString(highlightString: String, complete:(Bool, NSAttributedString)->Void) -> Void {
+        if highlightString.isEmpty {
+            //空的直接返回
+            let contentString = self.getFullContentString()
+            let newString = NSMutableAttributedString(string: contentString, attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 13)])
+            self.mCacheHighlightCompleteString = newString
+            self.mCacheHasHighlightString = false
+            complete(self.mCacheHasHighlightString, newString)
+        } else if highlightString == self.mCurrentHighlightString{
+            //和上次高亮相同，直接用之前的回调
+            complete(self.mCacheHasHighlightString, self.mCacheHighlightCompleteString)
+        } else {
+            self.mCurrentHighlightString = highlightString
+            let contentString = self.getFullContentString()
+            let newString = NSMutableAttributedString(string: contentString, attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 13)])
+            let regx = try? NSRegularExpression(pattern: highlightString, options: NSRegularExpression.Options.caseInsensitive)
+            if let searchRegx = regx {
+                self.mCacheHasHighlightString = false;
+                searchRegx.enumerateMatches(in: contentString, options: NSRegularExpression.MatchingOptions.reportCompletion, range: NSRange(location: 0, length: contentString.count)) { (result: NSTextCheckingResult?, flag, stop) in
+                    newString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor(red: 255.0/255.0, green: 0.0, blue: 0.0, alpha: 1.0), range: result?.range ?? NSRange(location: 0, length: 0))
+                    if result != nil {
+                        self.mCacheHasHighlightString = true
+                    }
+                    self.mCacheHighlightCompleteString = newString
+                    complete(self.mCacheHasHighlightString, newString)
+                }
+            } else {
+                self.mCacheHighlightCompleteString = newString
+                self.mCacheHasHighlightString = false
+                complete(self.mCacheHasHighlightString, newString)
+            }
+        }
     }
 }
 
@@ -340,19 +399,14 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
             loggerCell?.backgroundColor = UIColor.clear
         }
         if loggerCell != nil {
-            loggerCell!.updateWithLoggerItem(loggerItem: loggerItem, searchText: self.mSearchBar.text ?? "")
+            loggerCell!.updateWithLoggerItem(loggerItem: loggerItem, highlightText: self.mSearchBar.text ?? "")
         }
         return loggerCell ?? UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: identifier)
     }
     
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let loggerItem = self.mLogDataArray[indexPath.row]
-        let label = UILabel()
-        label.numberOfLines = 0
-        label.font = UIFont.systemFont(ofSize: 13)
-        label.text = loggerItem.getFullContentString()
-        let size = label.sizeThatFits(CGSize(width: UIScreen.main.bounds.size.width, height: CGFloat(MAXFLOAT)))
-        return ceil(size.height) + 1
+        return loggerItem.mCellHeight
     }
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -385,12 +439,6 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     
     //MARK:私有函数
     private func p_reloadFilter() {
-        if self.mFilterIndexArray.count > 0 {
-            UIView.performWithoutAnimation {
-                self.mTableView.reloadRows(at: self.mFilterIndexArray, with: UITableView.RowAnimation.none)
-            }
-        }
-        
         self.mFilterIndexArray.removeAll()
         self.mPreviousButton.isEnabled = false
         self.mNextButton.isEnabled = false
@@ -403,15 +451,15 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
                 if item.getFullContentString().localizedCaseInsensitiveContains(searchText) {
                     let indexPath = IndexPath(row: index, section: 0)
                     self.mFilterIndexArray.append(indexPath)
-                    UIView.performWithoutAnimation {
-                        self.mTableView.reloadRows(at: self.mFilterIndexArray, with: UITableView.RowAnimation.none)
-                    }
                     self.mPreviousButton.isEnabled = true
                     self.mNextButton.isEnabled = true
                     self.mCurrentSearchIndex = self.mFilterIndexArray.count - 1;
                     self.mSearchNumLabel.text = "\(self.mCurrentSearchIndex + 1)/\(self.mFilterIndexArray.count)"
                 }
             }
+        }
+        DispatchQueue.main.async {
+            self.mTableView.reloadData()
         }
     }
     
@@ -422,7 +470,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
                 self.mCurrentSearchIndex = self.mFilterIndexArray.count - 1;
             }
             self.mSearchNumLabel.text = "\(self.mCurrentSearchIndex + 1)/\(self.mFilterIndexArray.count)"
-            self.mTableView .scrollToRow(at: IndexPath(row: self.mCurrentSearchIndex, section: 0), at: UITableView.ScrollPosition.top, animated: true)
+            self.mTableView .scrollToRow(at: self.mFilterIndexArray[self.mCurrentSearchIndex], at: UITableView.ScrollPosition.top, animated: true)
         }
     }
     
@@ -433,7 +481,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
                 self.mCurrentSearchIndex = 0;
             }
             self.mSearchNumLabel.text = "\(self.mCurrentSearchIndex + 1)/\(self.mFilterIndexArray.count)"
-            self.mTableView .scrollToRow(at: IndexPath(row: self.mCurrentSearchIndex, section: 0), at: UITableView.ScrollPosition.top, animated: true)
+            self.mTableView .scrollToRow(at: self.mFilterIndexArray[self.mCurrentSearchIndex], at: UITableView.ScrollPosition.top, animated: true)
         }
     }
     
@@ -578,13 +626,13 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
             if self.defaultWindowLogger.mMaxLogCount > 0 && self.defaultWindowLogger.mMaxLogCount > self.defaultWindowLogger.mMaxLogCount {
                 self.defaultWindowLogger.mLogDataArray.removeFirst()
             }
-            self.defaultWindowLogger.mTableView.reloadData()
+           
+            self.defaultWindowLogger.p_reloadFilter()
             if self.defaultWindowLogger.mLogDataArray.count > 0 && self.defaultWindowLogger.mAutoScrollSwitch.isOn {
                 DispatchQueue.main.async {
                     self.defaultWindowLogger.mTableView.scrollToRow(at: IndexPath(row: self.defaultWindowLogger.mLogDataArray.count - 1, section: 0), at: UITableView.ScrollPosition.bottom, animated: true)
                 }
             }
-            self.defaultWindowLogger.p_reloadFilter()
         }
     }
     

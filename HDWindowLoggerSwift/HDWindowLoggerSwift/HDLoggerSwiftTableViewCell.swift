@@ -41,7 +41,7 @@ class HDLoggerSwiftTableViewCell: UITableViewCell {
         self.contentView.addSubview(self.mContentLabel)
     }
     
-    func updateWithLoggerItem(loggerItem:HDWindowLoggerItem, searchText:String) {
+    func updateWithLoggerItem(loggerItem:HDWindowLoggerItem, highlightText:String) {
         switch loggerItem.mLogItemType {
         case .kHDLogTypeNormal:
             self.mContentLabel.textColor = UIColor(red: 80.0/255.0, green: 216.0/255.0, blue: 144.0/255.0, alpha: 1.0)
@@ -57,22 +57,18 @@ class HDLoggerSwiftTableViewCell: UITableViewCell {
             break
         }
         
-        if searchText.isEmpty {
-            self.mContentLabel.text = loggerItem.getFullContentString()
-        } else {
-            let contentString = loggerItem.getFullContentString()
-            let attributedString = NSMutableAttributedString(string: contentString)
-            let regx = try? NSRegularExpression(pattern: searchText, options: NSRegularExpression.Options.caseInsensitive)
-            if let searchRegx = regx {
-                searchRegx.enumerateMatches(in: contentString, options: NSRegularExpression.MatchingOptions.reportProgress, range: NSRange(location: 0, length: contentString.count)) { (result: NSTextCheckingResult?, flag, stop) in
-                    attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor(red: 255.0/255.0, green: 0.0, blue: 0.0, alpha: 1.0), range: result?.range ?? NSRange(location: 0, length: 0))
-                    self.mContentLabel.attributedText = attributedString
-                }
+        loggerItem.getHighlightAttributedString(highlightString: highlightText) { (hasHighlightStr, hightlightAttributedString) in
+            self.mContentLabel.attributedText = hightlightAttributedString
+            if hasHighlightStr {
+                self.contentView.backgroundColor = UIColor(red: 145.0/255.0, green: 109.0/255.0, blue: 213.0/255.0, alpha: 1.0)
             } else {
-                self.mContentLabel.text = loggerItem.getFullContentString()
+                self.contentView.backgroundColor = UIColor.clear
             }
         }
-        let size = self.mContentLabel.sizeThatFits(CGSize(width: UIScreen.main.bounds.size.width, height: CGFloat(MAXFLOAT)))
-        self.mContentLabel.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        self.mContentLabel.frame = self.bounds
     }
 }
