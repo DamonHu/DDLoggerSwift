@@ -156,17 +156,14 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         struct DefaultWindow {
             static let kWindowLogger: HDWindowLoggerSwift = { () -> HDWindowLoggerSwift in
                 if #available(iOS 13.0, *) {
-                    print(UIApplication.shared.connectedScenes)
-                           let windowScene = UIApplication.shared
-                                           .connectedScenes
-                                           .first
-                           if let windowScene = windowScene as? UIWindowScene {
-                            return HDWindowLoggerSwift(windowScene: windowScene)
+                    let windowScene = UIApplication.shared
+                                        .connectedScenes
+                                        .first
+                    if let windowScene = windowScene as? UIWindowScene {
+                        return HDWindowLoggerSwift(windowScene: windowScene)
                     }
-                          
                 }
                 return HDWindowLoggerSwift(frame: CGRect.zero)
-                
             }()
         }
         return DefaultWindow.kWindowLogger
