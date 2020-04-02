@@ -151,8 +151,26 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     public static var mCompleteLogOut = true  //是否完整输出日志文件名等调试内容
     public static var mDebugAreaLogOut = true  //是否在xcode底部的调试栏同步输出内容
     public static var mPrivacyPassword = ""    //解密隐私数据的密码，默认为空不加密
-    public static let defaultWindowLogger = HDWindowLoggerSwift(frame: CGRect.zero)
     public private(set) var mLogDataArray  = [HDWindowLoggerItem]()
+    public static var defaultWindowLogger: HDWindowLoggerSwift {
+        struct DefaultWindow {
+            static let kWindowLogger: HDWindowLoggerSwift = { () -> HDWindowLoggerSwift in
+                if #available(iOS 13.0, *) {
+                    print(UIApplication.shared.connectedScenes)
+                           let windowScene = UIApplication.shared
+                                           .connectedScenes
+                                           .first
+                           if let windowScene = windowScene as? UIWindowScene {
+                            return HDWindowLoggerSwift(windowScene: windowScene)
+                    }
+                          
+                }
+                return HDWindowLoggerSwift(frame: CGRect.zero)
+                
+            }()
+        }
+        return DefaultWindow.kWindowLogger
+    }
     
     //密码解锁是否正确
     fileprivate var mPasswordCorrect: Bool {
@@ -316,6 +334,9 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
             var statusBarHeight: CGFloat = 0
             if #available(iOS 13.0, *) {
                 statusBarHeight = self.windowScene?.statusBarManager?.statusBarFrame.size.height ?? 0
+                if statusBarHeight == 0 {
+                    statusBarHeight = UIApplication.shared.statusBarFrame.size.height
+                }
             } else {
                 statusBarHeight = UIApplication.shared.statusBarFrame.size.height
             }
@@ -333,6 +354,23 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         super.init(coder: coder)
     }
     
+    @available(iOS 13.0, *)
+    public override init(windowScene: UIWindowScene) {
+        super.init(windowScene: windowScene)
+        DispatchQueue.main.async {
+            var statusBarHeight: CGFloat = self.windowScene?.statusBarManager?.statusBarFrame.size.height ?? 0
+            if statusBarHeight == 0 {
+                statusBarHeight = UIApplication.shared.statusBarFrame.size.height
+            }
+            self.frame = CGRect(x: 0, y: statusBarHeight, width: UIScreen.main.bounds.size.width, height: 342)
+            self.rootViewController = UIViewController()
+            self.windowLevel = UIWindow.Level.alert
+            self.backgroundColor = UIColor.clear
+            self.isUserInteractionEnabled = true
+            self.createUI()
+            self.p_bindClick()
+        }
+    }
     
     private func createUI() {
         self.rootViewController?.view.addSubview(self.mBGView)
