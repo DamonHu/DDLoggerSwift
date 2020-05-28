@@ -1,0 +1,6 @@
+framework module Pods_HDWindowLoggerSwiftTests {
+  umbrella header "Pods-HDWindowLoggerSwiftTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

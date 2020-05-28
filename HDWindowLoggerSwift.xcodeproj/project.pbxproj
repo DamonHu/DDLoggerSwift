@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		482F596BF3D546A1BF12BC37 /* Pods_HDWindowLoggerSwift_HDWindowLoggerSwiftUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D0BD1ACC5224B967D97685F /* Pods_HDWindowLoggerSwift_HDWindowLoggerSwiftUITests.framework */; };
+		83B62DA57B98D38A9DBD277D /* Pods_HDWindowLoggerSwiftTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C52FB809976FED82D9A48A5F /* Pods_HDWindowLoggerSwiftTests.framework */; };
 		E4885A7122C60E5100B9BC8B /* LogContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4885A7022C60E5100B9BC8B /* LogContent.swift */; };
 		E48AABF722C05EF600CC5F1C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48AABF622C05EF600CC5F1C /* AppDelegate.swift */; };
 		E48AABFB22C05EF600CC5F1C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48AABFA22C05EF600CC5F1C /* ViewController.swift */; };
@@ -18,6 +20,7 @@
 		E48AAC2822C05F5300CC5F1C /* HDWindowLoggerSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48AAC2722C05F5300CC5F1C /* HDWindowLoggerSwift.swift */; };
 		E48AAC2A22C05F8000CC5F1C /* HDLoggerSwiftTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48AAC2922C05F8000CC5F1C /* HDLoggerSwiftTableViewCell.swift */; };
 		E48AAC2D22C0817000CC5F1C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E48AAC2F22C0817000CC5F1C /* Localizable.strings */; };
+		EFD03B1A4BA5DD034A794BE9 /* Pods_HDWindowLoggerSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B7944F3D92A9FBBA629BCC /* Pods_HDWindowLoggerSwift.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +41,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		26DFD0E4C44874AC782523DC /* Pods-HDWindowLoggerSwift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HDWindowLoggerSwift.release.xcconfig"; path = "Target Support Files/Pods-HDWindowLoggerSwift/Pods-HDWindowLoggerSwift.release.xcconfig"; sourceTree = "<group>"; };
+		444ED6B56C4F7C9F50162B1A /* Pods-HDWindowLoggerSwiftTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HDWindowLoggerSwiftTests.debug.xcconfig"; path = "Target Support Files/Pods-HDWindowLoggerSwiftTests/Pods-HDWindowLoggerSwiftTests.debug.xcconfig"; sourceTree = "<group>"; };
+		4CEBD9CA6AB63340EDB4104B /* Pods-HDWindowLoggerSwiftTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HDWindowLoggerSwiftTests.release.xcconfig"; path = "Target Support Files/Pods-HDWindowLoggerSwiftTests/Pods-HDWindowLoggerSwiftTests.release.xcconfig"; sourceTree = "<group>"; };
+		4E611A3C63A0DBE09BD1F334 /* Pods-HDWindowLoggerSwift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HDWindowLoggerSwift.debug.xcconfig"; path = "Target Support Files/Pods-HDWindowLoggerSwift/Pods-HDWindowLoggerSwift.debug.xcconfig"; sourceTree = "<group>"; };
+		5D0BD1ACC5224B967D97685F /* Pods_HDWindowLoggerSwift_HDWindowLoggerSwiftUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HDWindowLoggerSwift_HDWindowLoggerSwiftUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		83B7944F3D92A9FBBA629BCC /* Pods_HDWindowLoggerSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HDWindowLoggerSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C52FB809976FED82D9A48A5F /* Pods_HDWindowLoggerSwiftTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HDWindowLoggerSwiftTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D26B26CF4E21ACE69380752F /* Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests.debug.xcconfig"; path = "Target Support Files/Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests/Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		D6BC2BB2778E87514615D81F /* Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests.release.xcconfig"; path = "Target Support Files/Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests/Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests.release.xcconfig"; sourceTree = "<group>"; };
 		E4885A7022C60E5100B9BC8B /* LogContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogContent.swift; sourceTree = "<group>"; };
 		E48AABF322C05EF600CC5F1C /* HDWindowLoggerSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HDWindowLoggerSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E48AABF622C05EF600CC5F1C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -65,6 +77,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EFD03B1A4BA5DD034A794BE9 /* Pods_HDWindowLoggerSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,6 +85,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				83B62DA57B98D38A9DBD277D /* Pods_HDWindowLoggerSwiftTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -79,12 +93,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				482F596BF3D546A1BF12BC37 /* Pods_HDWindowLoggerSwift_HDWindowLoggerSwiftUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5E855658D2DDDA942EF24A64 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				4E611A3C63A0DBE09BD1F334 /* Pods-HDWindowLoggerSwift.debug.xcconfig */,
+				26DFD0E4C44874AC782523DC /* Pods-HDWindowLoggerSwift.release.xcconfig */,
+				D26B26CF4E21ACE69380752F /* Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests.debug.xcconfig */,
+				D6BC2BB2778E87514615D81F /* Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests.release.xcconfig */,
+				444ED6B56C4F7C9F50162B1A /* Pods-HDWindowLoggerSwiftTests.debug.xcconfig */,
+				4CEBD9CA6AB63340EDB4104B /* Pods-HDWindowLoggerSwiftTests.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		D4F6D24CF37183F2F3C3670D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				83B7944F3D92A9FBBA629BCC /* Pods_HDWindowLoggerSwift.framework */,
+				5D0BD1ACC5224B967D97685F /* Pods_HDWindowLoggerSwift_HDWindowLoggerSwiftUITests.framework */,
+				C52FB809976FED82D9A48A5F /* Pods_HDWindowLoggerSwiftTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		E48AABEA22C05EF600CC5F1C = {
 			isa = PBXGroup;
 			children = (
@@ -92,6 +131,8 @@
 				E48AAC0C22C05EF700CC5F1C /* HDWindowLoggerSwiftTests */,
 				E48AAC1722C05EF700CC5F1C /* HDWindowLoggerSwiftUITests */,
 				E48AABF422C05EF600CC5F1C /* Products */,
+				5E855658D2DDDA942EF24A64 /* Pods */,
+				D4F6D24CF37183F2F3C3670D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -155,9 +196,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E48AAC1D22C05EF700CC5F1C /* Build configuration list for PBXNativeTarget "HDWindowLoggerSwift" */;
 			buildPhases = (
+				58C38B6EFC517D490734713B /* [CP] Check Pods Manifest.lock */,
 				E48AABEF22C05EF600CC5F1C /* Sources */,
 				E48AABF022C05EF600CC5F1C /* Frameworks */,
 				E48AABF122C05EF600CC5F1C /* Resources */,
+				63C05AF1629728E143624105 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -172,6 +215,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E48AAC2022C05EF700CC5F1C /* Build configuration list for PBXNativeTarget "HDWindowLoggerSwiftTests" */;
 			buildPhases = (
+				CA969C1D8F36451B31529DE3 /* [CP] Check Pods Manifest.lock */,
 				E48AAC0522C05EF700CC5F1C /* Sources */,
 				E48AAC0622C05EF700CC5F1C /* Frameworks */,
 				E48AAC0722C05EF700CC5F1C /* Resources */,
@@ -190,9 +234,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E48AAC2322C05EF700CC5F1C /* Build configuration list for PBXNativeTarget "HDWindowLoggerSwiftUITests" */;
 			buildPhases = (
+				611D86F613AD973937F506FA /* [CP] Check Pods Manifest.lock */,
 				E48AAC1022C05EF700CC5F1C /* Sources */,
 				E48AAC1122C05EF700CC5F1C /* Frameworks */,
 				E48AAC1222C05EF700CC5F1C /* Resources */,
+				0994CA167105D24ED5B89E7E /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -275,6 +321,109 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0994CA167105D24ED5B89E7E /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests/Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests/Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests/Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		58C38B6EFC517D490734713B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-HDWindowLoggerSwift-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		611D86F613AD973937F506FA /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		63C05AF1629728E143624105 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-HDWindowLoggerSwift/Pods-HDWindowLoggerSwift-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-HDWindowLoggerSwift/Pods-HDWindowLoggerSwift-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HDWindowLoggerSwift/Pods-HDWindowLoggerSwift-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CA969C1D8F36451B31529DE3 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-HDWindowLoggerSwiftTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		E48AABEF22C05EF600CC5F1C /* Sources */ = {
@@ -469,6 +618,7 @@
 		};
 		E48AAC1E22C05EF700CC5F1C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4E611A3C63A0DBE09BD1F334 /* Pods-HDWindowLoggerSwift.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -490,6 +640,7 @@
 		};
 		E48AAC1F22C05EF700CC5F1C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 26DFD0E4C44874AC782523DC /* Pods-HDWindowLoggerSwift.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -511,6 +662,7 @@
 		};
 		E48AAC2122C05EF700CC5F1C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 444ED6B56C4F7C9F50162B1A /* Pods-HDWindowLoggerSwiftTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -531,6 +683,7 @@
 		};
 		E48AAC2222C05EF700CC5F1C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4CEBD9CA6AB63340EDB4104B /* Pods-HDWindowLoggerSwiftTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -551,6 +704,7 @@
 		};
 		E48AAC2422C05EF700CC5F1C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D26B26CF4E21ACE69380752F /* Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -570,6 +724,7 @@
 		};
 		E48AAC2522C05EF700CC5F1C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D6BC2BB2778E87514615D81F /* Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;

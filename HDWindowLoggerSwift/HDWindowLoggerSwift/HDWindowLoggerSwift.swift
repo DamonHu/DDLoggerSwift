@@ -9,6 +9,7 @@
 import UIKit
 import CommonCrypto
 
+
 ///快速输出log
 //普通类型的输出
 public func HDNormalLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
@@ -42,26 +43,6 @@ public class HDWindowLoggerItem {
     public var mLogContent: Any?                         //log的内容
     public var mCreateDate = Date()                      //log日期
     
-    public var mCellHeight: CGFloat {
-        get {
-            if mTextHeight == 0 {
-                let label = UILabel()
-                label.numberOfLines = 0
-                label.font = UIFont.systemFont(ofSize: 13)
-                let contentString = self.getFullContentString()
-                let newString = NSMutableAttributedString(string: contentString, attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 13)])
-                label.attributedText = newString
-                let size = label.sizeThatFits(CGSize(width: UIScreen.main.bounds.size.width, height: CGFloat(MAXFLOAT)))
-                mTextHeight = CGFloat(ceil(size.height) + 1)
-            }
-            return mTextHeight
-        }
-        set {
-            mTextHeight = newValue
-        }
-    }//通过内容获取高度
-    
-    private var mTextHeight: CGFloat = 0.0
     private var mCurrentHighlightString = ""            //当前需要高亮的字符串
     private var mCacheHasHighlightString = false        //上次查询是否包含高亮的字符串
     var mCacheHighlightCompleteString = NSMutableAttributedString()   //上次包含高亮支付的富文本
@@ -155,14 +136,6 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     public static var defaultWindowLogger: HDWindowLoggerSwift {
         struct DefaultWindow {
             static let kWindowLogger: HDWindowLoggerSwift = { () -> HDWindowLoggerSwift in
-                if #available(iOS 13.0, *) {
-                    let windowScene = UIApplication.shared
-                                        .connectedScenes
-                                        .first
-                    if let windowScene = windowScene as? UIWindowScene {
-                        return HDWindowLoggerSwift(windowScene: windowScene)
-                    }
-                }
                 return HDWindowLoggerSwift(frame: CGRect.zero)
             }()
         }
@@ -196,7 +169,10 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         tableView.keyboardDismissMode = UIScrollView.KeyboardDismissMode.onDrag
         tableView.backgroundColor = UIColor.clear
         tableView.separatorColor = UIColor(red: 242.0/255.0, green: 242.0/255.0, blue: 240.0/255.0, alpha: 1.0)
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
         tableView.separatorStyle = UITableViewCell.SeparatorStyle.singleLine
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 10;
         return tableView
     }()
     
@@ -204,6 +180,13 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         let button = UIButton(type: UIButton.ButtonType.custom)
         button.backgroundColor = UIColor(red: 255.0/255.0, green: 118.0/255.0, blue: 118.0/255.0, alpha: 1.0)
         button.setTitle(NSLocalizedString("清除Log", comment: ""), for: UIControl.State.normal)
+        return button
+    }()
+    
+    private lazy var mScaleButton: UIButton = {
+        let button = UIButton(type: UIButton.ButtonType.custom)
+        button.backgroundColor = UIColor(red: 168.0/255.0, green: 223.0/255.0, blue: 101.0/255.0, alpha: 1.0)
+        button.setTitle(NSLocalizedString("伸缩", comment: ""), for: UIControl.State.normal)
         return button
     }()
     
@@ -236,7 +219,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     
     private lazy var mPasswordButton: UIButton = {
         let button = UIButton(type: UIButton.ButtonType.custom)
-        button.backgroundColor = UIColor(red: 66.0/255.0, green: 230.0/255.0, blue: 164.0/255.0, alpha: 1.0)
+        button.backgroundColor = UIColor(red: 27.0/255.0, green: 108.0/255.0, blue: 168.0/255.0, alpha: 1.0)
         button.setTitleColor(UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0), for: UIControl.State.normal)
         button.setTitle(NSLocalizedString("解密", comment: ""), for: UIControl.State.normal)
         button.layer.masksToBounds = true
@@ -325,52 +308,36 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         return tLabel
     }()
     
+    private lazy var mTipLabel: UILabel = {
+        let tLabel = UILabel()
+        tLabel.text = "HDWindowLogger v2.0"
+        tLabel.textAlignment = NSTextAlignment.center
+        tLabel.font = UIFont.systemFont(ofSize: 12)
+        tLabel.textColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0)
+        tLabel.backgroundColor = UIColor.clear
+        return tLabel
+    }()
+    
     public override init(frame: CGRect) {
         super.init(frame: frame)
-        DispatchQueue.main.async {
-            var statusBarHeight: CGFloat = 0
-            if #available(iOS 13.0, *) {
-                statusBarHeight = self.windowScene?.statusBarManager?.statusBarFrame.size.height ?? 0
-                if statusBarHeight == 0 {
-                    statusBarHeight = UIApplication.shared.statusBarFrame.size.height
-                }
-            } else {
-                statusBarHeight = UIApplication.shared.statusBarFrame.size.height
-            }
-            self.frame = CGRect(x: 0, y: statusBarHeight, width: UIScreen.main.bounds.size.width, height: 342)
-            self.rootViewController = UIViewController()
-            self.windowLevel = UIWindow.Level.alert
-            self.backgroundColor = UIColor.clear
-            self.isUserInteractionEnabled = true
-            self.createUI()
-            self.p_bindClick()
-        }
+        
+        self.rootViewController = UIViewController()
+        self.windowLevel = UIWindow.Level.alert
+        self.backgroundColor = UIColor.clear
+        self.isUserInteractionEnabled = true
+        self.createUI()
+        self.p_bindClick()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
     
-    @available(iOS 13.0, *)
-    public override init(windowScene: UIWindowScene) {
-        super.init(windowScene: windowScene)
-        DispatchQueue.main.async {
-            var statusBarHeight: CGFloat = self.windowScene?.statusBarManager?.statusBarFrame.size.height ?? 0
-            if statusBarHeight == 0 {
-                statusBarHeight = UIApplication.shared.statusBarFrame.size.height
-            }
-            self.frame = CGRect(x: 0, y: statusBarHeight, width: UIScreen.main.bounds.size.width, height: 342)
-            self.rootViewController = UIViewController()
-            self.windowLevel = UIWindow.Level.alert
-            self.backgroundColor = UIColor.clear
-            self.isUserInteractionEnabled = true
-            self.createUI()
-            self.p_bindClick()
-        }
-    }
-    
     private func createUI() {
+        self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 350)
+        
         self.rootViewController?.view.addSubview(self.mBGView)
+        self.mBGView
         self.mBGView.frame = self.bounds
         //按钮
         self.mBGView.addSubview(self.mHideButton)
