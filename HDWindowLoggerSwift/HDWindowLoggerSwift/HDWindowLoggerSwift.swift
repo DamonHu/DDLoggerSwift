@@ -348,7 +348,6 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
                 make.top.equalTo(self.rootViewController!.topLayoutGuide.snp.bottom)
             }
         }
-        self.mBGView.frame = self.bounds
         //按钮
         self.mBGView.addSubview(self.mScaleButton)
         self.mScaleButton.snp.makeConstraints { (make) in
