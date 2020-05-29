@@ -39,6 +39,11 @@ class HDLoggerSwiftTableViewCell: UITableViewCell {
     private func p_createUI() -> Void {
         self.backgroundColor = UIColor.clear
         self.contentView.addSubview(self.mContentLabel)
+        self.mContentLabel.snp.makeConstraints { (make) in
+            make.left.equalToSuperview().offset(10)
+            make.right.equalToSuperview().offset(-10)
+            make.top.bottom.equalToSuperview()
+        }
     }
     
     func updateWithLoggerItem(loggerItem:HDWindowLoggerItem, highlightText:String) {
@@ -65,10 +70,5 @@ class HDLoggerSwiftTableViewCell: UITableViewCell {
                 self.contentView.backgroundColor = UIColor.clear
             }
         }
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        self.mContentLabel.frame = self.bounds
     }
 }

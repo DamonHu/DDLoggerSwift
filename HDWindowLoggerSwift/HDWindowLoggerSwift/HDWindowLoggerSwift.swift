@@ -8,7 +8,7 @@
 
 import UIKit
 import CommonCrypto
-
+import SnapKit
 
 ///快速输出log
 //普通类型的输出
@@ -133,14 +133,17 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     public static var mDebugAreaLogOut = true  //是否在xcode底部的调试栏同步输出内容
     public static var mPrivacyPassword = ""    //解密隐私数据的密码，默认为空不加密
     public private(set) var mLogDataArray  = [HDWindowLoggerItem]()
-    public static var defaultWindowLogger: HDWindowLoggerSwift {
-        struct DefaultWindow {
-            static let kWindowLogger: HDWindowLoggerSwift = { () -> HDWindowLoggerSwift in
-                return HDWindowLoggerSwift(frame: CGRect.zero)
-            }()
-        }
-        return DefaultWindow.kWindowLogger
-    }
+    
+    static let defaultWindowLogger = HDWindowLoggerSwift(frame: CGRect.zero)
+    
+//    public static var defaultWindowLogger: HDWindowLoggerSwift {
+//        struct DefaultWindow {
+//            static let kWindowLogger: HDWindowLoggerSwift = { () -> HDWindowLoggerSwift in
+//                return HDWindowLoggerSwift(frame: CGRect.zero)
+//            }()
+//        }
+//        return DefaultWindow.kWindowLogger
+//    }
     
     //密码解锁是否正确
     fileprivate var mPasswordCorrect: Bool {
@@ -237,7 +240,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     private lazy var mSwitchLabel: UILabel = {
         let switchLabel = UILabel()
         switchLabel.text = NSLocalizedString("自动滚动", comment: "")
-        switchLabel.textAlignment = NSTextAlignment.left
+        switchLabel.textAlignment = NSTextAlignment.center
         switchLabel.font = UIFont.systemFont(ofSize: 13)
         switchLabel.textColor = UIColor.white
         return switchLabel
@@ -337,41 +340,116 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 350)
         
         self.rootViewController?.view.addSubview(self.mBGView)
-        self.mBGView
+        self.mBGView.snp.makeConstraints { (make) in
+            make.left.right.bottom.equalToSuperview()
+            if #available(iOS 11.0, *) {
+                make.top.equalTo(self.rootViewController!.view.safeAreaLayoutGuide.snp.top)
+            } else {
+                make.top.equalTo(self.rootViewController!.topLayoutGuide.snp.bottom)
+            }
+        }
         self.mBGView.frame = self.bounds
         //按钮
+        self.mBGView.addSubview(self.mScaleButton)
+        self.mScaleButton.snp.makeConstraints { (make) in
+            make.left.top.equalToSuperview()
+            make.width.equalTo(UIScreen.main.bounds.size.width/4.0)
+            make.height.equalTo(40)
+        }
         self.mBGView.addSubview(self.mHideButton)
-        self.mHideButton.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width/3.0, height: 40)
+        self.mHideButton.snp.makeConstraints { (make) in
+            make.top.equalTo(self.mScaleButton)
+            make.left.equalTo(self.mScaleButton.snp.right)
+            make.width.equalTo(self.mScaleButton)
+            make.height.equalTo(self.mScaleButton)
+        }
         self.mBGView.addSubview(self.mShareButton)
-        self.mShareButton.frame = CGRect(x: UIScreen.main.bounds.size.width/3.0, y: 0, width: UIScreen.main.bounds.size.width/3.0, height: 40)
+        self.mShareButton.snp.makeConstraints { (make) in
+            make.top.equalTo(self.mScaleButton)
+            make.left.equalTo(self.mHideButton.snp.right)
+            make.width.equalTo(self.mScaleButton)
+            make.height.equalTo(self.mScaleButton)
+        }
         self.mBGView.addSubview(self.mCleanButton)
-        self.mCleanButton.frame = CGRect(x: UIScreen.main.bounds.size.width*2.0/3.0, y: 0, width: UIScreen.main.bounds.size.width/3.0, height: 40)
+        self.mCleanButton.snp.makeConstraints { (make) in
+            make.top.equalTo(self.mScaleButton)
+            make.left.equalTo(self.mShareButton.snp.right)
+            make.width.equalTo(self.mScaleButton)
+            make.height.equalTo(self.mScaleButton)
+        }
+
         //私密解锁
         self.mBGView.addSubview(self.mPasswordTextField)
-        self.mPasswordTextField.frame = CGRect(x: 0, y: 40, width: UIScreen.main.bounds.size.width/3.0 + 50, height: 40)
+        self.mPasswordTextField.snp.makeConstraints { (make) in
+            make.left.equalToSuperview()
+            make.top.equalTo(self.mScaleButton.snp.bottom)
+            make.width.equalTo(UIScreen.main.bounds.size.width/3.0 + 50)
+            make.height.equalTo(40)
+        }
         self.mBGView.addSubview(self.mPasswordButton)
-        self.mPasswordButton.frame = CGRect(x: UIScreen.main.bounds.size.width/3.0 + 50, y: 40, width: UIScreen.main.bounds.size.width/3.0 - 50, height: 40)
+        self.mPasswordButton.snp.makeConstraints { (make) in
+            make.left.equalTo(self.mPasswordTextField.snp.right)
+            make.top.equalTo(self.mPasswordTextField)
+            make.width.equalTo(UIScreen.main.bounds.size.width/3.0 - 50)
+            make.height.equalTo(40)
+        }
         //开关视图
-        self.mBGView.addSubview(self.mSwitchLabel)
-        self.mSwitchLabel.frame = CGRect(x: UIScreen.main.bounds.size.width*2.0/3.0 + 6, y: 40, width: 90, height: 40)
         self.mBGView.addSubview(self.mAutoScrollSwitch)
-        self.mAutoScrollSwitch.frame = CGRect(x: UIScreen.main.bounds.size.width - 60, y: 45, width: 60, height: 40)
+        self.mAutoScrollSwitch.snp.makeConstraints { (make) in
+            make.right.equalToSuperview().offset(-10)
+            make.centerY.equalTo(self.mPasswordButton)
+        }
+        self.mBGView.addSubview(self.mSwitchLabel)
+        self.mSwitchLabel.snp.makeConstraints { (make) in
+            make.left.equalTo(self.mPasswordButton.snp.right)
+            make.right.equalTo(self.mAutoScrollSwitch.snp.left)
+            make.centerY.equalTo(self.mAutoScrollSwitch)
+        }
+        
         //滚动日志窗
         self.mBGView.addSubview(self.mTableView)
-        self.mTableView.frame = CGRect(x: 0, y: 80, width: UIScreen.main.bounds.size.width, height: 220)
+        self.mTableView.snp.makeConstraints { (make) in
+            make.left.right.equalToSuperview()
+            make.top.equalTo(self.mPasswordTextField.snp.bottom)
+            make.bottom.equalToSuperview().offset(-60)
+        }
         
         //搜索框
         self.mBGView.addSubview(self.mSearchBar)
-        self.mSearchBar.frame = CGRect(x: 0, y: 300, width: UIScreen.main.bounds.size.width - 180, height: 40)
+        self.mSearchBar.snp.makeConstraints { (make) in
+            make.left.equalToSuperview()
+            make.top.equalTo(self.mTableView.snp.bottom)
+            make.bottom.equalToSuperview().offset(-20)
+            make.width.equalTo(UIScreen.main.bounds.size.width - 180)
+        }
         
         self.mBGView.addSubview(self.mPreviousButton)
-        self.mPreviousButton.frame = CGRect(x: UIScreen.main.bounds.size.width - 180, y: 300, width: 60, height: 40)
+        self.mPreviousButton.snp.makeConstraints { (make) in
+            make.top.bottom.equalTo(self.mSearchBar)
+            make.left.equalTo(self.mSearchBar.snp.right)
+            make.width.equalTo(60)
+        }
         
         self.mBGView.addSubview(self.mNextButton)
-        self.mNextButton.frame = CGRect(x: UIScreen.main.bounds.size.width - 120, y: 300, width: 60, height: 40)
+        self.mNextButton.snp.makeConstraints { (make) in
+            make.top.bottom.equalTo(self.mSearchBar)
+            make.left.equalTo(self.mPreviousButton.snp.right)
+            make.width.equalTo(60)
+        }
         
         self.mBGView.addSubview(self.mSearchNumLabel)
-        self.mSearchNumLabel.frame = CGRect(x: UIScreen.main.bounds.size.width - 60, y: 300, width: 60, height: 40)
+        self.mSearchNumLabel.snp.makeConstraints { (make) in
+            make.top.bottom.equalTo(self.mSearchBar)
+            make.left.equalTo(self.mNextButton.snp.right)
+            make.width.equalTo(60)
+        }
+        
+        self.mBGView.addSubview(self.mTipLabel)
+        self.mTipLabel.snp.makeConstraints { (make) in
+            make.left.right.equalToSuperview()
+            make.top.equalTo(self.mSearchBar.snp.bottom);
+            make.bottom.equalToSuperview()
+        }
     }
     
     //MAKR:UITextFieldDelegate
@@ -404,11 +482,6 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
             loggerCell!.updateWithLoggerItem(loggerItem: loggerItem, highlightText: self.mSearchBar.text ?? "")
         }
         return loggerCell ?? UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: identifier)
-    }
-    
-    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let loggerItem = self.mLogDataArray[indexPath.row]
-        return loggerItem.mCellHeight
     }
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -488,6 +561,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     }
     
     private func p_bindClick() {
+        self.mScaleButton.addTarget(self, action: #selector(p_scale), for: UIControl.Event.touchUpInside)
         self.mHideButton.addTarget(self, action: #selector(p_hideLogWindow), for: UIControl.Event.touchUpInside)
         self.mCleanButton.addTarget(self, action: #selector(p_cleanLog), for: UIControl.Event.touchUpInside)
         self.mShareButton.addTarget(self, action: #selector(p_share), for: UIControl.Event.touchUpInside)
@@ -500,6 +574,15 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         let panPoint = p.location(in: UIApplication.shared.keyWindow)
         if p.state == UIGestureRecognizer.State.changed {
             self.mFloatWindow.center = CGPoint(x: panPoint.x, y: panPoint.y)
+        }
+    }
+    
+    @objc private func p_scale() {
+        self.mScaleButton.isSelected = !self.mScaleButton.isSelected;
+        if (self.mScaleButton.isSelected) {
+            self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height - 20)
+        } else {
+            self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 350)
         }
     }
     
