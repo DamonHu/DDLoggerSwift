@@ -250,6 +250,14 @@ HDWarnLog(log)	//日志为黄色
 HDErrorLog(log)	//日志为红色
 
 HDPrivacyLog(log)	//加密数据的输出，具体加密方式在下面的加密中说明
+
+```
+
+log可以为一个、也可以为多个参数
+
+```
+HDNormalLog("点击了按钮111")
+HDNormalLog("输出多个",22,33)
 ```
 
 输出格式

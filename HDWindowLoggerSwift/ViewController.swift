@@ -37,7 +37,7 @@ class ViewController: UIViewController {
         HDDebugLog("测试输出，不会写入悬浮窗")
         //普通输出
         HDNormalLog("点击了按钮111")
-        HDNormalLog("%s",22)
+        HDNormalLog("输出多个",22)
         //输出警告内容
         HDWarnLog("警告提示")
         //输出错误内容
