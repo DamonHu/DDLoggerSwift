@@ -61,6 +61,8 @@ HDWindowLoggerSwift.show()
 The font colors of the three output methods are different, and the corresponding types of printLog are different.
 
 ```
+HDDebugLog(log)	//, the log will not be written to the window, only output in xcode
+
 HDNormalLog (log) // Log's textColor is green
 
 HDWarnLog (log) // log's textColor is yellow
@@ -243,6 +245,8 @@ HDWindowLoggerSwift.show()
 四种输出方式字体颜色显示不同，对应的printLog不同的类型
 
 ```
+HDDebugLog(log)	//调试输出，内容不会写入到窗口，只在xcode输出
+
 HDNormalLog(log)	//日志为绿色
 
 HDWarnLog(log)	//日志为黄色
