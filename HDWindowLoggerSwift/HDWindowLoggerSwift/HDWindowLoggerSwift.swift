@@ -146,9 +146,10 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     public static var mDebugAreaLogOut = true  //是否在xcode底部的调试栏同步输出内容
     public static var mPrivacyPassword = ""    //解密隐私数据的密码，默认为空不加密
     public private(set) var mLogDataArray  = [HDWindowLoggerItem]()
-    
-    static let defaultWindowLogger = HDWindowLoggerSwift(frame: CGRect.zero)
-    
+    public var mLogExpiryDay = 7        //本地日志文件的有效期（天），超出有效期的本地日志会被删除，0为没有有效期，默认为7天
+    //FIXME: shared为老的单例方式，使用shared新的命名
+    public static let defaultWindowLogger = HDWindowLoggerSwift(frame: CGRect.zero)
+    public static let shared = HDWindowLoggerSwift(frame: CGRect.zero)
     //MARK: Private
     //密码解锁是否正确
     fileprivate var mPasswordCorrect: Bool {
@@ -156,14 +157,12 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
             return self.mTextPassword == HDWindowLoggerSwift.mPrivacyPassword
         }
     }
-    
+    private var mMaxLogCount = 0         //设置窗口显示的日志数，默认为0不限制
     private var mFilterIndexArray = [IndexPath]()
-    private var mMaxLogCount = 0        //限制日志数，默认为0不限制
     private var mTextPassword = ""      //输入的密码
     private var mCurrentSearchIndex = 0 //当前搜索到的索引
     private var mFileDateNameList = [String]() //可以分享的文件列表
     private var mShareFileName = "" //选中去分享的文件名
-    
     
     private lazy var mBGView: UIView = {
         let mBGView = UIView()
@@ -358,6 +357,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         self.isUserInteractionEnabled = true
         self.createUI()
         self.p_bindClick()
+        self.p_checkValidity()
     }
     
     required init?(coder: NSCoder) {
@@ -448,12 +448,12 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     /// - Parameter logType: 日志类型
     public class func printLog(log:Any, logType:HDLogType, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
         DispatchQueue.main.async {
-            if self.defaultWindowLogger.mLogDataArray.isEmpty {
+            if self.shared.mLogDataArray.isEmpty {
                 let loggerItem = HDWindowLoggerItem()
                 loggerItem.mLogItemType = HDLogType.kHDLogTypeWarn
                 loggerItem.mCreateDate = Date()
                 loggerItem.mLogContent = NSLocalizedString("HDWindowLogger: 点击对应日志可快速复制", comment: "")
-                self.defaultWindowLogger.mLogDataArray.append(loggerItem)
+                self.shared.mLogDataArray.append(loggerItem)
             }
             let loggerItem = HDWindowLoggerItem()
             loggerItem.mLogItemType = logType
@@ -469,15 +469,15 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
             //写入文件
             self.p_writeFile(log: loggerItem.getFullContentString())
             
-            self.defaultWindowLogger.mLogDataArray.append(loggerItem)
-            if self.defaultWindowLogger.mMaxLogCount > 0 && self.defaultWindowLogger.mMaxLogCount > self.defaultWindowLogger.mMaxLogCount {
-                self.defaultWindowLogger.mLogDataArray.removeFirst()
+            self.shared.mLogDataArray.append(loggerItem)
+            if self.shared.mMaxLogCount > 0 && self.shared.mMaxLogCount > self.shared.mMaxLogCount {
+                self.shared.mLogDataArray.removeFirst()
             }
             
-            self.defaultWindowLogger.p_reloadFilter()
-            if self.defaultWindowLogger.mLogDataArray.count > 0 && self.defaultWindowLogger.mAutoScrollSwitch.isOn {
+            self.shared.p_reloadFilter()
+            if self.shared.mLogDataArray.count > 0 && self.shared.mAutoScrollSwitch.isOn {
                 DispatchQueue.main.async {
-                    self.defaultWindowLogger.mTableView.scrollToRow(at: IndexPath(row: self.defaultWindowLogger.mLogDataArray.count - 1, section: 0), at: UITableView.ScrollPosition.bottom, animated: true)
+                    self.shared.mTableView.scrollToRow(at: IndexPath(row: self.shared.mLogDataArray.count - 1, section: 0), at: UITableView.ScrollPosition.bottom, animated: true)
                 }
             }
         }
@@ -485,31 +485,31 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     
     ///  删除log日志
     public class func cleanLog() {
-        self.defaultWindowLogger.mLogDataArray.removeAll()
-        self.defaultWindowLogger.mFilterIndexArray.removeAll()
-        self.defaultWindowLogger.mTableView.reloadData()
+        self.shared.mLogDataArray.removeAll()
+        self.shared.mFilterIndexArray.removeAll()
+        self.shared.mTableView.reloadData()
     }
     
     /// 显示log窗口
     public class func show() {
-        self.defaultWindowLogger.isHidden = false
-        self.defaultWindowLogger.isUserInteractionEnabled = true
-        self.defaultWindowLogger.mBGView.isHidden = false
-        self.defaultWindowLogger.mFloatWindow.isHidden = true
+        self.shared.isHidden = false
+        self.shared.isUserInteractionEnabled = true
+        self.shared.mBGView.isHidden = false
+        self.shared.mFloatWindow.isHidden = true
     }
     
     ///  隐藏整个log窗口
     public class func hide() {
-        self.defaultWindowLogger.isHidden = true
-        self.defaultWindowLogger.mBGView.isHidden = true
-        self.defaultWindowLogger.mFloatWindow.isHidden = true
+        self.shared.isHidden = true
+        self.shared.mBGView.isHidden = true
+        self.shared.mFloatWindow.isHidden = true
     }
     
     /// 只隐藏log的输出窗口，保留悬浮图标
     public class func hideLogWindow() {
-        self.defaultWindowLogger.isUserInteractionEnabled = false
-        self.defaultWindowLogger.mBGView.isHidden = true
-        self.defaultWindowLogger.mFloatWindow.isHidden = false
+        self.shared.isUserInteractionEnabled = false
+        self.shared.mBGView.isHidden = true
+        self.shared.mFloatWindow.isHidden = false
     }
     
     /// 删除本地日志文件
@@ -520,7 +520,6 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         
         if let enumer = FileManager.default.enumerator(atPath: logFilePath) {
             while let file = enumer.nextObject() {
-                print("file name:", file)
                 if let file: String = file as? String {
                     if file.hasPrefix("HDWindowLogger") {
                         let logFilePath = "" + (documentDirectory ?? "") + "/\(file)"
@@ -534,7 +533,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     ///  为了节省内存，可以设置记录的最大的log数，超出限制删除最老的数据，默认100条
     /// - Parameter logCount: 0为不限制
     public class func setMaxLogCount(logCount:Int) -> Void {
-        self.defaultWindowLogger.mMaxLogCount = logCount
+        self.shared.mMaxLogCount = logCount
     }
     
     //MARK: Private Method
@@ -806,7 +805,6 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         
         if let enumer = FileManager.default.enumerator(atPath: logFilePath) {
             while let file = enumer.nextObject() {
-                print("file name:", file)
                 if let file: String = file as? String {
                     if file.hasPrefix("HDWindowLogger") {
                         self.mFileDateNameList.append(file)
@@ -886,6 +884,35 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
             try? log.write(to: logFilePathURL, atomically: true, encoding: String.Encoding.utf8)
         }
     }
+    
+    private func p_checkValidity() {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        
+        let paths = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)
+        let documentDirectory = paths.first
+        let logFilePath = "" + (documentDirectory ?? "")
+        
+        if let enumer = FileManager.default.enumerator(atPath: logFilePath) {
+            while let file = enumer.nextObject() {
+                if let file: String = file as? String {
+                    if file.hasPrefix("HDWindowLogger") {
+                        //截取日期
+                        let index2 = file.index(file.startIndex, offsetBy: 15)
+                        let index3 = file.index(file.startIndex, offsetBy: 24)
+                        let dateString = file[index2...index3]
+                        let fileDate = dateFormatter.date(from: String(dateString))
+                        if let fileDate = fileDate {
+                            if fileDate.timeIntervalSince(Date()) > Double(self.mLogExpiryDay * 3600 * 24) {
+                                let logFilePath = "" + (documentDirectory ?? "") + "/\(file)"
+                                try? FileManager.default.removeItem(atPath: logFilePath)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 fileprivate class HDWindowLoggerTools: NSObject {
@@ -928,7 +955,6 @@ fileprivate class HDWindowLoggerTools: NSObject {
         }
         
         guard UInt32(status) == UInt32(kCCSuccess) else {
-            debugPrint("Error: Failed to crypt data. Status \(status)")
             return Data()
         }
         

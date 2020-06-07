@@ -112,7 +112,7 @@ HDWindowLoggerSwift.mDebugAreaLogOut = true
 ### 3、Get the log information content
 
 ```
-HDWindowLoggerSwift.defaultWindowLogger.mLogDataArray
+HDWindowLoggerSwift.shared.mLogDataArray
 ```
 
 ### 4、Clear the log
@@ -142,6 +142,12 @@ HDWindowLoggerSwift.setMaxLogCount(logCount: 100)
 
 ```
 HDWindowLoggerSwift.deleteLogFile()
+```
+
+### 9、 The validity period of the local log file (days), the local log beyond the validity period will be deleted, 0 is no validity period, the default is 7 days
+
+```
+HDWindowLoggerSwift.shared.mLogExpiryDay = 0
 ```
 
 ### LogContent protocol
@@ -311,7 +317,7 @@ HDWindowLoggerSwift.mDebugAreaLogOut = true
 ### 3、 获取log信息内容
 
 ```
-HDWindowLoggerSwift.defaultWindowLogger.mLogDataArray
+HDWindowLoggerSwift.shared.mLogDataArray
 ```
 
 
@@ -343,6 +349,12 @@ HDWindowLoggerSwift.setMaxLogCount(logCount: 100)
 
 ```
 HDWindowLoggerSwift.deleteLogFile()
+```
+
+### 9、 本地日志文件的有效期（天），超出有效期的本地日志会被删除，0为没有有效期，默认为7天
+
+```
+HDWindowLoggerSwift.shared.mLogExpiryDay = 0
 ```
 
 ### LogContent协议
