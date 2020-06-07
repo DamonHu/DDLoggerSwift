@@ -138,6 +138,11 @@ HDWindowLoggerSwift.hideLogWindow()
 ```
 HDWindowLoggerSwift.setMaxLogCount(logCount: 100)
 ```
+### 8、 delete the local LogFile
+
+```
+HDWindowLoggerSwift.deleteLogFile()
+```
 
 ### LogContent protocol
 
@@ -332,6 +337,12 @@ HDWindowLoggerSwift.hideLogWindow()
 
 ```
 HDWindowLoggerSwift.setMaxLogCount(logCount: 100)
+```
+
+### 8、 删除本地日志文件
+
+```
+HDWindowLoggerSwift.deleteLogFile()
 ```
 
 ### LogContent协议

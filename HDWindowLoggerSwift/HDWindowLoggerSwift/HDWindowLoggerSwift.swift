@@ -82,35 +82,20 @@ public class HDWindowLoggerItem {
         let dateStr = dateFormatter.string(from: mCreateDate)
         //内容
         var contentString = ""
-        if self.mLogItemType == .kHDLogTypePrivacy {
-            if let mContent = mLogContent  {
-                if mContent is LogContent {
-                    contentString = (mContent as! LogContent).logStringValue
-                } else if JSONSerialization.isValidJSONObject(mContent) {
-                    let data = try? JSONSerialization.data(withJSONObject: mContent, options:JSONSerialization.WritingOptions.prettyPrinted)
-                    contentString =  String(data: data ?? Data(), encoding: String.Encoding.utf8) ?? "\(mContent)"
-                } else {
-                    contentString = "\(mContent)"
-                }
-                if !HDWindowLoggerSwift.defaultWindowLogger.mPasswordCorrect {
-                    contentString = NSLocalizedString("该内容已加密，请解密后查看", comment: "")
-                }
-                if !HDWindowLoggerSwift.mPrivacyPassword.isEmpty && HDWindowLoggerSwift.mPrivacyPassword.count != kCCKeySizeAES256 {
-                    contentString = NSLocalizedString("密码设置长度错误，需要32个字符", comment: "")
-                }
+        if let mContent = mLogContent  {
+            if mContent is LogContent {
+                contentString = (mContent as! LogContent).logStringValue
+            }  else if JSONSerialization.isValidJSONObject(mContent) {
+                let data = try? JSONSerialization.data(withJSONObject: mContent, options:JSONSerialization.WritingOptions.prettyPrinted)
+                contentString =  String(data: data ?? Data(), encoding: String.Encoding.utf8) ?? "\(mContent)"
+            } else {
+                contentString = "\(mContent)"
             }
-        } else {
-            if let mContent = mLogContent  {
-                if mContent is LogContent {
-                    contentString = (mContent as! LogContent).logStringValue
-                }  else if JSONSerialization.isValidJSONObject(mContent) {
-                    let data = try? JSONSerialization.data(withJSONObject: mContent, options:JSONSerialization.WritingOptions.prettyPrinted)
-                    contentString =  String(data: data ?? Data(), encoding: String.Encoding.utf8) ?? "\(mContent)"
-                } else {
-                    contentString = "\(mContent)"
-                }
+            if self.mLogItemType == .kHDLogTypePrivacy && !HDWindowLoggerSwift.mPrivacyPassword.isEmpty && HDWindowLoggerSwift.mPrivacyPassword.count != kCCKeySizeAES256 {
+                contentString = NSLocalizedString("密码设置长度错误，需要32个字符", comment: "")
             }
         }
+        
         if HDWindowLoggerSwift.mCompleteLogOut {
             return dateStr + "  >   " +  mLogDebugContent + "\n" + contentString
         } else {
@@ -155,7 +140,8 @@ public class HDWindowLoggerItem {
 }
 
 ///log的输出
-public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UITextFieldDelegate {
+public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
+    
     public static var mCompleteLogOut = true  //是否完整输出日志文件名等调试内容
     public static var mDebugAreaLogOut = true  //是否在xcode底部的调试栏同步输出内容
     public static var mPrivacyPassword = ""    //解密隐私数据的密码，默认为空不加密
@@ -163,15 +149,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     
     static let defaultWindowLogger = HDWindowLoggerSwift(frame: CGRect.zero)
     
-//    public static var defaultWindowLogger: HDWindowLoggerSwift {
-//        struct DefaultWindow {
-//            static let kWindowLogger: HDWindowLoggerSwift = { () -> HDWindowLoggerSwift in
-//                return HDWindowLoggerSwift(frame: CGRect.zero)
-//            }()
-//        }
-//        return DefaultWindow.kWindowLogger
-//    }
-    
+    //MARK: Private
     //密码解锁是否正确
     fileprivate var mPasswordCorrect: Bool {
         get {
@@ -183,6 +161,9 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     private var mMaxLogCount = 0        //限制日志数，默认为0不限制
     private var mTextPassword = ""      //输入的密码
     private var mCurrentSearchIndex = 0 //当前搜索到的索引
+    private var mFileDateNameList = [String]() //可以分享的文件列表
+    private var mShareFileName = "" //选中去分享的文件名
+    
     
     private lazy var mBGView: UIView = {
         let mBGView = UIView()
@@ -235,7 +216,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         return button
     }()
     
-    lazy var mPasswordTextField: UITextField = {
+    private lazy var mPasswordTextField: UITextField = {
         let tTextField = UITextField()
         tTextField.delegate = self
         let arrtibutedString = NSMutableAttributedString(string: NSLocalizedString("输入密码查看加密数据", comment: ""), attributes: [NSAttributedString.Key.foregroundColor : UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 0.7), NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14)])
@@ -348,6 +329,26 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         return tLabel
     }()
     
+    private lazy var mPickerBGView: UIView = {
+        let tView = UIView()
+        tView.backgroundColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0)
+        tView.isHidden = true
+        tView.layer.masksToBounds = true
+        tView.layer.borderColor = UIColor(red: 57.0/255.0, green: 74.0/255.0, blue: 81.0/255.0, alpha: 1.0).cgColor
+        tView.layer.borderWidth = 1.0
+        return tView
+    }()
+    
+    private lazy var mPickerView: UIPickerView = {
+        let tPicker = UIPickerView()
+        tPicker.backgroundColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0)
+        tPicker.isUserInteractionEnabled = true
+        tPicker.dataSource = self
+        tPicker.delegate = self
+        return tPicker
+    }()
+    
+    //MARK: Public Method
     public override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -363,6 +364,180 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         super.init(coder: coder)
     }
     
+    //MAKR:UITextFieldDelegate
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        self.mTextPassword = textField.text ?? ""
+        self.p_decrypt()
+        return true
+    }
+    
+    //MARK:UITableViewDelegate
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.mLogDataArray.count
+    }
+    
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let identifier = "loggerCellIdentifier"
+        let loggerItem = self.mLogDataArray[indexPath.row]
+        var loggerCell = tableView.dequeueReusableCell(withIdentifier: identifier) as? HDLoggerSwiftTableViewCell
+        if loggerCell == nil {
+            loggerCell = HDLoggerSwiftTableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: identifier)
+            loggerCell?.selectionStyle = UITableViewCell.SelectionStyle.none
+        }
+        if indexPath.row%2 != 0 {
+            loggerCell?.backgroundColor = UIColor(red: 156.0/255.0, green: 44.0/255.0, blue: 44.0/255.0, alpha: 0.8)
+        } else {
+            loggerCell?.backgroundColor = UIColor.clear
+        }
+        if loggerCell != nil {
+            loggerCell!.updateWithLoggerItem(loggerItem: loggerItem, highlightText: self.mSearchBar.text ?? "")
+        }
+        return loggerCell ?? UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: identifier)
+    }
+    
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let loggerItem = self.mLogDataArray[indexPath.row]
+        let pasteboard = UIPasteboard.general
+        pasteboard.string = loggerItem.getFullContentString()
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH:mm:ss.SSS"
+        let dateStr = dateFormatter.string(from: loggerItem.mCreateDate)
+        let tipString = dateStr + " " + NSLocalizedString("日志已拷贝到剪切板", comment: "")
+        HDWarnLog(tipString)
+    }
+    
+    //UISearchBarDelegate
+    public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        self.p_reloadFilter()
+    }
+    
+    public func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+    
+    public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+    
+    //MARK: UIPickerViewDelegate
+    public func numberOfComponents(in pickerView: UIPickerView) -> Int {
+           return 1
+    }
+    
+    public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return self.mFileDateNameList.count
+    }
+    
+    public func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
+        return 40
+    }
+    
+    public func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return self.mFileDateNameList[row]
+    }
+    
+    public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        self.mShareFileName = self.mFileDateNameList[row]
+    }
+    
+    //log的Public函数
+    /// 根据日志的输出类型去输出相应的日志，不同日志类型颜色不一样
+    /// - Parameter log: 日志内容
+    /// - Parameter logType: 日志类型
+    public class func printLog(log:Any, logType:HDLogType, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
+        DispatchQueue.main.async {
+            if self.defaultWindowLogger.mLogDataArray.isEmpty {
+                let loggerItem = HDWindowLoggerItem()
+                loggerItem.mLogItemType = HDLogType.kHDLogTypeWarn
+                loggerItem.mCreateDate = Date()
+                loggerItem.mLogContent = NSLocalizedString("HDWindowLogger: 点击对应日志可快速复制", comment: "")
+                self.defaultWindowLogger.mLogDataArray.append(loggerItem)
+            }
+            let loggerItem = HDWindowLoggerItem()
+            loggerItem.mLogItemType = logType
+            loggerItem.mCreateDate = Date()
+            
+            let fileName = (file as NSString).lastPathComponent;
+            loggerItem.mLogDebugContent = "[File:\(fileName)]:[Line:\(lineNum):[Function:\(funcName)]]-Log:"
+            loggerItem.mLogContent = log
+            
+            if self.mDebugAreaLogOut {
+                print(loggerItem.getFullContentString())
+            }
+            //写入文件
+            self.p_writeFile(log: loggerItem.getFullContentString())
+            
+            self.defaultWindowLogger.mLogDataArray.append(loggerItem)
+            if self.defaultWindowLogger.mMaxLogCount > 0 && self.defaultWindowLogger.mMaxLogCount > self.defaultWindowLogger.mMaxLogCount {
+                self.defaultWindowLogger.mLogDataArray.removeFirst()
+            }
+            
+            self.defaultWindowLogger.p_reloadFilter()
+            if self.defaultWindowLogger.mLogDataArray.count > 0 && self.defaultWindowLogger.mAutoScrollSwitch.isOn {
+                DispatchQueue.main.async {
+                    self.defaultWindowLogger.mTableView.scrollToRow(at: IndexPath(row: self.defaultWindowLogger.mLogDataArray.count - 1, section: 0), at: UITableView.ScrollPosition.bottom, animated: true)
+                }
+            }
+        }
+    }
+    
+    ///  删除log日志
+    public class func cleanLog() {
+        self.defaultWindowLogger.mLogDataArray.removeAll()
+        self.defaultWindowLogger.mFilterIndexArray.removeAll()
+        self.defaultWindowLogger.mTableView.reloadData()
+    }
+    
+    /// 显示log窗口
+    public class func show() {
+        self.defaultWindowLogger.isHidden = false
+        self.defaultWindowLogger.isUserInteractionEnabled = true
+        self.defaultWindowLogger.mBGView.isHidden = false
+        self.defaultWindowLogger.mFloatWindow.isHidden = true
+    }
+    
+    ///  隐藏整个log窗口
+    public class func hide() {
+        self.defaultWindowLogger.isHidden = true
+        self.defaultWindowLogger.mBGView.isHidden = true
+        self.defaultWindowLogger.mFloatWindow.isHidden = true
+    }
+    
+    /// 只隐藏log的输出窗口，保留悬浮图标
+    public class func hideLogWindow() {
+        self.defaultWindowLogger.isUserInteractionEnabled = false
+        self.defaultWindowLogger.mBGView.isHidden = true
+        self.defaultWindowLogger.mFloatWindow.isHidden = false
+    }
+    
+    /// 删除本地日志文件
+    public class func deleteLogFile() {
+        let paths = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)
+        let documentDirectory = paths.first
+        let logFilePath = "" + (documentDirectory ?? "")
+        
+        if let enumer = FileManager.default.enumerator(atPath: logFilePath) {
+            while let file = enumer.nextObject() {
+                print("file name:", file)
+                if let file: String = file as? String {
+                    if file.hasPrefix("HDWindowLogger") {
+                        let logFilePath = "" + (documentDirectory ?? "") + "/\(file)"
+                        try? FileManager.default.removeItem(atPath: logFilePath)
+                    }
+                }
+            }
+        }
+    }
+    
+    ///  为了节省内存，可以设置记录的最大的log数，超出限制删除最老的数据，默认100条
+    /// - Parameter logCount: 0为不限制
+    public class func setMaxLogCount(logCount:Int) -> Void {
+        self.defaultWindowLogger.mMaxLogCount = logCount
+    }
+    
+    //MARK: Private Method
     private func createUI() {
         self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 350)
         
@@ -403,7 +578,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
             make.width.equalTo(self.mScaleButton)
             make.height.equalTo(self.mScaleButton)
         }
-
+        
         //私密解锁
         self.mBGView.addSubview(self.mPasswordTextField)
         self.mPasswordTextField.snp.makeConstraints { (make) in
@@ -476,69 +651,46 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
             make.top.equalTo(self.mSearchBar.snp.bottom);
             make.bottom.equalToSuperview()
         }
-    }
-    
-    //MAKR:UITextFieldDelegate
-    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        self.mTextPassword = textField.text ?? ""
-        self.p_decrypt()
-        return true
-    }
-    
-    //MARK:UITableViewDelegate
-    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.mLogDataArray.count
-    }
-    
-    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let identifier = "loggerCellIdentifier"
-        let loggerItem = self.mLogDataArray[indexPath.row]
-        var loggerCell = tableView.dequeueReusableCell(withIdentifier: identifier) as? HDLoggerSwiftTableViewCell
-        if loggerCell == nil {
-            loggerCell = HDLoggerSwiftTableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: identifier)
-            loggerCell?.selectionStyle = UITableViewCell.SelectionStyle.none
-        }
-        if indexPath.row%2 != 0 {
-            loggerCell?.backgroundColor = UIColor(red: 156.0/255.0, green: 44.0/255.0, blue: 44.0/255.0, alpha: 0.8)
-        } else {
-            loggerCell?.backgroundColor = UIColor.clear
-        }
-        if loggerCell != nil {
-            loggerCell!.updateWithLoggerItem(loggerItem: loggerItem, highlightText: self.mSearchBar.text ?? "")
-        }
-        return loggerCell ?? UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: identifier)
-    }
-    
-    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let loggerItem = self.mLogDataArray[indexPath.row]
-        let pasteboard = UIPasteboard.general
-        pasteboard.string = loggerItem.getFullContentString()
         
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "HH:mm:ss.SSS"
-        let dateStr = dateFormatter.string(from: loggerItem.mCreateDate)
-        let tipString = dateStr + " " + NSLocalizedString("日志已拷贝到剪切板", comment: "")
-        HDWarnLog(tipString)
+        self.mBGView.addSubview(self.mPickerBGView)
+        self.mPickerBGView.snp.makeConstraints { (make) in
+            make.top.equalTo(self.mScaleButton.snp.bottom)
+            make.left.right.bottom.equalTo(self.mBGView)
+        }
+        
+        let tipLabel = UILabel()
+        tipLabel.text = "请选择要分享的日志"
+        tipLabel.font = UIFont.systemFont(ofSize: 14, weight: UIFont.Weight.medium)
+        self.mPickerBGView.addSubview(tipLabel)
+        tipLabel.snp.makeConstraints { (make) in
+            make.centerX.equalToSuperview()
+            make.top.equalToSuperview()
+            make.height.equalTo(40)
+        }
+        
+        let toolBar = UIToolbar()
+        toolBar.barStyle = .default
+        self.mPickerBGView.addSubview(toolBar)
+        toolBar.snp.makeConstraints { (make) in
+            make.top.equalTo(tipLabel.snp.bottom)
+            make.left.right.equalToSuperview()
+            make.height.equalTo(40)
+        }
+        toolBar.layoutIfNeeded()
+        
+        let closeBarItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.cancel, target: self, action: #selector(p_closePicker))
+        let fixBarItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
+        let doneBarItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.done, target: self, action: #selector(p_confirmPicker))
+        toolBar.setItems([closeBarItem, fixBarItem, doneBarItem], animated: true)
+        
+        self.mPickerBGView.addSubview(self.mPickerView)
+        self.mPickerView.snp.makeConstraints { (make) in
+            make.top.equalTo(toolBar.snp.bottom)
+            make.left.right.bottom.equalToSuperview()
+        }
+        
     }
     
-    //UISearchBarDelegate
-    
-    public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        self.p_reloadFilter()
-    }
-    
-    public func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        searchBar.resignFirstResponder()
-    }
-    
-    public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.resignFirstResponder()
-    }
-    
-    
-    
-    //MARK:私有函数
     private func p_reloadFilter() {
         self.mFilterIndexArray.removeAll()
         self.mPreviousButton.isEnabled = false
@@ -564,22 +716,11 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         }
     }
     
-    @objc func p_previous() -> Void {
+    @objc private func p_previous() -> Void {
         if (self.mFilterIndexArray.count > 0) {
             self.mCurrentSearchIndex = self.mCurrentSearchIndex - 1;
             if (self.mCurrentSearchIndex < 0) {
                 self.mCurrentSearchIndex = self.mFilterIndexArray.count - 1;
-            }
-            self.mSearchNumLabel.text = "\(self.mCurrentSearchIndex + 1)/\(self.mFilterIndexArray.count)"
-            self.mTableView .scrollToRow(at: self.mFilterIndexArray[self.mCurrentSearchIndex], at: UITableView.ScrollPosition.top, animated: true)
-        }
-    }
-    
-    @objc func p_next() -> Void {
-        if (self.mFilterIndexArray.count > 0) {
-            self.mCurrentSearchIndex = self.mCurrentSearchIndex + 1;
-            if (self.mCurrentSearchIndex == self.mFilterIndexArray.count) {
-                self.mCurrentSearchIndex = 0;
             }
             self.mSearchNumLabel.text = "\(self.mCurrentSearchIndex + 1)/\(self.mFilterIndexArray.count)"
             self.mTableView .scrollToRow(at: self.mFilterIndexArray[self.mCurrentSearchIndex], at: UITableView.ScrollPosition.top, animated: true)
@@ -596,7 +737,18 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         self.mNextButton.addTarget(self, action: #selector(p_next), for: UIControl.Event.touchUpInside)
     }
     
-    @objc func p_touchMove(p:UIPanGestureRecognizer) {
+    @objc private func p_next() -> Void {
+        if (self.mFilterIndexArray.count > 0) {
+            self.mCurrentSearchIndex = self.mCurrentSearchIndex + 1;
+            if (self.mCurrentSearchIndex == self.mFilterIndexArray.count) {
+                self.mCurrentSearchIndex = 0;
+            }
+            self.mSearchNumLabel.text = "\(self.mCurrentSearchIndex + 1)/\(self.mFilterIndexArray.count)"
+            self.mTableView .scrollToRow(at: self.mFilterIndexArray[self.mCurrentSearchIndex], at: UITableView.ScrollPosition.top, animated: true)
+        }
+    }
+    
+    @objc private func p_touchMove(p:UIPanGestureRecognizer) {
         let panPoint = p.location(in: UIApplication.shared.keyWindow)
         if p.state == UIGestureRecognizer.State.changed {
             self.mFloatWindow.center = CGPoint(x: panPoint.x, y: panPoint.y)
@@ -624,39 +776,18 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         HDWindowLoggerSwift.cleanLog()
     }
     
-    @objc private func p_share() {
+    @objc private func p_closePicker() {
+        self.mPickerBGView.isHidden = true
+    }
+    
+    @objc private func p_confirmPicker() {
+        self.mPickerBGView.isHidden = true
         let paths = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)
         let documentDirectory = paths.first
-        let logFilePath = "" + (documentDirectory ?? "") + "/HDWindowLogger.txt"
+        let logFilePath = "" + (documentDirectory ?? "") + "/\(self.mShareFileName)"
         let logFilePathURL = URL(fileURLWithPath: logFilePath)
-        
-        //保存的内容
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "HH:mm:ss.SSS"
-        
-        var mutableArray = [Any]()
-        for item in self.mLogDataArray {
-            let dateStr = dateFormatter.string(from: item.mCreateDate) +  "  >   " +  item.mLogDebugContent
-            mutableArray.append(dateStr)
-            mutableArray.append(item.mLogContent ?? "")
-        }
-        //end
-        
-        //写入文件
-        let jsonData = try? JSONSerialization.data(withJSONObject: mutableArray, options: JSONSerialization.WritingOptions.prettyPrinted)
-        
-        if HDWindowLoggerSwift.defaultWindowLogger.mPasswordCorrect {
-            try? jsonData?.write(to: logFilePathURL, options: Data.WritingOptions.atomic)
-        } else {
-            let data = HDWindowLoggerTools().p_crypt(data: jsonData ?? Data(), password: HDWindowLoggerSwift.mPrivacyPassword, option: CCOperation(kCCEncrypt))
-            let string = data.base64EncodedString()
-            try? string.write(to: logFilePathURL, atomically: true, encoding: String.Encoding.utf8)
-        }
-        
-        
-        
         //分享
-        let activityVC = UIActivityViewController(activityItems: [logFilePathURL,jsonData as Any], applicationActivities: nil)
+        let activityVC = UIActivityViewController(activityItems: [logFilePathURL], applicationActivities: nil)
         if UIDevice.current.model == "iPad" {
             activityVC.modalPresentationStyle = UIModalPresentationStyle.popover
             activityVC.popoverPresentationController?.sourceView = self.mShareButton
@@ -664,6 +795,28 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         }
         self.p_hideLogWindow()
         self.p_getCurrentVC().present(activityVC, animated: true, completion: nil)
+    }
+    
+    @objc private func p_share() {
+        self.mFileDateNameList = [String]()
+        
+        let paths = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)
+        let documentDirectory = paths.first
+        let logFilePath = "" + (documentDirectory ?? "")
+        
+        if let enumer = FileManager.default.enumerator(atPath: logFilePath) {
+            while let file = enumer.nextObject() {
+                print("file name:", file)
+                if let file: String = file as? String {
+                    if file.hasPrefix("HDWindowLogger") {
+                        self.mFileDateNameList.append(file)
+                    }
+                }
+            }
+        }
+        self.mPickerBGView.isHidden = !self.mPickerBGView.isHidden
+        self.mPickerView.reloadAllComponents()
+        self.mShareFileName = self.mFileDateNameList.first ?? ""
     }
     
     //解密
@@ -709,79 +862,30 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         return result
     }
     
-    //log的Public函数
-    /// 根据日志的输出类型去输出相应的日志，不同日志类型颜色不一样
-    /// - Parameter log: 日志内容
-    /// - Parameter logType: 日志类型
-    public class func printLog(log:Any, logType:HDLogType, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-        DispatchQueue.main.async {
-            if self.defaultWindowLogger.mLogDataArray.isEmpty {
-                let loggerItem = HDWindowLoggerItem()
-                loggerItem.mLogItemType = HDLogType.kHDLogTypeWarn
-                loggerItem.mCreateDate = Date()
-                loggerItem.mLogContent = NSLocalizedString("HDWindowLogger: 点击对应日志可快速复制", comment: "")
-                self.defaultWindowLogger.mLogDataArray.append(loggerItem)
-            }
-            let loggerItem = HDWindowLoggerItem()
-            loggerItem.mLogItemType = logType
-            loggerItem.mCreateDate = Date()
-            
-            let fileName = (file as NSString).lastPathComponent;
-            loggerItem.mLogDebugContent = "[File:\(fileName)]:[Line:\(lineNum):[Function:\(funcName)]]-Log:"
-            loggerItem.mLogContent = log
-            
-            if self.mDebugAreaLogOut {
-                print(loggerItem.getFullContentString())
-            }
-            self.defaultWindowLogger.mLogDataArray.append(loggerItem)
-            if self.defaultWindowLogger.mMaxLogCount > 0 && self.defaultWindowLogger.mMaxLogCount > self.defaultWindowLogger.mMaxLogCount {
-                self.defaultWindowLogger.mLogDataArray.removeFirst()
-            }
-           
-            self.defaultWindowLogger.p_reloadFilter()
-            if self.defaultWindowLogger.mLogDataArray.count > 0 && self.defaultWindowLogger.mAutoScrollSwitch.isOn {
-                DispatchQueue.main.async {
-                    self.defaultWindowLogger.mTableView.scrollToRow(at: IndexPath(row: self.defaultWindowLogger.mLogDataArray.count - 1, section: 0), at: UITableView.ScrollPosition.bottom, animated: true)
+    private class func p_writeFile(log: String) -> Void {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let dateString = dateFormatter.string(from: Date())
+        //文件路径
+        let paths = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)
+        let documentDirectory = paths.first
+        let logFilePath = "" + (documentDirectory ?? "") + "/HDWindowLogger-\(dateString).txt"
+        let logFilePathURL = URL(fileURLWithPath: logFilePath)
+        
+        if FileManager.default.fileExists(atPath: logFilePath) {
+            if let fileHandle = try? FileHandle(forWritingTo: logFilePathURL) {
+                fileHandle.seekToEndOfFile()
+                if let data = log.data(using: String.Encoding.utf8) {
+                    fileHandle.write(data)
                 }
+                fileHandle.closeFile()
+            } else {
+                try? log.write(to: logFilePathURL, atomically: true, encoding: String.Encoding.utf8)
             }
+        } else {
+            try? log.write(to: logFilePathURL, atomically: true, encoding: String.Encoding.utf8)
         }
     }
-    
-    ///  删除log日志
-    public class func cleanLog() {
-        self.defaultWindowLogger.mLogDataArray.removeAll()
-        self.defaultWindowLogger.mFilterIndexArray.removeAll()
-        self.defaultWindowLogger.mTableView.reloadData()
-    }
-    
-    /// 显示log窗口
-    public class func show() {
-        self.defaultWindowLogger.isHidden = false
-        self.defaultWindowLogger.isUserInteractionEnabled = true
-        self.defaultWindowLogger.mBGView.isHidden = false
-        self.defaultWindowLogger.mFloatWindow.isHidden = true
-    }
-    
-    ///  隐藏整个log窗口
-    public class func hide() {
-        self.defaultWindowLogger.isHidden = true
-        self.defaultWindowLogger.mBGView.isHidden = true
-        self.defaultWindowLogger.mFloatWindow.isHidden = true
-    }
-    
-    /// 只隐藏log的输出窗口，保留悬浮图标
-    public class func hideLogWindow() {
-        self.defaultWindowLogger.isUserInteractionEnabled = false
-        self.defaultWindowLogger.mBGView.isHidden = true
-        self.defaultWindowLogger.mFloatWindow.isHidden = false
-    }
-    
-    ///  为了节省内存，可以设置记录的最大的log数，超出限制删除最老的数据，默认100条
-    /// - Parameter logCount: 0为不限制
-    public class func setMaxLogCount(logCount:Int) -> Void {
-        self.defaultWindowLogger.mMaxLogCount = logCount
-    }
-    
 }
 
 fileprivate class HDWindowLoggerTools: NSObject {
@@ -807,27 +911,27 @@ fileprivate class HDWindowLoggerTools: NSObject {
         
         let cryptLength = data.count + kCCBlockSizeAES128
         var cryptData   = Data(count: cryptLength)
-
+        
         let keyLength = kCCKeySizeAES256
         let options   = CCOptions(kCCOptionPKCS7Padding)
-
+        
         var bytesLength = Int(0)
-
+        
         let status = cryptData.withUnsafeMutableBytes { cryptBytes in
             data.withUnsafeBytes { dataBytes in
                 iv.withUnsafeBytes { ivBytes in
                     key.withUnsafeBytes { keyBytes in
-                    CCCrypt(option, CCAlgorithm(kCCAlgorithmAES), options, keyBytes.baseAddress, keyLength, ivBytes.baseAddress, dataBytes.baseAddress, data.count, cryptBytes.baseAddress, cryptLength, &bytesLength)
+                        CCCrypt(option, CCAlgorithm(kCCAlgorithmAES), options, keyBytes.baseAddress, keyLength, ivBytes.baseAddress, dataBytes.baseAddress, data.count, cryptBytes.baseAddress, cryptLength, &bytesLength)
                     }
                 }
             }
         }
-
+        
         guard UInt32(status) == UInt32(kCCSuccess) else {
             debugPrint("Error: Failed to crypt data. Status \(status)")
             return Data()
         }
-
+        
         cryptData.removeSubrange(bytesLength..<cryptData.count)
         return cryptData
     }
