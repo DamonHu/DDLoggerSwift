@@ -320,7 +320,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     
     private lazy var mTipLabel: UILabel = {
         let tLabel = UILabel()
-        tLabel.text = "HDWindowLogger v2.1.0"
+        tLabel.text = "HDWindowLogger v2.1.2"
         tLabel.textAlignment = NSTextAlignment.center
         tLabel.font = UIFont.systemFont(ofSize: 12)
         tLabel.textColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0)
@@ -521,7 +521,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         if let enumer = FileManager.default.enumerator(atPath: logFilePath) {
             while let file = enumer.nextObject() {
                 if let file: String = file as? String {
-                    if file.hasPrefix("HDWindowLogger") {
+                    if file.hasPrefix("HDWindowLogger-") {
                         let logFilePath = "" + (documentDirectory ?? "") + "/\(file)"
                         try? FileManager.default.removeItem(atPath: logFilePath)
                     }
@@ -806,7 +806,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         if let enumer = FileManager.default.enumerator(atPath: logFilePath) {
             while let file = enumer.nextObject() {
                 if let file: String = file as? String {
-                    if file.hasPrefix("HDWindowLogger") {
+                    if file.hasPrefix("HDWindowLogger-") {
                         self.mFileDateNameList.append(file)
                     }
                 }
@@ -896,7 +896,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         if let enumer = FileManager.default.enumerator(atPath: logFilePath) {
             while let file = enumer.nextObject() {
                 if let file: String = file as? String {
-                    if file.hasPrefix("HDWindowLogger") {
+                    if file.hasPrefix("HDWindowLogger-") {
                         //截取日期
                         let index2 = file.index(file.startIndex, offsetBy: 15)
                         let index3 = file.index(file.startIndex, offsetBy: 24)
