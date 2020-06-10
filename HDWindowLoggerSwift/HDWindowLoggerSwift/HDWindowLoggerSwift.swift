@@ -653,17 +653,17 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         
         self.mBGView.addSubview(self.mPickerBGView)
         self.mPickerBGView.snp.makeConstraints { (make) in
-            make.top.equalTo(self.mScaleButton.snp.bottom)
+            make.top.equalTo(self.mBGView)
             make.left.right.bottom.equalTo(self.mBGView)
         }
         
         let tipLabel = UILabel()
-        tipLabel.text = "请选择要分享的日志"
+        tipLabel.text = NSLocalizedString("请选择要分享的日志", comment: "");
         tipLabel.font = UIFont.systemFont(ofSize: 14, weight: UIFont.Weight.medium)
         self.mPickerBGView.addSubview(tipLabel)
         tipLabel.snp.makeConstraints { (make) in
             make.centerX.equalToSuperview()
-            make.top.equalToSuperview()
+            make.top.equalToSuperview().offset(20)
             make.height.equalTo(40)
         }
         
@@ -679,7 +679,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         
         let closeBarItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.cancel, target: self, action: #selector(p_closePicker))
         let fixBarItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
-        let doneBarItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.done, target: self, action: #selector(p_confirmPicker))
+        let doneBarItem = UIBarButtonItem(title: NSLocalizedString("分享", comment: ""), style: UIBarButtonItem.Style.plain, target: self, action: #selector(p_confirmPicker))
         toolBar.setItems([closeBarItem, fixBarItem, doneBarItem], animated: true)
         
         self.mPickerBGView.addSubview(self.mPickerView)
