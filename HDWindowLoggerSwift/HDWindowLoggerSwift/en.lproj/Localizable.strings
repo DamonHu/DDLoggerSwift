@@ -7,6 +7,7 @@
 */
 "不支持该内容类型的转换" = "This content type is not supported";
 "HDWindowLogger: 点击对应日志可快速复制" = "HDWindowLogger: Click Log To Copy";
+"请选择要分享的日志" = "Please select the log to share";
 "清除Log" = "Clean Log";
 "伸缩" = "Scale";
 "隐藏" = "Hide";

@@ -320,7 +320,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     
     private lazy var mTipLabel: UILabel = {
         let tLabel = UILabel()
-        tLabel.text = "HDWindowLogger v2.1.0"
+        tLabel.text = "HDWindowLogger v2.1.2"
         tLabel.textAlignment = NSTextAlignment.center
         tLabel.font = UIFont.systemFont(ofSize: 12)
         tLabel.textColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0)
@@ -521,7 +521,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         if let enumer = FileManager.default.enumerator(atPath: logFilePath) {
             while let file = enumer.nextObject() {
                 if let file: String = file as? String {
-                    if file.hasPrefix("HDWindowLogger") {
+                    if file.hasPrefix("HDWindowLogger-") {
                         let logFilePath = "" + (documentDirectory ?? "") + "/\(file)"
                         try? FileManager.default.removeItem(atPath: logFilePath)
                     }
@@ -653,17 +653,17 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         
         self.mBGView.addSubview(self.mPickerBGView)
         self.mPickerBGView.snp.makeConstraints { (make) in
-            make.top.equalTo(self.mScaleButton.snp.bottom)
+            make.top.equalTo(self.mBGView)
             make.left.right.bottom.equalTo(self.mBGView)
         }
         
         let tipLabel = UILabel()
-        tipLabel.text = "请选择要分享的日志"
+        tipLabel.text = NSLocalizedString("请选择要分享的日志", comment: "");
         tipLabel.font = UIFont.systemFont(ofSize: 14, weight: UIFont.Weight.medium)
         self.mPickerBGView.addSubview(tipLabel)
         tipLabel.snp.makeConstraints { (make) in
             make.centerX.equalToSuperview()
-            make.top.equalToSuperview()
+            make.top.equalToSuperview().offset(20)
             make.height.equalTo(40)
         }
         
@@ -679,7 +679,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         
         let closeBarItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.cancel, target: self, action: #selector(p_closePicker))
         let fixBarItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
-        let doneBarItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.done, target: self, action: #selector(p_confirmPicker))
+        let doneBarItem = UIBarButtonItem(title: NSLocalizedString("分享", comment: ""), style: UIBarButtonItem.Style.plain, target: self, action: #selector(p_confirmPicker))
         toolBar.setItems([closeBarItem, fixBarItem, doneBarItem], animated: true)
         
         self.mPickerBGView.addSubview(self.mPickerView)
@@ -806,7 +806,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         if let enumer = FileManager.default.enumerator(atPath: logFilePath) {
             while let file = enumer.nextObject() {
                 if let file: String = file as? String {
-                    if file.hasPrefix("HDWindowLogger") {
+                    if file.hasPrefix("HDWindowLogger-") {
                         self.mFileDateNameList.append(file)
                     }
                 }
@@ -896,7 +896,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         if let enumer = FileManager.default.enumerator(atPath: logFilePath) {
             while let file = enumer.nextObject() {
                 if let file: String = file as? String {
-                    if file.hasPrefix("HDWindowLogger") {
+                    if file.hasPrefix("HDWindowLogger-") {
                         //截取日期
                         let index2 = file.index(file.startIndex, offsetBy: 15)
                         let index3 = file.index(file.startIndex, offsetBy: 24)
