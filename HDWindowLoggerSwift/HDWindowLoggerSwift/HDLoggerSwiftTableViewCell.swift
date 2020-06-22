@@ -60,6 +60,8 @@ class HDLoggerSwiftTableViewCell: UITableViewCell {
         case .kHDLogTypePrivacy:
             self.mContentLabel.textColor = UIColor(red: 66.0/255.0, green: 230.0/255.0, blue: 164.0/255.0, alpha: 1.0)
             break
+        default:
+            break
         }
         
         loggerItem.getHighlightAttributedString(highlightString: highlightText) { (hasHighlightStr, hightlightAttributedString) in

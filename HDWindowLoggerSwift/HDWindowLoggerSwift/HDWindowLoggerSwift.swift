@@ -7,24 +7,24 @@
 //
 
 import UIKit
-import CommonCrypto
 import SnapKit
+
+///log的级别，对应不同的颜色
+public enum HDLogType : Int {
+    case kHDLogTypeNormal = 0   //textColor #50d890
+    case kHDLogTypeWarn         //textColor #f6f49d
+    case kHDLogTypeError        //textColor #ff7676
+    case kHDLogTypePrivacy      //textColor #42e6a4
+    case kHDLogTypeDebug        //only show in debug output
+}
 
 ///快速输出log
 //测试输出，不会写入到悬浮窗中
 public func HDDebugLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    let fileName = (file as NSString).lastPathComponent;
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "HH:mm:ss.SSS"
-    let dateStr = dateFormatter.string(from: Date())
-    print("\(dateStr)  >   [File:\(fileName)]:[Line:\(lineNum):[Function:\(funcName)]]-Log:\(log)")
+    HDWindowLoggerSwift.printLog(log: log, logType: HDLogType.kHDLogTypeDebug, file:file, funcName:funcName, lineNum:lineNum)
 }
 public func HDDebugLog(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    let fileName = (file as NSString).lastPathComponent;
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "HH:mm:ss.SSS"
-    let dateStr = dateFormatter.string(from: Date())
-    print("\(dateStr)  >   [File:\(fileName)]:[Line:\(lineNum):[Function:\(funcName)]]-Log:\(log)")
+    HDWindowLoggerSwift.printLog(log: log, logType: HDLogType.kHDLogTypeDebug, file:file, funcName:funcName, lineNum:lineNum)
 }
 //普通类型的输出
 public func HDNormalLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
@@ -55,93 +55,8 @@ public func HDPrivacyLog(_ log:Any ..., file:String = #file, funcName:String = #
     HDWindowLoggerSwift.printLog(log: log, logType: HDLogType.kHDLogTypePrivacy, file:file, funcName:funcName, lineNum:lineNum)
 }
 
-///log的级别，对应不同的颜色
-public enum HDLogType : Int {
-    case kHDLogTypeNormal = 0   //textColor #50d890
-    case kHDLogTypeWarn         //textColor #f6f49d
-    case kHDLogTypeError        //textColor #ff7676
-    case kHDLogTypePrivacy      //textColor #42e6a4
-}
-
-///log的内容
-public class HDWindowLoggerItem {
-    public var mLogItemType = HDLogType.kHDLogTypeNormal    //log类型
-    public var mLogDebugContent: String = ""                //log在文件中的调试内容
-    public var mLogContent: Any?                         //log的内容
-    public var mCreateDate = Date()                      //log日期
-    
-    private var mCurrentHighlightString = ""            //当前需要高亮的字符串
-    private var mCacheHasHighlightString = false        //上次查询是否包含高亮的字符串
-    var mCacheHighlightCompleteString = NSMutableAttributedString()   //上次包含高亮支付的富文本
-    
-    
-    public func getFullContentString() -> String {
-        //日期
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "HH:mm:ss.SSS"
-        let dateStr = dateFormatter.string(from: mCreateDate)
-        //内容
-        var contentString = ""
-        if let mContent = mLogContent  {
-            if mContent is LogContent {
-                contentString = (mContent as! LogContent).logStringValue
-            }  else if JSONSerialization.isValidJSONObject(mContent) {
-                let data = try? JSONSerialization.data(withJSONObject: mContent, options:JSONSerialization.WritingOptions.prettyPrinted)
-                contentString =  String(data: data ?? Data(), encoding: String.Encoding.utf8) ?? "\(mContent)"
-            } else {
-                contentString = "\(mContent)"
-            }
-            if self.mLogItemType == .kHDLogTypePrivacy && !HDWindowLoggerSwift.mPrivacyPassword.isEmpty && HDWindowLoggerSwift.mPrivacyPassword.count != kCCKeySizeAES256 {
-                contentString = NSLocalizedString("密码设置长度错误，需要32个字符", comment: "")
-            }
-        }
-        
-        if HDWindowLoggerSwift.mCompleteLogOut {
-            return dateStr + "  >   " +  mLogDebugContent + "\n" + contentString
-        } else {
-            return dateStr + "  >   " + contentString
-        }
-    }
-    
-    //根据需要高亮内容查询组装高亮内容
-    public func getHighlightAttributedString(highlightString: String, complete:(Bool, NSAttributedString)->Void) -> Void {
-        if highlightString.isEmpty {
-            //空的直接返回
-            let contentString = self.getFullContentString()
-            let newString = NSMutableAttributedString(string: contentString, attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 13)])
-            self.mCacheHighlightCompleteString = newString
-            self.mCacheHasHighlightString = false
-            complete(self.mCacheHasHighlightString, newString)
-        } else if highlightString == self.mCurrentHighlightString{
-            //和上次高亮相同，直接用之前的回调
-            complete(self.mCacheHasHighlightString, self.mCacheHighlightCompleteString)
-        } else {
-            self.mCurrentHighlightString = highlightString
-            let contentString = self.getFullContentString()
-            let newString = NSMutableAttributedString(string: contentString, attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 13)])
-            let regx = try? NSRegularExpression(pattern: highlightString, options: NSRegularExpression.Options.caseInsensitive)
-            if let searchRegx = regx {
-                self.mCacheHasHighlightString = false;
-                searchRegx.enumerateMatches(in: contentString, options: NSRegularExpression.MatchingOptions.reportCompletion, range: NSRange(location: 0, length: contentString.count)) { (result: NSTextCheckingResult?, flag, stop) in
-                    newString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor(red: 255.0/255.0, green: 0.0, blue: 0.0, alpha: 1.0), range: result?.range ?? NSRange(location: 0, length: 0))
-                    if result != nil {
-                        self.mCacheHasHighlightString = true
-                    }
-                    self.mCacheHighlightCompleteString = newString
-                    complete(self.mCacheHasHighlightString, newString)
-                }
-            } else {
-                self.mCacheHighlightCompleteString = newString
-                self.mCacheHasHighlightString = false
-                complete(self.mCacheHasHighlightString, newString)
-            }
-        }
-    }
-}
-
 ///log的输出
 public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
-    
     public static var mCompleteLogOut = true  //是否完整输出日志文件名等调试内容
     public static var mDebugAreaLogOut = true  //是否在xcode底部的调试栏同步输出内容
     public static var mPrivacyPassword = ""    //解密隐私数据的密码，默认为空不加密
@@ -347,6 +262,12 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         return tPicker
     }()
     
+    private lazy var mToolBar: UIToolbar = {
+        let tToolBar = UIToolbar()
+        tToolBar.barStyle = .default
+        return tToolBar
+    }()
+    
     //MARK: Public Method
     public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -462,22 +383,27 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
             let fileName = (file as NSString).lastPathComponent;
             loggerItem.mLogDebugContent = "[File:\(fileName)]:[Line:\(lineNum):[Function:\(funcName)]]-Log:"
             loggerItem.mLogContent = log
-            
-            if self.mDebugAreaLogOut {
+
+            if logType == .kHDLogTypeDebug {
                 print(loggerItem.getFullContentString())
-            }
-            //写入文件
-            self.p_writeFile(log: loggerItem.getFullContentString())
-            
-            self.shared.mLogDataArray.append(loggerItem)
-            if self.shared.mMaxLogCount > 0 && self.shared.mMaxLogCount > self.shared.mMaxLogCount {
-                self.shared.mLogDataArray.removeFirst()
-            }
-            
-            self.shared.p_reloadFilter()
-            if self.shared.mLogDataArray.count > 0 && self.shared.mAutoScrollSwitch.isOn {
-                DispatchQueue.main.async {
-                    self.shared.mTableView.scrollToRow(at: IndexPath(row: self.shared.mLogDataArray.count - 1, section: 0), at: UITableView.ScrollPosition.bottom, animated: true)
+            } else {
+                if self.mDebugAreaLogOut {
+                    print(loggerItem.getFullContentString())
+                }
+
+                //写入文件
+                self.p_writeFile(log: loggerItem.getFullContentString())
+                
+                self.shared.mLogDataArray.append(loggerItem)
+                if self.shared.mMaxLogCount > 0 && self.shared.mMaxLogCount > self.shared.mMaxLogCount {
+                    self.shared.mLogDataArray.removeFirst()
+                }
+                
+                self.shared.p_reloadFilter()
+                if self.shared.mLogDataArray.count > 0 && self.shared.mAutoScrollSwitch.isOn {
+                    DispatchQueue.main.async {
+                        self.shared.mTableView.scrollToRow(at: IndexPath(row: self.shared.mLogDataArray.count - 1, section: 0), at: UITableView.ScrollPosition.bottom, animated: true)
+                    }
                 }
             }
         }
@@ -667,24 +593,22 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
             make.height.equalTo(40)
         }
         
-        let toolBar = UIToolbar()
-        toolBar.barStyle = .default
-        self.mPickerBGView.addSubview(toolBar)
-        toolBar.snp.makeConstraints { (make) in
+        self.mPickerBGView.addSubview(self.mToolBar)
+        self.mToolBar.snp.makeConstraints { (make) in
             make.top.equalTo(tipLabel.snp.bottom)
             make.left.right.equalToSuperview()
             make.height.equalTo(40)
         }
-        toolBar.layoutIfNeeded()
+        self.mToolBar.layoutIfNeeded()
         
         let closeBarItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.cancel, target: self, action: #selector(p_closePicker))
         let fixBarItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
         let doneBarItem = UIBarButtonItem(title: NSLocalizedString("分享", comment: ""), style: UIBarButtonItem.Style.plain, target: self, action: #selector(p_confirmPicker))
-        toolBar.setItems([closeBarItem, fixBarItem, doneBarItem], animated: true)
+        self.mToolBar.setItems([closeBarItem, fixBarItem, doneBarItem], animated: true)
         
         self.mPickerBGView.addSubview(self.mPickerView)
         self.mPickerView.snp.makeConstraints { (make) in
-            make.top.equalTo(toolBar.snp.bottom)
+            make.top.equalTo(self.mToolBar.snp.bottom)
             make.left.right.bottom.equalToSuperview()
         }
         
@@ -912,53 +836,5 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
                 }
             }
         }
-    }
-}
-
-fileprivate class HDWindowLoggerTools: NSObject {
-    let ivString = "abcdefghijklmnop";
-    
-    //AES256加密
-    func AES256Encrypt(text: String, password: String) -> String {
-        guard let data = text.data(using:String.Encoding.utf8) else { return "" }
-        let encryptData = self.p_crypt(data: data, password: password, option: CCOperation(kCCEncrypt))
-        return encryptData.base64EncodedString()
-    }
-    
-    //AES256解密
-    func AES256Decrypt(text: String, password: String) -> String {
-        guard let data = Data(base64Encoded: text) else { return "" }
-        let encryptData = self.p_crypt(data: data, password: password, option: CCOperation(kCCDecrypt))
-        return String(data: encryptData, encoding: String.Encoding.utf8) ?? ""
-    }
-    
-    func p_crypt(data: Data, password: String, option: CCOperation) -> Data {
-        guard let iv = ivString.data(using:String.Encoding.utf8) else { return Data() }
-        guard let key = password.data(using:String.Encoding.utf8) else { return Data() }
-        
-        let cryptLength = data.count + kCCBlockSizeAES128
-        var cryptData   = Data(count: cryptLength)
-        
-        let keyLength = kCCKeySizeAES256
-        let options   = CCOptions(kCCOptionPKCS7Padding)
-        
-        var bytesLength = Int(0)
-        
-        let status = cryptData.withUnsafeMutableBytes { cryptBytes in
-            data.withUnsafeBytes { dataBytes in
-                iv.withUnsafeBytes { ivBytes in
-                    key.withUnsafeBytes { keyBytes in
-                        CCCrypt(option, CCAlgorithm(kCCAlgorithmAES), options, keyBytes.baseAddress, keyLength, ivBytes.baseAddress, dataBytes.baseAddress, data.count, cryptBytes.baseAddress, cryptLength, &bytesLength)
-                    }
-                }
-            }
-        }
-        
-        guard UInt32(status) == UInt32(kCCSuccess) else {
-            return Data()
-        }
-        
-        cryptData.removeSubrange(bytesLength..<cryptData.count)
-        return cryptData
     }
 }

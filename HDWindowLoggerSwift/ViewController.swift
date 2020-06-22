@@ -45,6 +45,7 @@ class ViewController: UIViewController {
 
     @objc func onClickButton() {
         HDDebugLog("测试输出，不会写入悬浮窗")
+        HDDebugLog("测试输出，不会写入悬浮窗","222222","3333333")
         //普通输出
         HDNormalLog("点击了按钮111")
         HDNormalLog("输出多个",22)
