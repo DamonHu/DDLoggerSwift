@@ -16,17 +16,31 @@ public protocol LogContent {
 ///默认的几个输出类型
 extension Dictionary: LogContent {
     public var logStringValue: String {
-        let data = try? JSONSerialization.data(withJSONObject: self, options:JSONSerialization.WritingOptions.prettyPrinted)
-        let defaultData = Data()
-        return String(data: data ?? defaultData, encoding: String.Encoding.utf8) ?? "\(self)"
+        if JSONSerialization.isValidJSONObject(self) {
+            let data = try? JSONSerialization.data(withJSONObject: self, options:JSONSerialization.WritingOptions.prettyPrinted)
+            if let data = data {
+                return String(data: data, encoding: String.Encoding.utf8) ?? "\(self)"
+            } else {
+                return "\(self)"
+            }
+        } else {
+            return "\(self)"
+        }
     }
 }
 
 extension Array: LogContent {
     public var logStringValue: String {
-        let data = try? JSONSerialization.data(withJSONObject: self, options:JSONSerialization.WritingOptions.prettyPrinted)
-        let defaultData = Data()
-        return String(data: data ?? defaultData, encoding: String.Encoding.utf8) ?? "\(self)"
+        if JSONSerialization.isValidJSONObject(self) {
+            let data = try? JSONSerialization.data(withJSONObject: self, options:JSONSerialization.WritingOptions.prettyPrinted)
+            if let data = data {
+                return String(data: data, encoding: String.Encoding.utf8) ?? "\(self)"
+            } else {
+                return "\(self)"
+            }
+        } else {
+            return "\(self)"
+        }
     }
 }
 
