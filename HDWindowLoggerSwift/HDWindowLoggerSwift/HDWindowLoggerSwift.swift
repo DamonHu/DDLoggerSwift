@@ -453,16 +453,14 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     
     /// 删除本地日志文件
     public class func deleteLogFile() {
-        let paths = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)
-        let documentDirectory = paths.first
-        let logFilePath = "" + (documentDirectory ?? "")
+        let cachePath = HDCommonTools.shared.getFileDirectory(type: .caches)
         
-        if let enumer = FileManager.default.enumerator(atPath: logFilePath) {
+        if let enumer = FileManager.default.enumerator(atPath: cachePath.path) {
             while let file = enumer.nextObject() {
                 if let file: String = file as? String {
                     if file.hasPrefix("HDWindowLogger-") {
-                        let logFilePath = "" + (documentDirectory ?? "") + "/\(file)"
-                        try? FileManager.default.removeItem(atPath: logFilePath)
+                        let logFilePath = cachePath.appendingPathComponent(file, isDirectory: false)
+                        try? FileManager.default.removeItem(at: logFilePath)
                     }
                 }
             }
@@ -718,10 +716,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     
     @objc private func p_confirmPicker() {
         self.mPickerBGView.isHidden = true
-        let paths = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)
-        let documentDirectory = paths.first
-        let logFilePath = "" + (documentDirectory ?? "") + "/\(self.mShareFileName)"
-        let logFilePathURL = URL(fileURLWithPath: logFilePath)
+        let logFilePathURL = HDCommonTools.shared.getFileDirectory(type: .caches).appendingPathComponent(self.mShareFileName, isDirectory: false)
         //分享
         let activityVC = UIActivityViewController(activityItems: [logFilePathURL], applicationActivities: nil)
         if UIDevice.current.model == "iPad" {
@@ -735,16 +730,13 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     
     @objc private func p_share() {
         self.mFileDateNameList = [String]()
+        let cacheDirectory = HDCommonTools.shared.getFileDirectory(type: .caches)
         
-        let paths = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)
-        let documentDirectory = paths.first
-        let logFilePath = "" + (documentDirectory ?? "")
-        
-        if let enumer = FileManager.default.enumerator(atPath: logFilePath) {
+        if let enumer = FileManager.default.enumerator(at: cacheDirectory, includingPropertiesForKeys: [URLResourceKey.creationDateKey]) {
             while let file = enumer.nextObject() {
-                if let file: String = file as? String {
-                    if file.hasPrefix("HDWindowLogger-") {
-                        self.mFileDateNameList.append(file)
+                if let file: URL = file as? URL {
+                    if file.lastPathComponent.hasPrefix("HDWindowLogger-") {
+                        self.mFileDateNameList.append(file.lastPathComponent)
                     }
                 }
             }
@@ -770,12 +762,9 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let dateString = dateFormatter.string(from: Date())
         //文件路径
-        let paths = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)
-        let documentDirectory = paths.first
-        let logFilePath = "" + (documentDirectory ?? "") + "/HDWindowLogger-\(dateString).txt"
-        let logFilePathURL = URL(fileURLWithPath: logFilePath)
-        
-        if FileManager.default.fileExists(atPath: logFilePath) {
+        let logFilePathURL = HDCommonTools.shared.getFileDirectory(type: .caches).appendingPathComponent("HDWindowLogger-\(dateString).txt", isDirectory: false)
+
+        if FileManager.default.fileExists(atPath: logFilePathURL.path) {
             if let fileHandle = try? FileHandle(forWritingTo: logFilePathURL) {
                 fileHandle.seekToEndOfFile()
                 if let data = log.data(using: String.Encoding.utf8) {
@@ -783,10 +772,14 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
                 }
                 fileHandle.closeFile()
             } else {
-                try? log.write(to: logFilePathURL, atomically: true, encoding: String.Encoding.utf8)
+                try? log.write(to: logFilePathURL, atomically: false, encoding: String.Encoding.utf8)
             }
         } else {
-            try? log.write(to: logFilePathURL, atomically: true, encoding: String.Encoding.utf8)
+            do {
+                try log.write(to: logFilePathURL, atomically: false, encoding: String.Encoding.utf8)
+            } catch {
+                print(error)
+            }
         }
     }
     
@@ -794,11 +787,9 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         
-        let paths = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)
-        let documentDirectory = paths.first
-        let logFilePath = "" + (documentDirectory ?? "")
+        let cachePath = HDCommonTools.shared.getFileDirectory(type: .caches)
         
-        if let enumer = FileManager.default.enumerator(atPath: logFilePath) {
+        if let enumer = FileManager.default.enumerator(atPath: cachePath.path) {
             while let file = enumer.nextObject() {
                 if let file: String = file as? String {
                     if file.hasPrefix("HDWindowLogger-") {
@@ -809,8 +800,8 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
                         let fileDate = dateFormatter.date(from: String(dateString))
                         if let fileDate = fileDate {
                             if fileDate.timeIntervalSince(Date()) > Double(self.mLogExpiryDay * 3600 * 24) {
-                                let logFilePath = "" + (documentDirectory ?? "") + "/\(file)"
-                                try? FileManager.default.removeItem(atPath: logFilePath)
+                                let logFilePath = cachePath.appendingPathComponent(file, isDirectory: false)
+                                try? FileManager.default.removeItem(at: logFilePath)
                             }
                         }
                     }

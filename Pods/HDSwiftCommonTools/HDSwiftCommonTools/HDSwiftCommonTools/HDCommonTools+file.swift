@@ -27,7 +27,7 @@ public extension HDCommonTools {
         case .tmp:
             return URL(fileURLWithPath: homePath.appendingFormat("%@/tmp", homePath))
         case .caches:
-            return URL(fileURLWithPath: homePath.appendingFormat("%@/Library/Caches", homePath))
+            return URL(fileURLWithPath: homePath.appending("/Library/Caches"))
         }
     }
     
@@ -44,7 +44,7 @@ public extension HDCommonTools {
 
         var isDirectory: ObjCBool = false
         let isDirExist = manager.fileExists(atPath: newFolder.path, isDirectory: &isDirectory)
-        if !isDirectory.boolValue || isDirExist {
+        if !isDirectory.boolValue || !isDirExist {
             do {
                 try manager.createDirectory(at: newFolder, withIntermediateDirectories: true, attributes: nil)
             } catch {
