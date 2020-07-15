@@ -23,9 +23,9 @@ public extension HDCommonTools {
         case .home:
             return URL(fileURLWithPath: homePath)
         case .documents:
-            return URL(fileURLWithPath: homePath.appendingFormat("%@/Documents", homePath))
+            return URL(fileURLWithPath: homePath.appending("/Documents"))
         case .tmp:
-            return URL(fileURLWithPath: homePath.appendingFormat("%@/tmp", homePath))
+            return URL(fileURLWithPath: homePath.appending("/tmp"))
         case .caches:
             return URL(fileURLWithPath: homePath.appending("/Library/Caches"))
         }
