@@ -11,8 +11,8 @@ import CommonCrypto
 
 ///log的内容
 public class HDWindowLoggerItem {
-    public var mLogItemType = HDLogType.kHDLogTypeNormal    //log类型
-    public var mLogDebugContent: String = ""                //log在文件中的调试内容
+    public var mLogItemType = HDLogType.normal             //log类型
+    public var mLogDebugContent: String = ""              //log输出的文件、行数、函数名
     public var mLogContent: Any?                         //log的内容
     public var mCreateDate = Date()                      //log日期
     
@@ -31,13 +31,10 @@ public class HDWindowLoggerItem {
         if let mContent = mLogContent  {
             if mContent is LogContent {
                 contentString = (mContent as! LogContent).logStringValue
-            }  else if JSONSerialization.isValidJSONObject(mContent) {
-                let data = try? JSONSerialization.data(withJSONObject: mContent, options:JSONSerialization.WritingOptions.prettyPrinted)
-                contentString =  String(data: data ?? Data(), encoding: String.Encoding.utf8) ?? "\(mContent)"
             } else {
                 contentString = "\(mContent)"
             }
-            if self.mLogItemType == .kHDLogTypePrivacy && !HDWindowLoggerSwift.mPrivacyPassword.isEmpty && HDWindowLoggerSwift.mPrivacyPassword.count != kCCKeySizeAES256 {
+            if self.mLogItemType == .privacy && !HDWindowLoggerSwift.mPrivacyPassword.isEmpty && HDWindowLoggerSwift.mPrivacyPassword.count != kCCKeySizeAES256 {
                 contentString = NSLocalizedString("密码设置长度错误，需要32个字符", comment: "")
             }
         }

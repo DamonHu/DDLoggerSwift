@@ -10,7 +10,7 @@ s.source = { :git => "https://github.com/DamonHu/HDWindowLoggerSwift.git", :tag 
 s.requires_arc = true
 s.ios.deployment_target = '10.0'
 s.source_files = "HDWindowLoggerSwift/HDWindowLoggerSwift/*.swift","HDWindowLoggerSwift/HDWindowLoggerSwift/**/*.strings"
-s.frameworks = 'UIKit'
 s.dependency 'SnapKit'
+s.dependency 'HDSwiftCommonTools'
 s.documentation_url = 'http://blog.hudongdong.com/ios/952.html'
 end

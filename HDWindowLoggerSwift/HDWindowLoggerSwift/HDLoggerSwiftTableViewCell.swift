@@ -48,16 +48,16 @@ class HDLoggerSwiftTableViewCell: UITableViewCell {
     
     func updateWithLoggerItem(loggerItem:HDWindowLoggerItem, highlightText:String) {
         switch loggerItem.mLogItemType {
-        case .kHDLogTypeNormal:
+        case .normal:
             self.mContentLabel.textColor = UIColor(red: 80.0/255.0, green: 216.0/255.0, blue: 144.0/255.0, alpha: 1.0)
             break
-        case .kHDLogTypeWarn:
+        case .warn:
             self.mContentLabel.textColor = UIColor(red: 246.0/255.0, green: 244.0/255.0, blue: 157.0/255.0, alpha: 1.0)
             break
-        case .kHDLogTypeError:
+        case .error:
             self.mContentLabel.textColor = UIColor(red: 255.0/255.0, green: 118.0/255.0, blue: 118.0/255.0, alpha: 1.0)
             break
-        case .kHDLogTypePrivacy:
+        case .privacy:
             self.mContentLabel.textColor = UIColor(red: 66.0/255.0, green: 230.0/255.0, blue: 164.0/255.0, alpha: 1.0)
             break
         default:

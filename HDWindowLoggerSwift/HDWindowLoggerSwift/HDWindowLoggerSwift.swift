@@ -8,51 +8,52 @@
 
 import UIKit
 import SnapKit
+import HDSwiftCommonTools
 
 ///log的级别，对应不同的颜色
 public enum HDLogType : Int {
-    case kHDLogTypeNormal = 0   //textColor #50d890
-    case kHDLogTypeWarn         //textColor #f6f49d
-    case kHDLogTypeError        //textColor #ff7676
-    case kHDLogTypePrivacy      //textColor #42e6a4
-    case kHDLogTypeDebug        //only show in debug output
+    case normal = 0   //textColor #50d890
+    case warn         //textColor #f6f49d
+    case error        //textColor #ff7676
+    case privacy      //textColor #42e6a4
+    case debug        //only show in debug output
 }
 
 ///快速输出log
 //测试输出，不会写入到悬浮窗中
 public func HDDebugLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    HDWindowLoggerSwift.printLog(log: log, logType: HDLogType.kHDLogTypeDebug, file:file, funcName:funcName, lineNum:lineNum)
+    HDWindowLoggerSwift.printLog(log: log, logType: HDLogType.debug, file:file, funcName:funcName, lineNum:lineNum)
 }
 public func HDDebugLog(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    HDWindowLoggerSwift.printLog(log: log, logType: HDLogType.kHDLogTypeDebug, file:file, funcName:funcName, lineNum:lineNum)
+    HDWindowLoggerSwift.printLog(log: log, logType: HDLogType.debug, file:file, funcName:funcName, lineNum:lineNum)
 }
 //普通类型的输出
 public func HDNormalLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    HDWindowLoggerSwift.printLog(log: log, logType: HDLogType.kHDLogTypeNormal, file:file, funcName:funcName, lineNum:lineNum)
+    HDWindowLoggerSwift.printLog(log: log, logType: HDLogType.normal, file:file, funcName:funcName, lineNum:lineNum)
 }
 public func HDNormalLog(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    HDWindowLoggerSwift.printLog(log: log, logType: HDLogType.kHDLogTypeNormal, file:file, funcName:funcName, lineNum:lineNum)
+    HDWindowLoggerSwift.printLog(log: log, logType: HDLogType.normal, file:file, funcName:funcName, lineNum:lineNum)
 }
 //警告类型的输出
 public func HDWarnLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    HDWindowLoggerSwift.printLog(log: log, logType: HDLogType.kHDLogTypeWarn, file:file, funcName:funcName, lineNum:lineNum)
+    HDWindowLoggerSwift.printLog(log: log, logType: HDLogType.warn, file:file, funcName:funcName, lineNum:lineNum)
 }
 public func HDWarnLog(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    HDWindowLoggerSwift.printLog(log: log, logType: HDLogType.kHDLogTypeWarn, file:file, funcName:funcName, lineNum:lineNum)
+    HDWindowLoggerSwift.printLog(log: log, logType: HDLogType.warn, file:file, funcName:funcName, lineNum:lineNum)
 }
 //错误类型的输出
 public func HDErrorLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    HDWindowLoggerSwift.printLog(log: log, logType: HDLogType.kHDLogTypeError, file:file, funcName:funcName, lineNum:lineNum)
+    HDWindowLoggerSwift.printLog(log: log, logType: HDLogType.error, file:file, funcName:funcName, lineNum:lineNum)
 }
 public func HDErrorLog(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    HDWindowLoggerSwift.printLog(log: log, logType: HDLogType.kHDLogTypeError, file:file, funcName:funcName, lineNum:lineNum)
+    HDWindowLoggerSwift.printLog(log: log, logType: HDLogType.error, file:file, funcName:funcName, lineNum:lineNum)
 }
 //保密类型的输出
 public func HDPrivacyLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    HDWindowLoggerSwift.printLog(log: log, logType: HDLogType.kHDLogTypePrivacy, file:file, funcName:funcName, lineNum:lineNum)
+    HDWindowLoggerSwift.printLog(log: log, logType: HDLogType.privacy, file:file, funcName:funcName, lineNum:lineNum)
 }
 public func HDPrivacyLog(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    HDWindowLoggerSwift.printLog(log: log, logType: HDLogType.kHDLogTypePrivacy, file:file, funcName:funcName, lineNum:lineNum)
+    HDWindowLoggerSwift.printLog(log: log, logType: HDLogType.privacy, file:file, funcName:funcName, lineNum:lineNum)
 }
 
 ///log的输出
@@ -371,7 +372,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         DispatchQueue.main.async {
             if self.shared.mLogDataArray.isEmpty {
                 let loggerItem = HDWindowLoggerItem()
-                loggerItem.mLogItemType = HDLogType.kHDLogTypeWarn
+                loggerItem.mLogItemType = HDLogType.warn
                 loggerItem.mCreateDate = Date()
                 loggerItem.mLogContent = NSLocalizedString("HDWindowLogger: 点击对应日志可快速复制", comment: "")
                 self.shared.mLogDataArray.append(loggerItem)
@@ -384,7 +385,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
             loggerItem.mLogDebugContent = "[File:\(fileName)]:[Line:\(lineNum):[Function:\(funcName)]]-Log:"
             loggerItem.mLogContent = log
 
-            if logType == .kHDLogTypeDebug {
+            if logType == .debug {
                 print(loggerItem.getFullContentString())
             } else {
                 if self.mDebugAreaLogOut {
@@ -717,7 +718,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
             activityVC.popoverPresentationController?.sourceRect = self.mShareButton.frame
         }
         self.p_hideLogWindow()
-        self.p_getCurrentVC().present(activityVC, animated: true, completion: nil)
+        HDCommonTools.shared.getCurrentVC()?.present(activityVC, animated: true, completion: nil)
     }
     
     @objc private func p_share() {
@@ -748,40 +749,6 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         if self.mPasswordTextField.text != nil {
             self.mTableView.reloadData()
         }
-    }
-    
-    private func p_getCurrentVC() -> UIViewController {
-        var window = UIApplication.shared.keyWindow
-        if window == nil || window?.windowLevel != UIWindow.Level.normal {
-            let windowArray = UIApplication.shared.windows
-            for tmpWin in windowArray {
-                if tmpWin.windowLevel == UIWindow.Level.normal {
-                    window = tmpWin
-                    break;
-                }
-            }
-        }
-        var result: UIViewController
-        if window!.subviews.count > 0 {
-            let frontView = window?.subviews.first
-            let nextResponder = frontView?.next
-            if nextResponder is UIViewController {
-                result = nextResponder as! UIViewController
-            } else {
-                result = (window?.rootViewController)!
-            }
-        } else {
-            result = (window?.rootViewController)!
-        }
-        if result is UITabBarController {
-            let viewController = result as! UITabBarController
-            result = (viewController.selectedViewController)!
-        }
-        if result is UINavigationController {
-            let viewController = result as! UINavigationController
-            result = (viewController.visibleViewController)!
-        }
-        return result
     }
     
     private class func p_writeFile(log: String) -> Void {

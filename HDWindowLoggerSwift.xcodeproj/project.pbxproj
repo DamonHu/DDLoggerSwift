@@ -20,7 +20,6 @@
 		E48AAC2822C05F5300CC5F1C /* HDWindowLoggerSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48AAC2722C05F5300CC5F1C /* HDWindowLoggerSwift.swift */; };
 		E48AAC2A22C05F8000CC5F1C /* HDLoggerSwiftTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48AAC2922C05F8000CC5F1C /* HDLoggerSwiftTableViewCell.swift */; };
 		E48AAC2D22C0817000CC5F1C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E48AAC2F22C0817000CC5F1C /* Localizable.strings */; };
-		E4A754AD2490A9B6005EAD80 /* HDWindowLoggerTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A754AC2490A9B6005EAD80 /* HDWindowLoggerTools.swift */; };
 		E4A754AF2490AA17005EAD80 /* HDWindowLoggerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A754AE2490AA17005EAD80 /* HDWindowLoggerItem.swift */; };
 		EFD03B1A4BA5DD034A794BE9 /* Pods_HDWindowLoggerSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B7944F3D92A9FBBA629BCC /* Pods_HDWindowLoggerSwift.framework */; };
 /* End PBXBuildFile section */
@@ -72,7 +71,6 @@
 		E48AAC3022C0818700CC5F1C /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		E48AAC3122C0818700CC5F1C /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		E48AAC3222C0818700CC5F1C /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		E4A754AC2490A9B6005EAD80 /* HDWindowLoggerTools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDWindowLoggerTools.swift; sourceTree = "<group>"; };
 		E4A754AE2490AA17005EAD80 /* HDWindowLoggerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDWindowLoggerItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -188,7 +186,6 @@
 				E48AAC2722C05F5300CC5F1C /* HDWindowLoggerSwift.swift */,
 				E48AAC2922C05F8000CC5F1C /* HDLoggerSwiftTableViewCell.swift */,
 				E4885A7022C60E5100B9BC8B /* LogContent.swift */,
-				E4A754AC2490A9B6005EAD80 /* HDWindowLoggerTools.swift */,
 				E4A754AE2490AA17005EAD80 /* HDWindowLoggerItem.swift */,
 			);
 			path = HDWindowLoggerSwift;
@@ -436,7 +433,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E4885A7122C60E5100B9BC8B /* LogContent.swift in Sources */,
-				E4A754AD2490A9B6005EAD80 /* HDWindowLoggerTools.swift in Sources */,
 				E48AAC2A22C05F8000CC5F1C /* HDLoggerSwiftTableViewCell.swift in Sources */,
 				E4A754AF2490AA17005EAD80 /* HDWindowLoggerItem.swift in Sources */,
 				E48AABFB22C05EF600CC5F1C /* ViewController.swift in Sources */,

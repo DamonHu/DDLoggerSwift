@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import HDSwiftCommonTools
 
 //输出内容需要遵循的协议
 public protocol LogContent {
@@ -19,12 +20,15 @@ extension Dictionary: LogContent {
         if JSONSerialization.isValidJSONObject(self) {
             let data = try? JSONSerialization.data(withJSONObject: self, options:JSONSerialization.WritingOptions.prettyPrinted)
             if let data = data {
-                return String(data: data, encoding: String.Encoding.utf8) ?? "\(self)"
+                let string = String(data: data, encoding: String.Encoding.utf8) ?? "\(self)"
+                return string.hd.unicodeDecode()
             } else {
-                return "\(self)"
+                let string = "\(self)"
+                return string.hd.unicodeDecode()
             }
         } else {
-            return "\(self)"
+            let string = "\(self)"
+            return string.hd.unicodeDecode()
         }
     }
 }
@@ -34,18 +38,21 @@ extension Array: LogContent {
         if JSONSerialization.isValidJSONObject(self) {
             let data = try? JSONSerialization.data(withJSONObject: self, options:JSONSerialization.WritingOptions.prettyPrinted)
             if let data = data {
-                return String(data: data, encoding: String.Encoding.utf8) ?? "\(self)"
+                let string = String(data: data, encoding: String.Encoding.utf8) ?? "\(self)"
+                return string.hd.unicodeDecode()
             } else {
-                return "\(self)"
+                let string = "\(self)"
+                return string.hd.unicodeDecode()
             }
         } else {
-            return "\(self)"
+            let string = "\(self)"
+            return string.hd.unicodeDecode()
         }
     }
 }
 
 extension String: LogContent {
     public var logStringValue: String {
-        return self
+        return self.hd.unicodeDecode()
     }
 }
