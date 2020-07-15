@@ -8,6 +8,7 @@
 
 import UIKit
 import CommonCrypto
+import HDSwiftCommonTools
 
 ///log的内容
 public class HDWindowLoggerItem {
@@ -34,8 +35,14 @@ public class HDWindowLoggerItem {
             } else {
                 contentString = "\(mContent)"
             }
-            if self.mLogItemType == .privacy && !HDWindowLoggerSwift.mPrivacyPassword.isEmpty && HDWindowLoggerSwift.mPrivacyPassword.count != kCCKeySizeAES256 {
-                contentString = NSLocalizedString("密码设置长度错误，需要32个字符", comment: "")
+            if self.mLogItemType == .privacy {
+                if HDWindowLoggerSwift.mPrivacyPassword.isEmpty {
+                    contentString = NSLocalizedString("密码未设置:", comment: "") + contentString
+                } else if HDWindowLoggerSwift.mPrivacyPassword.count != kCCKeySizeAES256 {
+                    contentString = NSLocalizedString("密码设置长度错误，需要32个字符", comment: "") + contentString
+                } else if !HDWindowLoggerSwift.shared.mPasswordCorrect {
+                    contentString = contentString.hd.aes256Encrypt(password: HDWindowLoggerSwift.mPrivacyPassword)
+                }
             }
         }
         

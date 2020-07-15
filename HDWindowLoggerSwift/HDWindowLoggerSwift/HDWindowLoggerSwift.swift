@@ -68,7 +68,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     public static let shared = HDWindowLoggerSwift(frame: CGRect.zero)
     //MARK: Private
     //密码解锁是否正确
-    fileprivate var mPasswordCorrect: Bool {
+    var mPasswordCorrect: Bool {
         get {
             return self.mTextPassword == HDWindowLoggerSwift.mPrivacyPassword
         }
@@ -287,11 +287,12 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     }
     
     //MAKR:UITextFieldDelegate
-    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
+    public func textFieldDidEndEditing(_ textField: UITextField) {
         self.mTextPassword = textField.text ?? ""
         self.p_decrypt()
-        return true
+    }
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        return textField.resignFirstResponder()
     }
     
     //MARK:UITableViewDelegate

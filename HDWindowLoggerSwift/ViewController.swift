@@ -40,7 +40,6 @@ class ViewController: UIViewController {
         //配置HDWindowLoggerSwift
         HDWindowLoggerSwift.show()
         HDWindowLoggerSwift.mCompleteLogOut = true
-        HDWindowLoggerSwift.mPrivacyPassword = "12345678901234561234567890123456" //设置加密内容密码
     }
 
     @objc func onClickButton() {
@@ -54,6 +53,7 @@ class ViewController: UIViewController {
         //输出错误内容
         HDErrorLog("错误出现")
         //输出加密内容
+        HDWindowLoggerSwift.mPrivacyPassword = "12345678901234561234567890123456" //设置加密内容密码
         HDPrivacyLog("这个是加密数据的测试数据222")
         //输出字典
         let dicObj = ["hhhhhhh":"撒旦法是打发斯蒂芬是打发斯蒂芬","77777":"数据库的复健科花见花开会尽快圣诞节开发和金黄色的费四大皆空回复就开始和豆腐是砍价的回复斯柯达金凤凰"]
