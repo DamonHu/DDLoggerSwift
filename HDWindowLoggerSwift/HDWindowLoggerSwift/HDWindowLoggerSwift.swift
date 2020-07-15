@@ -357,8 +357,19 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         return 40
     }
     
-    public func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return self.mFileDateNameList[row]
+    public func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+        var titleView: UIView
+        if let label = view, label is UILabel {
+            (label as! UILabel).text = self.mFileDateNameList[row]
+            titleView = label
+        } else {
+            let label = UILabel()
+            label.font = UIFont.systemFont(ofSize: 15, weight: .medium)
+            label.text = self.mFileDateNameList[row]
+            label.textAlignment = .center
+            titleView = label
+        }
+        return titleView
     }
     
     public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
@@ -738,6 +749,8 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
                 }
             }
         }
+        //倒序，最后的放前面
+        self.mFileDateNameList = self.mFileDateNameList.reversed()
         self.mPickerBGView.isHidden = !self.mPickerBGView.isHidden
         self.mPickerView.reloadAllComponents()
         self.mShareFileName = self.mFileDateNameList.first ?? ""

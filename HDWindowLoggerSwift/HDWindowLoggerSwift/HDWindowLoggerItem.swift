@@ -47,9 +47,9 @@ public class HDWindowLoggerItem {
         }
         
         if HDWindowLoggerSwift.mCompleteLogOut {
-            return dateStr + "  >   " +  mLogDebugContent + "\n" + contentString
+            return dateStr + "  >   " +  mLogDebugContent + "\n" + contentString + "\n"
         } else {
-            return dateStr + "  >   " + contentString
+            return dateStr + "  >   " + contentString + "\n"
         }
     }
     
