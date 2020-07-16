@@ -236,10 +236,10 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     
     private lazy var mTipLabel: UILabel = {
         let tLabel = UILabel()
-        tLabel.text = "HDWindowLogger v2.1.2"
+        tLabel.text = "HDWindowLogger Powered by DamonHu"
         tLabel.textAlignment = NSTextAlignment.center
         tLabel.font = UIFont.systemFont(ofSize: 12)
-        tLabel.textColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0)
+        tLabel.textColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 0.8)
         tLabel.backgroundColor = UIColor.clear
         return tLabel
     }()
