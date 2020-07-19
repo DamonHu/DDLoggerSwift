@@ -23,7 +23,7 @@ public enum HDGradientDirection {
 
 public extension HDCommonTools {
     ///通过十六进制字符串获取颜色
-    func getColor(with hexString: String, alpha: CGFloat = 1.0) -> UIColor {
+    func getColor(hexString: String, alpha: CGFloat = 1.0) -> UIColor {
         
         var hex = ""
         if hexString.hasPrefix("#") {
@@ -100,7 +100,7 @@ public extension HDCommonTools {
     }
     
     ///通过颜色获取纯色图片
-    func getImage(by color: UIColor) -> UIImage {
+    func getImage(color: UIColor) -> UIImage {
         let rect = CGRect(x: 0, y: 0, width: 1, height: 1)
         var image: UIImage?
         
@@ -120,7 +120,7 @@ public extension HDCommonTools {
         if (colors.count == 0) {
             return UIImage()
         } else if (colors.count == 1) {
-            return self.getImage(by: colors.first!)
+            return self.getImage(color: colors.first!)
         }
         let gradientLayer = CAGradientLayer()
         var cgColors = [CGColor]()
@@ -167,7 +167,7 @@ public extension HDCommonTools {
         if (colors.count == 0) {
             return UIImage()
         } else if (colors.count == 1) {
-            return self.getImage(by: colors.first!)
+            return self.getImage(color: colors.first!)
         }
         
         UIGraphicsBeginImageContext(size);
@@ -213,7 +213,7 @@ public extension HDCommonTools {
 }
 
 ///16进制颜色转为UIColor 0xffffff
-public func UIColor(with hexValue: Int, darkHexValue: Int = 0x333333, alpha: Float = 1.0, darkAlpha: Float = 1.0) -> UIColor {
+public func UIColor(hexValue: Int, darkHexValue: Int = 0x333333, alpha: Float = 1.0, darkAlpha: Float = 1.0) -> UIColor {
     if #available(iOS 10.0, *) {
         if #available(iOS 13.0, *) {
             let dyColor = UIColor { (traitCollection) -> UIColor in
@@ -233,18 +233,18 @@ public func UIColor(with hexValue: Int, darkHexValue: Int = 0x333333, alpha: Flo
 }
 
 ///16进制字符串转为UIColor #ffffff
-public func UIColor(with hexString: String, darkHexString: String = "#333333", alpha: CGFloat = 1.0, darkAlpha: CGFloat = 1.0) -> UIColor {
+public func UIColor(hexString: String, darkHexString: String = "#333333", alpha: CGFloat = 1.0, darkAlpha: CGFloat = 1.0) -> UIColor {
     if #available(iOS 13.0, *) {
         let dyColor = UIColor { (traitCollection) -> UIColor in
             if traitCollection.userInterfaceStyle == .light {
-                return HDCommonTools.shared.getColor(with: hexString, alpha: alpha)
+                return HDCommonTools.shared.getColor(hexString: hexString, alpha: alpha)
             } else {
-                return HDCommonTools.shared.getColor(with: darkHexString, alpha: darkAlpha)
+                return HDCommonTools.shared.getColor(hexString: darkHexString, alpha: darkAlpha)
             }
         }
         return dyColor
     } else {
-        return HDCommonTools.shared.getColor(with: hexString, alpha: alpha)
+        return HDCommonTools.shared.getColor(hexString: hexString, alpha: alpha)
     }
 }
 

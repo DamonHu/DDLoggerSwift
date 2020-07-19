@@ -14,8 +14,8 @@ extension UIImage: HDNameSpaceWrappable {
 
 public extension HDNameSpace where T : UIImage {
     ///通过颜色获取纯色图片
-    static func getImage(by color: UIColor) -> UIImage {
-        return HDCommonTools.shared.getImage(by: color)
+    static func getImage(color: UIColor) -> UIImage {
+        return HDCommonTools.shared.getImage(color: color)
     }
     
     ///线性渐变

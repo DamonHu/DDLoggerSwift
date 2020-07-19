@@ -52,7 +52,8 @@ public extension HDNameSpace where T == String {
         do {
             returnStr = try PropertyListSerialization.propertyList(from: tempData!, options: [.mutableContainers], format: nil) as! String
         } catch {
-            print(error)
+            print("unicodeDecode转义失败\(error)")
+            return object
         }
         return returnStr.replacingOccurrences(of: "\\r\\n", with: "\n")
     }

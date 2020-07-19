@@ -31,11 +31,11 @@ import HDSwiftCommonTools
 |----|----|----|
 |func getCurrentNormalWindow()|获取当前的NormalWindow|HDCommonTools.shared.getCurrentNormalWindow()|
 |func getCurrentVC()|获取当前的ViewController|HDCommonTools.shared.getCurrentVC()|
-|func getImage(by color: UIColor)|通过颜色生成一张纯色背景图|HDCommonTools.shared.getImage(by: UIColor.red) <br/>或者<br/> UIImage.hd.getImage(by: UIColor.red)|
+|func getImage(color: UIColor)|通过颜色生成一张纯色背景图|HDCommonTools.shared.getImage(color: UIColor.red) <br/>或者<br/> UIImage.hd.getImage(color: UIColor.red)|
 |func getLinearGradientImage(colors: [UIColor], directionType: HDGradientDirection, size: CGSize = CGSize(width: 100, height: 100))|生成线性渐变的图片|HDCommonTools.shared.getLinearGradientImage(colors:  [UIColor.red, UIColor.black, UIColor.blue] <br/>或者<br/> UIImage.hd.getLinearGradientImage(colors: [UIColor.red, UIColor.black, UIColor.blue], directionType: .leftToRight)|
 |func getRadialGradientImage(colors: [UIColor], raduis: CGFloat, size: CGSize = CGSize(width: 100, height: 100))|生成角度渐变的图片|HDCommonTools.shared.getRadialGradientImage(colors: [UIColor.red, UIColor.black, UIColor.blue], raduis: 45) <br/>或者<br/> UIImage.hd.getRadialGradientImage(colors: [UIColor.red, UIColor.black, UIColor.blue], raduis: 45)|
-|func getColor(with hexString: String, alpha: CGFloat = 1.0)|通过十六进制字符串获取颜色|UIColor(with: "#FFFFFF") <br/>或者<br/>  UIColor.hd.color(with: "#FFFFFF")|
-|func UIColor(with hexValue: Int, darkHexValue: Int = 0x333333, alpha: Float = 1.0, darkAlpha: Float = 1.0)|通过十六进制获取颜色|UIColor(with: 0xffffff) <br/>或者<br/> UIColor.hd.color(with: 0xffffff)|
+|func getColor(hexString: String, alpha: CGFloat = 1.0)|通过十六进制字符串获取颜色|UIColor(hexString: "#FFFFFF") <br/>或者<br/>  UIColor.hd.color(hexString: "#FFFFFF")|
+|func UIColor(hexValue: Int, darkHexValue: Int = 0x333333, alpha: Float = 1.0, darkAlpha: Float = 1.0)|通过十六进制获取颜色|UIColor(hexValue: 0xffffff) <br/>或者<br/> UIColor.hd.color(hexValue: 0xffffff)|
 |UIScreenWidth|屏幕宽度||
 |UIScreenHeight|屏幕高度||
 |HD_StatusBar_Height|状态栏高度||
