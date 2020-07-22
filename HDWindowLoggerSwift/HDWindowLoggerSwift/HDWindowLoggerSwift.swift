@@ -732,7 +732,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         self.mFileDateNameList = [String]()
         let cacheDirectory = HDCommonTools.shared.getFileDirectory(type: .caches)
         
-        if let enumer = FileManager.default.enumerator(at: cacheDirectory, includingPropertiesForKeys: [URLResourceKey.creationDateKey]) {
+        if let enumer = FileManager.default.enumerator(at: cacheDirectory, includingPropertiesForKeys: [URLResourceKey.contentModificationDateKey]) {
             while let file = enumer.nextObject() {
                 if let file: URL = file as? URL {
                     if file.lastPathComponent.hasPrefix("HDWindowLogger-") {
@@ -741,8 +741,6 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
                 }
             }
         }
-        //倒序，最后的放前面
-        self.mFileDateNameList = self.mFileDateNameList.reversed()
         self.mPickerBGView.isHidden = !self.mPickerBGView.isHidden
         self.mPickerView.reloadAllComponents()
         self.mShareFileName = self.mFileDateNameList.first ?? ""
