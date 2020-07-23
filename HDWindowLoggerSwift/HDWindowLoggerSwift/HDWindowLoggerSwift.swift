@@ -63,9 +63,22 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     public static var mPrivacyPassword = ""    //解密隐私数据的密码，默认为空不加密
     public private(set) var mLogDataArray  = [HDWindowLoggerItem]()
     public var mLogExpiryDay = 7        //本地日志文件的有效期（天），超出有效期的本地日志会被删除，0为没有有效期，默认为7天
-    //FIXME: shared为老的单例方式，使用shared新的命名
-    public static let defaultWindowLogger = HDWindowLoggerSwift(frame: CGRect.zero)
-    public static let shared = HDWindowLoggerSwift(frame: CGRect.zero)
+    public static var shared: HDWindowLoggerSwift {
+        struct DefaultWindow {
+            static let kWindowLogger: HDWindowLoggerSwift = { () -> HDWindowLoggerSwift in
+                if #available(iOS 13.0, *) {
+                    for windowScene:UIWindowScene in ((UIApplication.shared.connectedScenes as? Set<UIWindowScene>)!) {
+                        if windowScene.activationState == .foregroundActive {
+                            return HDWindowLoggerSwift(windowScene: windowScene)
+                        }
+                    }
+                }
+                return HDWindowLoggerSwift(frame: CGRect.zero)
+                
+            }()
+        }
+        return DefaultWindow.kWindowLogger
+    }
     //MARK: Private
     //密码解锁是否正确
     var mPasswordCorrect: Bool {
@@ -170,7 +183,16 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     }()
     
     private lazy var mFloatWindow: UIWindow = {
-        let floatWidow = UIWindow(frame: CGRect(x: UIScreen.main.bounds.size.width - 70, y: 50, width: 60, height: 60))
+        var floatWidow: UIWindow = UIWindow(frame: CGRect(x: UIScreen.main.bounds.size.width - 70, y: 50, width: 60, height: 60))
+        if #available(iOS 13.0, *) {
+            for windowScene:UIWindowScene in ((UIApplication.shared.connectedScenes as? Set<UIWindowScene>)!) {
+                if windowScene.activationState == .foregroundActive {
+                    floatWidow = UIWindow(windowScene: windowScene)
+                    floatWidow.frame = CGRect(x: UIScreen.main.bounds.size.width - 70, y: 50, width: 60, height: 60)
+                }
+            }
+        }
+
         floatWidow.rootViewController = UIViewController()
         floatWidow.windowLevel = UIWindow.Level.alert
         floatWidow.backgroundColor = UIColor.clear
@@ -272,14 +294,30 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     //MARK: Public Method
     public override init(frame: CGRect) {
         super.init(frame: frame)
+        DispatchQueue.main.async {
+            self.rootViewController = UIViewController()
+            self.windowLevel =  UIWindow.Level.alert
+            self.backgroundColor = UIColor.clear
+            self.isUserInteractionEnabled = true
+            self.createUI()
+            self.p_bindClick()
+            self.p_checkValidity()
+        }
+    }
+    
+    @available(iOS 13.0, *)
+    public override init(windowScene: UIWindowScene) {
+        super.init(windowScene: windowScene)
+        DispatchQueue.main.async {
+            self.rootViewController = UIViewController()
+            self.windowLevel =  UIWindow.Level.alert
+            self.backgroundColor = UIColor.clear
+            self.isUserInteractionEnabled = true
+            self.createUI()
+            self.p_bindClick()
+            self.p_checkValidity()
+        }
         
-        self.rootViewController = UIViewController()
-        self.windowLevel = UIWindow.Level.alert
-        self.backgroundColor = UIColor.clear
-        self.isUserInteractionEnabled = true
-        self.createUI()
-        self.p_bindClick()
-        self.p_checkValidity()
     }
     
     required init?(coder: NSCoder) {
@@ -732,7 +770,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         self.mFileDateNameList = [String]()
         let cacheDirectory = HDCommonTools.shared.getFileDirectory(type: .caches)
         
-        if let enumer = FileManager.default.enumerator(at: cacheDirectory, includingPropertiesForKeys: [URLResourceKey.contentModificationDateKey]) {
+        if let enumer = FileManager.default.enumerator(at: cacheDirectory, includingPropertiesForKeys: [URLResourceKey.creationDateKey]) {
             while let file = enumer.nextObject() {
                 if let file: URL = file as? URL {
                     if file.lastPathComponent.hasPrefix("HDWindowLogger-") {
@@ -741,6 +779,8 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
                 }
             }
         }
+        //倒序，最后的放前面
+        self.mFileDateNameList = self.mFileDateNameList.reversed()
         self.mPickerBGView.isHidden = !self.mPickerBGView.isHidden
         self.mPickerView.reloadAllComponents()
         self.mShareFileName = self.mFileDateNameList.first ?? ""
