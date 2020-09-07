@@ -57,12 +57,13 @@ public func HDPrivacyLog(_ log:Any ..., file:String = #file, funcName:String = #
 }
 
 ///log的输出
-public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
-    public static var mCompleteLogOut = true  //是否完整输出日志文件名等调试内容
-    public static var mDebugAreaLogOut = true  //是否在xcode底部的调试栏同步输出内容
-    public static var mPrivacyPassword = ""    //解密隐私数据的密码，默认为空不加密
-    public private(set) var mLogDataArray  = [HDWindowLoggerItem]()
-    public var mLogExpiryDay = 7        //本地日志文件的有效期（天），超出有效期的本地日志会被删除，0为没有有效期，默认为7天
+public class HDWindowLoggerSwift: UIWindow {
+    public static var mCompleteLogOut = true    //是否完整输出日志文件名等调试内容
+    public static var mDebugAreaLogOut = true   //是否在xcode底部的调试栏同步输出内容
+    public static var mPrivacyPassword = ""     //解密隐私数据的密码，默认为空不加密
+    public static var mMaxCount = 100           //窗口显示的日志最大数量，0为不限制
+    public static var mLogExpiryDay = 7        //本地日志文件的有效期（天），超出有效期的本地日志会被删除，0为没有有效期，默认为7天
+    public private(set) var mLogDataArray = [HDWindowLoggerItem]()  //输出的日志信息
     public static var shared: HDWindowLoggerSwift {
         struct DefaultWindow {
             static let kWindowLogger: HDWindowLoggerSwift = { () -> HDWindowLoggerSwift in
@@ -74,353 +75,34 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
                     }
                 }
                 return HDWindowLoggerSwift(frame: CGRect.zero)
-                
             }()
         }
         return DefaultWindow.kWindowLogger
     }
+
     //MARK: Private
     //密码解锁是否正确
-    var mPasswordCorrect: Bool {
+    internal var mPasswordCorrect: Bool {
         get {
-            return self.mTextPassword == HDWindowLoggerSwift.mPrivacyPassword
+            return mInputPassword == HDWindowLoggerSwift.mPrivacyPassword
         }
     }
-    private var mMaxLogCount = 0         //设置窗口显示的日志数，默认为0不限制
-    private var mFilterIndexArray = [IndexPath]()
-    private var mTextPassword = ""      //输入的密码
-    private var mCurrentSearchIndex = 0 //当前搜索到的索引
-    private var mFileDateNameList = [String]() //可以分享的文件列表
-    private var mShareFileName = "" //选中去分享的文件名
-    
-    private lazy var mBGView: UIView = {
-        let mBGView = UIView()
-        mBGView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.6)
-        return mBGView
-    }()
-    private lazy var mTableView: UITableView = {
-        let tableView = UITableView(frame: CGRect.zero, style: UITableView.Style.plain)
-        tableView.scrollsToTop = true
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.showsHorizontalScrollIndicator = false
-        tableView.showsVerticalScrollIndicator = true
-        tableView.keyboardDismissMode = UIScrollView.KeyboardDismissMode.onDrag
-        tableView.backgroundColor = UIColor.clear
-        tableView.separatorColor = UIColor(red: 242.0/255.0, green: 242.0/255.0, blue: 240.0/255.0, alpha: 1.0)
-        tableView.separatorInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
-        tableView.separatorStyle = UITableViewCell.SeparatorStyle.singleLine
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 10;
-        return tableView
-    }()
-    
-    private lazy var mCleanButton: UIButton = {
-        let button = UIButton(type: UIButton.ButtonType.custom)
-        button.backgroundColor = UIColor(red: 255.0/255.0, green: 118.0/255.0, blue: 118.0/255.0, alpha: 1.0)
-        button.setTitle(NSLocalizedString("清除Log", comment: ""), for: UIControl.State.normal)
-        return button
-    }()
-    
-    private lazy var mScaleButton: UIButton = {
-        let button = UIButton(type: UIButton.ButtonType.custom)
-        button.backgroundColor = UIColor(red: 168.0/255.0, green: 223.0/255.0, blue: 101.0/255.0, alpha: 1.0)
-        button.setTitle(NSLocalizedString("伸缩", comment: ""), for: UIControl.State.normal)
-        return button
-    }()
-    
-    private lazy var mHideButton: UIButton = {
-        let button = UIButton(type: UIButton.ButtonType.custom)
-        button.backgroundColor = UIColor(red: 93.0/255.0, green: 174.0/255.0, blue: 139.0/255.0, alpha: 1.0)
-        button.setTitle(NSLocalizedString("隐藏", comment: ""), for: UIControl.State.normal)
-        return button
-    }()
-    
-    private lazy var mShareButton: UIButton = {
-        let button = UIButton(type: UIButton.ButtonType.custom)
-        button.backgroundColor = UIColor(red: 246.0/255.0, green: 244.0/255.0, blue: 157.0/255.0, alpha: 1.0)
-        button.setTitleColor(UIColor(red: 255.0/255.0, green: 118.0/255.0, blue: 118.0/255.0, alpha: 1.0), for: UIControl.State.normal)
-        button.setTitle(NSLocalizedString("分享", comment: ""), for: UIControl.State.normal)
-        return button
-    }()
-    
-    private lazy var mPasswordTextField: UITextField = {
-        let tTextField = UITextField()
-        tTextField.delegate = self
-        let arrtibutedString = NSMutableAttributedString(string: NSLocalizedString("输入密码查看加密数据", comment: ""), attributes: [NSAttributedString.Key.foregroundColor : UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 0.7), NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14)])
-        tTextField.attributedPlaceholder = arrtibutedString
-        tTextField.textColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0)
-        tTextField.layer.masksToBounds = true
-        tTextField.layer.borderColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0).cgColor
-        tTextField.layer.borderWidth = 1.0
-        return tTextField
-    }()
-    
-    private lazy var mPasswordButton: UIButton = {
-        let button = UIButton(type: UIButton.ButtonType.custom)
-        button.backgroundColor = UIColor(red: 27.0/255.0, green: 108.0/255.0, blue: 168.0/255.0, alpha: 1.0)
-        button.setTitleColor(UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0), for: UIControl.State.normal)
-        button.setTitle(NSLocalizedString("解密", comment: ""), for: UIControl.State.normal)
-        button.layer.masksToBounds = true
-        button.layer.borderColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0).cgColor
-        button.layer.borderWidth = 1.0
-        return button
-    }()
-    
-    private lazy var mAutoScrollSwitch: UISwitch = {
-        let autoScrollSwitch = UISwitch()
-        autoScrollSwitch.setOn(true, animated: false)
-        return autoScrollSwitch
-    }()
-    
-    private lazy var mSwitchLabel: UILabel = {
-        let switchLabel = UILabel()
-        switchLabel.text = NSLocalizedString("自动滚动", comment: "")
-        switchLabel.textAlignment = NSTextAlignment.center
-        switchLabel.font = UIFont.systemFont(ofSize: 13)
-        switchLabel.textColor = UIColor.white
-        return switchLabel
-    }()
-    
-    private lazy var mFloatWindow: UIWindow = {
-        var floatWidow: UIWindow = UIWindow(frame: CGRect(x: UIScreen.main.bounds.size.width - 70, y: 50, width: 60, height: 60))
-        if #available(iOS 13.0, *) {
-            for windowScene:UIWindowScene in ((UIApplication.shared.connectedScenes as? Set<UIWindowScene>)!) {
-                if windowScene.activationState == .foregroundActive {
-                    floatWidow = UIWindow(windowScene: windowScene)
-                    floatWidow.frame = CGRect(x: UIScreen.main.bounds.size.width - 70, y: 50, width: 60, height: 60)
-                }
-            }
-        }
-
-        floatWidow.rootViewController = UIViewController()
-        floatWidow.windowLevel = UIWindow.Level.alert
-        floatWidow.backgroundColor = UIColor.clear
-        floatWidow.isUserInteractionEnabled = true
-        
-        let floatButton = UIButton(type: UIButton.ButtonType.custom)
-        floatButton.backgroundColor = UIColor(red: 93.0/255.0, green: 174.0/255.0, blue: 139.0/255.0, alpha: 1.0)
-        floatButton.setTitle(NSLocalizedString("H", comment: ""), for: UIControl.State.normal)
-        floatButton.titleLabel?.font = UIFont.systemFont(ofSize: 20)
-        floatButton.layer.masksToBounds = true
-        floatButton.layer.cornerRadius = 30.0
-        floatButton.addTarget(self, action: #selector(p_show), for: UIControl.Event.touchUpInside)
-        floatButton.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
-        
-        let pan = UIPanGestureRecognizer(target: self, action: #selector(p_touchMove(p:)))
-        floatButton.addGestureRecognizer(pan)
-        
-        floatWidow.rootViewController?.view.addSubview(floatButton)
-        return floatWidow
-    }()
-    
-    private lazy var mSearchBar: UISearchBar = {
-        let searchBar = UISearchBar()
-        searchBar.placeholder = NSLocalizedString("内容过滤查找", comment: "")
-        searchBar.barStyle = UIBarStyle.default
-        searchBar.backgroundImage = UIImage()
-        searchBar.backgroundColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0)
-        searchBar.delegate = self
-        return searchBar
-    }()
-    
-    private lazy var mPreviousButton: UIButton = {
-        let button = UIButton(type: UIButton.ButtonType.custom)
-        button.backgroundColor = UIColor(red: 255.0/255.0, green: 118.0/255.0, blue: 118.0/255.0, alpha: 1.0)
-        button.setTitleColor(UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0), for: UIControl.State.normal)
-        button.setTitleColor(UIColor(red: 102.0/255.0, green: 102.0/255.0, blue: 102.0/255.0, alpha: 1.0), for: UIControl.State.disabled)
-        button.setTitle(NSLocalizedString("上一条", comment: ""), for: UIControl.State.normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
-        button.isEnabled = false
-        return button
-    }()
-    
-    private lazy var mNextButton: UIButton = {
-        let button = UIButton(type: UIButton.ButtonType.custom)
-        button.backgroundColor = UIColor(red: 93.0/255.0, green: 174.0/255.0, blue: 139.0/255.0, alpha: 1.0)
-        button.setTitleColor(UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0), for: UIControl.State.normal)
-        button.setTitleColor(UIColor(red: 102.0/255.0, green: 102.0/255.0, blue: 102.0/255.0, alpha: 1.0), for: UIControl.State.disabled)
-        button.setTitle(NSLocalizedString("下一条", comment: ""), for: UIControl.State.normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
-        button.isEnabled = false
-        return button
-    }()
-    
-    private lazy var mSearchNumLabel: UILabel = {
-        let tLabel = UILabel()
-        tLabel.text = NSLocalizedString("0条结果", comment: "")
-        tLabel.textAlignment = NSTextAlignment.center
-        tLabel.font = UIFont.systemFont(ofSize: 12)
-        tLabel.textColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0)
-        tLabel.backgroundColor = UIColor(red: 57.0/255.0, green: 74.0/255.0, blue: 81.0/255.0, alpha: 1.0)
-        return tLabel
-    }()
-    
-    private lazy var mTipLabel: UILabel = {
-        let tLabel = UILabel()
-        tLabel.text = "HDWindowLogger Powered by DamonHu"
-        tLabel.textAlignment = NSTextAlignment.center
-        tLabel.font = UIFont.systemFont(ofSize: 12)
-        tLabel.textColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 0.8)
-        tLabel.backgroundColor = UIColor.clear
-        return tLabel
-    }()
-    
-    private lazy var mPickerBGView: UIView = {
-        let tView = UIView()
-        tView.backgroundColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0)
-        tView.isHidden = true
-        tView.layer.masksToBounds = true
-        tView.layer.borderColor = UIColor(red: 57.0/255.0, green: 74.0/255.0, blue: 81.0/255.0, alpha: 1.0).cgColor
-        tView.layer.borderWidth = 1.0
-        return tView
-    }()
-    
-    private lazy var mPickerView: UIPickerView = {
-        let tPicker = UIPickerView()
-        tPicker.backgroundColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0)
-        tPicker.isUserInteractionEnabled = true
-        tPicker.dataSource = self
-        tPicker.delegate = self
-        return tPicker
-    }()
-    
-    private lazy var mToolBar: UIToolbar = {
-        let tToolBar = UIToolbar()
-        tToolBar.barStyle = .default
-        return tToolBar
-    }()
-    
-    //MARK: Public Method
-    public override init(frame: CGRect) {
-        super.init(frame: frame)
-        DispatchQueue.main.async {
-            self.rootViewController = UIViewController()
-            self.windowLevel =  UIWindow.Level.alert
-            self.backgroundColor = UIColor.clear
-            self.isUserInteractionEnabled = true
-            self.createUI()
-            self.p_bindClick()
-            self.p_checkValidity()
-        }
-    }
-    
-    @available(iOS 13.0, *)
-    public override init(windowScene: UIWindowScene) {
-        super.init(windowScene: windowScene)
-        DispatchQueue.main.async {
-            self.rootViewController = UIViewController()
-            self.windowLevel =  UIWindow.Level.alert
-            self.backgroundColor = UIColor.clear
-            self.isUserInteractionEnabled = true
-            self.createUI()
-            self.p_bindClick()
-            self.p_checkValidity()
-        }
-        
-    }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-    
-    //MAKR:UITextFieldDelegate
-    public func textFieldDidEndEditing(_ textField: UITextField) {
-        self.mTextPassword = textField.text ?? ""
-        self.p_decrypt()
-    }
-    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        return textField.resignFirstResponder()
-    }
-    
-    //MARK:UITableViewDelegate
-    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.mLogDataArray.count
-    }
-    
-    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let identifier = "loggerCellIdentifier"
-        let loggerItem = self.mLogDataArray[indexPath.row]
-        var loggerCell = tableView.dequeueReusableCell(withIdentifier: identifier) as? HDLoggerSwiftTableViewCell
-        if loggerCell == nil {
-            loggerCell = HDLoggerSwiftTableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: identifier)
-            loggerCell?.selectionStyle = UITableViewCell.SelectionStyle.none
-        }
-        if indexPath.row%2 != 0 {
-            loggerCell?.backgroundColor = UIColor(red: 156.0/255.0, green: 44.0/255.0, blue: 44.0/255.0, alpha: 0.8)
-        } else {
-            loggerCell?.backgroundColor = UIColor.clear
-        }
-        if loggerCell != nil {
-            loggerCell!.updateWithLoggerItem(loggerItem: loggerItem, highlightText: self.mSearchBar.text ?? "")
-        }
-        return loggerCell ?? UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: identifier)
-    }
-    
-    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let loggerItem = self.mLogDataArray[indexPath.row]
-        let pasteboard = UIPasteboard.general
-        pasteboard.string = loggerItem.getFullContentString()
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "HH:mm:ss.SSS"
-        let dateStr = dateFormatter.string(from: loggerItem.mCreateDate)
-        let tipString = dateStr + " " + NSLocalizedString("日志已拷贝到剪切板", comment: "")
-        HDWarnLog(tipString)
-    }
-    
-    //UISearchBarDelegate
-    public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        self.p_reloadFilter()
-    }
-    
-    public func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        searchBar.resignFirstResponder()
-    }
-    
-    public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.resignFirstResponder()
-    }
-    
-    //MARK: UIPickerViewDelegate
-    public func numberOfComponents(in pickerView: UIPickerView) -> Int {
-           return 1
-    }
-    
-    public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return self.mFileDateNameList.count
-    }
-    
-    public func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
-        return 40
-    }
-    
-    public func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
-        var titleView: UIView
-        if let label = view, label is UILabel {
-            (label as! UILabel).text = self.mFileDateNameList[row]
-            titleView = label
-        } else {
-            let label = UILabel()
-            label.font = UIFont.systemFont(ofSize: 15, weight: .medium)
-            label.text = self.mFileDateNameList[row]
-            label.textAlignment = .center
-            titleView = label
-        }
-        return titleView
-    }
-    
-    public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        self.mShareFileName = self.mFileDateNameList[row]
-    }
+    private var mFilterIndexArray = [IndexPath]()   //索引的排序
+    private var mCurrentSearchIndex = 0             //当前搜索到的索引
+    private var mFileDateNameList = [String]()      //可以分享的文件列表
+    private var mShareFileName = ""                 //选中去分享的文件名
+    private var mInputPassword = ""
+    let semaphore = DispatchSemaphore(value: 1)
     
     //log的Public函数
     /// 根据日志的输出类型去输出相应的日志，不同日志类型颜色不一样
     /// - Parameter log: 日志内容
     /// - Parameter logType: 日志类型
     public class func printLog(log:Any, logType:HDLogType, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-        DispatchQueue.main.async {
+        DispatchQueue.global().async {
+            self.shared.semaphore.wait()
             if self.shared.mLogDataArray.isEmpty {
+                //第一条信息
                 let loggerItem = HDWindowLoggerItem()
                 loggerItem.mLogItemType = HDLogType.warn
                 loggerItem.mCreateDate = Date()
@@ -430,31 +112,39 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
             let loggerItem = HDWindowLoggerItem()
             loggerItem.mLogItemType = logType
             loggerItem.mCreateDate = Date()
-            
+
             let fileName = (file as NSString).lastPathComponent;
             loggerItem.mLogDebugContent = "[File:\(fileName)]:[Line:\(lineNum):[Function:\(funcName)]]-Log:"
             loggerItem.mLogContent = log
 
             if logType == .debug {
                 print(loggerItem.getFullContentString())
+                self.shared.semaphore.signal()
             } else {
                 if self.mDebugAreaLogOut {
                     print(loggerItem.getFullContentString())
                 }
+                self.shared.mLogDataArray.insert(loggerItem, at: 0)
+                if mMaxCount != 0 && self.shared.mLogDataArray.count > mMaxCount {
+                    self.shared.mLogDataArray.removeLast()
+                }
 
                 //写入文件
-                self.p_writeFile(log: loggerItem.getFullContentString())
-                
-                self.shared.mLogDataArray.append(loggerItem)
-                if self.shared.mMaxLogCount > 0 && self.shared.mMaxLogCount > self.shared.mMaxLogCount {
-                    self.shared.mLogDataArray.removeFirst()
+                DispatchQueue.global().sync {
+                    self.p_writeFile(log: loggerItem.getFullContentString())
                 }
-                
-                self.shared.p_reloadFilter()
-                if self.shared.mLogDataArray.count > 0 && self.shared.mAutoScrollSwitch.isOn {
-                    DispatchQueue.main.async {
-                        self.shared.mTableView.scrollToRow(at: IndexPath(row: self.shared.mLogDataArray.count - 1, section: 0), at: UITableView.ScrollPosition.bottom, animated: true)
+                //显示在主界面时才刷新列表
+                DispatchQueue.main.async {
+                    if !self.shared.mBGView.isHidden {
+                        self.shared.p_reloadFilter()
+                        if self.shared.mAutoScrollSwitch.isOn {
+                            self.shared.mTableView.contentOffset = .zero
+                        }
                     }
+                    DispatchQueue.main.async {
+                        self.shared.semaphore.signal()
+                    }
+
                 }
             }
         }
@@ -464,31 +154,44 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     public class func cleanLog() {
         self.shared.mLogDataArray.removeAll()
         self.shared.mFilterIndexArray.removeAll()
-        self.shared.mTableView.reloadData()
+        DispatchQueue.main.async {
+            self.shared.mTableView.reloadData()
+        }
     }
     
     /// 显示log窗口
     public class func show() {
-        self.shared.isHidden = false
-        self.shared.isUserInteractionEnabled = true
-        self.shared.mBGView.isHidden = false
-        self.shared.mFloatWindow.isHidden = true
-    }
-    
-    ///  隐藏整个log窗口
-    public class func hide() {
-        self.shared.isHidden = true
-        self.shared.mBGView.isHidden = true
-        self.shared.mFloatWindow.isHidden = true
+        DispatchQueue.main.async {
+            self.shared.isHidden = false
+            self.shared.mBGView.isHidden = false
+            self.shared.isUserInteractionEnabled = true
+            self.shared.mFloatWindow.isHidden = true
+
+            self.shared.p_reloadFilter()
+            if self.shared.mAutoScrollSwitch.isOn {
+                self.shared.mTableView.contentOffset = .zero
+            }
+        }
     }
     
     /// 只隐藏log的输出窗口，保留悬浮图标
     public class func hideLogWindow() {
-        self.shared.isUserInteractionEnabled = false
-        self.shared.mBGView.isHidden = true
-        self.shared.mFloatWindow.isHidden = false
+        DispatchQueue.main.async {
+            self.shared.isUserInteractionEnabled = false
+            self.shared.mBGView.isHidden = true
+            self.shared.mFloatWindow.isHidden = false
+        }
     }
-    
+
+    ///  隐藏整个log窗口
+    public class func hide() {
+        DispatchQueue.main.async {
+            self.shared.isHidden = true
+            self.shared.mBGView.isHidden = true
+            self.shared.mFloatWindow.isHidden = true
+        }
+    }
+
     /// 删除本地日志文件
     public class func deleteLogFile() {
         let cachePath = HDCommonTools.shared.getFileDirectory(type: .caches)
@@ -504,14 +207,36 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
             }
         }
     }
-    
-    ///  为了节省内存，可以设置记录的最大的log数，超出限制删除最老的数据，默认100条
-    /// - Parameter logCount: 0为不限制
-    public class func setMaxLogCount(logCount:Int) -> Void {
-        self.shared.mMaxLogCount = logCount
+
+    //MARK: init
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+
+    public override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.p_init()
+    }
+
+    @available(iOS 13.0, *)
+    public override init(windowScene: UIWindowScene) {
+        super.init(windowScene: windowScene)
+        self.p_init()
     }
     
     //MARK: Private Method
+    func p_init() {
+        self.rootViewController = UIViewController()
+        self.windowLevel =  UIWindow.Level.alert
+        self.p_bindClick()
+        self.p_checkValidity()
+        DispatchQueue.main.async {
+            self.isUserInteractionEnabled = true
+            self.backgroundColor = UIColor.clear
+            self.createUI()
+        }
+    }
+
     private func createUI() {
         self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 350)
         
@@ -652,7 +377,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
         
         let closeBarItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.cancel, target: self, action: #selector(p_closePicker))
         let fixBarItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
-        let doneBarItem = UIBarButtonItem(title: NSLocalizedString("分享", comment: ""), style: UIBarButtonItem.Style.plain, target: self, action: #selector(p_confirmPicker))
+        let doneBarItem = UIBarButtonItem(title: NSLocalizedString("分享", comment: ""), style:.plain, target: self, action: #selector(p_confirmPicker))
         self.mToolBar.setItems([closeBarItem, fixBarItem, doneBarItem], animated: true)
         
         self.mPickerBGView.addSubview(self.mPickerView)
@@ -683,9 +408,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
                 }
             }
         }
-        DispatchQueue.main.async {
-            self.mTableView.reloadData()
-        }
+        self.mTableView.reloadData()
     }
     
     @objc private func p_previous() -> Void {
@@ -824,9 +547,8 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
     private func p_checkValidity() {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
-        
         let cachePath = HDCommonTools.shared.getFileDirectory(type: .caches)
-        
+
         if let enumer = FileManager.default.enumerator(atPath: cachePath.path) {
             while let file = enumer.nextObject() {
                 if let file: String = file as? String {
@@ -837,7 +559,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
                         let dateString = file[index2...index3]
                         let fileDate = dateFormatter.date(from: String(dateString))
                         if let fileDate = fileDate {
-                            if Date().timeIntervalSince(fileDate) > Double(self.mLogExpiryDay * 3600 * 24) {
+                            if Date().timeIntervalSince(fileDate) > Double(Self.mLogExpiryDay * 3600 * 24) {
                                 let logFilePath = cachePath.appendingPathComponent(file, isDirectory: false)
                                 try? FileManager.default.removeItem(at: logFilePath)
                             }
@@ -846,5 +568,300 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
                 }
             }
         }
+    }
+
+    //MARK: UI布局
+    private lazy var mBGView: UIView = {
+        let mBGView = UIView()
+        mBGView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.6)
+        return mBGView
+    }()
+    private lazy var mTableView: UITableView = {
+        let tableView = UITableView(frame: CGRect.zero, style: UITableView.Style.plain)
+        tableView.scrollsToTop = true
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.showsHorizontalScrollIndicator = false
+        tableView.showsVerticalScrollIndicator = true
+        tableView.keyboardDismissMode = UIScrollView.KeyboardDismissMode.onDrag
+        tableView.backgroundColor = UIColor.clear
+        tableView.separatorColor = UIColor(red: 242.0/255.0, green: 242.0/255.0, blue: 240.0/255.0, alpha: 1.0)
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+        tableView.separatorStyle = UITableViewCell.SeparatorStyle.singleLine
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 10
+        tableView.register(HDLoggerSwiftTableViewCell.self, forCellReuseIdentifier: "HDLoggerSwiftTableViewCell")
+        return tableView
+    }()
+
+    private lazy var mCleanButton: UIButton = {
+        let button = UIButton(type: UIButton.ButtonType.custom)
+        button.backgroundColor = UIColor(red: 255.0/255.0, green: 118.0/255.0, blue: 118.0/255.0, alpha: 1.0)
+        button.setTitle(NSLocalizedString("清除Log", comment: ""), for: UIControl.State.normal)
+        return button
+    }()
+
+    private lazy var mScaleButton: UIButton = {
+        let button = UIButton(type: UIButton.ButtonType.custom)
+        button.backgroundColor = UIColor(red: 168.0/255.0, green: 223.0/255.0, blue: 101.0/255.0, alpha: 1.0)
+        button.setTitle(NSLocalizedString("伸缩", comment: ""), for: UIControl.State.normal)
+        return button
+    }()
+
+    private lazy var mHideButton: UIButton = {
+        let button = UIButton(type: UIButton.ButtonType.custom)
+        button.backgroundColor = UIColor(red: 93.0/255.0, green: 174.0/255.0, blue: 139.0/255.0, alpha: 1.0)
+        button.setTitle(NSLocalizedString("隐藏", comment: ""), for: UIControl.State.normal)
+        return button
+    }()
+
+    private lazy var mShareButton: UIButton = {
+        let button = UIButton(type: UIButton.ButtonType.custom)
+        button.backgroundColor = UIColor(red: 246.0/255.0, green: 244.0/255.0, blue: 157.0/255.0, alpha: 1.0)
+        button.setTitleColor(UIColor(red: 255.0/255.0, green: 118.0/255.0, blue: 118.0/255.0, alpha: 1.0), for: UIControl.State.normal)
+        button.setTitle(NSLocalizedString("分享", comment: ""), for: UIControl.State.normal)
+        return button
+    }()
+
+    private lazy var mPasswordTextField: UITextField = {
+        let tTextField = UITextField()
+        tTextField.delegate = self
+        let arrtibutedString = NSMutableAttributedString(string: NSLocalizedString("输入密码查看加密数据", comment: ""), attributes: [NSAttributedString.Key.foregroundColor : UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 0.7), NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14)])
+        tTextField.attributedPlaceholder = arrtibutedString
+        tTextField.textColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0)
+        tTextField.layer.masksToBounds = true
+        tTextField.layer.borderColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0).cgColor
+        tTextField.layer.borderWidth = 1.0
+        return tTextField
+    }()
+
+    private lazy var mPasswordButton: UIButton = {
+        let button = UIButton(type: UIButton.ButtonType.custom)
+        button.backgroundColor = UIColor(red: 27.0/255.0, green: 108.0/255.0, blue: 168.0/255.0, alpha: 1.0)
+        button.setTitleColor(UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0), for: UIControl.State.normal)
+        button.setTitle(NSLocalizedString("解密", comment: ""), for: UIControl.State.normal)
+        button.layer.masksToBounds = true
+        button.layer.borderColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0).cgColor
+        button.layer.borderWidth = 1.0
+        return button
+    }()
+
+    private lazy var mAutoScrollSwitch: UISwitch = {
+        let autoScrollSwitch = UISwitch()
+        autoScrollSwitch.setOn(true, animated: false)
+        return autoScrollSwitch
+    }()
+
+    private lazy var mSwitchLabel: UILabel = {
+        let switchLabel = UILabel()
+        switchLabel.text = NSLocalizedString("自动滚动", comment: "")
+        switchLabel.textAlignment = NSTextAlignment.center
+        switchLabel.font = UIFont.systemFont(ofSize: 13)
+        switchLabel.textColor = UIColor.white
+        return switchLabel
+    }()
+
+    private lazy var mFloatWindow: UIWindow = {
+        var floatWidow: UIWindow = UIWindow(frame: CGRect(x: UIScreen.main.bounds.size.width - 70, y: 50, width: 60, height: 60))
+        if #available(iOS 13.0, *) {
+            for windowScene:UIWindowScene in ((UIApplication.shared.connectedScenes as? Set<UIWindowScene>)!) {
+                if windowScene.activationState == .foregroundActive {
+                    floatWidow = UIWindow(windowScene: windowScene)
+                    floatWidow.frame = CGRect(x: UIScreen.main.bounds.size.width - 70, y: 50, width: 60, height: 60)
+                }
+            }
+        }
+
+        floatWidow.rootViewController = UIViewController()
+        floatWidow.windowLevel = UIWindow.Level.alert
+        floatWidow.backgroundColor = UIColor.clear
+        floatWidow.isUserInteractionEnabled = true
+
+        let floatButton = UIButton(type: UIButton.ButtonType.custom)
+        floatButton.backgroundColor = UIColor(red: 93.0/255.0, green: 174.0/255.0, blue: 139.0/255.0, alpha: 1.0)
+        floatButton.setTitle(NSLocalizedString("H", comment: ""), for: UIControl.State.normal)
+        floatButton.titleLabel?.font = UIFont.systemFont(ofSize: 20)
+        floatButton.layer.masksToBounds = true
+        floatButton.layer.cornerRadius = 30.0
+        floatButton.addTarget(self, action: #selector(p_show), for: UIControl.Event.touchUpInside)
+        floatButton.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
+
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(p_touchMove(p:)))
+        floatButton.addGestureRecognizer(pan)
+
+        floatWidow.rootViewController?.view.addSubview(floatButton)
+        return floatWidow
+    }()
+
+    private lazy var mSearchBar: UISearchBar = {
+        let searchBar = UISearchBar()
+        searchBar.placeholder = NSLocalizedString("内容过滤查找", comment: "")
+        searchBar.barStyle = UIBarStyle.default
+        searchBar.backgroundImage = UIImage()
+        searchBar.backgroundColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0)
+        searchBar.delegate = self
+        return searchBar
+    }()
+
+    private lazy var mPreviousButton: UIButton = {
+        let button = UIButton(type: UIButton.ButtonType.custom)
+        button.backgroundColor = UIColor(red: 255.0/255.0, green: 118.0/255.0, blue: 118.0/255.0, alpha: 1.0)
+        button.setTitleColor(UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0), for: UIControl.State.normal)
+        button.setTitleColor(UIColor(red: 102.0/255.0, green: 102.0/255.0, blue: 102.0/255.0, alpha: 1.0), for: UIControl.State.disabled)
+        button.setTitle(NSLocalizedString("上一条", comment: ""), for: UIControl.State.normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+        button.isEnabled = false
+        return button
+    }()
+
+    private lazy var mNextButton: UIButton = {
+        let button = UIButton(type: UIButton.ButtonType.custom)
+        button.backgroundColor = UIColor(red: 93.0/255.0, green: 174.0/255.0, blue: 139.0/255.0, alpha: 1.0)
+        button.setTitleColor(UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0), for: UIControl.State.normal)
+        button.setTitleColor(UIColor(red: 102.0/255.0, green: 102.0/255.0, blue: 102.0/255.0, alpha: 1.0), for: UIControl.State.disabled)
+        button.setTitle(NSLocalizedString("下一条", comment: ""), for: UIControl.State.normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+        button.isEnabled = false
+        return button
+    }()
+
+    private lazy var mSearchNumLabel: UILabel = {
+        let tLabel = UILabel()
+        tLabel.text = NSLocalizedString("0条结果", comment: "")
+        tLabel.textAlignment = NSTextAlignment.center
+        tLabel.font = UIFont.systemFont(ofSize: 12)
+        tLabel.textColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0)
+        tLabel.backgroundColor = UIColor(red: 57.0/255.0, green: 74.0/255.0, blue: 81.0/255.0, alpha: 1.0)
+        return tLabel
+    }()
+
+    private lazy var mTipLabel: UILabel = {
+        let tLabel = UILabel()
+        tLabel.text = "HDWindowLogger Powered by DamonHu"
+        tLabel.textAlignment = NSTextAlignment.center
+        tLabel.font = UIFont.systemFont(ofSize: 12)
+        tLabel.textColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 0.8)
+        tLabel.backgroundColor = UIColor.clear
+        return tLabel
+    }()
+
+    private lazy var mPickerBGView: UIView = {
+        let tView = UIView()
+        tView.backgroundColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0)
+        tView.isHidden = true
+        tView.layer.masksToBounds = true
+        tView.layer.borderColor = UIColor(red: 57.0/255.0, green: 74.0/255.0, blue: 81.0/255.0, alpha: 1.0).cgColor
+        tView.layer.borderWidth = 1.0
+        return tView
+    }()
+
+    private lazy var mPickerView: UIPickerView = {
+        let tPicker = UIPickerView()
+        tPicker.backgroundColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0)
+        tPicker.isUserInteractionEnabled = true
+        tPicker.dataSource = self
+        tPicker.delegate = self
+        return tPicker
+    }()
+
+    private lazy var mToolBar: UIToolbar = {
+        let tToolBar = UIToolbar()
+        tToolBar.barStyle = .default
+        return tToolBar
+    }()
+}
+
+
+//MARK: Delegate
+extension HDWindowLoggerSwift: UITableViewDataSource, UITableViewDelegate {
+    //MARK:UITableViewDelegate
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.mLogDataArray.count
+    }
+
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let loggerItem = self.mLogDataArray[indexPath.row]
+
+        let loggerCell: HDLoggerSwiftTableViewCell = tableView.dequeueReusableCell(withIdentifier: "HDLoggerSwiftTableViewCell") as! HDLoggerSwiftTableViewCell
+        if indexPath.row%2 != 0 {
+            loggerCell.backgroundColor = UIColor(red: 156.0/255.0, green: 44.0/255.0, blue: 44.0/255.0, alpha: 0.8)
+        } else {
+            loggerCell.backgroundColor = UIColor.clear
+        }
+        loggerCell.updateWithLoggerItem(loggerItem: loggerItem, highlightText: self.mSearchBar.text ?? "")
+//        loggerCell.layer.shouldRasterize = true
+        return loggerCell
+    }
+
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let loggerItem = self.mLogDataArray[indexPath.row]
+        let pasteboard = UIPasteboard.general
+        pasteboard.string = loggerItem.getFullContentString()
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH:mm:ss.SSS"
+        let dateStr = dateFormatter.string(from: loggerItem.mCreateDate)
+        let tipString = dateStr + " " + NSLocalizedString("日志已拷贝到剪切板", comment: "")
+        HDWarnLog(tipString)
+    }
+}
+
+extension HDWindowLoggerSwift: UISearchBarDelegate {
+    //UISearchBarDelegate
+    public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        self.p_reloadFilter()
+    }
+
+    public func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+
+    public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+}
+
+extension HDWindowLoggerSwift: UITextFieldDelegate {
+    //MAKR:UITextFieldDelegate
+    public func textFieldDidEndEditing(_ textField: UITextField) {
+        self.mInputPassword = textField.text ?? ""
+        self.p_decrypt()
+    }
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        return textField.resignFirstResponder()
+    }
+}
+
+extension HDWindowLoggerSwift: UIPickerViewDelegate, UIPickerViewDataSource {
+    //MARK: UIPickerViewDelegate
+    public func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+
+    public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return self.mFileDateNameList.count
+    }
+
+    public func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
+        return 40
+    }
+
+    public func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+        var titleView: UIView
+        if let label = view, label is UILabel {
+            (label as! UILabel).text = self.mFileDateNameList[row]
+            titleView = label
+        } else {
+            let label = UILabel()
+            label.font = UIFont.systemFont(ofSize: 15, weight: .medium)
+            label.text = self.mFileDateNameList[row]
+            label.textAlignment = .center
+            titleView = label
+        }
+        return titleView
+    }
+
+    public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        self.mShareFileName = self.mFileDateNameList[row]
     }
 }
