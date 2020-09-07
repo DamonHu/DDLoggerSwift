@@ -837,7 +837,7 @@ public class HDWindowLoggerSwift: UIWindow, UITableViewDataSource, UITableViewDe
                         let dateString = file[index2...index3]
                         let fileDate = dateFormatter.date(from: String(dateString))
                         if let fileDate = fileDate {
-                            if fileDate.timeIntervalSince(Date()) > Double(self.mLogExpiryDay * 3600 * 24) {
+                            if Date().timeIntervalSince(fileDate) > Double(self.mLogExpiryDay * 3600 * 24) {
                                 let logFilePath = cachePath.appendingPathComponent(file, isDirectory: false)
                                 try? FileManager.default.removeItem(at: logFilePath)
                             }
