@@ -99,13 +99,13 @@ public class HDWindowLoggerSwift {
                 if self.mDebugAreaLogOut {
                     print(loggerItem.getFullContentString())
                 }
-                self.shared.mLogDataArray.insert(loggerItem, at: 0)
+                self.shared.mLogDataArray.append(loggerItem)
                 //写入文件
                 DispatchQueue.global().async {
                     self.p_writeFile(log: loggerItem.getFullContentString())
                 }
                 if self.mMaxShowCount != 0 && self.shared.mLogDataArray.count > self.mMaxShowCount {
-                    self.shared.mLogDataArray.removeLast()
+                    self.shared.mLogDataArray.removeFirst()
                 }
                 //显示在主界面时才刷新列表
                 DispatchQueue.main.async {
@@ -135,6 +135,8 @@ public class HDWindowLoggerSwift {
                     }
                 }
                 self.shared.mWindow = HDLoggerWindow(frame: CGRect.zero)
+                //首次展示更新一次历史内容
+                self.shared.mWindow?.updateUI(modelList: self.shared.mLogDataArray)
             }
             self.shared.mWindow?.show()
         }
