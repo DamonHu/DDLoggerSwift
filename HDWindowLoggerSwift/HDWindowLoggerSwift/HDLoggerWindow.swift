@@ -33,12 +33,13 @@ class HDLoggerWindow: UIWindow {
     }
     
     func updateUI(modelList: [HDWindowLoggerItem]) {
+        self.mLogDataArray = modelList
         if !self.isHidden {
-            self.mLogDataArray = modelList
             self.p_reloadFilter()
             if self.mAutoScrollSwitch.isOn {
                 DispatchQueue.main.async {
-                    self.mTableView.contentOffset = .zero
+                    guard self.mLogDataArray.count > 1 else { return }
+                    self.mTableView.scrollToRow(at: IndexPath(row: self.mLogDataArray.count - 1, section: 0), at: .bottom, animated: true)
                 }
             }
         }
@@ -56,7 +57,10 @@ class HDLoggerWindow: UIWindow {
         self.mFloatWindow.isHidden = true
         self.p_reloadFilter()
         if self.mAutoScrollSwitch.isOn {
-            self.mTableView.contentOffset = .zero
+            DispatchQueue.main.async {
+                guard self.mLogDataArray.count > 1 else { return }
+                self.mTableView.scrollToRow(at: IndexPath(row: self.mLogDataArray.count - 1, section: 0), at: .bottom, animated: true)
+            }
         }
     }
     
@@ -573,7 +577,6 @@ extension HDLoggerWindow: UITableViewDataSource, UITableViewDelegate {
             loggerCell.backgroundColor = UIColor.clear
         }
         loggerCell.updateWithLoggerItem(loggerItem: loggerItem, highlightText: self.mSearchBar.text ?? "")
-        //        loggerCell.layer.shouldRasterize = true
         return loggerCell
     }
     
