@@ -101,7 +101,9 @@ public class HDWindowLoggerSwift {
                 }
                 self.shared.mLogDataArray.insert(loggerItem, at: 0)
                 //写入文件
-                self.p_writeFile(log: loggerItem.getFullContentString())
+                DispatchQueue.global().async {
+                    self.p_writeFile(log: loggerItem.getFullContentString())
+                }
                 if self.mMaxShowCount != 0 && self.shared.mLogDataArray.count > self.mMaxShowCount {
                     self.shared.mLogDataArray.removeLast()
                 }
