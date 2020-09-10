@@ -37,7 +37,9 @@ class HDLoggerWindow: UIWindow {
             self.mLogDataArray = modelList
             self.p_reloadFilter()
             if self.mAutoScrollSwitch.isOn {
-                self.mTableView.contentOffset = .zero
+                DispatchQueue.main.async {
+                    self.mTableView.contentOffset = .zero
+                }
             }
         }
     }
