@@ -1,6 +1,6 @@
 //
-//  HDCommonTools+system.swift
-//  HDSwiftCommonTools
+//  HDCommonToolsSwift+system.swift
+//  HDCommonToolsSwift
 //
 //  Created by Damon on 2020/7/3.
 //  Copyright © 2020 Damon. All rights reserved.
@@ -18,7 +18,7 @@ public enum HDOpenAppStoreType {
     case auto       //ios10.3以上应用内打开，以下跳转到App Store打开
 }
 
-public extension HDCommonTools {
+public extension HDCommonToolsSwift {
     ///获取软件版本
     func getAppVersionString() -> String {
         let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
@@ -148,7 +148,7 @@ public extension HDCommonTools {
     }
 }
 
-extension HDCommonTools : SKStoreProductViewControllerDelegate {
+extension HDCommonToolsSwift : SKStoreProductViewControllerDelegate {
     public func productViewControllerDidFinish(_ viewController: SKStoreProductViewController) {
         viewController.dismiss(animated: true, completion: nil)
     }

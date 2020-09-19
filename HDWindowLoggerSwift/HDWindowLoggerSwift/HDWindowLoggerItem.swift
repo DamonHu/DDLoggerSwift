@@ -8,7 +8,7 @@
 
 import UIKit
 import CommonCrypto
-import HDSwiftCommonTools
+import HDCommonToolsSwift
 
 ///log的内容
 public class HDWindowLoggerItem {

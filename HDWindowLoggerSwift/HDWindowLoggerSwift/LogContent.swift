@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import HDSwiftCommonTools
+import HDCommonToolsSwift
 
 //输出内容需要遵循的协议
 public protocol LogContent {

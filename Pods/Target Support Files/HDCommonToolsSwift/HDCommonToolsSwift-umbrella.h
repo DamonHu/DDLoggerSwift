@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double HDSwiftCommonToolsVersionNumber;
-FOUNDATION_EXPORT const unsigned char HDSwiftCommonToolsVersionString[];
+FOUNDATION_EXPORT double HDCommonToolsSwiftVersionNumber;
+FOUNDATION_EXPORT const unsigned char HDCommonToolsSwiftVersionString[];
 

@@ -1,6 +1,6 @@
 //
-//  HDCommonTools+permission.swift
-//  HDSwiftCommonTools
+//  HDCommonToolsSwift+permission.swift
+//  HDCommonToolsSwift
 //
 //  Created by Damon on 2020/7/3.
 //  Copyright © 2020 Damon. All rights reserved.
@@ -26,7 +26,7 @@ public enum HDPermissionStatus {
     case notDetermined  //用户尚未选择
 }
 
-public extension HDCommonTools {
+public extension HDCommonToolsSwift {
     ///请求权限
     func requestPermission(type: HDPermissionType, complete: @escaping ((HDPermissionStatus) -> Void)) -> Void {
         switch type {

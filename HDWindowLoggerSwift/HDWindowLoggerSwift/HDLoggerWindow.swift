@@ -8,7 +8,7 @@
 
 import UIKit
 import SnapKit
-import HDSwiftCommonTools
+import HDCommonToolsSwift
 
 class HDLoggerWindow: UIWindow {
     private var mLogDataArray = [HDWindowLoggerItem]()  //输出的日志信息
@@ -167,7 +167,7 @@ class HDLoggerWindow: UIWindow {
     
     @objc private func p_confirmPicker() {
         self.mPickerBGView.isHidden = true
-        let logFilePathURL = HDCommonTools.shared.getFileDirectory(type: .caches).appendingPathComponent(self.mShareFileName, isDirectory: false)
+        let logFilePathURL = HDCommonToolsSwift.shared.getFileDirectory(type: .caches).appendingPathComponent(self.mShareFileName, isDirectory: false)
         //分享
         let activityVC = UIActivityViewController(activityItems: [logFilePathURL], applicationActivities: nil)
         if UIDevice.current.model == "iPad" {
@@ -176,12 +176,12 @@ class HDLoggerWindow: UIWindow {
             activityVC.popoverPresentationController?.sourceRect = self.mShareButton.frame
         }
         self.hideLogWindow()
-        HDCommonTools.shared.getCurrentVC()?.present(activityVC, animated: true, completion: nil)
+        HDCommonToolsSwift.shared.getCurrentVC()?.present(activityVC, animated: true, completion: nil)
     }
     
     @objc private func p_share() {
         self.mFileDateNameList = [String]()
-        let cacheDirectory = HDCommonTools.shared.getFileDirectory(type: .caches)
+        let cacheDirectory = HDCommonToolsSwift.shared.getFileDirectory(type: .caches)
         
         if let enumer = FileManager.default.enumerator(at: cacheDirectory, includingPropertiesForKeys: [URLResourceKey.creationDateKey]) {
             while let file = enumer.nextObject() {

@@ -14,9 +14,9 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "28B4BFB417C75DB4B615157206EEC1E2"
-               BuildableName = "HDSwiftCommonTools.framework"
-               BlueprintName = "HDSwiftCommonTools"
+               BlueprintIdentifier = "5F06AB8FE5C7E6773A91ABBC3C5F46BA"
+               BuildableName = "HDCommonToolsSwift.framework"
+               BlueprintName = "HDCommonToolsSwift"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

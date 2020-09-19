@@ -1,6 +1,6 @@
 //
-//  HDCommonTools+UI.swift
-//  HDSwiftCommonTools
+//  HDCommonToolsSwift+UI.swift
+//  HDCommonToolsSwift
 //
 //  Created by Damon on 2020/7/2.
 //  Copyright © 2020 Damon. All rights reserved.
@@ -21,7 +21,7 @@ public enum HDGradientDirection {
 //       ---------
 //      C         D
 
-public extension HDCommonTools {
+public extension HDCommonToolsSwift {
     ///通过十六进制字符串获取颜色
     func getColor(hexString: String, alpha: CGFloat = 1.0) -> UIColor {
         
@@ -58,7 +58,21 @@ public extension HDCommonTools {
     
     ///获取当前的normalwindow
     func getCurrentNormalWindow() -> UIWindow? {
-        var window = UIApplication.shared.keyWindow
+        var window:UIWindow? = UIApplication.shared.keyWindow
+        if #available(iOS 13.0, *) {
+            for windowScene:UIWindowScene in ((UIApplication.shared.connectedScenes as? Set<UIWindowScene>)!) {
+                if windowScene.activationState == .foregroundActive {
+                    window = windowScene.windows.first
+                    for tmpWin in windowScene.windows {
+                        if tmpWin.windowLevel == .normal {
+                            window = tmpWin
+                            break
+                        }
+                    }
+                    break
+                }
+            }
+        }
         if window == nil || window?.windowLevel != UIWindow.Level.normal {
             for tmpWin in UIApplication.shared.windows {
                 if tmpWin.windowLevel == UIWindow.Level.normal {
@@ -91,6 +105,8 @@ public extension HDCommonTools {
                 let tabBarController = currentVC as! UITabBarController
                 vc = tabBarController.selectedViewController
             }
+        }
+        if let currentVC = vc {
             if currentVC is UINavigationController {
                 let navigationController = currentVC as! UINavigationController
                 vc = navigationController.visibleViewController
@@ -237,14 +253,14 @@ public func UIColor(hexString: String, darkHexString: String = "#333333", alpha:
     if #available(iOS 13.0, *) {
         let dyColor = UIColor { (traitCollection) -> UIColor in
             if traitCollection.userInterfaceStyle == .light {
-                return HDCommonTools.shared.getColor(hexString: hexString, alpha: alpha)
+                return HDCommonToolsSwift.shared.getColor(hexString: hexString, alpha: alpha)
             } else {
-                return HDCommonTools.shared.getColor(hexString: darkHexString, alpha: darkAlpha)
+                return HDCommonToolsSwift.shared.getColor(hexString: darkHexString, alpha: darkAlpha)
             }
         }
         return dyColor
     } else {
-        return HDCommonTools.shared.getColor(hexString: hexString, alpha: alpha)
+        return HDCommonToolsSwift.shared.getColor(hexString: hexString, alpha: alpha)
     }
 }
 

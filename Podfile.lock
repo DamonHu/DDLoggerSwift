@@ -1,20 +1,20 @@
 PODS:
-  - HDSwiftCommonTools (1.3.8)
+  - HDCommonToolsSwift (2.0.0)
   - SnapKit (5.0.1)
 
 DEPENDENCIES:
-  - HDSwiftCommonTools
+  - HDCommonToolsSwift
   - SnapKit
 
 SPEC REPOS:
   trunk:
-    - HDSwiftCommonTools
+    - HDCommonToolsSwift
     - SnapKit
 
 SPEC CHECKSUMS:
-  HDSwiftCommonTools: 40444584df55977866d761094bb8a84a6db288db
+  HDCommonToolsSwift: e1c5b60993b07e6d50fc3f54023a5d9267a273a5
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
 
-PODFILE CHECKSUM: f2b830fee3582405b24615610bf8d407bda2cdc6
+PODFILE CHECKSUM: b552f02629034fbc4d1a8f3760b7e2cea0b3277d
 
 COCOAPODS: 1.9.3

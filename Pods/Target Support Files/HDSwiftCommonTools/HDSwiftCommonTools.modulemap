@@ -1,6 +1,0 @@
-framework module HDSwiftCommonTools {
-  umbrella header "HDSwiftCommonTools-umbrella.h"
-
-  export *
-  module * { export * }
-}

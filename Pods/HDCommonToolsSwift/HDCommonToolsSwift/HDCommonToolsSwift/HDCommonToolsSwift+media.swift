@@ -1,6 +1,6 @@
 //
-//  HDCommonTools+media.swift
-//  HDSwiftCommonTools
+//  HDCommonToolsSwift+media.swift
+//  HDCommonToolsSwift
 //
 //  Created by Damon on 2020/7/4.
 //  Copyright © 2020 Damon. All rights reserved.
@@ -12,7 +12,7 @@ import AVFoundation
 private var vibrateRepeat = false   //标记是否循环震动
 private var audioPlayer: AVAudioPlayer?
 
-public extension HDCommonTools {
+public extension HDCommonToolsSwift {
     
     ///获取指定video的时长， 单位秒
     func getVideoDuration(videoURL: URL) -> Double {
@@ -46,7 +46,7 @@ public extension HDCommonTools {
         
         if musicURL.absoluteString.hasPrefix("http://") || musicURL.absoluteString.hasPrefix("https://") {
             let name = musicURL.path.hd.encryptString(encryType: .md5)
-            let path = HDCommonTools.shared.createFileDirectory(in: .caches, directoryName: "music").appendingPathComponent(name, isDirectory: false)
+            let path = HDCommonToolsSwift.shared.createFileDirectory(in: .caches, directoryName: "music").appendingPathComponent(name, isDirectory: false)
             let audioData = try? Data(contentsOf: musicURL)
             try? audioData?.write(to: path)
             musicURL = path

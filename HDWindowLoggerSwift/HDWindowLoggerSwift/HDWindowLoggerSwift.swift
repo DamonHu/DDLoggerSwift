@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import HDSwiftCommonTools
+import HDCommonToolsSwift
 
 
 ///log的级别，对应不同的颜色
@@ -158,7 +158,7 @@ public class HDWindowLoggerSwift {
 
     /// 删除本地日志文件
     public class func deleteLogFile() {
-        let cachePath = HDCommonTools.shared.getFileDirectory(type: .caches)
+        let cachePath = HDCommonToolsSwift.shared.getFileDirectory(type: .caches)
         
         if let enumer = FileManager.default.enumerator(atPath: cachePath.path) {
             while let file = enumer.nextObject() {
@@ -183,7 +183,7 @@ public class HDWindowLoggerSwift {
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let dateString = dateFormatter.string(from: Date())
         //文件路径
-        let logFilePathURL = HDCommonTools.shared.getFileDirectory(type: .caches).appendingPathComponent("HDWindowLogger-\(dateString).txt", isDirectory: false)
+        let logFilePathURL = HDCommonToolsSwift.shared.getFileDirectory(type: .caches).appendingPathComponent("HDWindowLogger-\(dateString).txt", isDirectory: false)
 
         if FileManager.default.fileExists(atPath: logFilePathURL.path) {
             if let fileHandle = try? FileHandle(forWritingTo: logFilePathURL) {
@@ -207,7 +207,7 @@ public class HDWindowLoggerSwift {
     private func p_checkValidity() {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
-        let cachePath = HDCommonTools.shared.getFileDirectory(type: .caches)
+        let cachePath = HDCommonToolsSwift.shared.getFileDirectory(type: .caches)
 
         if let enumer = FileManager.default.enumerator(atPath: cachePath.path) {
             while let file = enumer.nextObject() {

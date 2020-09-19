@@ -1,6 +1,6 @@
 //
-//  HDCommonTools+file.swift
-//  HDSwiftCommonTools
+//  HDCommonToolsSwift+file.swift
+//  HDCommonToolsSwift
 //
 //  Created by Damon on 2020/7/4.
 //  Copyright © 2020 Damon. All rights reserved.
@@ -15,7 +15,7 @@ public enum HDFileDirectoryType {
     case caches     //存放缓存文件，iTunes不会备份此目录，此目录下文件不会在应用退出删除，硬盘资源紧张时会被删除
 }
 
-public extension HDCommonTools {
+public extension HDCommonToolsSwift {
     ///获取文件夹路径
     func getFileDirectory(type: HDFileDirectoryType) -> URL {
         let homePath = NSHomeDirectory()
