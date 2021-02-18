@@ -176,7 +176,7 @@ class HDLoggerWindow: UIWindow {
             try? FileManager.default.removeItem(at: logFilePathURL)
         }
         do {
-            try dataList.joined(separator: ",").write(to: logFilePathURL, atomically: false, encoding: String.Encoding.utf8)
+            try dataList.joined(separator: "\n").write(to: logFilePathURL, atomically: false, encoding: String.Encoding.utf8)
         } catch {
             print(error)
         }
@@ -199,7 +199,7 @@ class HDLoggerWindow: UIWindow {
         //数据库目录
         if let enumer = FileManager.default.enumerator(at: path, includingPropertiesForKeys: [URLResourceKey.creationDateKey]) {
             while let file = enumer.nextObject() {
-                if let file: URL = file as? URL {
+                if let file: URL = file as? URL, file.lastPathComponent.hasSuffix(".db") {
                     self.mFileDateNameList.append(file.lastPathComponent)
                 }
             }
@@ -661,6 +661,9 @@ extension HDLoggerWindow: UIPickerViewDelegate, UIPickerViewDataSource {
     }
     
     public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        self.mShareFileName = self.mFileDateNameList[row]
+        if !self.mFileDateNameList.isEmpty {
+            self.mShareFileName = self.mFileDateNameList[row]
+        }
+
     }
 }
