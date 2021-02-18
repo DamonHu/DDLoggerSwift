@@ -109,10 +109,10 @@ If set to output all debugging information, the output format is as follows, inc
 HDWindowLoggerSwift.mDebugAreaLogOut = true
 ```
 
-### 3、Get the log information content
+### 3、Separate log folder for different users
 
 ```
-HDWindowLoggerSwift.shared.mLogDataArray
+HDWindowLoggerSwift.mUserID = "1001"
 ```
 
 ### 4、Clear the log
@@ -148,6 +148,14 @@ HDWindowLoggerSwift.deleteLogFile()
 
 ```
 HDWindowLoggerSwift.shared.mLogExpiryDay = 0
+```
+
+### 10、Get the array of logs. You can specify the date in the format of 2020-01-01
+
+```
+HDWindowLoggerSwift.getAllLog()
+//Special date
+HDWindowLoggerSwift.getAllLog(name:"2020-01-01")
 ```
 
 ### LogContent protocol
@@ -314,12 +322,11 @@ HDWindowLoggerSwift.mCompleteLogOut = true
 HDWindowLoggerSwift.mDebugAreaLogOut = true
 ```
 
-### 3、 获取log信息内容
+### 3、针对不同用户设置独立日志文件夹
 
 ```
-HDWindowLoggerSwift.shared.mLogDataArray
+HDWindowLoggerSwift.mUserID = "1001"
 ```
-
 
 ### 4、清空log
 
@@ -354,7 +361,15 @@ HDWindowLoggerSwift.deleteLogFile()
 ### 9、 本地日志文件的有效期（天），超出有效期的本地日志会被删除，0为没有有效期，默认为7天
 
 ```
-HDWindowLoggerSwift.shared.mLogExpiryDay = 0
+HDWindowLoggerSwift.mLogExpiryDay = 0
+```
+
+### 10、获取数据库存储的日志信息数组，可以指定日期，格式为2020-01-01
+
+```
+HDWindowLoggerSwift.getAllLog()
+//指定日期
+HDWindowLoggerSwift.getAllLog(name:"2020-01-01")
 ```
 
 ### LogContent协议
