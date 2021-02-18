@@ -15,11 +15,11 @@ class HDSqliteTools {
 
     init() {
         self.db = self._openDatabase()
+        self._createTable()
     }
 
     //插入数据
     func insertLog(log: HDWindowLoggerItem) {
-        self._createTable()
         let insertRowString = String(format: "insert into hdlog(log,logType,time) values ('%@','%d','%f')", log.getFullContentString(), log.mLogItemType.rawValue, Date().timeIntervalSince1970)
         var insertStatement: OpaquePointer?
         //第一步
