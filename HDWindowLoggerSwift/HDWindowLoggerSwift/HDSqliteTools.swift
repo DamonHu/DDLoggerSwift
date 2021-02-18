@@ -17,6 +17,13 @@ class HDSqliteTools {
         self.db = self._openDatabase()
         self._createTable()
     }
+    
+    //获取数据库文件夹
+    func getDBFolder() -> URL {
+        let dbFolder = HDWindowLoggerSwift.mUserID.hd.encryptString(encryType: .md5)
+        let path = HDCommonToolsSwift.shared.createFileDirectory(in: .caches, directoryName: dbFolder)
+        return path
+    }
 
     //插入数据
     func insertLog(log: HDWindowLoggerItem) {
@@ -66,8 +73,7 @@ class HDSqliteTools {
 private extension HDSqliteTools {
     //获取数据库地址
     func _getDataBasePath(name: String? = nil) -> URL {
-        let dbFolder = HDWindowLoggerSwift.mUserID.hd.encryptString(encryType: .md5)
-        let path = HDCommonToolsSwift.shared.createFileDirectory(in: .caches, directoryName: dbFolder)
+        let path = self.getDBFolder()
         if let name = name {
             return path.appendingPathComponent("\(name)")
         } else {
