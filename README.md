@@ -2,9 +2,9 @@
 
 ![](./ReadmeImage/cocoapodTool.png)
 
-iOS端将输出日志log悬浮显示在屏幕上，可以生成日志文件分享，便于在真机没有连接xcode的情况下调试信息。可以分享、筛选log等操作
+iOS端将输出日志log悬浮显示在屏幕上，可以生成日志文件分享，便于在真机没有连接xcode的情况下调试信息。可以分享、筛选log等操作。使用sqlite3存储日志信息，支持系统分享
 
-The iOS side displays the output log log on the screen, and can generate log file sharing, which is convenient for debugging information when the real machine is not connected to xcode. Log information can be filtered and shared
+The iOS side displays the output log log on the screen, and can generate log file sharing, which is convenient for debugging information when the real machine is not connected to xcode. Log information can be filtered and shared. Use SQLite3 to store log information and support system sharing
 
 ### [Document for English](#english) | [Objective-C Version](https://github.com/DamonHu/HDWindowLogger)
 
