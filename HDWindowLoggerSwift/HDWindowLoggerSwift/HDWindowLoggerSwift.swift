@@ -63,13 +63,13 @@ public class HDWindowLoggerSwift {
     public static var mPrivacyPassword = ""     //解密隐私数据的密码，默认为空不加密
     public static var mLogExpiryDay = 7        //本地日志文件的有效期（天），超出有效期的本地日志会被删除，0为没有有效期，默认为7天
     public static var mMaxShowCount = 100       //屏幕最大的显示数量，适量即可，0为不限制
-    public private(set) var mLogDataArray = [HDWindowLoggerItem]()  //输出的日志信息
     public static var mUserID = "0"             //为不同用户创建的独立的日志库
     public static let shared = HDWindowLoggerSwift()
     
     //MARK: Private
     private var mWindow: HDLoggerWindow?
     private let logQueue = DispatchQueue(label: "HDWindowLogger")
+    private var mLogDataArray = [HDWindowLoggerItem]()  //输出的日志信息
     var mPasswordCorrect: Bool = false
     
     //log的Public函数
@@ -116,6 +116,11 @@ public class HDWindowLoggerSwift {
         }
     }
     
+    ///获取log日志数组
+    public func getAllLog(name: String? = nil) -> [String] {
+        return HDSqliteTools.shared.getAllLog(name: name)
+    }
+    
     ///  删除log日志
     public class func cleanLog() {
         self.shared.mLogDataArray.removeAll()
@@ -159,13 +164,13 @@ public class HDWindowLoggerSwift {
 
     /// 删除本地日志文件
     public class func deleteLogFile() {
-        let cachePath = HDCommonToolsSwift.shared.getFileDirectory(type: .caches)
+        let dbFolder = HDSqliteTools.shared.getDBFolder()
         
-        if let enumer = FileManager.default.enumerator(atPath: cachePath.path) {
+        if let enumer = FileManager.default.enumerator(atPath: dbFolder.path) {
             while let file = enumer.nextObject() {
                 if let file: String = file as? String {
-                    if file.hasPrefix("HDWindowLogger-") {
-                        let logFilePath = cachePath.appendingPathComponent(file, isDirectory: false)
+                    if file.hasSuffix(".db") {
+                        let logFilePath = dbFolder.appendingPathComponent(file, isDirectory: false)
                         try? FileManager.default.removeItem(at: logFilePath)
                     }
                 }
@@ -177,7 +182,9 @@ public class HDWindowLoggerSwift {
     init() {
         self.p_checkValidity()
     }
+}
 
+private extension HDWindowLoggerSwift {
     private class func p_writeDB(log: HDWindowLoggerItem) -> Void {
         HDSqliteTools.shared.insertLog(log: log)
     }
@@ -211,15 +218,15 @@ public class HDWindowLoggerSwift {
     private func p_checkValidity() {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
-        let cachePath = HDCommonToolsSwift.shared.getFileDirectory(type: .caches)
+        let cachePath = HDSqliteTools.shared.getDBFolder()
 
         if let enumer = FileManager.default.enumerator(atPath: cachePath.path) {
             while let file = enumer.nextObject() {
                 if let file: String = file as? String {
-                    if file.hasPrefix("HDWindowLogger-") {
+                    if file.hasSuffix(".db") {
                         //截取日期
-                        let index2 = file.index(file.startIndex, offsetBy: 15)
-                        let index3 = file.index(file.startIndex, offsetBy: 24)
+                        let index2 = file.startIndex
+                        let index3 = file.index(file.startIndex, offsetBy: 10)
                         let dateString = file[index2...index3]
                         let fileDate = dateFormatter.date(from: String(dateString))
                         if let fileDate = fileDate {
