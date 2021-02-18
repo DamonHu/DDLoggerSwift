@@ -43,10 +43,8 @@ class ViewController: UIViewController {
     }
 
     @objc func onClickButton() {
-        print("点击sssssssssssss")
-        DispatchQueue.global().async {
-            
-        }
+//        HDNormalLog("测试输出，不会写入悬浮窗")
+//        HDErrorLog("错误出现")
         for _ in 0..<100 {
             HDDebugLog("测试输出，不会写入悬浮窗")
             HDDebugLog("测试输出，不会写入悬浮窗","222222","3333333")
@@ -67,9 +65,6 @@ class ViewController: UIViewController {
             let arrayObj = ["1111111","22222222","sdjkhfsjkdfjkhsdhjfk","3333sjdhgfhjg"]
             HDNormalLog(arrayObj)
         }
-
-
-
     }
     
     @objc func onClickdeleteButton() {

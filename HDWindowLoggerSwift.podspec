@@ -9,6 +9,7 @@ s.authors = { 'DamonHu' => 'dong765@qq.com' }
 s.source = { :git => "https://github.com/DamonHu/HDWindowLoggerSwift.git", :tag => s.version}
 s.requires_arc = true
 s.ios.deployment_target = '10.0'
+s.framework = 'SQLite3'
 s.source_files = "HDWindowLoggerSwift/HDWindowLoggerSwift/*.swift","HDWindowLoggerSwift/HDWindowLoggerSwift/**/*.strings"
 s.documentation_url = 'http://blog.hudongdong.com/ios/952.html'
 s.dependency 'SnapKit'

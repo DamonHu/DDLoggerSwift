@@ -47,9 +47,31 @@ public class HDWindowLoggerItem {
         }
         
         if HDWindowLoggerSwift.mCompleteLogOut {
-            return dateStr + "  >   " +  mLogDebugContent + "\n" + contentString + "\n"
+            switch mLogItemType {
+                case .normal:
+                    return dateStr + "  >   ✅✅" +  mLogDebugContent + "\n" + contentString + "\n"
+                case .warn:
+                    return dateStr + "  >   ⚠️⚠️" +  mLogDebugContent + "\n" + contentString + "\n"
+                case .error:
+                    return dateStr + "  >   ❌❌" +  mLogDebugContent + "\n" + contentString + "\n"
+                case .privacy:
+                    return dateStr + "  >   ⛔️⛔️" +  mLogDebugContent + "\n" + contentString + "\n"
+                case .debug:
+                    return dateStr + "  >   🖤🖤" +  mLogDebugContent + "\n" + contentString + "\n"
+            }
         } else {
-            return dateStr + "  >   " + contentString + "\n"
+            switch mLogItemType {
+                case .normal:
+                    return dateStr + "  >   ✅✅" + contentString + "\n"
+                case .warn:
+                    return dateStr + "  >   ⚠️⚠️" + contentString + "\n"
+                case .error:
+                    return dateStr + "  >   ❌❌" + contentString + "\n"
+                case .privacy:
+                    return dateStr + "  >   ⛔️⛔️" + contentString + "\n"
+                case .debug:
+                    return dateStr + "  >   🖤🖤" + contentString + "\n"
+            }
         }
     }
     

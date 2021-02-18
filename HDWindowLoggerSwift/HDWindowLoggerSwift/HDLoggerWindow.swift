@@ -167,7 +167,20 @@ class HDLoggerWindow: UIWindow {
     
     @objc private func p_confirmPicker() {
         self.mPickerBGView.isHidden = true
-        let logFilePathURL = HDCommonToolsSwift.shared.getFileDirectory(type: .caches).appendingPathComponent(self.mShareFileName, isDirectory: false)
+//        let logFilePathURL = HDCommonToolsSwift.shared.getFileDirectory(type: .caches).appendingPathComponent(self.mShareFileName, isDirectory: false)
+        let dataList = HDSqliteTools.shared.getAllLog(name: self.mShareFileName)
+        //写入到text文件好解析
+        //文件路径
+        let logFilePathURL = HDCommonToolsSwift.shared.getFileDirectory(type: .caches).appendingPathComponent("HDWindowLogger.txt", isDirectory: false)
+        if FileManager.default.fileExists(atPath: logFilePathURL.path) {
+            try? FileManager.default.removeItem(at: logFilePathURL)
+        }
+        do {
+            try dataList.joined(separator: ",").write(to: logFilePathURL, atomically: false, encoding: String.Encoding.utf8)
+        } catch {
+            print(error)
+        }
+
         //分享
         let activityVC = UIActivityViewController(activityItems: [logFilePathURL], applicationActivities: nil)
         if UIDevice.current.model == "iPad" {
@@ -181,14 +194,13 @@ class HDLoggerWindow: UIWindow {
     
     @objc private func p_share() {
         self.mFileDateNameList = [String]()
-        let cacheDirectory = HDCommonToolsSwift.shared.getFileDirectory(type: .caches)
-        
-        if let enumer = FileManager.default.enumerator(at: cacheDirectory, includingPropertiesForKeys: [URLResourceKey.creationDateKey]) {
+        let dbFolder = HDWindowLoggerSwift.mUserID.hd.encryptString(encryType: .md5)
+        let path = HDCommonToolsSwift.shared.createFileDirectory(in: .caches, directoryName: dbFolder)
+        //数据库目录
+        if let enumer = FileManager.default.enumerator(at: path, includingPropertiesForKeys: [URLResourceKey.creationDateKey]) {
             while let file = enumer.nextObject() {
                 if let file: URL = file as? URL {
-                    if file.lastPathComponent.hasPrefix("HDWindowLogger-") {
-                        self.mFileDateNameList.append(file.lastPathComponent)
-                    }
+                    self.mFileDateNameList.append(file.lastPathComponent)
                 }
             }
         }
