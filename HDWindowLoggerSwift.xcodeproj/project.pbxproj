@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		482F596BF3D546A1BF12BC37 /* Pods_HDWindowLoggerSwift_HDWindowLoggerSwiftUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D0BD1ACC5224B967D97685F /* Pods_HDWindowLoggerSwift_HDWindowLoggerSwiftUITests.framework */; };
 		83B62DA57B98D38A9DBD277D /* Pods_HDWindowLoggerSwiftTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C52FB809976FED82D9A48A5F /* Pods_HDWindowLoggerSwiftTests.framework */; };
+		E409882025DE3DA90013DC32 /* HDSqliteTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = E409881F25DE3DA90013DC32 /* HDSqliteTools.swift */; };
 		E47F8DE02508FE840055584A /* HDLoggerWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47F8DDF2508FE840055584A /* HDLoggerWindow.swift */; };
 		E4885A7122C60E5100B9BC8B /* LogContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4885A7022C60E5100B9BC8B /* LogContent.swift */; };
 		E48AABF722C05EF600CC5F1C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48AABF622C05EF600CC5F1C /* AppDelegate.swift */; };
@@ -52,6 +53,7 @@
 		C52FB809976FED82D9A48A5F /* Pods_HDWindowLoggerSwiftTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HDWindowLoggerSwiftTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D26B26CF4E21ACE69380752F /* Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests.debug.xcconfig"; path = "Target Support Files/Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests/Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		D6BC2BB2778E87514615D81F /* Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests.release.xcconfig"; path = "Target Support Files/Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests/Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests.release.xcconfig"; sourceTree = "<group>"; };
+		E409881F25DE3DA90013DC32 /* HDSqliteTools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDSqliteTools.swift; sourceTree = "<group>"; };
 		E47F8DDF2508FE840055584A /* HDLoggerWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDLoggerWindow.swift; sourceTree = "<group>"; };
 		E4885A7022C60E5100B9BC8B /* LogContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogContent.swift; sourceTree = "<group>"; };
 		E48AABF322C05EF600CC5F1C /* HDWindowLoggerSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HDWindowLoggerSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -190,6 +192,7 @@
 				E4885A7022C60E5100B9BC8B /* LogContent.swift */,
 				E4A754AE2490AA17005EAD80 /* HDWindowLoggerItem.swift */,
 				E47F8DDF2508FE840055584A /* HDLoggerWindow.swift */,
+				E409881F25DE3DA90013DC32 /* HDSqliteTools.swift */,
 			);
 			path = HDWindowLoggerSwift;
 			sourceTree = "<group>";
@@ -440,6 +443,7 @@
 				E4A754AF2490AA17005EAD80 /* HDWindowLoggerItem.swift in Sources */,
 				E48AABFB22C05EF600CC5F1C /* ViewController.swift in Sources */,
 				E47F8DE02508FE840055584A /* HDLoggerWindow.swift in Sources */,
+				E409882025DE3DA90013DC32 /* HDSqliteTools.swift in Sources */,
 				E48AAC2822C05F5300CC5F1C /* HDWindowLoggerSwift.swift in Sources */,
 				E48AABF722C05EF600CC5F1C /* AppDelegate.swift in Sources */,
 			);
@@ -628,18 +632,18 @@
 			baseConfigurationReference = 4E611A3C63A0DBE09BD1F334 /* Pods-HDWindowLoggerSwift.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = SDWPRN2XF5;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = T38FA79BYC;
 				INFOPLIST_FILE = HDWindowLoggerSwift/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.blue.ttdw;
+				PRODUCT_BUNDLE_IDENTIFIER = com.qinliannet.bubuzheng;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = dw_dev;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -650,18 +654,18 @@
 			baseConfigurationReference = 26DFD0E4C44874AC782523DC /* Pods-HDWindowLoggerSwift.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = SDWPRN2XF5;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = T38FA79BYC;
 				INFOPLIST_FILE = HDWindowLoggerSwift/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.blue.ttdw;
+				PRODUCT_BUNDLE_IDENTIFIER = com.qinliannet.bubuzheng;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = dw_dev;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
