@@ -64,14 +64,13 @@ public class HDWindowLoggerSwift {
     public static var mLogExpiryDay = 7        //本地日志文件的有效期（天），超出有效期的本地日志会被删除，0为没有有效期，默认为7天
     public static var mMaxShowCount = 100       //屏幕最大的显示数量，适量即可，0为不限制
     public static var mUserID = "0"             //为不同用户创建的独立的日志库
-    public static let shared = HDWindowLoggerSwift()
     
     //MARK: Private
     private var mWindow: HDLoggerWindow?
     private let logQueue = DispatchQueue(label: "HDWindowLogger")
     private var mLogDataArray = [HDWindowLoggerItem]()  //输出的日志信息
     var mPasswordCorrect: Bool = false
-    
+    static let shared = HDWindowLoggerSwift()
     //log的Public函数
     /// 根据日志的输出类型去输出相应的日志，不同日志类型颜色不一样
     /// - Parameter log: 日志内容
@@ -117,7 +116,7 @@ public class HDWindowLoggerSwift {
     }
     
     ///获取log日志数组
-    public func getAllLog(name: String? = nil) -> [String] {
+    public class func getAllLog(name: String? = nil) -> [String] {
         return HDSqliteTools.shared.getAllLog(name: name)
     }
     
