@@ -82,7 +82,7 @@ private extension HDSqliteTools {
     func _openDatabase(name: String? = nil) -> OpaquePointer? {
         var db: OpaquePointer?
         let dbPath = self._getDataBasePath(name: name)
-        if sqlite3_open_v2(dbPath.path, &db, SQLITE_OPEN_READWRITE|SQLITE_OPEN_FULLMUTEX, nil) == SQLITE_OK {
+        if sqlite3_open_v2(dbPath.path, &db, SQLITE_OPEN_READWRITE|SQLITE_OPEN_CREATE|SQLITE_OPEN_FULLMUTEX, nil) == SQLITE_OK {
 //            print("成功打开数据库\(dbPath.absoluteString)")
             return db
         } else {
