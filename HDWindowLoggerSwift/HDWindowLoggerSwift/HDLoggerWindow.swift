@@ -167,11 +167,10 @@ class HDLoggerWindow: UIWindow {
     
     @objc private func p_confirmPicker() {
         self.mPickerBGView.isHidden = true
-//        let logFilePathURL = HDCommonToolsSwift.shared.getFileDirectory(type: .caches).appendingPathComponent(self.mShareFileName, isDirectory: false)
-        let dataList = HDSqliteTools.shared.getAllLog(name: self.mShareFileName)
+        let dataList = HDSqliteTools.shared.getAllLog(name: self.mShareFileName).reversed()
         //写入到text文件好解析
         //文件路径
-        let logFilePathURL = HDCommonToolsSwift.shared.getFileDirectory(type: .caches).appendingPathComponent("HDWindowLogger.txt", isDirectory: false)
+        let logFilePathURL = HDCommonToolsSwift.shared.getFileDirectory(type: .caches).appendingPathComponent("HDWindowLogger.log", isDirectory: false)
         if FileManager.default.fileExists(atPath: logFilePathURL.path) {
             try? FileManager.default.removeItem(at: logFilePathURL)
         }
@@ -194,8 +193,7 @@ class HDLoggerWindow: UIWindow {
     
     @objc private func p_share() {
         self.mFileDateNameList = [String]()
-        let dbFolder = HDWindowLoggerSwift.mUserID.hd.encryptString(encryType: .md5)
-        let path = HDCommonToolsSwift.shared.createFileDirectory(in: .caches, directoryName: dbFolder)
+        let path = HDSqliteTools.shared.getDBFolder()
         //数据库目录
         if let enumer = FileManager.default.enumerator(at: path, includingPropertiesForKeys: [URLResourceKey.creationDateKey]) {
             while let file = enumer.nextObject() {
