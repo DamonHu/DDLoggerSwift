@@ -15,6 +15,7 @@ s.documentation_url = 'http://blog.hudongdong.com/ios/952.html'
 s.dependency 'SnapKit'
 s.dependency 'HDCommonToolsSwift'
 s.subspec 'WCDB' do |cs|
+    cs.dependency 'HDWindowLoggerSwift'
     cs.dependency 'WCDB.swift'
 end
 s.default_subspecs = :none
