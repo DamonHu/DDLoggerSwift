@@ -17,4 +17,5 @@ s.dependency 'HDCommonToolsSwift'
 s.subspec 'wcdb' do |cs|
     cs.dependency 'WCDB.swift'
 end
+s.default_subspecs = :none
 end
