@@ -262,6 +262,8 @@ Here are a few online sites recommended, you can also Google it by yourself
 pod 'HDWindowLoggerSwift'
 ```
 
+如果你集成了腾讯的[Tencent/wcdb](https://github.com/Tencent/wcdb)，由于他修改优化了`sqlite`的系统功能，会导致函数名一样报错，这个可以通过
+
 ### 1.2、文件安装
 
 可以将工程底下，`HDWindowLoggerSwift`文件夹内的文件拖入项目即可
