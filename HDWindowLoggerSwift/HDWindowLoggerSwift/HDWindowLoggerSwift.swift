@@ -119,6 +119,11 @@ public class HDWindowLoggerSwift {
     public class func getAllLog(name: String? = nil) -> [String] {
         return HDSqliteTools.shared.getAllLog(name: name)
     }
+
+    ///获取log日志的数据库
+    public class func getDBFolder() -> URL {
+        return HDSqliteTools.shared.getDBFolder()
+    }
     
     ///  删除log日志
     public class func cleanLog() {
@@ -163,7 +168,7 @@ public class HDWindowLoggerSwift {
 
     /// 删除本地日志文件
     public class func deleteLogFile() {
-        let dbFolder = HDSqliteTools.shared.getDBFolder()
+        let dbFolder = self.getDBFolder()
         
         if let enumer = FileManager.default.enumerator(atPath: dbFolder.path) {
             while let file = enumer.nextObject() {
