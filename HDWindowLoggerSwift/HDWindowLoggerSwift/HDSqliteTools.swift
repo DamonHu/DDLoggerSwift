@@ -55,10 +55,10 @@ class HDSqliteTools {
             //第二步
             while(sqlite3_step(queryStatement) == SQLITE_ROW) {
                 //第三步
-                let id = sqlite3_column_int(queryStatement, 0)
+//                let id = sqlite3_column_int(queryStatement, 0)
                 let log = sqlite3_column_text(queryStatement, 1)
-                let logType = sqlite3_column_int(queryStatement, 2)
-                let time = sqlite3_column_double(queryStatement, 3)
+//                let logType = sqlite3_column_int(queryStatement, 2)
+//                let time = sqlite3_column_double(queryStatement, 3)
                 if let log = log {
                     logList.append("\(String(cString: log))")
                 }
@@ -101,7 +101,6 @@ private extension HDSqliteTools {
     func _createTable() {
         let createTableString = "create table if not exists 'hdlog' ('id' integer primary key autoincrement not null,'log' text,'logType' integer,'time' float)"
         var createTableStatement: OpaquePointer?
-        // 第一步
         if sqlite3_prepare_v2(db, createTableString, -1, &createTableStatement, nil) == SQLITE_OK {
             // 第二步
             if sqlite3_step(createTableStatement) == SQLITE_DONE {
