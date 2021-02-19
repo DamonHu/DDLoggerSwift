@@ -6,7 +6,13 @@
 //  Copyright © 2021 Damon. All rights reserved.
 //
 
+#if canImport(WCDBSwift)
+import WCDBSwift
+#elseif canImport(SQLite3)
 import SQLite3
+#else
+//
+#endif
 import HDCommonToolsSwift
 
 class HDSqliteTools {
