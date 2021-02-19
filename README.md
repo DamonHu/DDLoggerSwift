@@ -158,6 +158,29 @@ HDWindowLoggerSwift.getAllLog()
 HDWindowLoggerSwift.getAllLog(name:"2020-01-01")
 ```
 
+If you want to get all the log files, you can get the folder where the log is stored, return a URL result, and then traverse to process it yourself
+
+```
+HDWindowLoggerSwift.getDBFolder()
+```
+
+for example
+
+```
+let dbFolder = HDWindowLoggerSwift.getDBFolder()
+        
+if let enumer = FileManager.default.enumerator(atPath: dbFolder.path) {
+    while let file = enumer.nextObject() {
+       if let file: String = file as? String {
+            if file.hasSuffix(".db") {
+	            //Get the specific log file log
+                let logFilePath = dbFolder.appendingPathComponent(file, isDirectory: false)              
+            }
+        }
+    }
+}
+```
+
 ### LogContent protocol
 
 If you want to customize the output content, you can integrate and use this type of `LogContent` protocol. For example, you can print the `URL` type to output only its` path`. You can directly set the returned `logStringValue`.
@@ -370,6 +393,29 @@ HDWindowLoggerSwift.mLogExpiryDay = 0
 HDWindowLoggerSwift.getAllLog()
 //指定日期
 HDWindowLoggerSwift.getAllLog(name:"2020-01-01")
+```
+
+如果你想获取所有日志文件，可以获取日志存储的文件夹，返回的是一个URL结果，然后自己进行遍历去处理
+
+```
+HDWindowLoggerSwift.getDBFolder()
+```
+
+例如
+
+```
+let dbFolder = HDWindowLoggerSwift.getDBFolder()
+        
+if let enumer = FileManager.default.enumerator(atPath: dbFolder.path) {
+    while let file = enumer.nextObject() {
+         if let file: String = file as? String {
+            if file.hasSuffix(".db") {
+            	//获取到具体的log文件日志
+                let logFilePath = dbFolder.appendingPathComponent(file, isDirectory: false)
+             }
+         }
+    }
+}
 ```
 
 ### LogContent协议
