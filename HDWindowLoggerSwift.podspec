@@ -9,14 +9,16 @@ s.authors = { 'DamonHu' => 'dong765@qq.com' }
 s.source = { :git => "https://github.com/DamonHu/HDWindowLoggerSwift.git", :tag => s.version}
 s.requires_arc = true
 s.ios.deployment_target = '10.0'
-s.library = 'sqlite3'
-s.source_files = "HDWindowLoggerSwift/HDWindowLoggerSwift/*.swift","HDWindowLoggerSwift/HDWindowLoggerSwift/**/*.strings"
 s.documentation_url = 'http://blog.hudongdong.com/ios/952.html'
-s.dependency 'SnapKit'
-s.dependency 'HDCommonToolsSwift'
+s.subspec 'Core' do |cs|
+    cs.library = 'sqlite3'
+    cs.source_files = "HDWindowLoggerSwift/HDWindowLoggerSwift/*.swift","HDWindowLoggerSwift/HDWindowLoggerSwift/**/*.strings"
+    cs.dependency 'SnapKit'
+    cs.dependency 'HDCommonToolsSwift'
+end
 s.subspec 'WCDB' do |cs|
-    cs.dependency 'HDWindowLoggerSwift'
+    cs.dependency 'HDWindowLoggerSwift/Core'
     cs.dependency 'WCDB.swift'
 end
-s.default_subspecs = :none
+s.default_subspecs = "Core"
 end
