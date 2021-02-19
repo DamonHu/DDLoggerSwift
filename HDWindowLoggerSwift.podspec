@@ -14,7 +14,7 @@ s.source_files = "HDWindowLoggerSwift/HDWindowLoggerSwift/*.swift","HDWindowLogg
 s.documentation_url = 'http://blog.hudongdong.com/ios/952.html'
 s.dependency 'SnapKit'
 s.dependency 'HDCommonToolsSwift'
-s.subspec 'wcdb' do |cs|
+s.subspec 'WCDB' do |cs|
     cs.dependency 'WCDB.swift'
 end
 s.default_subspecs = :none
