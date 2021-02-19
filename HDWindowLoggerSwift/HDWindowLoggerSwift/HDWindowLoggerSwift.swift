@@ -184,7 +184,9 @@ public class HDWindowLoggerSwift {
 
     //MARK: init
     init() {
-        self.p_checkValidity()
+        if HDWindowLoggerSwift.mLogExpiryDay > 0 {
+            self.p_checkValidity()
+        }
     }
 }
 
@@ -230,7 +232,7 @@ private extension HDWindowLoggerSwift {
                     if file.hasSuffix(".db") {
                         //截取日期
                         let index2 = file.startIndex
-                        let index3 = file.index(file.startIndex, offsetBy: 10)
+                        let index3 = file.index(file.startIndex, offsetBy: 9)
                         let dateString = file[index2...index3]
                         let fileDate = dateFormatter.date(from: String(dateString))
                         if let fileDate = fileDate {
