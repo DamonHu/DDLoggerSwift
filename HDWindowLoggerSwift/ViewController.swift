@@ -33,6 +33,8 @@ class ViewController: UIViewController {
         self.view.addSubview(self.deleteButton)
         self.clickButton.addTarget(self, action: #selector(onClickButton), for: UIControl.Event.touchUpInside)
         self.deleteButton.addTarget(self, action: #selector(onClickdeleteButton), for: UIControl.Event.touchUpInside)
+
+        HDNormalLog("调试数据文件地址", HDWindowLoggerSwift.getDBFolder().path)
     }
     
     override func viewDidAppear(_ animated: Bool) {

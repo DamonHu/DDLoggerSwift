@@ -195,32 +195,6 @@ private extension HDWindowLoggerSwift {
         HDSqliteTools.shared.insertLog(log: log)
     }
     
-    private class func p_writeFile(log: String) -> Void {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        let dateString = dateFormatter.string(from: Date())
-        //文件路径
-        let logFilePathURL = HDCommonToolsSwift.shared.getFileDirectory(type: .caches).appendingPathComponent("HDWindowLogger-\(dateString).txt", isDirectory: false)
-
-        if FileManager.default.fileExists(atPath: logFilePathURL.path) {
-            if let fileHandle = try? FileHandle(forWritingTo: logFilePathURL) {
-                fileHandle.seekToEndOfFile()
-                if let data = log.data(using: String.Encoding.utf8) {
-                    fileHandle.write(data)
-                }
-                fileHandle.closeFile()
-            } else {
-                try? log.write(to: logFilePathURL, atomically: false, encoding: String.Encoding.utf8)
-            }
-        } else {
-            do {
-                try log.write(to: logFilePathURL, atomically: false, encoding: String.Encoding.utf8)
-            } catch {
-                print(error)
-            }
-        }
-    }
-    
     private func p_checkValidity() {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
