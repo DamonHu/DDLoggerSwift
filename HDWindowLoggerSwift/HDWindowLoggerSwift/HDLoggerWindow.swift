@@ -150,9 +150,13 @@ class HDLoggerWindow: UIWindow {
     }
     
     @objc private func p_touchMove(p:UIPanGestureRecognizer) {
-        let panPoint = p.location(in: UIApplication.shared.keyWindow)
-        if p.state == UIGestureRecognizer.State.changed {
-            self.mFloatWindow.center = CGPoint(x: panPoint.x, y: panPoint.y)
+        guard let window = HDCommonToolsSwift.shared.getCurrentNormalWindow() else { return }
+        let panPoint = p.location(in: window)
+        if p.state == .changed || p.state == .ended {
+            let x = min(max(40, panPoint.x) , window.bounds.size.width - 40)
+            let y = min(max(80, panPoint.y), window.bounds.size.height - 140)
+            self.mFloatWindow.center = CGPoint(x: x, y: y)
+            p.setTranslation(CGPoint.zero, in: self.mFloatWindow)
         }
     }
     
@@ -202,6 +206,7 @@ class HDLoggerWindow: UIWindow {
                 }
             }
         }
+        
         //倒序，最后的放前面
         self.mFileDateNameList = self.mFileDateNameList.reversed()
         self.mPickerBGView.isHidden = !self.mPickerBGView.isHidden
@@ -478,8 +483,10 @@ class HDLoggerWindow: UIWindow {
         let floatButton = UIButton(type: UIButton.ButtonType.custom)
         floatButton.backgroundColor = UIColor(red: 93.0/255.0, green: 174.0/255.0, blue: 139.0/255.0, alpha: 1.0)
         floatButton.setTitle(NSLocalizedString("H", comment: ""), for: UIControl.State.normal)
-        floatButton.titleLabel?.font = UIFont.systemFont(ofSize: 20)
+        floatButton.titleLabel?.font = UIFont.systemFont(ofSize: 22, weight: .bold)
         floatButton.layer.masksToBounds = true
+        floatButton.layer.borderColor = UIColor(hexValue: 0x433520).cgColor
+        floatButton.layer.borderWidth = 5.0
         floatButton.layer.cornerRadius = 30.0
         floatButton.addTarget(self, action: #selector(p_show), for: UIControl.Event.touchUpInside)
         floatButton.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
