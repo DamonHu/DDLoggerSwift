@@ -481,13 +481,12 @@ class HDLoggerWindow: UIWindow {
         floatWidow.isUserInteractionEnabled = true
         
         let floatButton = UIButton(type: UIButton.ButtonType.custom)
-        floatButton.backgroundColor = UIColor(red: 93.0/255.0, green: 174.0/255.0, blue: 139.0/255.0, alpha: 1.0)
+        floatButton.backgroundColor = UIColor(hexValue: 0x5dae8b)
         floatButton.setTitle(NSLocalizedString("H", comment: ""), for: UIControl.State.normal)
-        floatButton.titleLabel?.font = UIFont.systemFont(ofSize: 22, weight: .bold)
-        floatButton.layer.masksToBounds = true
-        floatButton.layer.borderColor = UIColor(hexValue: 0x433520).cgColor
-        floatButton.layer.borderWidth = 5.0
-        floatButton.layer.cornerRadius = 30.0
+        floatButton.titleLabel?.font = UIFont.systemFont(ofSize: 23, weight: .bold)
+        floatButton.layer.borderColor = UIColor(hexValue: 0xffffff).cgColor
+        floatButton.hd.addLayerShadow(color: UIColor(hexValue: 0x333333), offset: CGSize(width: 2, height: 2), radius: 4, cornerRadius: 30)
+        floatButton.layer.borderWidth = 4.0
         floatButton.addTarget(self, action: #selector(p_show), for: UIControl.Event.touchUpInside)
         floatButton.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
         
