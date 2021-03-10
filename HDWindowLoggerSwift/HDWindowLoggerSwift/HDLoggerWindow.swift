@@ -24,11 +24,13 @@ class HDLoggerWindow: UIWindow {
     
     @available(iOS 13.0, *)
     override init(windowScene: UIWindowScene) {
+        print("windowScene")
         super.init(windowScene: windowScene)
         self.p_init()
     }
     
     override init(frame: CGRect) {
+        print("frame")
         super.init(frame: frame)
         self.p_init()
     }
@@ -171,14 +173,20 @@ class HDLoggerWindow: UIWindow {
     }()
     
     private lazy var mFloatWindow: UIWindow = {
-        var floatWidow: UIWindow = UIWindow(frame: CGRect(x: UIScreen.main.bounds.size.width - 80, y: 100, width: 60, height: 60))
+        var floatWidow: UIWindow
+        var tmpFloatWindo: UIWindow?
         if #available(iOS 13.0, *) {
             for windowScene:UIWindowScene in ((UIApplication.shared.connectedScenes as? Set<UIWindowScene>)!) {
                 if windowScene.activationState == .foregroundActive {
-                    floatWidow = UIWindow(windowScene: windowScene)
-                    floatWidow.frame = CGRect(x: UIScreen.main.bounds.size.width - 80, y: 100, width: 60, height: 60)
+                    tmpFloatWindo = UIWindow(windowScene: windowScene)
+                    tmpFloatWindo?.frame = CGRect(x: UIScreen.main.bounds.size.width - 80, y: 100, width: 60, height: 60)
                 }
             }
+        }
+        if let window = tmpFloatWindo {
+            floatWidow = window
+        } else {
+            floatWidow = UIWindow(frame: CGRect(x: UIScreen.main.bounds.size.width - 80, y: 100, width: 60, height: 60))
         }
         
         floatWidow.rootViewController = UIViewController()
@@ -285,6 +293,9 @@ class HDLoggerWindow: UIWindow {
 private extension HDLoggerWindow {
     @objc func changeWindowFrame() {
         self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 350)
+        self.mBGView.snp.updateConstraints { (make) in
+            make.top.equalToSuperview().offset(UIApplication.shared.statusBarFrame.height)
+        }
     }
 
     @objc func cleanLog() {
@@ -392,7 +403,7 @@ private extension HDLoggerWindow {
     @objc private func p_scale() {
         self.mScaleButton.isSelected = !self.mScaleButton.isSelected;
         if (self.mScaleButton.isSelected) {
-            self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height - 20)
+            self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height - 70)
         } else {
             self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 350)
         }
@@ -453,17 +464,12 @@ private extension HDLoggerWindow {
     }
 
     private func p_createUI() {
-        self.changeWindowFrame()
-
         self.rootViewController?.view.addSubview(self.mBGView)
         self.mBGView.snp.makeConstraints { (make) in
             make.left.right.bottom.equalToSuperview()
-            if #available(iOS 11.0, *) {
-                make.top.equalTo(self.rootViewController!.view.safeAreaLayoutGuide.snp.top)
-            } else {
-                make.top.equalTo(self.rootViewController!.topLayoutGuide.snp.bottom)
-            }
+            make.top.equalToSuperview().offset(UIApplication.shared.statusBarFrame.height)
         }
+        self.changeWindowFrame()
         //按钮
         self.mBGView.addSubview(self.mScaleButton)
         self.mScaleButton.snp.makeConstraints { (make) in

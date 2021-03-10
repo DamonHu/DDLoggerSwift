@@ -174,13 +174,15 @@ public class HDWindowLoggerSwift {
     public class func show() {
         DispatchQueue.main.async {
             if self.shared.mWindow == nil {
-                self.shared.mWindow = HDLoggerWindow(frame: CGRect.zero)
                 if #available(iOS 13.0, *) {
                     for windowScene:UIWindowScene in ((UIApplication.shared.connectedScenes as? Set<UIWindowScene>)!) {
                         if windowScene.activationState == .foregroundActive {
                             self.shared.mWindow = HDLoggerWindow(windowScene: windowScene)
                         }
                     }
+                }
+                if self.shared.mWindow == nil {
+                    self.shared.mWindow = HDLoggerWindow(frame: CGRect.zero)
                 }
                 //首次展示更新一次历史内容
                 self.shared.mWindow?.updateUI(modelList: self.shared.mLogDataArray)

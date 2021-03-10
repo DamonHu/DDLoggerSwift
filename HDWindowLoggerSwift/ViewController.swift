@@ -39,11 +39,9 @@ class ViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            //配置HDWindowLoggerSwift
-            HDWindowLoggerSwift.show()
-            HDWindowLoggerSwift.mCompleteLogOut = true
-        }
+        //配置HDWindowLoggerSwift
+        HDWindowLoggerSwift.show()
+        HDWindowLoggerSwift.mCompleteLogOut = true
     }
 
     @objc func onClickButton() {
