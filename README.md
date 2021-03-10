@@ -150,12 +150,14 @@ HDWindowLoggerSwift.deleteLogFile()
 HDWindowLoggerSwift.shared.mLogExpiryDay = 0
 ```
 
-### 10、Get the array of logs. You can specify the date in the format of 2020-01-01
+### 10、Get the array of logs. You can specify the date
 
 ```
+//today
 HDWindowLoggerSwift.getAllLog()
+
 //Special date
-HDWindowLoggerSwift.getAllLog(name:"2020-01-01")
+HDWindowLoggerSwift.getAllLog(date: Date(timeIntervalSinceNow: 1000))
 ```
 
 If you want to get all the log files, you can get the folder where the log is stored, return a URL result, and then traverse to process it yourself
@@ -393,12 +395,13 @@ HDWindowLoggerSwift.deleteLogFile()
 HDWindowLoggerSwift.mLogExpiryDay = 0
 ```
 
-### 10、获取数据库存储的日志信息数组，可以指定日期，格式为2020-01-01
+### 10、获取数据库存储的日志信息数组，也可以指定日期
 
 ```
+//获取今日的日志
 HDWindowLoggerSwift.getAllLog()
 //指定日期
-HDWindowLoggerSwift.getAllLog(name:"2020-01-01")
+HDWindowLoggerSwift.getAllLog(date: Date(timeIntervalSinceNow: 1000))
 ```
 
 如果你想获取所有日志文件，可以获取日志存储的文件夹，返回的是一个URL结果，然后自己进行遍历去处理
