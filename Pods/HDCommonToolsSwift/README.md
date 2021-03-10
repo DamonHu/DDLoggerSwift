@@ -12,6 +12,12 @@
 pod 'HDCommonToolsSwift'
 ```
 
+由于苹果对`idfa`的访问权限要求更严，只要导入了`AppTrackingTransparency`这个库就会询问跟踪的目的，不论你是否主动调用过，所以从`2.1.0`开始，`idfa`单独拿出来，如果需要`idfa`的功能，可以选择导入
+
+```
+pod 'HDCommonToolsSwift/idfa'
+```
+
 ### 通过文件导入
 
 下载项目，将项目文件下的HDCommonToolsSwift文件夹里面的内容导入项目即可
@@ -25,6 +31,7 @@ pod 'HDCommonToolsSwift'
 ```
 import HDCommonToolsSwift
 ```
+
 ### UI相关
 
 |名称|功能说明|示例|
@@ -67,6 +74,8 @@ import HDCommonToolsSwift
 |----|----|----|
 |func requestPermission(type: HDPermissionType, complete: @escaping ((HDPermissionStatus) -> Void))|请求权限|HDCommonToolsSwift.shared.requestPermission(type: .notification) { (status) in print("权限设置回调", status) }|
 |func checkPermission(type: HDPermissionType, complete: @escaping ((HDPermissionStatus) -> Void))|检测软件权限|HDCommonToolsSwift.shared.checkPermission(type: .notification) { (status) in print("当前权限状态", status) }|
+|func requestIDFAPermission(complete: @escaping ((HDPermissionStatus) -> Void)) -> Void|检测软件IDFA权限|HDCommonToolsSwift.shared.requestIDFAPermission { (status) in print("当前idfa权限状态", status) }|
+|func checkIDFAPermission(type: HDPermissionType, complete: @escaping ((HDPermissionStatus) -> Void)) -> Void|检测软件idfa权限|HDCommonToolsSwift.shared.checkIDFAPermission { (status) in print("当前权限状态", status) }|
 
 ### 多媒体操作
 

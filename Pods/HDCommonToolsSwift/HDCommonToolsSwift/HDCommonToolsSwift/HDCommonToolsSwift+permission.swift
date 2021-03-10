@@ -24,6 +24,7 @@ public enum HDPermissionStatus {
     case restricted     //被限制修改不了状态,比如家长控制选项等
     case denied         //用户拒绝
     case notDetermined  //用户尚未选择
+    case limited        //部分允许，iOS14之后增加的特性
 }
 
 public extension HDCommonToolsSwift {
@@ -57,18 +58,20 @@ public extension HDCommonToolsSwift {
                     complete(.denied)
                 case .authorized:
                     complete(.authorized)
-                @unknown default:
+                case .limited:
+                    complete(.limited)
+                default:
                     complete(.authorized)
                 }
             }
         case .GPS:
-            CLLocationManager().requestWhenInUseAuthorization()
-            CLLocationManager().requestAlwaysAuthorization()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                self.checkPermission(type: HDPermissionType.GPS, complete: complete)
-            }
+            mLocationManager = CLLocationManager()
+            mLocationManager?.delegate = self
+            mLocationManager?.requestWhenInUseAuthorization()
+            mLocationManager?.requestAlwaysAuthorization()
+            locationComplete = complete
         case .notification:
-            UNUserNotificationCenter.current().requestAuthorization(options: UNAuthorizationOptions(rawValue: UNAuthorizationOptions.alert.rawValue | UNAuthorizationOptions.sound.rawValue | UNAuthorizationOptions.badge.rawValue)) { (granted, error) in
+            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
                 if granted {
                     complete(.authorized)
                 } else {
@@ -92,7 +95,7 @@ public extension HDCommonToolsSwift {
                 complete(.denied)
             case .authorized:
                 complete(.authorized)
-            @unknown default:
+            default:
                 complete(.authorized)
             }
         case .video:
@@ -106,7 +109,7 @@ public extension HDCommonToolsSwift {
                 complete(.denied)
             case .authorized:
                 complete(.authorized)
-            @unknown default:
+            default:
                 complete(.authorized)
             }
         case .photoLibrary:
@@ -120,7 +123,9 @@ public extension HDCommonToolsSwift {
                 complete(.denied)
             case .authorized:
                 complete(.authorized)
-            @unknown default:
+            case .limited:
+                complete(.limited)
+            default:
                 complete(.authorized)
             }
         case .GPS:
@@ -144,10 +149,52 @@ public extension HDCommonToolsSwift {
                     complete(.authorized)
                 case .provisional:
                     complete (.authorized)
-                @unknown default:
+                default:
                     complete(.authorized)
                 }
             }
         }
     }
 }
+
+extension HDCommonToolsSwift: CLLocationManagerDelegate {
+    public func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        guard let locationComplete = locationComplete  else { return }
+        switch status {
+            case .notDetermined:
+                locationComplete(.notDetermined)
+            case .restricted:
+                locationComplete(.restricted)
+            case .denied:
+                locationComplete(.denied)
+            case .authorizedAlways:
+                locationComplete(.authorized)
+            case .authorizedWhenInUse:
+                locationComplete(.authorized)
+            default:
+                locationComplete(.authorized)
+        }
+    }
+
+    @available(iOS 14.0, *)
+    public func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        guard let locationComplete = locationComplete  else { return }
+        switch manager.authorizationStatus {
+            case .notDetermined:
+                locationComplete(.notDetermined)
+            case .restricted:
+                locationComplete(.restricted)
+            case .denied:
+                locationComplete(.denied)
+            case .authorizedAlways:
+                locationComplete(.authorized)
+            case .authorizedWhenInUse:
+                locationComplete(.authorized)
+            default:
+                locationComplete(.authorized)
+        }
+    }
+}
+
+private var mLocationManager: CLLocationManager?   //标记是否循环震动
+private var locationComplete: ((HDPermissionStatus) -> Void)?

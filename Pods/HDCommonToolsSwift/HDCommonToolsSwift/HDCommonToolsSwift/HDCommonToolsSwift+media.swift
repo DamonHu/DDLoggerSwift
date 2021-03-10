@@ -9,9 +9,6 @@
 import Foundation
 import AVFoundation
 
-private var vibrateRepeat = false   //标记是否循环震动
-private var audioPlayer: AVAudioPlayer?
-
 public extension HDCommonToolsSwift {
     
     ///获取指定video的时长， 单位秒
@@ -35,8 +32,9 @@ public extension HDCommonToolsSwift {
     ///   - url: 文件地址
     ///   - repeated: 是否重复播放
     ///   - audioSessionCategory: 播放模式 .playback 扬声器播放，.playAndRecord听筒模式
-    func playMusic(url: URL?, repeated: Bool = false, audioSessionCategory: AVAudioSession.Category = AVAudioSession.Category.playback) -> Void {
-        guard var musicURL = url else { return  }
+    @discardableResult
+    func playMusic(url: URL?, repeated: Bool = false, audioSessionCategory: AVAudioSession.Category = AVAudioSession.Category.playback) -> AVAudioPlayer? {
+        guard var musicURL = url else { return nil }
         audioPlayer?.stop()
         
         let audioSession = AVAudioSession.sharedInstance()
@@ -59,6 +57,7 @@ public extension HDCommonToolsSwift {
             audioPlayer?.numberOfLoops = 0
         }
         audioPlayer?.play()
+        return audioPlayer
     }
     
     ///关闭音乐播放
@@ -107,3 +106,6 @@ public extension HDCommonToolsSwift {
         AudioServicesDisposeSystemSoundID(kSystemSoundID_Vibrate)
     }
 }
+
+private var vibrateRepeat = false   //标记是否循环震动
+private var audioPlayer: AVAudioPlayer?

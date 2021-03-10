@@ -265,11 +265,17 @@ public func UIColor(hexString: String, darkHexString: String = "#333333", alpha:
 }
 
 ///高度坐标配置
-public let UIScreenWidth = UIScreen.main.bounds.size.width
-public let UIScreenHeight = UIScreen.main.bounds.size.height
+public var UIScreenWidth: CGFloat {
+    return UIScreen.main.bounds.size.width
+}
+public var UIScreenHeight: CGFloat {
+    return UIScreen.main.bounds.size.height
+}
 
 ///状态栏高度
-public let HD_StatusBar_Height = UIApplication.shared.statusBarFrame.size.height
+public var HD_StatusBar_Height: CGFloat {
+    return UIApplication.shared.statusBarFrame.size.height
+}
 
 ///导航栏高度
 public func HD_Default_NavigationBar_Height(vc: UIViewController? = nil) -> CGFloat {

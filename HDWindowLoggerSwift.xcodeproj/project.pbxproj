@@ -25,14 +25,10 @@
 
 /* Begin PBXFileReference section */
 		26DFD0E4C44874AC782523DC /* Pods-HDWindowLoggerSwift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HDWindowLoggerSwift.release.xcconfig"; path = "Target Support Files/Pods-HDWindowLoggerSwift/Pods-HDWindowLoggerSwift.release.xcconfig"; sourceTree = "<group>"; };
-		444ED6B56C4F7C9F50162B1A /* Pods-HDWindowLoggerSwiftTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HDWindowLoggerSwiftTests.debug.xcconfig"; path = "Target Support Files/Pods-HDWindowLoggerSwiftTests/Pods-HDWindowLoggerSwiftTests.debug.xcconfig"; sourceTree = "<group>"; };
-		4CEBD9CA6AB63340EDB4104B /* Pods-HDWindowLoggerSwiftTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HDWindowLoggerSwiftTests.release.xcconfig"; path = "Target Support Files/Pods-HDWindowLoggerSwiftTests/Pods-HDWindowLoggerSwiftTests.release.xcconfig"; sourceTree = "<group>"; };
 		4E611A3C63A0DBE09BD1F334 /* Pods-HDWindowLoggerSwift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HDWindowLoggerSwift.debug.xcconfig"; path = "Target Support Files/Pods-HDWindowLoggerSwift/Pods-HDWindowLoggerSwift.debug.xcconfig"; sourceTree = "<group>"; };
 		5D0BD1ACC5224B967D97685F /* Pods_HDWindowLoggerSwift_HDWindowLoggerSwiftUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HDWindowLoggerSwift_HDWindowLoggerSwiftUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		83B7944F3D92A9FBBA629BCC /* Pods_HDWindowLoggerSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HDWindowLoggerSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C52FB809976FED82D9A48A5F /* Pods_HDWindowLoggerSwiftTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HDWindowLoggerSwiftTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D26B26CF4E21ACE69380752F /* Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests.debug.xcconfig"; path = "Target Support Files/Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests/Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		D6BC2BB2778E87514615D81F /* Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests.release.xcconfig"; path = "Target Support Files/Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests/Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests.release.xcconfig"; sourceTree = "<group>"; };
 		E409881F25DE3DA90013DC32 /* HDSqliteTools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDSqliteTools.swift; sourceTree = "<group>"; };
 		E41C58EF25F8BAD600837564 /* HDFPSTools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDFPSTools.swift; sourceTree = "<group>"; };
 		E47F8DDF2508FE840055584A /* HDLoggerWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDLoggerWindow.swift; sourceTree = "<group>"; };
@@ -70,10 +66,6 @@
 			children = (
 				4E611A3C63A0DBE09BD1F334 /* Pods-HDWindowLoggerSwift.debug.xcconfig */,
 				26DFD0E4C44874AC782523DC /* Pods-HDWindowLoggerSwift.release.xcconfig */,
-				D26B26CF4E21ACE69380752F /* Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests.debug.xcconfig */,
-				D6BC2BB2778E87514615D81F /* Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests.release.xcconfig */,
-				444ED6B56C4F7C9F50162B1A /* Pods-HDWindowLoggerSwiftTests.debug.xcconfig */,
-				4CEBD9CA6AB63340EDB4104B /* Pods-HDWindowLoggerSwiftTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";

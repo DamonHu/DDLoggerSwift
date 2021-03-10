@@ -9,17 +9,7 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>Pods-HDWindowLoggerSwift.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Pods-HDWindowLoggerSwiftTests.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>

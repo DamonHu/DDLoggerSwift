@@ -8,14 +8,5 @@ target 'HDWindowLoggerSwift' do
   # Pods for HDWindowLoggerSwift
   pod 'SnapKit'
   pod 'HDCommonToolsSwift'
-  
-  target 'HDWindowLoggerSwiftTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-
-  target 'HDWindowLoggerSwiftUITests' do
-    # Pods for testing
-  end
 
 end

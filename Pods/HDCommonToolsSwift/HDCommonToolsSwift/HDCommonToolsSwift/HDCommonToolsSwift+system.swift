@@ -8,9 +8,10 @@
 
 import Foundation
 import UIKit
-import AdSupport
 import SystemConfiguration.CaptiveNetwork
+#if canImport(StoreKit)
 import StoreKit
+#endif
 
 public enum HDOpenAppStoreType {
     case app        //应用内打开，ios10.3以下无反应
@@ -21,13 +22,19 @@ public enum HDOpenAppStoreType {
 public extension HDCommonToolsSwift {
     ///获取软件版本
     func getAppVersionString() -> String {
-        let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
+        let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
         return version ?? ""
     }
     
     ///获取软件构建版本
     func getAppBuildVersionString() -> String {
-        let version = Bundle.main.infoDictionary?["CFBundleVersion"] as? String
+        let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String
+        return version ?? ""
+    }
+
+    ///获取软件名
+    func getAppNameString() -> String {
+        let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String
         return version ?? ""
     }
     
@@ -63,17 +70,6 @@ public extension HDCommonToolsSwift {
     func getSystemUpTime() -> TimeInterval {
         let timeInterval = ProcessInfo.processInfo.systemUptime
         return Date().timeIntervalSince1970 - timeInterval
-    }
-    
-    /// 模拟软件唯一标示
-    /// - Parameter idfvIfFailed: 如果用户禁止获取本机idfa，是否去尝试使用idfv
-    /// - Returns: 唯一标识
-    func getIDFAString(idfvIfFailed: Bool = true) -> String {
-        if ASIdentifierManager.shared().isAdvertisingTrackingEnabled {
-            return ASIdentifierManager.shared().advertisingIdentifier.uuidString
-        } else {
-            return UIDevice.current.identifierForVendor?.uuidString ?? ""
-        }
     }
     
     ///获取手机WIFI的MAC地址，需要开启Access WiFi information
@@ -124,25 +120,31 @@ public extension HDCommonToolsSwift {
             }
         }
     }
-    
-    ///打开软件对应的评分页面
-    func openAppStoreReviewPage(openType: HDOpenAppStoreType, appleID: String = "") -> Void {
+
+    /// 打开软件对应的评分页面
+    /// - Parameters:
+    ///   - openType: 打开评分页面的类型
+    ///   - appleID: 打开的appid
+    ///   - openWriteAction: 是否直接到输入评论的页面，仅对跳转到appStore有效
+    func openAppStoreReviewPage(openType: HDOpenAppStoreType, appleID: String = "", openWriteAction: Bool = true) -> Void {
         switch openType {
         case .app:
             if #available(iOS 10.3, *) {
                 SKStoreReviewController.requestReview()
             } else {
-                
+                print("ios10.3以下版本不支持")
             };
         case .appStore:
-            let url = URL(string: "itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=\(appleID)")!
+            var url = URL(string: "itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=\(appleID)&mt=8")!
+            if openWriteAction {
+                url = URL(string: "itms-apps://itunes.apple.com/cn/app/id\(appleID)?mt=8&action=write-review")!
+            }
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
         case .auto:
             if #available(iOS 10.3, *) {
-                SKStoreReviewController.requestReview()
+                self.openAppStoreReviewPage(openType: .app, appleID: appleID)
             } else {
-                let url = URL(string: "itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=\(appleID)")!
-                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                self.openAppStoreReviewPage(openType: .appStore, appleID: appleID)
             }
         }
     }
