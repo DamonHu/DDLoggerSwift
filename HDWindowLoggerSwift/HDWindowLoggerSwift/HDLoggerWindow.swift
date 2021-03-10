@@ -44,8 +44,9 @@ class HDLoggerWindow: UIWindow {
             }
         }
     }
-    
-    @objc func cleanLog() {
+
+    //
+    func cleanDataArray() {
         self.mLogDataArray.removeAll()
         self.mFilterIndexArray.removeAll()
         self.p_reloadFilter()
@@ -63,314 +64,16 @@ class HDLoggerWindow: UIWindow {
             }
         }
     }
-    
+
     //只隐藏log的输出窗口，保留悬浮图标
     @objc func hideLogWindow() {
         self.isHidden = true
         self.mFloatWindow.isHidden = false
     }
-    
+
     @objc func hide() {
         self.isHidden = true
         self.mFloatWindow.isHidden = true
-    }
-    
-    //MARK: Private method
-    private func p_init() {
-        self.rootViewController = UIViewController()
-        self.windowLevel =  UIWindow.Level.alert
-        self.isUserInteractionEnabled = true
-        self.backgroundColor = UIColor.clear
-        self.p_createUI()
-        self.p_bindClick()
-    }
-    
-    private func p_bindClick() {
-        self.mScaleButton.addTarget(self, action: #selector(p_scale), for: UIControl.Event.touchUpInside)
-        self.mHideButton.addTarget(self, action: #selector(hideLogWindow), for: UIControl.Event.touchUpInside)
-        self.mCleanButton.addTarget(self, action: #selector(cleanLog), for: UIControl.Event.touchUpInside)
-        self.mShareButton.addTarget(self, action: #selector(p_share), for: UIControl.Event.touchUpInside)
-        self.mPasswordButton.addTarget(self, action: #selector(p_decrypt), for: UIControl.Event.touchUpInside)
-        self.mPreviousButton.addTarget(self, action: #selector(p_previous), for: UIControl.Event.touchUpInside)
-        self.mNextButton.addTarget(self, action: #selector(p_next), for: UIControl.Event.touchUpInside)
-    }
-    
-    //过滤刷新
-    private func p_reloadFilter() {
-        self.mFilterIndexArray.removeAll()
-        self.mPreviousButton.isEnabled = false
-        self.mNextButton.isEnabled = false
-        self.mSearchNumLabel.text = NSLocalizedString("0条结果", comment: "");
-        
-        let searchText = self.mSearchBar.text ?? "";
-        if !searchText.isEmpty {
-            let dataList = self.mLogDataArray
-            for (index, item) in dataList.enumerated() {
-                if item.getFullContentString().localizedCaseInsensitiveContains(searchText) {
-                    let indexPath = IndexPath(row: index, section: 0)
-                    self.mFilterIndexArray.append(indexPath)
-                    self.mPreviousButton.isEnabled = true
-                    self.mNextButton.isEnabled = true
-                    self.mCurrentSearchIndex = self.mFilterIndexArray.count - 1;
-                    self.mSearchNumLabel.text = "\(self.mCurrentSearchIndex + 1)/\(self.mFilterIndexArray.count)"
-                }
-            }
-        }
-        self.mTableView.reloadData()
-    }
-    
-    @objc private func p_previous() -> Void {
-        if (self.mFilterIndexArray.count > 0) {
-            self.mCurrentSearchIndex = self.mCurrentSearchIndex - 1;
-            if (self.mCurrentSearchIndex < 0) {
-                self.mCurrentSearchIndex = self.mFilterIndexArray.count - 1;
-            }
-            self.mSearchNumLabel.text = "\(self.mCurrentSearchIndex + 1)/\(self.mFilterIndexArray.count)"
-            self.mTableView .scrollToRow(at: self.mFilterIndexArray[self.mCurrentSearchIndex], at: UITableView.ScrollPosition.top, animated: true)
-        }
-    }
-    
-    @objc private func p_next() -> Void {
-        if (self.mFilterIndexArray.count > 0) {
-            self.mCurrentSearchIndex = self.mCurrentSearchIndex + 1;
-            if (self.mCurrentSearchIndex == self.mFilterIndexArray.count) {
-                self.mCurrentSearchIndex = 0;
-            }
-            self.mSearchNumLabel.text = "\(self.mCurrentSearchIndex + 1)/\(self.mFilterIndexArray.count)"
-            self.mTableView .scrollToRow(at: self.mFilterIndexArray[self.mCurrentSearchIndex], at: UITableView.ScrollPosition.top, animated: true)
-        }
-    }
-    
-    @objc private func p_closePicker() {
-        self.mPickerBGView.isHidden = true
-    }
-    
-    @objc private func p_show() {
-        self.show()
-    }
-    
-    @objc private func p_touchMove(p:UIPanGestureRecognizer) {
-        guard let window = HDCommonToolsSwift.shared.getCurrentNormalWindow() else { return }
-        let panPoint = p.location(in: window)
-        if p.state == .changed || p.state == .ended {
-            let x = min(max(40, panPoint.x) , window.bounds.size.width - 40)
-            let y = min(max(80, panPoint.y), window.bounds.size.height - 140)
-            self.mFloatWindow.center = CGPoint(x: x, y: y)
-            p.setTranslation(CGPoint.zero, in: self.mFloatWindow)
-        }
-    }
-    
-    @objc private func p_scale() {
-        self.mScaleButton.isSelected = !self.mScaleButton.isSelected;
-        if (self.mScaleButton.isSelected) {
-            self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height - 20)
-        } else {
-            self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 350)
-        }
-    }
-    
-    @objc private func p_confirmPicker() {
-        self.mPickerBGView.isHidden = true
-        let dataList = HDSqliteTools.shared.getAllLog(name: self.mShareFileName).reversed()
-        //写入到text文件好解析
-        //文件路径
-        let logFilePathURL = HDCommonToolsSwift.shared.getFileDirectory(type: .caches).appendingPathComponent("HDWindowLogger.log", isDirectory: false)
-        if FileManager.default.fileExists(atPath: logFilePathURL.path) {
-            try? FileManager.default.removeItem(at: logFilePathURL)
-        }
-        do {
-            try dataList.joined(separator: "\n").write(to: logFilePathURL, atomically: false, encoding: String.Encoding.utf8)
-        } catch {
-            print(error)
-        }
-
-        //分享
-        let activityVC = UIActivityViewController(activityItems: [logFilePathURL], applicationActivities: nil)
-        if UIDevice.current.model == "iPad" {
-            activityVC.modalPresentationStyle = UIModalPresentationStyle.popover
-            activityVC.popoverPresentationController?.sourceView = self.mShareButton
-            activityVC.popoverPresentationController?.sourceRect = self.mShareButton.frame
-        }
-        self.hideLogWindow()
-        HDCommonToolsSwift.shared.getCurrentVC()?.present(activityVC, animated: true, completion: nil)
-    }
-    
-    @objc private func p_share() {
-        self.mFileDateNameList = [String]()
-        let path = HDSqliteTools.shared.getDBFolder()
-        //数据库目录
-        if let enumer = FileManager.default.enumerator(at: path, includingPropertiesForKeys: [URLResourceKey.creationDateKey]) {
-            while let file = enumer.nextObject() {
-                if let file: URL = file as? URL, file.lastPathComponent.hasSuffix(".db") {
-                    self.mFileDateNameList.append(file.lastPathComponent)
-                }
-            }
-        }
-        
-        //倒序，最后的放前面
-        self.mFileDateNameList = self.mFileDateNameList.reversed()
-        self.mPickerBGView.isHidden = !self.mPickerBGView.isHidden
-        self.mPickerView.reloadAllComponents()
-        self.mShareFileName = self.mFileDateNameList.first ?? ""
-    }
-    
-    //解密
-    @objc private func p_decrypt() {
-        self.mPasswordTextField.resignFirstResponder()
-        self.mSearchBar.resignFirstResponder()
-        if self.mPasswordTextField.text != nil {
-            self.mTableView.reloadData()
-        }
-    }
-    
-    private func p_createUI() {
-        self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 350)
-        
-        self.rootViewController?.view.addSubview(self.mBGView)
-        self.mBGView.snp.makeConstraints { (make) in
-            make.left.right.bottom.equalToSuperview()
-            if #available(iOS 11.0, *) {
-                make.top.equalTo(self.rootViewController!.view.safeAreaLayoutGuide.snp.top)
-            } else {
-                make.top.equalTo(self.rootViewController!.topLayoutGuide.snp.bottom)
-            }
-        }
-        //按钮
-        self.mBGView.addSubview(self.mScaleButton)
-        self.mScaleButton.snp.makeConstraints { (make) in
-            make.left.top.equalToSuperview()
-            make.width.equalTo(UIScreen.main.bounds.size.width/4.0)
-            make.height.equalTo(40)
-        }
-        self.mBGView.addSubview(self.mHideButton)
-        self.mHideButton.snp.makeConstraints { (make) in
-            make.top.equalTo(self.mScaleButton)
-            make.left.equalTo(self.mScaleButton.snp.right)
-            make.width.equalTo(self.mScaleButton)
-            make.height.equalTo(self.mScaleButton)
-        }
-        self.mBGView.addSubview(self.mShareButton)
-        self.mShareButton.snp.makeConstraints { (make) in
-            make.top.equalTo(self.mScaleButton)
-            make.left.equalTo(self.mHideButton.snp.right)
-            make.width.equalTo(self.mScaleButton)
-            make.height.equalTo(self.mScaleButton)
-        }
-        self.mBGView.addSubview(self.mCleanButton)
-        self.mCleanButton.snp.makeConstraints { (make) in
-            make.top.equalTo(self.mScaleButton)
-            make.left.equalTo(self.mShareButton.snp.right)
-            make.width.equalTo(self.mScaleButton)
-            make.height.equalTo(self.mScaleButton)
-        }
-        
-        //私密解锁
-        self.mBGView.addSubview(self.mPasswordTextField)
-        self.mPasswordTextField.snp.makeConstraints { (make) in
-            make.left.equalToSuperview()
-            make.top.equalTo(self.mScaleButton.snp.bottom)
-            make.width.equalTo(UIScreen.main.bounds.size.width/3.0 + 50)
-            make.height.equalTo(40)
-        }
-        self.mBGView.addSubview(self.mPasswordButton)
-        self.mPasswordButton.snp.makeConstraints { (make) in
-            make.left.equalTo(self.mPasswordTextField.snp.right)
-            make.top.equalTo(self.mPasswordTextField)
-            make.width.equalTo(UIScreen.main.bounds.size.width/3.0 - 50)
-            make.height.equalTo(40)
-        }
-        //开关视图
-        self.mBGView.addSubview(self.mAutoScrollSwitch)
-        self.mAutoScrollSwitch.snp.makeConstraints { (make) in
-            make.right.equalToSuperview().offset(-10)
-            make.centerY.equalTo(self.mPasswordButton)
-        }
-        self.mBGView.addSubview(self.mSwitchLabel)
-        self.mSwitchLabel.snp.makeConstraints { (make) in
-            make.left.equalTo(self.mPasswordButton.snp.right)
-            make.right.equalTo(self.mAutoScrollSwitch.snp.left)
-            make.centerY.equalTo(self.mAutoScrollSwitch)
-        }
-        
-        //滚动日志窗
-        self.mBGView.addSubview(self.mTableView)
-        self.mTableView.snp.makeConstraints { (make) in
-            make.left.right.equalToSuperview()
-            make.top.equalTo(self.mPasswordTextField.snp.bottom)
-            make.bottom.equalToSuperview().offset(-60)
-        }
-        
-        //搜索框
-        self.mBGView.addSubview(self.mSearchBar)
-        self.mSearchBar.snp.makeConstraints { (make) in
-            make.left.equalToSuperview()
-            make.top.equalTo(self.mTableView.snp.bottom)
-            make.bottom.equalToSuperview().offset(-20)
-            make.width.equalTo(UIScreen.main.bounds.size.width - 180)
-        }
-        
-        self.mBGView.addSubview(self.mPreviousButton)
-        self.mPreviousButton.snp.makeConstraints { (make) in
-            make.top.bottom.equalTo(self.mSearchBar)
-            make.left.equalTo(self.mSearchBar.snp.right)
-            make.width.equalTo(60)
-        }
-        
-        self.mBGView.addSubview(self.mNextButton)
-        self.mNextButton.snp.makeConstraints { (make) in
-            make.top.bottom.equalTo(self.mSearchBar)
-            make.left.equalTo(self.mPreviousButton.snp.right)
-            make.width.equalTo(60)
-        }
-        
-        self.mBGView.addSubview(self.mSearchNumLabel)
-        self.mSearchNumLabel.snp.makeConstraints { (make) in
-            make.top.bottom.equalTo(self.mSearchBar)
-            make.left.equalTo(self.mNextButton.snp.right)
-            make.width.equalTo(60)
-        }
-        
-        self.mBGView.addSubview(self.mTipLabel)
-        self.mTipLabel.snp.makeConstraints { (make) in
-            make.left.right.equalToSuperview()
-            make.top.equalTo(self.mSearchBar.snp.bottom);
-            make.bottom.equalToSuperview()
-        }
-        
-        self.mBGView.addSubview(self.mPickerBGView)
-        self.mPickerBGView.snp.makeConstraints { (make) in
-            make.top.equalTo(self.mBGView)
-            make.left.right.bottom.equalTo(self.mBGView)
-        }
-        
-        let tipLabel = UILabel()
-        tipLabel.text = NSLocalizedString("请选择要分享的日志", comment: "");
-        tipLabel.font = UIFont.systemFont(ofSize: 14, weight: UIFont.Weight.medium)
-        self.mPickerBGView.addSubview(tipLabel)
-        tipLabel.snp.makeConstraints { (make) in
-            make.centerX.equalToSuperview()
-            make.top.equalToSuperview().offset(20)
-            make.height.equalTo(40)
-        }
-        
-        self.mPickerBGView.addSubview(self.mToolBar)
-        self.mToolBar.snp.makeConstraints { (make) in
-            make.top.equalTo(tipLabel.snp.bottom)
-            make.left.right.equalToSuperview()
-            make.height.equalTo(40)
-        }
-        self.mToolBar.layoutIfNeeded()
-        
-        let closeBarItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.cancel, target: self, action: #selector(p_closePicker))
-        let fixBarItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
-        let doneBarItem = UIBarButtonItem(title: NSLocalizedString("分享", comment: ""), style:.plain, target: self, action: #selector(p_confirmPicker))
-        self.mToolBar.setItems([closeBarItem, fixBarItem, doneBarItem], animated: true)
-        
-        self.mPickerBGView.addSubview(self.mPickerView)
-        self.mPickerView.snp.makeConstraints { (make) in
-            make.top.equalTo(self.mToolBar.snp.bottom)
-            make.left.right.bottom.equalToSuperview()
-        }
     }
     
     //MARK: UI布局
@@ -575,6 +278,309 @@ class HDLoggerWindow: UIWindow {
     }()
 }
 
+private extension HDLoggerWindow {
+    @objc func cleanLog() {
+        HDWindowLoggerSwift.cleanLog()
+    }
+
+    //MARK: Private method
+    private func p_init() {
+        self.rootViewController = UIViewController()
+        self.windowLevel =  UIWindow.Level.alert
+        self.isUserInteractionEnabled = true
+        self.backgroundColor = UIColor.clear
+        self.p_createUI()
+        self.p_bindClick()
+    }
+
+    private func p_bindClick() {
+        self.mScaleButton.addTarget(self, action: #selector(p_scale), for: UIControl.Event.touchUpInside)
+        self.mHideButton.addTarget(self, action: #selector(hideLogWindow), for: UIControl.Event.touchUpInside)
+        self.mCleanButton.addTarget(self, action: #selector(cleanLog), for: UIControl.Event.touchUpInside)
+        self.mShareButton.addTarget(self, action: #selector(p_share), for: UIControl.Event.touchUpInside)
+        self.mPasswordButton.addTarget(self, action: #selector(p_decrypt), for: UIControl.Event.touchUpInside)
+        self.mPreviousButton.addTarget(self, action: #selector(p_previous), for: UIControl.Event.touchUpInside)
+        self.mNextButton.addTarget(self, action: #selector(p_next), for: UIControl.Event.touchUpInside)
+    }
+
+    //过滤刷新
+    private func p_reloadFilter() {
+        self.mFilterIndexArray.removeAll()
+        self.mPreviousButton.isEnabled = false
+        self.mNextButton.isEnabled = false
+        self.mSearchNumLabel.text = NSLocalizedString("0条结果", comment: "");
+
+        let searchText = self.mSearchBar.text ?? "";
+        if !searchText.isEmpty {
+            let dataList = self.mLogDataArray
+            for (index, item) in dataList.enumerated() {
+                if item.getFullContentString().localizedCaseInsensitiveContains(searchText) {
+                    let indexPath = IndexPath(row: index, section: 0)
+                    self.mFilterIndexArray.append(indexPath)
+                    self.mPreviousButton.isEnabled = true
+                    self.mNextButton.isEnabled = true
+                    self.mCurrentSearchIndex = self.mFilterIndexArray.count - 1;
+                    self.mSearchNumLabel.text = "\(self.mCurrentSearchIndex + 1)/\(self.mFilterIndexArray.count)"
+                }
+            }
+        }
+        self.mTableView.reloadData()
+    }
+
+    @objc private func p_previous() -> Void {
+        if (self.mFilterIndexArray.count > 0) {
+            self.mCurrentSearchIndex = self.mCurrentSearchIndex - 1;
+            if (self.mCurrentSearchIndex < 0) {
+                self.mCurrentSearchIndex = self.mFilterIndexArray.count - 1;
+            }
+            self.mSearchNumLabel.text = "\(self.mCurrentSearchIndex + 1)/\(self.mFilterIndexArray.count)"
+            self.mTableView .scrollToRow(at: self.mFilterIndexArray[self.mCurrentSearchIndex], at: UITableView.ScrollPosition.top, animated: true)
+        }
+    }
+
+    @objc private func p_next() -> Void {
+        if (self.mFilterIndexArray.count > 0) {
+            self.mCurrentSearchIndex = self.mCurrentSearchIndex + 1;
+            if (self.mCurrentSearchIndex == self.mFilterIndexArray.count) {
+                self.mCurrentSearchIndex = 0;
+            }
+            self.mSearchNumLabel.text = "\(self.mCurrentSearchIndex + 1)/\(self.mFilterIndexArray.count)"
+            self.mTableView .scrollToRow(at: self.mFilterIndexArray[self.mCurrentSearchIndex], at: UITableView.ScrollPosition.top, animated: true)
+        }
+    }
+
+    @objc private func p_closePicker() {
+        self.mPickerBGView.isHidden = true
+    }
+
+    @objc private func p_show() {
+        self.show()
+    }
+
+    @objc private func p_touchMove(p:UIPanGestureRecognizer) {
+        guard let window = HDCommonToolsSwift.shared.getCurrentNormalWindow() else { return }
+        let panPoint = p.location(in: window)
+        if p.state == .changed || p.state == .ended {
+            let x = min(max(40, panPoint.x) , window.bounds.size.width - 40)
+            let y = min(max(80, panPoint.y), window.bounds.size.height - 140)
+            self.mFloatWindow.center = CGPoint(x: x, y: y)
+            p.setTranslation(CGPoint.zero, in: self.mFloatWindow)
+        }
+    }
+
+    @objc private func p_scale() {
+        self.mScaleButton.isSelected = !self.mScaleButton.isSelected;
+        if (self.mScaleButton.isSelected) {
+            self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height - 20)
+        } else {
+            self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 350)
+        }
+    }
+
+    @objc private func p_confirmPicker() {
+        self.mPickerBGView.isHidden = true
+        let dataList = HDSqliteTools.shared.getAllLog(name: self.mShareFileName).reversed()
+        //写入到text文件好解析
+        //文件路径
+        let logFilePathURL = HDCommonToolsSwift.shared.getFileDirectory(type: .caches).appendingPathComponent("HDWindowLogger.log", isDirectory: false)
+        if FileManager.default.fileExists(atPath: logFilePathURL.path) {
+            try? FileManager.default.removeItem(at: logFilePathURL)
+        }
+        do {
+            try dataList.joined(separator: "\n").write(to: logFilePathURL, atomically: false, encoding: String.Encoding.utf8)
+        } catch {
+            print(error)
+        }
+
+        //分享
+        let activityVC = UIActivityViewController(activityItems: [logFilePathURL], applicationActivities: nil)
+        if UIDevice.current.model == "iPad" {
+            activityVC.modalPresentationStyle = UIModalPresentationStyle.popover
+            activityVC.popoverPresentationController?.sourceView = self.mShareButton
+            activityVC.popoverPresentationController?.sourceRect = self.mShareButton.frame
+        }
+        self.hideLogWindow()
+        HDCommonToolsSwift.shared.getCurrentVC()?.present(activityVC, animated: true, completion: nil)
+    }
+
+    @objc private func p_share() {
+        self.mFileDateNameList = [String]()
+        let path = HDSqliteTools.shared.getDBFolder()
+        //数据库目录
+        if let enumer = FileManager.default.enumerator(at: path, includingPropertiesForKeys: [URLResourceKey.creationDateKey]) {
+            while let file = enumer.nextObject() {
+                if let file: URL = file as? URL, file.lastPathComponent.hasSuffix(".db") {
+                    self.mFileDateNameList.append(file.lastPathComponent)
+                }
+            }
+        }
+
+        //倒序，最后的放前面
+        self.mFileDateNameList = self.mFileDateNameList.reversed()
+        self.mPickerBGView.isHidden = !self.mPickerBGView.isHidden
+        self.mPickerView.reloadAllComponents()
+        self.mShareFileName = self.mFileDateNameList.first ?? ""
+    }
+
+    //解密
+    @objc private func p_decrypt() {
+        self.mPasswordTextField.resignFirstResponder()
+        self.mSearchBar.resignFirstResponder()
+        if self.mPasswordTextField.text != nil {
+            self.mTableView.reloadData()
+        }
+    }
+
+    private func p_createUI() {
+        self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 350)
+
+        self.rootViewController?.view.addSubview(self.mBGView)
+        self.mBGView.snp.makeConstraints { (make) in
+            make.left.right.bottom.equalToSuperview()
+            if #available(iOS 11.0, *) {
+                make.top.equalTo(self.rootViewController!.view.safeAreaLayoutGuide.snp.top)
+            } else {
+                make.top.equalTo(self.rootViewController!.topLayoutGuide.snp.bottom)
+            }
+        }
+        //按钮
+        self.mBGView.addSubview(self.mScaleButton)
+        self.mScaleButton.snp.makeConstraints { (make) in
+            make.left.top.equalToSuperview()
+            make.width.equalTo(UIScreen.main.bounds.size.width/4.0)
+            make.height.equalTo(40)
+        }
+        self.mBGView.addSubview(self.mHideButton)
+        self.mHideButton.snp.makeConstraints { (make) in
+            make.top.equalTo(self.mScaleButton)
+            make.left.equalTo(self.mScaleButton.snp.right)
+            make.width.equalTo(self.mScaleButton)
+            make.height.equalTo(self.mScaleButton)
+        }
+        self.mBGView.addSubview(self.mShareButton)
+        self.mShareButton.snp.makeConstraints { (make) in
+            make.top.equalTo(self.mScaleButton)
+            make.left.equalTo(self.mHideButton.snp.right)
+            make.width.equalTo(self.mScaleButton)
+            make.height.equalTo(self.mScaleButton)
+        }
+        self.mBGView.addSubview(self.mCleanButton)
+        self.mCleanButton.snp.makeConstraints { (make) in
+            make.top.equalTo(self.mScaleButton)
+            make.left.equalTo(self.mShareButton.snp.right)
+            make.width.equalTo(self.mScaleButton)
+            make.height.equalTo(self.mScaleButton)
+        }
+
+        //私密解锁
+        self.mBGView.addSubview(self.mPasswordTextField)
+        self.mPasswordTextField.snp.makeConstraints { (make) in
+            make.left.equalToSuperview()
+            make.top.equalTo(self.mScaleButton.snp.bottom)
+            make.width.equalTo(UIScreen.main.bounds.size.width/3.0 + 50)
+            make.height.equalTo(40)
+        }
+        self.mBGView.addSubview(self.mPasswordButton)
+        self.mPasswordButton.snp.makeConstraints { (make) in
+            make.left.equalTo(self.mPasswordTextField.snp.right)
+            make.top.equalTo(self.mPasswordTextField)
+            make.width.equalTo(UIScreen.main.bounds.size.width/3.0 - 50)
+            make.height.equalTo(40)
+        }
+        //开关视图
+        self.mBGView.addSubview(self.mAutoScrollSwitch)
+        self.mAutoScrollSwitch.snp.makeConstraints { (make) in
+            make.right.equalToSuperview().offset(-10)
+            make.centerY.equalTo(self.mPasswordButton)
+        }
+        self.mBGView.addSubview(self.mSwitchLabel)
+        self.mSwitchLabel.snp.makeConstraints { (make) in
+            make.left.equalTo(self.mPasswordButton.snp.right)
+            make.right.equalTo(self.mAutoScrollSwitch.snp.left)
+            make.centerY.equalTo(self.mAutoScrollSwitch)
+        }
+
+        //滚动日志窗
+        self.mBGView.addSubview(self.mTableView)
+        self.mTableView.snp.makeConstraints { (make) in
+            make.left.right.equalToSuperview()
+            make.top.equalTo(self.mPasswordTextField.snp.bottom)
+            make.bottom.equalToSuperview().offset(-60)
+        }
+
+        //搜索框
+        self.mBGView.addSubview(self.mSearchBar)
+        self.mSearchBar.snp.makeConstraints { (make) in
+            make.left.equalToSuperview()
+            make.top.equalTo(self.mTableView.snp.bottom)
+            make.bottom.equalToSuperview().offset(-20)
+            make.width.equalTo(UIScreen.main.bounds.size.width - 180)
+        }
+
+        self.mBGView.addSubview(self.mPreviousButton)
+        self.mPreviousButton.snp.makeConstraints { (make) in
+            make.top.bottom.equalTo(self.mSearchBar)
+            make.left.equalTo(self.mSearchBar.snp.right)
+            make.width.equalTo(60)
+        }
+
+        self.mBGView.addSubview(self.mNextButton)
+        self.mNextButton.snp.makeConstraints { (make) in
+            make.top.bottom.equalTo(self.mSearchBar)
+            make.left.equalTo(self.mPreviousButton.snp.right)
+            make.width.equalTo(60)
+        }
+
+        self.mBGView.addSubview(self.mSearchNumLabel)
+        self.mSearchNumLabel.snp.makeConstraints { (make) in
+            make.top.bottom.equalTo(self.mSearchBar)
+            make.left.equalTo(self.mNextButton.snp.right)
+            make.width.equalTo(60)
+        }
+
+        self.mBGView.addSubview(self.mTipLabel)
+        self.mTipLabel.snp.makeConstraints { (make) in
+            make.left.right.equalToSuperview()
+            make.top.equalTo(self.mSearchBar.snp.bottom);
+            make.bottom.equalToSuperview()
+        }
+
+        self.mBGView.addSubview(self.mPickerBGView)
+        self.mPickerBGView.snp.makeConstraints { (make) in
+            make.top.equalTo(self.mBGView)
+            make.left.right.bottom.equalTo(self.mBGView)
+        }
+
+        let tipLabel = UILabel()
+        tipLabel.text = NSLocalizedString("请选择要分享的日志", comment: "");
+        tipLabel.font = UIFont.systemFont(ofSize: 14, weight: UIFont.Weight.medium)
+        self.mPickerBGView.addSubview(tipLabel)
+        tipLabel.snp.makeConstraints { (make) in
+            make.centerX.equalToSuperview()
+            make.top.equalToSuperview().offset(20)
+            make.height.equalTo(40)
+        }
+
+        self.mPickerBGView.addSubview(self.mToolBar)
+        self.mToolBar.snp.makeConstraints { (make) in
+            make.top.equalTo(tipLabel.snp.bottom)
+            make.left.right.equalToSuperview()
+            make.height.equalTo(40)
+        }
+        self.mToolBar.layoutIfNeeded()
+
+        let closeBarItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.cancel, target: self, action: #selector(p_closePicker))
+        let fixBarItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
+        let doneBarItem = UIBarButtonItem(title: NSLocalizedString("分享", comment: ""), style:.plain, target: self, action: #selector(p_confirmPicker))
+        self.mToolBar.setItems([closeBarItem, fixBarItem, doneBarItem], animated: true)
+
+        self.mPickerBGView.addSubview(self.mPickerView)
+        self.mPickerView.snp.makeConstraints { (make) in
+            make.top.equalTo(self.mToolBar.snp.bottom)
+            make.left.right.bottom.equalToSuperview()
+        }
+    }
+}
 
 //MARK: Delegate
 extension HDLoggerWindow: UITableViewDataSource, UITableViewDelegate {
