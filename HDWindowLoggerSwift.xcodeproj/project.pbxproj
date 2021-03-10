@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		482F596BF3D546A1BF12BC37 /* Pods_HDWindowLoggerSwift_HDWindowLoggerSwiftUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D0BD1ACC5224B967D97685F /* Pods_HDWindowLoggerSwift_HDWindowLoggerSwiftUITests.framework */; };
-		83B62DA57B98D38A9DBD277D /* Pods_HDWindowLoggerSwiftTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C52FB809976FED82D9A48A5F /* Pods_HDWindowLoggerSwiftTests.framework */; };
 		E409882025DE3DA90013DC32 /* HDSqliteTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = E409881F25DE3DA90013DC32 /* HDSqliteTools.swift */; };
 		E41C58F025F8BAD600837564 /* HDFPSTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = E41C58EF25F8BAD600837564 /* HDFPSTools.swift */; };
 		E47F8DE02508FE840055584A /* HDLoggerWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47F8DDF2508FE840055584A /* HDLoggerWindow.swift */; };
@@ -18,31 +16,12 @@
 		E48AABFE22C05EF600CC5F1C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E48AABFC22C05EF600CC5F1C /* Main.storyboard */; };
 		E48AAC0022C05EF700CC5F1C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E48AABFF22C05EF700CC5F1C /* Assets.xcassets */; };
 		E48AAC0322C05EF700CC5F1C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E48AAC0122C05EF700CC5F1C /* LaunchScreen.storyboard */; };
-		E48AAC0E22C05EF700CC5F1C /* HDWindowLoggerSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48AAC0D22C05EF700CC5F1C /* HDWindowLoggerSwiftTests.swift */; };
-		E48AAC1922C05EF700CC5F1C /* HDWindowLoggerSwiftUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48AAC1822C05EF700CC5F1C /* HDWindowLoggerSwiftUITests.swift */; };
 		E48AAC2822C05F5300CC5F1C /* HDWindowLoggerSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48AAC2722C05F5300CC5F1C /* HDWindowLoggerSwift.swift */; };
 		E48AAC2A22C05F8000CC5F1C /* HDLoggerSwiftTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48AAC2922C05F8000CC5F1C /* HDLoggerSwiftTableViewCell.swift */; };
 		E48AAC2D22C0817000CC5F1C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E48AAC2F22C0817000CC5F1C /* Localizable.strings */; };
 		E4A754AF2490AA17005EAD80 /* HDWindowLoggerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A754AE2490AA17005EAD80 /* HDWindowLoggerItem.swift */; };
 		EFD03B1A4BA5DD034A794BE9 /* Pods_HDWindowLoggerSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B7944F3D92A9FBBA629BCC /* Pods_HDWindowLoggerSwift.framework */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		E48AAC0A22C05EF700CC5F1C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = E48AABEB22C05EF600CC5F1C /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = E48AABF222C05EF600CC5F1C;
-			remoteInfo = HDWindowLoggerSwift;
-		};
-		E48AAC1522C05EF700CC5F1C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = E48AABEB22C05EF600CC5F1C /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = E48AABF222C05EF600CC5F1C;
-			remoteInfo = HDWindowLoggerSwift;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		26DFD0E4C44874AC782523DC /* Pods-HDWindowLoggerSwift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HDWindowLoggerSwift.release.xcconfig"; path = "Target Support Files/Pods-HDWindowLoggerSwift/Pods-HDWindowLoggerSwift.release.xcconfig"; sourceTree = "<group>"; };
@@ -65,12 +44,6 @@
 		E48AABFF22C05EF700CC5F1C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E48AAC0222C05EF700CC5F1C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E48AAC0422C05EF700CC5F1C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E48AAC0922C05EF700CC5F1C /* HDWindowLoggerSwiftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HDWindowLoggerSwiftTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		E48AAC0D22C05EF700CC5F1C /* HDWindowLoggerSwiftTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDWindowLoggerSwiftTests.swift; sourceTree = "<group>"; };
-		E48AAC0F22C05EF700CC5F1C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E48AAC1422C05EF700CC5F1C /* HDWindowLoggerSwiftUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HDWindowLoggerSwiftUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		E48AAC1822C05EF700CC5F1C /* HDWindowLoggerSwiftUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDWindowLoggerSwiftUITests.swift; sourceTree = "<group>"; };
-		E48AAC1A22C05EF700CC5F1C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E48AAC2722C05F5300CC5F1C /* HDWindowLoggerSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDWindowLoggerSwift.swift; sourceTree = "<group>"; };
 		E48AAC2922C05F8000CC5F1C /* HDLoggerSwiftTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDLoggerSwiftTableViewCell.swift; sourceTree = "<group>"; };
 		E48AAC2E22C0817000CC5F1C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -86,22 +59,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				EFD03B1A4BA5DD034A794BE9 /* Pods_HDWindowLoggerSwift.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E48AAC0622C05EF700CC5F1C /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				83B62DA57B98D38A9DBD277D /* Pods_HDWindowLoggerSwiftTests.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E48AAC1122C05EF700CC5F1C /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				482F596BF3D546A1BF12BC37 /* Pods_HDWindowLoggerSwift_HDWindowLoggerSwiftUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -135,8 +92,6 @@
 			isa = PBXGroup;
 			children = (
 				E48AABF522C05EF600CC5F1C /* HDWindowLoggerSwift */,
-				E48AAC0C22C05EF700CC5F1C /* HDWindowLoggerSwiftTests */,
-				E48AAC1722C05EF700CC5F1C /* HDWindowLoggerSwiftUITests */,
 				E48AABF422C05EF600CC5F1C /* Products */,
 				5E855658D2DDDA942EF24A64 /* Pods */,
 				D4F6D24CF37183F2F3C3670D /* Frameworks */,
@@ -147,8 +102,6 @@
 			isa = PBXGroup;
 			children = (
 				E48AABF322C05EF600CC5F1C /* HDWindowLoggerSwift.app */,
-				E48AAC0922C05EF700CC5F1C /* HDWindowLoggerSwiftTests.xctest */,
-				E48AAC1422C05EF700CC5F1C /* HDWindowLoggerSwiftUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -165,24 +118,6 @@
 				E48AAC0422C05EF700CC5F1C /* Info.plist */,
 			);
 			path = HDWindowLoggerSwift;
-			sourceTree = "<group>";
-		};
-		E48AAC0C22C05EF700CC5F1C /* HDWindowLoggerSwiftTests */ = {
-			isa = PBXGroup;
-			children = (
-				E48AAC0D22C05EF700CC5F1C /* HDWindowLoggerSwiftTests.swift */,
-				E48AAC0F22C05EF700CC5F1C /* Info.plist */,
-			);
-			path = HDWindowLoggerSwiftTests;
-			sourceTree = "<group>";
-		};
-		E48AAC1722C05EF700CC5F1C /* HDWindowLoggerSwiftUITests */ = {
-			isa = PBXGroup;
-			children = (
-				E48AAC1822C05EF700CC5F1C /* HDWindowLoggerSwiftUITests.swift */,
-				E48AAC1A22C05EF700CC5F1C /* Info.plist */,
-			);
-			path = HDWindowLoggerSwiftUITests;
 			sourceTree = "<group>";
 		};
 		E48AAC2622C05F0B00CC5F1C /* HDWindowLoggerSwift */ = {
@@ -222,45 +157,6 @@
 			productReference = E48AABF322C05EF600CC5F1C /* HDWindowLoggerSwift.app */;
 			productType = "com.apple.product-type.application";
 		};
-		E48AAC0822C05EF700CC5F1C /* HDWindowLoggerSwiftTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = E48AAC2022C05EF700CC5F1C /* Build configuration list for PBXNativeTarget "HDWindowLoggerSwiftTests" */;
-			buildPhases = (
-				CA969C1D8F36451B31529DE3 /* [CP] Check Pods Manifest.lock */,
-				E48AAC0522C05EF700CC5F1C /* Sources */,
-				E48AAC0622C05EF700CC5F1C /* Frameworks */,
-				E48AAC0722C05EF700CC5F1C /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				E48AAC0B22C05EF700CC5F1C /* PBXTargetDependency */,
-			);
-			name = HDWindowLoggerSwiftTests;
-			productName = HDWindowLoggerSwiftTests;
-			productReference = E48AAC0922C05EF700CC5F1C /* HDWindowLoggerSwiftTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		E48AAC1322C05EF700CC5F1C /* HDWindowLoggerSwiftUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = E48AAC2322C05EF700CC5F1C /* Build configuration list for PBXNativeTarget "HDWindowLoggerSwiftUITests" */;
-			buildPhases = (
-				611D86F613AD973937F506FA /* [CP] Check Pods Manifest.lock */,
-				E48AAC1022C05EF700CC5F1C /* Sources */,
-				E48AAC1122C05EF700CC5F1C /* Frameworks */,
-				E48AAC1222C05EF700CC5F1C /* Resources */,
-				0994CA167105D24ED5B89E7E /* [CP] Embed Pods Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				E48AAC1622C05EF700CC5F1C /* PBXTargetDependency */,
-			);
-			name = HDWindowLoggerSwiftUITests;
-			productName = HDWindowLoggerSwiftUITests;
-			productReference = E48AAC1422C05EF700CC5F1C /* HDWindowLoggerSwiftUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -273,14 +169,6 @@
 				TargetAttributes = {
 					E48AABF222C05EF600CC5F1C = {
 						CreatedOnToolsVersion = 11.0;
-					};
-					E48AAC0822C05EF700CC5F1C = {
-						CreatedOnToolsVersion = 11.0;
-						TestTargetID = E48AABF222C05EF600CC5F1C;
-					};
-					E48AAC1322C05EF700CC5F1C = {
-						CreatedOnToolsVersion = 11.0;
-						TestTargetID = E48AABF222C05EF600CC5F1C;
 					};
 				};
 			};
@@ -299,8 +187,6 @@
 			projectRoot = "";
 			targets = (
 				E48AABF222C05EF600CC5F1C /* HDWindowLoggerSwift */,
-				E48AAC0822C05EF700CC5F1C /* HDWindowLoggerSwiftTests */,
-				E48AAC1322C05EF700CC5F1C /* HDWindowLoggerSwiftUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -317,40 +203,9 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E48AAC0722C05EF700CC5F1C /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E48AAC1222C05EF700CC5F1C /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0994CA167105D24ED5B89E7E /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests/Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests/Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests/Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		58C38B6EFC517D490734713B /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -367,28 +222,6 @@
 			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-HDWindowLoggerSwift-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		611D86F613AD973937F506FA /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -412,28 +245,6 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HDWindowLoggerSwift/Pods-HDWindowLoggerSwift-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		CA969C1D8F36451B31529DE3 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-HDWindowLoggerSwiftTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -453,36 +264,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E48AAC0522C05EF700CC5F1C /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				E48AAC0E22C05EF700CC5F1C /* HDWindowLoggerSwiftTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E48AAC1022C05EF700CC5F1C /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				E48AAC1922C05EF700CC5F1C /* HDWindowLoggerSwiftUITests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		E48AAC0B22C05EF700CC5F1C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = E48AABF222C05EF600CC5F1C /* HDWindowLoggerSwift */;
-			targetProxy = E48AAC0A22C05EF700CC5F1C /* PBXContainerItemProxy */;
-		};
-		E48AAC1622C05EF700CC5F1C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = E48AABF222C05EF600CC5F1C /* HDWindowLoggerSwift */;
-			targetProxy = E48AAC1522C05EF700CC5F1C /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		E48AABFC22C05EF600CC5F1C /* Main.storyboard */ = {
@@ -675,88 +457,6 @@
 			};
 			name = Release;
 		};
-		E48AAC2122C05EF700CC5F1C /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 444ED6B56C4F7C9F50162B1A /* Pods-HDWindowLoggerSwiftTests.debug.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = HDWindowLoggerSwiftTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.lazypig.HDWindowLoggerSwiftTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HDWindowLoggerSwift.app/HDWindowLoggerSwift";
-			};
-			name = Debug;
-		};
-		E48AAC2222C05EF700CC5F1C /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4CEBD9CA6AB63340EDB4104B /* Pods-HDWindowLoggerSwiftTests.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = HDWindowLoggerSwiftTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.lazypig.HDWindowLoggerSwiftTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HDWindowLoggerSwift.app/HDWindowLoggerSwift";
-			};
-			name = Release;
-		};
-		E48AAC2422C05EF700CC5F1C /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = D26B26CF4E21ACE69380752F /* Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests.debug.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = HDWindowLoggerSwiftUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.lazypig.HDWindowLoggerSwiftUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = HDWindowLoggerSwift;
-			};
-			name = Debug;
-		};
-		E48AAC2522C05EF700CC5F1C /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = D6BC2BB2778E87514615D81F /* Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = HDWindowLoggerSwiftUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.lazypig.HDWindowLoggerSwiftUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = HDWindowLoggerSwift;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -774,24 +474,6 @@
 			buildConfigurations = (
 				E48AAC1E22C05EF700CC5F1C /* Debug */,
 				E48AAC1F22C05EF700CC5F1C /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		E48AAC2022C05EF700CC5F1C /* Build configuration list for PBXNativeTarget "HDWindowLoggerSwiftTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				E48AAC2122C05EF700CC5F1C /* Debug */,
-				E48AAC2222C05EF700CC5F1C /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		E48AAC2322C05EF700CC5F1C /* Build configuration list for PBXNativeTarget "HDWindowLoggerSwiftUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				E48AAC2422C05EF700CC5F1C /* Debug */,
-				E48AAC2522C05EF700CC5F1C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
