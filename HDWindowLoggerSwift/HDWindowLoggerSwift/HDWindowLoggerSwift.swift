@@ -8,7 +8,7 @@
 
 import UIKit
 import HDCommonToolsSwift
-
+import CommonCrypto
 
 ///log的级别，对应不同的颜色
 public enum HDLogType : Int {
@@ -60,7 +60,11 @@ public func HDPrivacyLog(_ log:Any ..., file:String = #file, funcName:String = #
 public class HDWindowLoggerSwift {
     public static var mCompleteLogOut = true    //是否完整输出日志文件名等调试内容
     public static var mDebugAreaLogOut = true   //是否在xcode底部的调试栏同步输出内容
-    public static var mPrivacyPassword = ""     //解密隐私数据的密码，默认为空不加密
+    public static var mPrivacyPassword = "" {
+        willSet {
+            assert(newValue.count == kCCKeySizeAES256, NSLocalizedString("密码设置长度错误，需要32个字符", comment: ""))
+        }
+    }     //解密隐私数据的密码，默认为空不加密
     public static var mLogExpiryDay = 7        //本地日志文件的有效期（天），超出有效期的本地日志会被删除，0为没有有效期，默认为7天
     public static var mMaxShowCount = 100       //屏幕最大的显示数量，适量即可，0为不限制
     public static var mUserID = "0"             //为不同用户创建的独立的日志库
@@ -116,8 +120,15 @@ public class HDWindowLoggerSwift {
     }
     
     ///获取log日志数组
-    public class func getAllLog(name: String? = nil) -> [String] {
-        return HDSqliteTools.shared.getAllLog(name: name)
+    public class func getAllLog(date: Date? = nil) -> [String] {
+        if let date = date {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            let dateString = dateFormatter.string(from: date)
+            return HDSqliteTools.shared.getAllLog(name: dateString)
+        } else {
+            return HDSqliteTools.shared.getAllLog()
+        }
     }
 
     ///获取log日志的数据库
@@ -129,7 +140,7 @@ public class HDWindowLoggerSwift {
     public class func cleanLog() {
         self.shared.mLogDataArray.removeAll()
         DispatchQueue.main.async {
-            self.shared.mWindow?.cleanLog()
+            self.shared.mWindow?.cleanDataArray()
         }
     }
     
