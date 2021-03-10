@@ -54,6 +54,7 @@ class HDLoggerWindow: UIWindow {
     
     //显示窗口
     func show() {
+        self.changeWindowFrame()
         self.isHidden = false
         self.mFloatWindow.isHidden = true
         self.p_reloadFilter()
@@ -168,12 +169,12 @@ class HDLoggerWindow: UIWindow {
     }()
     
     private lazy var mFloatWindow: UIWindow = {
-        var floatWidow: UIWindow = UIWindow(frame: CGRect(x: UIScreen.main.bounds.size.width - 70, y: 50, width: 60, height: 60))
+        var floatWidow: UIWindow = UIWindow(frame: CGRect(x: UIScreen.main.bounds.size.width - 80, y: 100, width: 60, height: 60))
         if #available(iOS 13.0, *) {
             for windowScene:UIWindowScene in ((UIApplication.shared.connectedScenes as? Set<UIWindowScene>)!) {
                 if windowScene.activationState == .foregroundActive {
                     floatWidow = UIWindow(windowScene: windowScene)
-                    floatWidow.frame = CGRect(x: UIScreen.main.bounds.size.width - 70, y: 50, width: 60, height: 60)
+                    floatWidow.frame = CGRect(x: UIScreen.main.bounds.size.width - 80, y: 100, width: 60, height: 60)
                 }
             }
         }
@@ -279,6 +280,10 @@ class HDLoggerWindow: UIWindow {
 }
 
 private extension HDLoggerWindow {
+    @objc func changeWindowFrame() {
+        self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 350)
+    }
+
     @objc func cleanLog() {
         HDWindowLoggerSwift.cleanLog()
     }
@@ -291,6 +296,8 @@ private extension HDLoggerWindow {
         self.backgroundColor = UIColor.clear
         self.p_createUI()
         self.p_bindClick()
+
+        NotificationCenter.default.addObserver(self, selector: #selector(changeWindowFrame), name: NSNotification.Name(UIApplication.didChangeStatusBarFrameNotification.rawValue), object: nil)
     }
 
     private func p_bindClick() {
@@ -360,11 +367,22 @@ private extension HDLoggerWindow {
     @objc private func p_touchMove(p:UIPanGestureRecognizer) {
         guard let window = HDCommonToolsSwift.shared.getCurrentNormalWindow() else { return }
         let panPoint = p.location(in: window)
-        if p.state == .changed || p.state == .ended {
-            let x = min(max(40, panPoint.x) , window.bounds.size.width - 40)
-            let y = min(max(80, panPoint.y), window.bounds.size.height - 140)
-            self.mFloatWindow.center = CGPoint(x: x, y: y)
+        //跟随手指拖拽
+        if p.state == .changed {
+            self.mFloatWindow.center = CGPoint(x: panPoint.x, y: panPoint.y)
             p.setTranslation(CGPoint.zero, in: self.mFloatWindow)
+        }
+        //弹回边界
+        if p.state == .ended || p.state == .cancelled {
+            var x: CGFloat = 50
+            if panPoint.x > (window.bounds.size.width) / 2.0 {
+                x = window.bounds.size.width - 50
+            }
+            let y = min(max(130, panPoint.y), window.bounds.size.height - 140)
+            p.setTranslation(CGPoint.zero, in: self.mFloatWindow)
+            UIView.animate(withDuration: 0.35) {
+                self.mFloatWindow.center = CGPoint(x: x, y: y)
+            }
         }
     }
 
@@ -432,7 +450,7 @@ private extension HDLoggerWindow {
     }
 
     private func p_createUI() {
-        self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 350)
+        self.changeWindowFrame()
 
         self.rootViewController?.view.addSubview(self.mBGView)
         self.mBGView.snp.makeConstraints { (make) in
@@ -447,7 +465,7 @@ private extension HDLoggerWindow {
         self.mBGView.addSubview(self.mScaleButton)
         self.mScaleButton.snp.makeConstraints { (make) in
             make.left.top.equalToSuperview()
-            make.width.equalTo(UIScreen.main.bounds.size.width/4.0)
+            make.width.equalToSuperview().dividedBy(4)
             make.height.equalTo(40)
         }
         self.mBGView.addSubview(self.mHideButton)
@@ -477,14 +495,14 @@ private extension HDLoggerWindow {
         self.mPasswordTextField.snp.makeConstraints { (make) in
             make.left.equalToSuperview()
             make.top.equalTo(self.mScaleButton.snp.bottom)
-            make.width.equalTo(UIScreen.main.bounds.size.width/3.0 + 50)
+            make.width.equalToSuperview().dividedBy(3)
             make.height.equalTo(40)
         }
         self.mBGView.addSubview(self.mPasswordButton)
         self.mPasswordButton.snp.makeConstraints { (make) in
             make.left.equalTo(self.mPasswordTextField.snp.right)
             make.top.equalTo(self.mPasswordTextField)
-            make.width.equalTo(UIScreen.main.bounds.size.width/3.0 - 50)
+            make.width.equalToSuperview().dividedBy(3)
             make.height.equalTo(40)
         }
         //开关视图
@@ -514,28 +532,28 @@ private extension HDLoggerWindow {
             make.left.equalToSuperview()
             make.top.equalTo(self.mTableView.snp.bottom)
             make.bottom.equalToSuperview().offset(-20)
-            make.width.equalTo(UIScreen.main.bounds.size.width - 180)
+            make.width.equalToSuperview().dividedBy(2)
         }
 
         self.mBGView.addSubview(self.mPreviousButton)
         self.mPreviousButton.snp.makeConstraints { (make) in
             make.top.bottom.equalTo(self.mSearchBar)
             make.left.equalTo(self.mSearchBar.snp.right)
-            make.width.equalTo(60)
+            make.width.equalToSuperview().dividedBy(6)
         }
 
         self.mBGView.addSubview(self.mNextButton)
         self.mNextButton.snp.makeConstraints { (make) in
             make.top.bottom.equalTo(self.mSearchBar)
             make.left.equalTo(self.mPreviousButton.snp.right)
-            make.width.equalTo(60)
+            make.width.equalToSuperview().dividedBy(6)
         }
 
         self.mBGView.addSubview(self.mSearchNumLabel)
         self.mSearchNumLabel.snp.makeConstraints { (make) in
             make.top.bottom.equalTo(self.mSearchBar)
             make.left.equalTo(self.mNextButton.snp.right)
-            make.width.equalTo(60)
+            make.width.equalToSuperview().dividedBy(6)
         }
 
         self.mBGView.addSubview(self.mTipLabel)

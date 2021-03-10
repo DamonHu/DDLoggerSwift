@@ -154,8 +154,9 @@ public class HDWindowLoggerSwift {
                             self.shared.mWindow = HDLoggerWindow(windowScene: windowScene)
                         }
                     }
+                } else {
+                    self.shared.mWindow = HDLoggerWindow(frame: CGRect.zero)
                 }
-                self.shared.mWindow = HDLoggerWindow(frame: CGRect.zero)
                 //首次展示更新一次历史内容
                 self.shared.mWindow?.updateUI(modelList: self.shared.mLogDataArray)
             }
