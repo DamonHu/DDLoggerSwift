@@ -68,13 +68,39 @@ public class HDWindowLoggerSwift {
     public static var mLogExpiryDay = 7        //本地日志文件的有效期（天），超出有效期的本地日志会被删除，0为没有有效期，默认为7天
     public static var mMaxShowCount = 100       //屏幕最大的显示数量，适量即可，0为不限制
     public static var mUserID = "0"             //为不同用户创建的独立的日志库
-    
+    public static var showFPS = true {
+        willSet {
+            shared.mFPSTools.showFPS = newValue
+        }
+    }            //是否显示屏幕FPS状态
     //MARK: Private
+    private lazy var mFPSTools: HDFPSTools = {
+        let tFPSTools = HDFPSTools { [weak self] (fps) in
+            guard let self = self else { return }
+            if HDWindowLoggerSwift.showFPS {
+                self.mWindow?.mFloatButton?.setTitle("\(fps)FPS", for: UIControl.State.normal)
+                self.mWindow?.mFloatButton?.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .bold)
+                if fps >= 55 {
+                    self.mWindow?.mFloatButton?.backgroundColor = UIColor(hexValue: 0x5dae8b)
+                } else if (fps >= 50 && fps < 55) {
+                    self.mWindow?.mFloatButton?.backgroundColor = UIColor(hexValue: 0xf0a500)
+                } else {
+                    self.mWindow?.mFloatButton?.backgroundColor = UIColor(hexValue: 0xaa2b1d)
+                }
+            } else {
+                self.mWindow?.mFloatButton?.titleLabel?.font = UIFont.systemFont(ofSize: 23, weight: .bold)
+                self.mWindow?.mFloatButton?.backgroundColor = UIColor(hexValue: 0x5dae8b)
+                self.mWindow?.mFloatButton?.setTitle(NSLocalizedString("H", comment: ""), for: UIControl.State.normal)
+            }
+        }
+        return tFPSTools
+    }()
     private var mWindow: HDLoggerWindow?
     private let logQueue = DispatchQueue(label: "HDWindowLogger")
     private var mLogDataArray = [HDWindowLoggerItem]()  //输出的日志信息
     var mPasswordCorrect: Bool = false
     static let shared = HDWindowLoggerSwift()
+
     //log的Public函数
     /// 根据日志的输出类型去输出相应的日志，不同日志类型颜色不一样
     /// - Parameter log: 日志内容
@@ -106,7 +132,7 @@ public class HDWindowLoggerSwift {
                 self.shared.mLogDataArray.append(loggerItem)
                 //写入文件
                 DispatchQueue.global().async {
-                    self.p_writeDB(log: loggerItem)
+                    self.shared.p_writeDB(log: loggerItem)
                 }
                 if self.mMaxShowCount != 0 && self.shared.mLogDataArray.count > self.mMaxShowCount {
                     self.shared.mLogDataArray.removeFirst()
@@ -148,19 +174,19 @@ public class HDWindowLoggerSwift {
     public class func show() {
         DispatchQueue.main.async {
             if self.shared.mWindow == nil {
+                self.shared.mWindow = HDLoggerWindow(frame: CGRect.zero)
                 if #available(iOS 13.0, *) {
                     for windowScene:UIWindowScene in ((UIApplication.shared.connectedScenes as? Set<UIWindowScene>)!) {
                         if windowScene.activationState == .foregroundActive {
                             self.shared.mWindow = HDLoggerWindow(windowScene: windowScene)
                         }
                     }
-                } else {
-                    self.shared.mWindow = HDLoggerWindow(frame: CGRect.zero)
                 }
                 //首次展示更新一次历史内容
                 self.shared.mWindow?.updateUI(modelList: self.shared.mLogDataArray)
             }
             self.shared.mWindow?.show()
+            self.showFPS = true
         }
     }
     
@@ -203,11 +229,11 @@ public class HDWindowLoggerSwift {
 }
 
 private extension HDWindowLoggerSwift {
-    private class func p_writeDB(log: HDWindowLoggerItem) -> Void {
+    func p_writeDB(log: HDWindowLoggerItem) -> Void {
         HDSqliteTools.shared.insertLog(log: log)
     }
     
-    private func p_checkValidity() {
+    func p_checkValidity() {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let cachePath = HDSqliteTools.shared.getDBFolder()

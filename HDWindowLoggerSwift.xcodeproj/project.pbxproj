@@ -10,6 +10,7 @@
 		482F596BF3D546A1BF12BC37 /* Pods_HDWindowLoggerSwift_HDWindowLoggerSwiftUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D0BD1ACC5224B967D97685F /* Pods_HDWindowLoggerSwift_HDWindowLoggerSwiftUITests.framework */; };
 		83B62DA57B98D38A9DBD277D /* Pods_HDWindowLoggerSwiftTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C52FB809976FED82D9A48A5F /* Pods_HDWindowLoggerSwiftTests.framework */; };
 		E409882025DE3DA90013DC32 /* HDSqliteTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = E409881F25DE3DA90013DC32 /* HDSqliteTools.swift */; };
+		E41C58F025F8BAD600837564 /* HDFPSTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = E41C58EF25F8BAD600837564 /* HDFPSTools.swift */; };
 		E47F8DE02508FE840055584A /* HDLoggerWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47F8DDF2508FE840055584A /* HDLoggerWindow.swift */; };
 		E4885A7122C60E5100B9BC8B /* LogContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4885A7022C60E5100B9BC8B /* LogContent.swift */; };
 		E48AABF722C05EF600CC5F1C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48AABF622C05EF600CC5F1C /* AppDelegate.swift */; };
@@ -54,6 +55,7 @@
 		D26B26CF4E21ACE69380752F /* Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests.debug.xcconfig"; path = "Target Support Files/Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests/Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		D6BC2BB2778E87514615D81F /* Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests.release.xcconfig"; path = "Target Support Files/Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests/Pods-HDWindowLoggerSwift-HDWindowLoggerSwiftUITests.release.xcconfig"; sourceTree = "<group>"; };
 		E409881F25DE3DA90013DC32 /* HDSqliteTools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDSqliteTools.swift; sourceTree = "<group>"; };
+		E41C58EF25F8BAD600837564 /* HDFPSTools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDFPSTools.swift; sourceTree = "<group>"; };
 		E47F8DDF2508FE840055584A /* HDLoggerWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDLoggerWindow.swift; sourceTree = "<group>"; };
 		E4885A7022C60E5100B9BC8B /* LogContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogContent.swift; sourceTree = "<group>"; };
 		E48AABF322C05EF600CC5F1C /* HDWindowLoggerSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HDWindowLoggerSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -193,6 +195,7 @@
 				E4A754AE2490AA17005EAD80 /* HDWindowLoggerItem.swift */,
 				E47F8DDF2508FE840055584A /* HDLoggerWindow.swift */,
 				E409881F25DE3DA90013DC32 /* HDSqliteTools.swift */,
+				E41C58EF25F8BAD600837564 /* HDFPSTools.swift */,
 			);
 			path = HDWindowLoggerSwift;
 			sourceTree = "<group>";
@@ -438,6 +441,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E41C58F025F8BAD600837564 /* HDFPSTools.swift in Sources */,
 				E4885A7122C60E5100B9BC8B /* LogContent.swift in Sources */,
 				E48AAC2A22C05F8000CC5F1C /* HDLoggerSwiftTableViewCell.swift in Sources */,
 				E4A754AF2490AA17005EAD80 /* HDWindowLoggerItem.swift in Sources */,

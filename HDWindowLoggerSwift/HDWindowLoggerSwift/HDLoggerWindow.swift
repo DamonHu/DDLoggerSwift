@@ -16,6 +16,7 @@ class HDLoggerWindow: UIWindow {
     private var mCurrentSearchIndex = 0             //当前搜索到的索引
     private var mFileDateNameList = [String]()      //可以分享的文件列表
     private var mShareFileName = ""                 //选中去分享的文件名
+    var mFloatButton: UIButton?
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
@@ -132,6 +133,7 @@ class HDLoggerWindow: UIWindow {
     
     private lazy var mPasswordTextField: UITextField = {
         let tTextField = UITextField()
+        tTextField.isSecureTextEntry = true
         tTextField.delegate = self
         let arrtibutedString = NSMutableAttributedString(string: NSLocalizedString("输入密码查看加密数据", comment: ""), attributes: [NSAttributedString.Key.foregroundColor : UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 0.7), NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14)])
         tTextField.attributedPlaceholder = arrtibutedString
@@ -144,7 +146,7 @@ class HDLoggerWindow: UIWindow {
     
     private lazy var mPasswordButton: UIButton = {
         let button = UIButton(type: UIButton.ButtonType.custom)
-        button.backgroundColor = UIColor(red: 27.0/255.0, green: 108.0/255.0, blue: 168.0/255.0, alpha: 1.0)
+        button.backgroundColor = UIColor(red: 93.0/255.0, green: 174.0/255.0, blue: 139.0/255.0, alpha: 1.0)
         button.setTitleColor(UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0), for: UIControl.State.normal)
         button.setTitle(NSLocalizedString("解密", comment: ""), for: UIControl.State.normal)
         button.layer.masksToBounds = true
@@ -196,6 +198,7 @@ class HDLoggerWindow: UIWindow {
         
         let pan = UIPanGestureRecognizer(target: self, action: #selector(p_touchMove(p:)))
         floatButton.addGestureRecognizer(pan)
+        mFloatButton = floatButton
         
         floatWidow.rootViewController?.view.addSubview(floatButton)
         return floatWidow
