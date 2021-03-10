@@ -9,7 +9,7 @@
 import UIKit
 
 class ViewController: UIViewController {
-    
+
     lazy var clickButton: UIButton = {
         let button = UIButton(type: UIButton.ButtonType.custom)
         button.backgroundColor = UIColor.red
@@ -45,8 +45,6 @@ class ViewController: UIViewController {
     }
 
     @objc func onClickButton() {
-//        HDNormalLog("测试输出，不会写入悬浮窗")
-//        HDErrorLog("错误出现")
         for _ in 0..<100 {
             HDDebugLog("测试输出，不会写入悬浮窗")
             HDDebugLog("测试输出，不会写入悬浮窗","222222","3333333")
