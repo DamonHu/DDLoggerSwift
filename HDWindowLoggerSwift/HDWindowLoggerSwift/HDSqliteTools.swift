@@ -52,6 +52,11 @@ class HDSqliteTools {
     }
 
     func getAllLog(name: String? = nil) -> [String] {
+        let databasePath = self._getDataBasePath(name: name)
+        guard FileManager.default.fileExists(atPath: databasePath.path) else {
+            //数据库文件不存在
+            return [String]()
+        }
         let queryDB = self._openDatabase(name: name)
         let queryString = "SELECT * FROM hdlog;"
         var queryStatement: OpaquePointer?
