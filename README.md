@@ -25,6 +25,10 @@ Display effect gif:
 
 In addition to displaying on the screen, you can set whether to automatically scroll the log for debugging, or you can share the output log to WeChat, twitter, etc. for offline viewing. At the same time, you can search for output content, Sensitive content can be encrypted with a password, and shared files are also encrypted, and can be decrypted online with a password.
 
+|mobile preview|XCode preview|share & FPS|
+|----|----|----|
+|![](./ReadmeImage/mobile_preview.png)|![](./ReadmeImage/xcode_preview.png)|![](./ReadmeImage/share_preview.png)|
+
 ![](./ReadmeImage/preview.png)
 
 ## I. Installation
@@ -246,11 +250,16 @@ Here are a few online sites recommended, you can also Google it by yourself
 
 项目地址:[https://github.com/DamonHu/HDWindowLoggerSwift](https://github.com/DamonHu/HDWindowLoggerSwift)
 
-展示效果gif图:
+展示效果gif图: 如果看不到预览图，可以检查网络状态
 
 ![](./ReadmeImage/preview.gif)
 
 除了在屏幕上显示，可以设置是否自动滚动日志便于调试，也可以将输出的日志分享到微信、twitter等程序，以便离线查看。同时可以搜索输出内容，敏感内容可以设置密码进行加密，分享出来的文件也会进行加密，可以通过密码在线解密
+
+|手机预览图|XCode预览图|分享 & FPS|
+|----|----|----|
+|![](./ReadmeImage/mobile_preview.png)|![](./ReadmeImage/xcode_preview.png)|![](./ReadmeImage/share_preview.png)|
+
 
 ![](./ReadmeImage/preview.png)
 
