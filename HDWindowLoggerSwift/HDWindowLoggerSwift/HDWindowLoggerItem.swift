@@ -10,8 +10,12 @@ import UIKit
 import CommonCrypto
 import HDCommonToolsSwift
 
+enum Section: CaseIterable {
+    case main
+}
 ///log的内容
 public class HDWindowLoggerItem {
+    let identifier = UUID()                                 //用于hash计算
     public var mLogItemType = HDLogType.normal             //log类型
     public var mLogDebugContent: String = ""              //log输出的文件、行数、函数名
     public var mLogContent: Any?                         //log的内容
@@ -108,5 +112,21 @@ public class HDWindowLoggerItem {
                 complete(self.mCacheHasHighlightString, newString)
             }
         }
+    }
+}
+
+extension HDWindowLoggerItem: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(identifier)
+    }
+
+    public static func ==(lhs: HDWindowLoggerItem, rhs: HDWindowLoggerItem) -> Bool {
+        return lhs.identifier == rhs.identifier
+    }
+
+    func contains(query: String?) -> Bool {
+        guard let query = query else { return true }
+        guard !query.isEmpty else { return true }
+        return self.getFullContentString().contains(query)
     }
 }

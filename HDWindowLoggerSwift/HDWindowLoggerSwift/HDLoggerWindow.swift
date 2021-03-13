@@ -16,6 +16,8 @@ class HDLoggerWindow: UIWindow {
     private var mCurrentSearchIndex = 0             //当前搜索到的索引
     private var mFileDateNameList = [String]()      //可以分享的文件列表
     private var mShareFileName = ""                 //选中去分享的文件名
+    var dataSource: Any?
+    
     private let logQueue = DispatchQueue(label: "HDWindowLogger")
     var mFloatButton: UIButton?
     var isShow = false {
@@ -63,17 +65,46 @@ class HDLoggerWindow: UIWindow {
     }
 
     func insert(model: HDWindowLoggerItem) {
-        self.logQueue.sync {
-            if HDWindowLoggerSwift.mMaxShowCount != 0 && self.mLogDataArray.count > HDWindowLoggerSwift.mMaxShowCount {
-                self.mLogDataArray.removeFirst()
+        if #available(iOS 13.0, *) {
+            self.logQueue.sync {
+                if HDWindowLoggerSwift.mMaxShowCount != 0 && self.mLogDataArray.count > HDWindowLoggerSwift.mMaxShowCount {
+                    self.mLogDataArray.removeFirst()
+                }
+                self.mLogDataArray.append(model)
+                if self.isShow {
+                    guard let dataSource = dataSource as? UITableViewDiffableDataSource<Section, HDWindowLoggerItem> else {
+                        self.dataSource = self.getDataSource()
+                        return
+                    }
+                    dataSource.defaultRowAnimation = .fade
+                    var snapshot = dataSource.snapshot()
+                    if snapshot.numberOfSections == 0 {
+                        snapshot.appendSections([.main])
+                    }
+                    snapshot.appendItems(mLogDataArray)
+                    dataSource.apply(snapshot, animatingDifferences: false)
+                    if self.mAutoScrollSwitch.isOn {
+                        guard self.mLogDataArray.count > 1 else { return }
+                        DispatchQueue.main.async {
+                            self.mTableView.scrollToRow(at: IndexPath(row: self.mLogDataArray.count - 1, section: 0), at: .bottom, animated: true)
+                        }
+                    }
+                }
             }
-            self.mLogDataArray.append(model)
-            if self.isShow {
-                self.p_reloadFilter()
-                if self.mAutoScrollSwitch.isOn {
-                    guard self.mLogDataArray.count > 1 else { return }
-                    DispatchQueue.main.async {
-                        self.mTableView.scrollToRow(at: IndexPath(row: self.mLogDataArray.count - 1, section: 0), at: .bottom, animated: true)
+            
+        } else {
+            self.logQueue.sync {
+                if HDWindowLoggerSwift.mMaxShowCount != 0 && self.mLogDataArray.count > HDWindowLoggerSwift.mMaxShowCount {
+                    self.mLogDataArray.removeFirst()
+                }
+                self.mLogDataArray.append(model)
+                if self.isShow {
+                    self.p_reloadFilter()
+                    if self.mAutoScrollSwitch.isOn {
+                        guard self.mLogDataArray.count > 1 else { return }
+                        DispatchQueue.main.async {
+                            self.mTableView.scrollToRow(at: IndexPath(row: self.mLogDataArray.count - 1, section: 0), at: .bottom, animated: true)
+                        }
                     }
                 }
             }
@@ -719,5 +750,22 @@ extension HDLoggerWindow: UIPickerViewDelegate, UIPickerViewDataSource {
             self.mShareFileName = self.mFileDateNameList[row]
         }
 
+    }
+}
+
+
+@available(iOS 13.0, *)
+extension HDLoggerWindow {
+    func getDataSource() -> UITableViewDiffableDataSource<Section, HDWindowLoggerItem>? {
+            return UITableViewDiffableDataSource(tableView: self.mTableView) { (tableView, indexPath, loggerItem) -> UITableViewCell? in
+                let loggerCell: HDLoggerSwiftTableViewCell = tableView.dequeueReusableCell(withIdentifier: "HDLoggerSwiftTableViewCell") as! HDLoggerSwiftTableViewCell
+                if indexPath.row%2 != 0 {
+                    loggerCell.backgroundColor = UIColor(red: 156.0/255.0, green: 44.0/255.0, blue: 44.0/255.0, alpha: 0.8)
+                } else {
+                    loggerCell.backgroundColor = UIColor.clear
+                }
+                loggerCell.updateWithLoggerItem(loggerItem: loggerItem, highlightText: self.mSearchBar.text ?? "")
+                return loggerCell
+            }
     }
 }
