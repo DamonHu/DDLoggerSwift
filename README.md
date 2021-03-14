@@ -19,13 +19,17 @@ The iOS side displays the output log log on the screen, and can generate log fil
 
 Project address: [https://github.com/DamonHu/HDWindowLoggerSwift](https://github.com/DamonHu/HDWindowLoggerSwift)
 
-Display effect gif:
-
-![](./ReadmeImage/preview.gif)
-
 In addition to displaying on the screen, you can set whether to automatically scroll the log for debugging, or you can share the output log to WeChat, twitter, etc. for offline viewing. At the same time, you can search for output content, Sensitive content can be encrypted with a password, and shared files are also encrypted, and can be decrypted online with a password.
 
-|mobile preview|XCode preview|share & FPS|
+The project uses' SQLite 'efficient storage, only records data during the background operation, and not affect the performance of the interface. The foreground operation is efficient. It basically outputs logs synchronously with Xcode, and you can view the GIF chart of the comparison with Xcode log output
+
+|Preview GIF picture|Xcode debug GIF|
+|----|----|
+|![](./ReadmeImage/preview.gif)|![](./ReadmeImage/debug.gif)|
+
+
+
+|mobile preview|Xcode preview|share & FPS|
 |----|----|----|
 |![](./ReadmeImage/mobile_preview.png)|![](./ReadmeImage/xcode_preview.png)|![](./ReadmeImage/share_preview.png)|
 
@@ -250,11 +254,14 @@ Here are a few online sites recommended, you can also Google it by yourself
 
 项目地址:[https://github.com/DamonHu/HDWindowLoggerSwift](https://github.com/DamonHu/HDWindowLoggerSwift)
 
-展示效果gif图: 如果看不到预览图，可以检查网络状态
+调试窗口可在屏幕上显示，可以设置是否自动滚动日志便于调试，也可以将输出的日志分享到微信、twitter等程序，以便离线查看。同时可以搜索输出内容，敏感内容可以设置密码进行加密，分享出来的文件也会进行加密，可以通过密码在线解密。
 
-![](./ReadmeImage/preview.gif)
+该项目使用`sqlite`高效存储，后台运行期间只记录数据，不会影响界面性能，前台运行效率高，基本和Xcode同步输出日志，可以查看和xCode日志输出的对比gif图
 
-除了在屏幕上显示，可以设置是否自动滚动日志便于调试，也可以将输出的日志分享到微信、twitter等程序，以便离线查看。同时可以搜索输出内容，敏感内容可以设置密码进行加密，分享出来的文件也会进行加密，可以通过密码在线解密
+|预览gif图|Xcode对比gif图|
+|----|----|
+|![](./ReadmeImage/preview.gif)|![](./ReadmeImage/debug.gif)|
+
 
 |手机预览图|XCode预览图|分享 & FPS|
 |----|----|----|
