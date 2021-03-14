@@ -106,34 +106,6 @@ public class HDWindowLoggerSwift {
     /// - Parameter log: 日志内容
     /// - Parameter logType: 日志类型
     public class func printLog(log:Any, logType:HDLogType, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-//        self.shared.logQueue.sync {
-//            let loggerItem = HDWindowLoggerItem()
-//            loggerItem.mLogItemType = logType
-//            loggerItem.mCreateDate = Date()
-//
-//            let fileName = (file as NSString).lastPathComponent;
-//            loggerItem.mLogDebugContent = "[File:\(fileName)]:[Line:\(lineNum):[Function:\(funcName)]]-Log:"
-//            loggerItem.mLogContent = log
-//
-//            if logType == .debug {
-//                print(loggerItem.getFullContentString())
-//            } else {
-//                if self.mDebugAreaLogOut {
-//                    print(loggerItem.getFullContentString())
-//                }
-//                //写入文件
-//                DispatchQueue.global().async {
-//                    self.shared.p_writeDB(log: loggerItem)
-//                }
-//                if self.mMaxShowCount != 0 && self.shared.mLogDataArray.count > self.mMaxShowCount {
-//                    self.shared.mLogDataArray.removeFirst()
-//                }
-//                //显示在主界面时才刷新列表
-//                DispatchQueue.main.async {
-//                    self.shared.mWindow?.updateUI(modelList: self.shared.mLogDataArray)
-//                }
-//            }
-//        }
         let loggerItem = HDWindowLoggerItem()
         loggerItem.mLogItemType = logType
         loggerItem.mCreateDate = Date()
