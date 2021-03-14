@@ -49,27 +49,24 @@ class ViewController: UIViewController {
         HDErrorLog("错误出现")
 //        return
         for _ in 0..<100 {
-            DispatchQueue.global().async {
-                HDDebugLog("测试输出，不会写入悬浮窗")
-                HDDebugLog("测试输出，不会写入悬浮窗","222222","3333333")
-                //普通输出
-                HDNormalLog("点击了按钮111")
-                HDNormalLog("输出多个",22)
-                //输出警告内容
-                HDWarnLog("警告提示")
-                //输出错误内容
-                HDErrorLog("错误出现")
-                //输出加密内容
-                HDWindowLoggerSwift.mPrivacyPassword = "12345678901234561234567890123456" //设置加密内容密码
-                HDPrivacyLog("这个是加密数据的测试数据222")
-                //输出字典
-                let dicObj = ["hhhhhhh":"撒旦法是打发斯蒂芬是打发斯蒂芬","77777":"数据库的复健科花见花开会尽快圣诞节开发和金黄色的费四大皆空回复就开始和豆腐是砍价的回复斯柯达金凤凰"]
-                HDNormalLog(dicObj)
-                //输出数组
-                let arrayObj = ["1111111","22222222","sdjkhfsjkdfjkhsdhjfk","3333sjdhgfhjg"]
-                HDNormalLog(arrayObj)
-            }
-
+            HDDebugLog("测试输出，不会写入悬浮窗")
+            HDDebugLog("测试输出，不会写入悬浮窗","222222","3333333")
+            //普通输出
+            HDNormalLog("点击了按钮111")
+            HDNormalLog("输出多个",22)
+            //输出警告内容
+            HDWarnLog("警告提示")
+            //输出错误内容
+            HDErrorLog("错误出现")
+            //输出加密内容
+            HDWindowLoggerSwift.mPrivacyPassword = "12345678901234561234567890123456" //设置加密内容密码
+            HDPrivacyLog("这个是加密数据的测试数据222")
+            //输出字典
+            let dicObj = ["hhhhhhh":"撒旦法是打发斯蒂芬是打发斯蒂芬","77777":"数据库的复健科花见花开会尽快圣诞节开发和金黄色的费四大皆空回复就开始和豆腐是砍价的回复斯柯达金凤凰"]
+            HDNormalLog(dicObj)
+            //输出数组
+            let arrayObj = ["1111111","22222222","sdjkhfsjkdfjkhsdhjfk","3333sjdhgfhjg"]
+            HDNormalLog(arrayObj)
         }
     }
     
