@@ -17,7 +17,6 @@ class HDLoggerWindow: UIWindow {
     private var mFileDateNameList = [String]()      //可以分享的文件列表
     private var mShareFileName = ""                 //选中去分享的文件名
     
-    private let logQueue = DispatchQueue(label: "HDWindowLogger")
     var mFloatButton: UIButton?
     var isShow = false {
         willSet {
@@ -48,26 +47,22 @@ class HDLoggerWindow: UIWindow {
     
     @available(iOS 13.0, *)
     override init(windowScene: UIWindowScene) {
-        print("windowScene")
         super.init(windowScene: windowScene)
         self.p_init()
     }
     
     override init(frame: CGRect) {
-        print("frame")
         super.init(frame: frame)
         self.p_init()
     }
 
     func insert(model: HDWindowLoggerItem) {
-        self.logQueue.sync {
-            if HDWindowLoggerSwift.mMaxShowCount != 0 && self.mLogDataArray.count > HDWindowLoggerSwift.mMaxShowCount {
-                self.mLogDataArray.removeFirst()
-            }
-            self.mLogDataArray.append(model)
-            if self.isShow {
-                self.p_reloadFilter(model: model)
-            }
+        if HDWindowLoggerSwift.mMaxShowCount != 0 && self.mLogDataArray.count > HDWindowLoggerSwift.mMaxShowCount {
+            self.mLogDataArray.removeFirst()
+        }
+        self.mLogDataArray.append(model)
+        if self.isShow {
+            self.p_reloadFilter(model: model)
         }
     }
 

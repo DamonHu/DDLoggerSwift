@@ -101,35 +101,34 @@ public class HDWindowLoggerSwift {
     var mPasswordCorrect: Bool = false
     static let shared = HDWindowLoggerSwift()
 
+    private let logQueue = DispatchQueue(label:"com.HDWindowLogger.logQueue", qos:.utility, attributes:.concurrent)
     //log的Public函数
     /// 根据日志的输出类型去输出相应的日志，不同日志类型颜色不一样
     /// - Parameter log: 日志内容
     /// - Parameter logType: 日志类型
     public class func printLog(log:Any, logType:HDLogType, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-        DispatchQueue.global().async {
-        let loggerItem = HDWindowLoggerItem()
-        loggerItem.mLogItemType = logType
-        loggerItem.mCreateDate = Date()
+        shared.logQueue.async(group: nil, qos: .default, flags: .barrier) {
+            let loggerItem = HDWindowLoggerItem()
+            loggerItem.mLogItemType = logType
+            loggerItem.mCreateDate = Date()
 
-        let fileName = (file as NSString).lastPathComponent;
-        loggerItem.mLogDebugContent = "[File:\(fileName)]:[Line:\(lineNum):[Function:\(funcName)]]-Log:"
-        loggerItem.mLogContent = log
+            let fileName = (file as NSString).lastPathComponent;
+            loggerItem.mLogDebugContent = "[File:\(fileName)]:[Line:\(lineNum):[Function:\(funcName)]]-Log:"
+            loggerItem.mLogContent = log
 
-        if logType == .debug {
-            print(loggerItem.getFullContentString())
-        } else {
-            if self.mDebugAreaLogOut {
+            if logType == .debug {
                 print(loggerItem.getFullContentString())
-            }
-            //写入文件
-            
+            } else {
+                if self.mDebugAreaLogOut {
+                    print(loggerItem.getFullContentString())
+                }
+                //写入文件
                 self.shared.p_writeDB(log: loggerItem)
-            
-            //显示在主界面时才刷新列表
-            DispatchQueue.main.async {
-                self.shared.mWindow?.insert(model: loggerItem)
+                //刷新列表
+                DispatchQueue.main.async {
+                    self.shared.mWindow?.insert(model: loggerItem)
+                }
             }
-        }
         }
     }
     
