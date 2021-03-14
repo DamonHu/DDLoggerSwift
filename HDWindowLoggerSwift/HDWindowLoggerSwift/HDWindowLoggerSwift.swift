@@ -77,44 +77,37 @@ public class HDWindowLoggerSwift {
     private lazy var mFPSTools: HDFPSTools = {
         let tFPSTools = HDFPSTools { [weak self] (fps) in
             guard let self = self else { return }
-            if HDWindowLoggerSwift.showFPS {
-                self.mWindow?.mFloatButton?.setTitle("\(fps)FPS", for: UIControl.State.normal)
-                self.mWindow?.mFloatButton?.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .bold)
-                if fps >= 55 {
-                    self.mWindow?.mFloatButton?.backgroundColor = UIColor(hexValue: 0x5dae8b)
-                } else if (fps >= 50 && fps < 55) {
-                    self.mWindow?.mFloatButton?.backgroundColor = UIColor(hexValue: 0xf0a500)
+            DispatchQueue.main.async {
+                if HDWindowLoggerSwift.showFPS {
+                    self.mWindow?.mFloatButton?.setTitle("\(fps)FPS", for: UIControl.State.normal)
+                    self.mWindow?.mFloatButton?.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .bold)
+                    if fps >= 55 {
+                        self.mWindow?.mFloatButton?.backgroundColor = UIColor(hexValue: 0x5dae8b)
+                    } else if (fps >= 50 && fps < 55) {
+                        self.mWindow?.mFloatButton?.backgroundColor = UIColor(hexValue: 0xf0a500)
+                    } else {
+                        self.mWindow?.mFloatButton?.backgroundColor = UIColor(hexValue: 0xaa2b1d)
+                    }
                 } else {
-                    self.mWindow?.mFloatButton?.backgroundColor = UIColor(hexValue: 0xaa2b1d)
+                    self.mWindow?.mFloatButton?.titleLabel?.font = UIFont.systemFont(ofSize: 23, weight: .bold)
+                    self.mWindow?.mFloatButton?.backgroundColor = UIColor(hexValue: 0x5dae8b)
+                    self.mWindow?.mFloatButton?.setTitle(NSLocalizedString("H", comment: ""), for: UIControl.State.normal)
                 }
-            } else {
-                self.mWindow?.mFloatButton?.titleLabel?.font = UIFont.systemFont(ofSize: 23, weight: .bold)
-                self.mWindow?.mFloatButton?.backgroundColor = UIColor(hexValue: 0x5dae8b)
-                self.mWindow?.mFloatButton?.setTitle(NSLocalizedString("H", comment: ""), for: UIControl.State.normal)
             }
         }
         return tFPSTools
     }()
     private var mWindow: HDLoggerWindow?
-    private let logQueue = DispatchQueue(label: "HDWindowLogger")
-    private var mLogDataArray = [HDWindowLoggerItem]()  //输出的日志信息
     var mPasswordCorrect: Bool = false
     static let shared = HDWindowLoggerSwift()
 
+    private let logQueue = DispatchQueue(label:"com.HDWindowLogger.logQueue", qos:.utility, attributes:.concurrent)
     //log的Public函数
     /// 根据日志的输出类型去输出相应的日志，不同日志类型颜色不一样
     /// - Parameter log: 日志内容
     /// - Parameter logType: 日志类型
     public class func printLog(log:Any, logType:HDLogType, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-        self.shared.logQueue.sync {
-            if self.shared.mLogDataArray.isEmpty {
-                //第一条信息
-                let loggerItem = HDWindowLoggerItem()
-                loggerItem.mLogItemType = HDLogType.warn
-                loggerItem.mCreateDate = Date()
-                loggerItem.mLogContent = NSLocalizedString("HDWindowLogger: 点击对应日志可快速复制", comment: "")
-                self.shared.mLogDataArray.append(loggerItem)
-            }
+        shared.logQueue.async(group: nil, qos: .default, flags: .barrier) {
             let loggerItem = HDWindowLoggerItem()
             loggerItem.mLogItemType = logType
             loggerItem.mCreateDate = Date()
@@ -129,17 +122,11 @@ public class HDWindowLoggerSwift {
                 if self.mDebugAreaLogOut {
                     print(loggerItem.getFullContentString())
                 }
-                self.shared.mLogDataArray.append(loggerItem)
                 //写入文件
-                DispatchQueue.global().async {
-                    self.shared.p_writeDB(log: loggerItem)
-                }
-                if self.mMaxShowCount != 0 && self.shared.mLogDataArray.count > self.mMaxShowCount {
-                    self.shared.mLogDataArray.removeFirst()
-                }
-                //显示在主界面时才刷新列表
+                self.shared.p_writeDB(log: loggerItem)
+                //刷新列表
                 DispatchQueue.main.async {
-                    self.shared.mWindow?.updateUI(modelList: self.shared.mLogDataArray)
+                    self.shared.mWindow?.insert(model: loggerItem)
                 }
             }
         }
@@ -164,10 +151,11 @@ public class HDWindowLoggerSwift {
     
     ///  删除log日志
     public class func cleanLog() {
-        self.shared.mLogDataArray.removeAll()
+//        self.shared.mLogDataArray.removeAll()
         DispatchQueue.main.async {
             self.shared.mWindow?.cleanDataArray()
         }
+
     }
     
     /// 显示log窗口
@@ -184,10 +172,8 @@ public class HDWindowLoggerSwift {
                 if self.shared.mWindow == nil {
                     self.shared.mWindow = HDLoggerWindow(frame: CGRect.zero)
                 }
-                //首次展示更新一次历史内容
-                self.shared.mWindow?.updateUI(modelList: self.shared.mLogDataArray)
             }
-            self.shared.mWindow?.show()
+            self.shared.mWindow?.isShow = true
             self.showFPS = true
         }
     }

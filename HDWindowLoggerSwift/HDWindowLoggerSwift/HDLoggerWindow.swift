@@ -16,7 +16,30 @@ class HDLoggerWindow: UIWindow {
     private var mCurrentSearchIndex = 0             //当前搜索到的索引
     private var mFileDateNameList = [String]()      //可以分享的文件列表
     private var mShareFileName = ""                 //选中去分享的文件名
+    
     var mFloatButton: UIButton?
+    var isShow = false {
+        willSet {
+            if newValue {
+                self.changeWindowFrame()
+                self.isHidden = false
+                self.mFloatWindow.isHidden = true
+                if self.mLogDataArray.isEmpty {
+                    //第一条信息
+                    let loggerItem = HDWindowLoggerItem()
+                    loggerItem.mLogItemType = HDLogType.warn
+                    loggerItem.mCreateDate = Date()
+                    loggerItem.mLogContent = NSLocalizedString("HDWindowLogger: 点击对应日志可快速复制", comment: "")
+                    self.mLogDataArray.append(loggerItem)
+                }
+                self.p_reloadFilter()
+            } else {
+                self.isHidden = true
+                self.mFloatWindow.isHidden = false
+            }
+        }
+    }   //显示窗口
+
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
@@ -24,27 +47,22 @@ class HDLoggerWindow: UIWindow {
     
     @available(iOS 13.0, *)
     override init(windowScene: UIWindowScene) {
-        print("windowScene")
         super.init(windowScene: windowScene)
         self.p_init()
     }
     
     override init(frame: CGRect) {
-        print("frame")
         super.init(frame: frame)
         self.p_init()
     }
-    
-    func updateUI(modelList: [HDWindowLoggerItem]) {
-        self.mLogDataArray = modelList
-        if !self.isHidden {
-            self.p_reloadFilter()
-            if self.mAutoScrollSwitch.isOn {
-                DispatchQueue.main.async {
-                    guard self.mLogDataArray.count > 1 else { return }
-                    self.mTableView.scrollToRow(at: IndexPath(row: self.mLogDataArray.count - 1, section: 0), at: .bottom, animated: true)
-                }
-            }
+
+    func insert(model: HDWindowLoggerItem) {
+        if HDWindowLoggerSwift.mMaxShowCount != 0 && self.mLogDataArray.count > HDWindowLoggerSwift.mMaxShowCount {
+            self.mLogDataArray.removeFirst()
+        }
+        self.mLogDataArray.append(model)
+        if self.isShow {
+            self.p_reloadFilter(model: model)
         }
     }
 
@@ -54,28 +72,14 @@ class HDLoggerWindow: UIWindow {
         self.mFilterIndexArray.removeAll()
         self.p_reloadFilter()
     }
-    
-    //显示窗口
-    func show() {
-        self.changeWindowFrame()
-        self.isHidden = false
-        self.mFloatWindow.isHidden = true
-        self.p_reloadFilter()
-        if self.mAutoScrollSwitch.isOn {
-            DispatchQueue.main.async {
-                guard self.mLogDataArray.count > 1 else { return }
-                self.mTableView.scrollToRow(at: IndexPath(row: self.mLogDataArray.count - 1, section: 0), at: .bottom, animated: true)
-            }
-        }
-    }
 
     //只隐藏log的输出窗口，保留悬浮图标
     @objc func hideLogWindow() {
-        self.isHidden = true
-        self.mFloatWindow.isHidden = false
+        self.isShow = false
     }
 
     @objc func hide() {
+        self.isShow = false
         self.isHidden = true
         self.mFloatWindow.isHidden = true
     }
@@ -325,7 +329,7 @@ private extension HDLoggerWindow {
     }
 
     //过滤刷新
-    private func p_reloadFilter() {
+    private func p_reloadFilter(model: HDWindowLoggerItem? = nil) {
         self.mFilterIndexArray.removeAll()
         self.mPreviousButton.isEnabled = false
         self.mNextButton.isEnabled = false
@@ -346,6 +350,12 @@ private extension HDLoggerWindow {
             }
         }
         self.mTableView.reloadData()
+        if self.mAutoScrollSwitch.isOn {
+            guard self.mLogDataArray.count > 1 else { return }
+            DispatchQueue.main.async {
+                self.mTableView.scrollToRow(at: IndexPath(row: self.mLogDataArray.count - 1, section: 0), at: .bottom, animated: true)
+            }
+        }
     }
 
     @objc private func p_previous() -> Void {
@@ -375,7 +385,7 @@ private extension HDLoggerWindow {
     }
 
     @objc private func p_show() {
-        self.show()
+        self.isShow = true
     }
 
     @objc private func p_touchMove(p:UIPanGestureRecognizer) {
