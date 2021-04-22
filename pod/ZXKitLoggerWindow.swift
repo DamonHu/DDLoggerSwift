@@ -27,7 +27,7 @@ class ZXKitLoggerWindow: UIWindow {
                 if self.mLogDataArray.isEmpty {
                     //第一条信息
                     let loggerItem = ZXKitLoggerItem()
-                    loggerItem.mLogItemType = HDLogType.warn
+                    loggerItem.mLogItemType = ZXKitLogType.warn
                     loggerItem.mCreateDate = Date()
                     loggerItem.mLogContent = NSLocalizedString("HDWindowLogger: 点击对应日志可快速复制", comment: "")
                     self.mLogDataArray.append(loggerItem)
@@ -57,7 +57,7 @@ class ZXKitLoggerWindow: UIWindow {
     }
 
     func insert(model: ZXKitLoggerItem) {
-        if ZXKitLogger.mMaxShowCount != 0 && self.mLogDataArray.count > ZXKitLogger.mMaxShowCount {
+        if ZXKitLogger.maxDisplayCount != 0 && self.mLogDataArray.count > ZXKitLogger.maxDisplayCount {
             self.mLogDataArray.removeFirst()
         }
         self.mLogDataArray.append(model)
@@ -648,7 +648,7 @@ extension ZXKitLoggerWindow: UITableViewDataSource, UITableViewDelegate {
         dateFormatter.dateFormat = "HH:mm:ss.SSS"
         let dateStr = dateFormatter.string(from: loggerItem.mCreateDate)
         let tipString = dateStr + " " + NSLocalizedString("日志已拷贝到剪切板", comment: "")
-        HDWarnLog(tipString)
+        ZXWarnLog(tipString)
     }
 }
 
@@ -670,7 +670,7 @@ extension ZXKitLoggerWindow: UISearchBarDelegate {
 extension ZXKitLoggerWindow: UITextFieldDelegate {
     //MAKR:UITextFieldDelegate
     public func textFieldDidEndEditing(_ textField: UITextField) {
-        ZXKitLogger.shared.mPasswordCorrect = (ZXKitLogger.mPrivacyPassword == textField.text)
+        ZXKitLogger.shared.mPasswordCorrect = (ZXKitLogger.privacyLogPassword == textField.text)
         self.p_decrypt()
     }
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {

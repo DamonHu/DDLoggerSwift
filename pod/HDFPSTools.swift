@@ -10,7 +10,7 @@ import UIKit
 
 class HDFPSTools {
     var complete: ((Int) -> Void)?
-    var showFPS = true {
+    var isShowFPS = true {
         willSet {
             if newValue {
                 self.displayLink = CADisplayLink(target: self, selector: #selector(tick(link:)))

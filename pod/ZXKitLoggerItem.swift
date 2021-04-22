@@ -16,7 +16,7 @@ enum Section: CaseIterable {
 ///log的内容
 public class ZXKitLoggerItem {
     let identifier = UUID()                                 //用于hash计算
-    public var mLogItemType = HDLogType.normal             //log类型
+    public var mLogItemType = ZXKitLogType.normal             //log类型
     public var mLogDebugContent: String = ""              //log输出的文件、行数、函数名
     public var mLogContent: Any?                         //log的内容
     public var mCreateDate = Date()                      //log日期
@@ -40,17 +40,17 @@ public class ZXKitLoggerItem {
                 contentString = "\(mContent)"
             }
             if self.mLogItemType == .privacy {
-                if ZXKitLogger.mPrivacyPassword.isEmpty {
+                if ZXKitLogger.privacyLogPassword.isEmpty {
                     contentString = NSLocalizedString("密码未设置:", comment: "") + contentString
-                } else if ZXKitLogger.mPrivacyPassword.count != kCCKeySizeAES256 {
+                } else if ZXKitLogger.privacyLogPassword.count != kCCKeySizeAES256 {
                     contentString = NSLocalizedString("密码设置长度错误，需要32个字符", comment: "") + contentString
                 } else if !ZXKitLogger.shared.mPasswordCorrect {
-                    contentString = contentString.zx.aes256Encrypt(password: ZXKitLogger.mPrivacyPassword)
+                    contentString = contentString.zx.aes256Encrypt(password: ZXKitLogger.privacyLogPassword)
                 }
             }
         }
         
-        if ZXKitLogger.mCompleteLogOut {
+        if ZXKitLogger.isFullLogOut {
             switch mLogItemType {
                 case .normal:
                     return dateStr + "  >   ✅✅" +  mLogDebugContent + "\n" + contentString + "\n"

@@ -1,9 +1,16 @@
-ZXKit-code/core
+ZXKitCode/logger
 
-Copyright 2021 ZXKit and contributors.
-All rights reserved.
+Copyright 2021 ZXKit and contributors. All rights reserved.
 
-This product includes software developed at
-ZXKit (https://zxkit.com/).
+This product includes software developed at ZXKit (https://zxkit.com/).
 
-This distribution has a binary dependency on zxkit/core, which is available under the Apache-2.0 License. The source code of zxkit/core can be found at https://github.com/zxkit-code/core.
+=====================
+ZXKitCode/logger
+=====================
+This distribution has a binary dependency on ZXKitCode/logger, which is available under the Apache-2.0 License. The source code of ZXKitCode/logger can be found at https://github.com/ZXKitCode/logger.
+
+
+=====================
+ZXKitCode/util
+=====================
+This distribution has a binary dependency on ZXKitCode/util, which is available under the Apache-2.0 License. The source code of ZXKitCode/util can be found at https://github.com/ZXKitCode/util.

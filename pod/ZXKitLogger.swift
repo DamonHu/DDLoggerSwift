@@ -11,7 +11,7 @@ import ZXKitUtil
 import CommonCrypto
 
 ///log的级别，对应不同的颜色
-public enum HDLogType : Int {
+public enum ZXKitLogType : Int {
     case normal = 0   //textColor #50d890
     case warn         //textColor #f6f49d
     case error        //textColor #ff7676
@@ -21,56 +21,56 @@ public enum HDLogType : Int {
 
 ///快速输出log
 //测试输出，不会写入到悬浮窗中
-public func HDDebugLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    ZXKitLogger.printLog(log: log, logType: HDLogType.debug, file:file, funcName:funcName, lineNum:lineNum)
+public func ZXDebugLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
+    ZXKitLogger.printLog(log: log, logType: ZXKitLogType.debug, file:file, funcName:funcName, lineNum:lineNum)
 }
-public func HDDebugLog(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    ZXKitLogger.printLog(log: log, logType: HDLogType.debug, file:file, funcName:funcName, lineNum:lineNum)
+public func ZXDebugLog(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
+    ZXKitLogger.printLog(log: log, logType: ZXKitLogType.debug, file:file, funcName:funcName, lineNum:lineNum)
 }
 //普通类型的输出
-public func HDNormalLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    ZXKitLogger.printLog(log: log, logType: HDLogType.normal, file:file, funcName:funcName, lineNum:lineNum)
+public func ZXNormalLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
+    ZXKitLogger.printLog(log: log, logType: ZXKitLogType.normal, file:file, funcName:funcName, lineNum:lineNum)
 }
-public func HDNormalLog(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    ZXKitLogger.printLog(log: log, logType: HDLogType.normal, file:file, funcName:funcName, lineNum:lineNum)
+public func ZXNormalLog(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
+    ZXKitLogger.printLog(log: log, logType: ZXKitLogType.normal, file:file, funcName:funcName, lineNum:lineNum)
 }
 //警告类型的输出
-public func HDWarnLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    ZXKitLogger.printLog(log: log, logType: HDLogType.warn, file:file, funcName:funcName, lineNum:lineNum)
+public func ZXWarnLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
+    ZXKitLogger.printLog(log: log, logType: ZXKitLogType.warn, file:file, funcName:funcName, lineNum:lineNum)
 }
-public func HDWarnLog(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    ZXKitLogger.printLog(log: log, logType: HDLogType.warn, file:file, funcName:funcName, lineNum:lineNum)
+public func ZXWarnLog(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
+    ZXKitLogger.printLog(log: log, logType: ZXKitLogType.warn, file:file, funcName:funcName, lineNum:lineNum)
 }
 //错误类型的输出
-public func HDErrorLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    ZXKitLogger.printLog(log: log, logType: HDLogType.error, file:file, funcName:funcName, lineNum:lineNum)
+public func ZXErrorLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
+    ZXKitLogger.printLog(log: log, logType: ZXKitLogType.error, file:file, funcName:funcName, lineNum:lineNum)
 }
-public func HDErrorLog(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    ZXKitLogger.printLog(log: log, logType: HDLogType.error, file:file, funcName:funcName, lineNum:lineNum)
+public func ZXErrorLog(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
+    ZXKitLogger.printLog(log: log, logType: ZXKitLogType.error, file:file, funcName:funcName, lineNum:lineNum)
 }
 //保密类型的输出
-public func HDPrivacyLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    ZXKitLogger.printLog(log: log, logType: HDLogType.privacy, file:file, funcName:funcName, lineNum:lineNum)
+public func ZXPrivacyLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
+    ZXKitLogger.printLog(log: log, logType: ZXKitLogType.privacy, file:file, funcName:funcName, lineNum:lineNum)
 }
-public func HDPrivacyLog(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    ZXKitLogger.printLog(log: log, logType: HDLogType.privacy, file:file, funcName:funcName, lineNum:lineNum)
+public func ZXPrivacyLog(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
+    ZXKitLogger.printLog(log: log, logType: ZXKitLogType.privacy, file:file, funcName:funcName, lineNum:lineNum)
 }
 
 ///log的输出
 public class ZXKitLogger {
-    public static var mCompleteLogOut = true    //是否完整输出日志文件名等调试内容
-    public static var mDebugAreaLogOut = true   //是否在xcode底部的调试栏同步输出内容
-    public static var mPrivacyPassword = "" {
+    public static var isFullLogOut = true    //是否完整输出日志文件名等调试内容
+    public static var isSyncConsole = true   //是否在xcode底部的调试栏同步输出内容
+    public static var privacyLogPassword = "" {
         willSet {
             assert(newValue.count == kCCKeySizeAES256, NSLocalizedString("密码设置长度错误，需要32个字符", comment: ""))
         }
     }     //解密隐私数据的密码，默认为空不加密
-    public static var mLogExpiryDay = 7        //本地日志文件的有效期（天），超出有效期的本地日志会被删除，0为没有有效期，默认为7天
-    public static var mMaxShowCount = 100       //屏幕最大的显示数量，适量即可，0为不限制
-    public static var mUserID = "0"             //为不同用户创建的独立的日志库
-    public static var showFPS = true {
+    public static var logExpiryDay = 7        //本地日志文件的有效期（天），超出有效期的本地日志会被删除，0为没有有效期，默认为7天
+    public static var maxDisplayCount = 100       //屏幕最大的显示数量，适量即可，0为不限制
+    public static var userID = "0"             //为不同用户创建的独立的日志库
+    public static var isShowFPS = true {
         willSet {
-            shared.mFPSTools.showFPS = newValue
+            shared.mFPSTools.isShowFPS = newValue
         }
     }            //是否显示屏幕FPS状态
     //MARK: Private
@@ -78,7 +78,7 @@ public class ZXKitLogger {
         let tFPSTools = HDFPSTools { [weak self] (fps) in
             guard let self = self else { return }
             DispatchQueue.main.async {
-                if ZXKitLogger.showFPS {
+                if ZXKitLogger.isShowFPS {
                     self.mWindow?.mFloatButton?.setTitle("\(fps)FPS", for: UIControl.State.normal)
                     self.mWindow?.mFloatButton?.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .bold)
                     if fps >= 55 {
@@ -106,7 +106,7 @@ public class ZXKitLogger {
     /// 根据日志的输出类型去输出相应的日志，不同日志类型颜色不一样
     /// - Parameter log: 日志内容
     /// - Parameter logType: 日志类型
-    public class func printLog(log:Any, logType:HDLogType, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
+    public class func printLog(log:Any, logType:ZXKitLogType, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
         shared.logQueue.async(group: nil, qos: .default, flags: .barrier) {
             let loggerItem = ZXKitLoggerItem()
             loggerItem.mLogItemType = logType
@@ -119,7 +119,7 @@ public class ZXKitLogger {
             if logType == .debug {
                 print(loggerItem.getFullContentString())
             } else {
-                if self.mDebugAreaLogOut {
+                if self.isSyncConsole {
                     print(loggerItem.getFullContentString())
                 }
                 //写入文件
@@ -174,7 +174,7 @@ public class ZXKitLogger {
                 }
             }
             self.shared.mWindow?.isShow = true
-            self.showFPS = true
+            self.isShowFPS = true
         }
     }
     
@@ -210,7 +210,7 @@ public class ZXKitLogger {
 
     //MARK: init
     init() {
-        if ZXKitLogger.mLogExpiryDay > 0 {
+        if ZXKitLogger.logExpiryDay > 0 {
             self.p_checkValidity()
         }
     }
@@ -236,7 +236,7 @@ private extension ZXKitLogger {
                         let dateString = file[index2...index3]
                         let fileDate = dateFormatter.date(from: String(dateString))
                         if let fileDate = fileDate {
-                            if Date().timeIntervalSince(fileDate) > Double(Self.mLogExpiryDay * 3600 * 24) {
+                            if Date().timeIntervalSince(fileDate) > Double(Self.logExpiryDay * 3600 * 24) {
                                 let logFilePath = cachePath.appendingPathComponent(file, isDirectory: false)
                                 try? FileManager.default.removeItem(at: logFilePath)
                             }
