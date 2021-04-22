@@ -1,0 +1,481 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 51;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A8051082A57E7F5FEFF4D40C /* Pods_ZXKitLogger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B0FEA4393DA3E42683CAC73 /* Pods_ZXKitLogger.framework */; };
+		E48AABF722C05EF600CC5F1C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48AABF622C05EF600CC5F1C /* AppDelegate.swift */; };
+		E48AABFB22C05EF600CC5F1C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48AABFA22C05EF600CC5F1C /* ViewController.swift */; };
+		E48AABFE22C05EF600CC5F1C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E48AABFC22C05EF600CC5F1C /* Main.storyboard */; };
+		E48AAC0022C05EF700CC5F1C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E48AABFF22C05EF700CC5F1C /* Assets.xcassets */; };
+		E48AAC0322C05EF700CC5F1C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E48AAC0122C05EF700CC5F1C /* LaunchScreen.storyboard */; };
+		E4AC94A2263162FA001FC322 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E4AC9498263162FA001FC322 /* Localizable.strings */; };
+		E4AC94A3263162FA001FC322 /* ZXKitLoggerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AC949B263162FA001FC322 /* ZXKitLoggerItem.swift */; };
+		E4AC94A4263162FA001FC322 /* ZXKitLoggerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AC949C263162FA001FC322 /* ZXKitLoggerTableViewCell.swift */; };
+		E4AC94A5263162FA001FC322 /* LogContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AC949D263162FA001FC322 /* LogContent.swift */; };
+		E4AC94A6263162FA001FC322 /* HDSqliteTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AC949E263162FA001FC322 /* HDSqliteTools.swift */; };
+		E4AC94A7263162FA001FC322 /* HDFPSTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AC949F263162FA001FC322 /* HDFPSTools.swift */; };
+		E4AC94A8263162FA001FC322 /* ZXKitLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AC94A0263162FA001FC322 /* ZXKitLogger.swift */; };
+		E4AC94A9263162FA001FC322 /* ZXKitLoggerWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AC94A1263162FA001FC322 /* ZXKitLoggerWindow.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		26DFD0E4C44874AC782523DC /* Pods-HDWindowLoggerSwift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HDWindowLoggerSwift.release.xcconfig"; path = "Target Support Files/Pods-HDWindowLoggerSwift/Pods-HDWindowLoggerSwift.release.xcconfig"; sourceTree = "<group>"; };
+		3B0FEA4393DA3E42683CAC73 /* Pods_ZXKitLogger.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ZXKitLogger.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4E611A3C63A0DBE09BD1F334 /* Pods-HDWindowLoggerSwift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HDWindowLoggerSwift.debug.xcconfig"; path = "Target Support Files/Pods-HDWindowLoggerSwift/Pods-HDWindowLoggerSwift.debug.xcconfig"; sourceTree = "<group>"; };
+		5D0BD1ACC5224B967D97685F /* Pods_HDWindowLoggerSwift_HDWindowLoggerSwiftUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HDWindowLoggerSwift_HDWindowLoggerSwiftUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C52FB809976FED82D9A48A5F /* Pods_HDWindowLoggerSwiftTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HDWindowLoggerSwiftTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DFC6ED8CB5557BA88A3DE2B2 /* Pods-ZXKitLogger.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZXKitLogger.debug.xcconfig"; path = "Target Support Files/Pods-ZXKitLogger/Pods-ZXKitLogger.debug.xcconfig"; sourceTree = "<group>"; };
+		E48AABF322C05EF600CC5F1C /* ZXKitLogger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZXKitLogger.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E48AABF622C05EF600CC5F1C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		E48AABFA22C05EF600CC5F1C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		E48AABFD22C05EF600CC5F1C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		E48AABFF22C05EF700CC5F1C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		E48AAC0222C05EF700CC5F1C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		E48AAC0422C05EF700CC5F1C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E48AAC3022C0818700CC5F1C /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
+		E48AAC3122C0818700CC5F1C /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		E4AC9499263162FA001FC322 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		E4AC949A263162FA001FC322 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E4AC949B263162FA001FC322 /* ZXKitLoggerItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZXKitLoggerItem.swift; sourceTree = "<group>"; };
+		E4AC949C263162FA001FC322 /* ZXKitLoggerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZXKitLoggerTableViewCell.swift; sourceTree = "<group>"; };
+		E4AC949D263162FA001FC322 /* LogContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogContent.swift; sourceTree = "<group>"; };
+		E4AC949E263162FA001FC322 /* HDSqliteTools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HDSqliteTools.swift; sourceTree = "<group>"; };
+		E4AC949F263162FA001FC322 /* HDFPSTools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HDFPSTools.swift; sourceTree = "<group>"; };
+		E4AC94A0263162FA001FC322 /* ZXKitLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZXKitLogger.swift; sourceTree = "<group>"; };
+		E4AC94A1263162FA001FC322 /* ZXKitLoggerWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZXKitLoggerWindow.swift; sourceTree = "<group>"; };
+		ED383E1D10E67ECDBA80A5CB /* Pods-ZXKitLogger.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZXKitLogger.release.xcconfig"; path = "Target Support Files/Pods-ZXKitLogger/Pods-ZXKitLogger.release.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E48AABF022C05EF600CC5F1C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A8051082A57E7F5FEFF4D40C /* Pods_ZXKitLogger.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		5E855658D2DDDA942EF24A64 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				4E611A3C63A0DBE09BD1F334 /* Pods-HDWindowLoggerSwift.debug.xcconfig */,
+				26DFD0E4C44874AC782523DC /* Pods-HDWindowLoggerSwift.release.xcconfig */,
+				DFC6ED8CB5557BA88A3DE2B2 /* Pods-ZXKitLogger.debug.xcconfig */,
+				ED383E1D10E67ECDBA80A5CB /* Pods-ZXKitLogger.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		D4F6D24CF37183F2F3C3670D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5D0BD1ACC5224B967D97685F /* Pods_HDWindowLoggerSwift_HDWindowLoggerSwiftUITests.framework */,
+				C52FB809976FED82D9A48A5F /* Pods_HDWindowLoggerSwiftTests.framework */,
+				3B0FEA4393DA3E42683CAC73 /* Pods_ZXKitLogger.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E48AABEA22C05EF600CC5F1C = {
+			isa = PBXGroup;
+			children = (
+				E48AABF522C05EF600CC5F1C /* ZXKitLogger */,
+				E48AABF422C05EF600CC5F1C /* Products */,
+				5E855658D2DDDA942EF24A64 /* Pods */,
+				D4F6D24CF37183F2F3C3670D /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		E48AABF422C05EF600CC5F1C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E48AABF322C05EF600CC5F1C /* ZXKitLogger.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E48AABF522C05EF600CC5F1C /* ZXKitLogger */ = {
+			isa = PBXGroup;
+			children = (
+				E4AC9497263162FA001FC322 /* pod */,
+				E48AABF622C05EF600CC5F1C /* AppDelegate.swift */,
+				E48AABFA22C05EF600CC5F1C /* ViewController.swift */,
+				E48AABFC22C05EF600CC5F1C /* Main.storyboard */,
+				E48AABFF22C05EF700CC5F1C /* Assets.xcassets */,
+				E48AAC0122C05EF700CC5F1C /* LaunchScreen.storyboard */,
+				E48AAC0422C05EF700CC5F1C /* Info.plist */,
+			);
+			path = ZXKitLogger;
+			sourceTree = "<group>";
+		};
+		E4AC9497263162FA001FC322 /* pod */ = {
+			isa = PBXGroup;
+			children = (
+				E4AC9498263162FA001FC322 /* Localizable.strings */,
+				E4AC949B263162FA001FC322 /* ZXKitLoggerItem.swift */,
+				E4AC949C263162FA001FC322 /* ZXKitLoggerTableViewCell.swift */,
+				E4AC949D263162FA001FC322 /* LogContent.swift */,
+				E4AC949E263162FA001FC322 /* HDSqliteTools.swift */,
+				E4AC949F263162FA001FC322 /* HDFPSTools.swift */,
+				E4AC94A0263162FA001FC322 /* ZXKitLogger.swift */,
+				E4AC94A1263162FA001FC322 /* ZXKitLoggerWindow.swift */,
+			);
+			name = pod;
+			path = ../../pod;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E48AABF222C05EF600CC5F1C /* ZXKitLogger */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E48AAC1D22C05EF700CC5F1C /* Build configuration list for PBXNativeTarget "ZXKitLogger" */;
+			buildPhases = (
+				58C38B6EFC517D490734713B /* [CP] Check Pods Manifest.lock */,
+				E48AABEF22C05EF600CC5F1C /* Sources */,
+				E48AABF022C05EF600CC5F1C /* Frameworks */,
+				E48AABF122C05EF600CC5F1C /* Resources */,
+				63C05AF1629728E143624105 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ZXKitLogger;
+			productName = HDWindowLoggerSwift;
+			productReference = E48AABF322C05EF600CC5F1C /* ZXKitLogger.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E48AABEB22C05EF600CC5F1C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1100;
+				LastUpgradeCheck = 1100;
+				ORGANIZATIONNAME = Damon;
+				TargetAttributes = {
+					E48AABF222C05EF600CC5F1C = {
+						CreatedOnToolsVersion = 11.0;
+					};
+				};
+			};
+			buildConfigurationList = E48AABEE22C05EF600CC5F1C /* Build configuration list for PBXProject "ZXKitLogger" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+				"zh-Hans",
+			);
+			mainGroup = E48AABEA22C05EF600CC5F1C;
+			productRefGroup = E48AABF422C05EF600CC5F1C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E48AABF222C05EF600CC5F1C /* ZXKitLogger */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E48AABF122C05EF600CC5F1C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E48AAC0322C05EF700CC5F1C /* LaunchScreen.storyboard in Resources */,
+				E4AC94A2263162FA001FC322 /* Localizable.strings in Resources */,
+				E48AAC0022C05EF700CC5F1C /* Assets.xcassets in Resources */,
+				E48AABFE22C05EF600CC5F1C /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		58C38B6EFC517D490734713B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ZXKitLogger-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		63C05AF1629728E143624105 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ZXKitLogger/Pods-ZXKitLogger-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ZXKitLogger/Pods-ZXKitLogger-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ZXKitLogger/Pods-ZXKitLogger-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E48AABEF22C05EF600CC5F1C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E48AABFB22C05EF600CC5F1C /* ViewController.swift in Sources */,
+				E4AC94A3263162FA001FC322 /* ZXKitLoggerItem.swift in Sources */,
+				E4AC94A9263162FA001FC322 /* ZXKitLoggerWindow.swift in Sources */,
+				E4AC94A7263162FA001FC322 /* HDFPSTools.swift in Sources */,
+				E4AC94A5263162FA001FC322 /* LogContent.swift in Sources */,
+				E4AC94A6263162FA001FC322 /* HDSqliteTools.swift in Sources */,
+				E4AC94A4263162FA001FC322 /* ZXKitLoggerTableViewCell.swift in Sources */,
+				E4AC94A8263162FA001FC322 /* ZXKitLogger.swift in Sources */,
+				E48AABF722C05EF600CC5F1C /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		E48AABFC22C05EF600CC5F1C /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E48AABFD22C05EF600CC5F1C /* Base */,
+				E48AAC3022C0818700CC5F1C /* zh-Hans */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		E48AAC0122C05EF700CC5F1C /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E48AAC0222C05EF700CC5F1C /* Base */,
+				E48AAC3122C0818700CC5F1C /* zh-Hans */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		E4AC9498263162FA001FC322 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E4AC9499263162FA001FC322 /* zh-Hans */,
+				E4AC949A263162FA001FC322 /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		E48AAC1B22C05EF700CC5F1C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		E48AAC1C22C05EF700CC5F1C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		E48AAC1E22C05EF700CC5F1C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DFC6ED8CB5557BA88A3DE2B2 /* Pods-ZXKitLogger.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = T38FA79BYC;
+				INFOPLIST_FILE = ZXKitLogger/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.qinliannet.bubuzheng;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E48AAC1F22C05EF700CC5F1C /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = ED383E1D10E67ECDBA80A5CB /* Pods-ZXKitLogger.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = T38FA79BYC;
+				INFOPLIST_FILE = ZXKitLogger/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.qinliannet.bubuzheng;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E48AABEE22C05EF600CC5F1C /* Build configuration list for PBXProject "ZXKitLogger" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E48AAC1B22C05EF700CC5F1C /* Debug */,
+				E48AAC1C22C05EF700CC5F1C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E48AAC1D22C05EF700CC5F1C /* Build configuration list for PBXNativeTarget "ZXKitLogger" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E48AAC1E22C05EF700CC5F1C /* Debug */,
+				E48AAC1F22C05EF700CC5F1C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E48AABEB22C05EF600CC5F1C /* Project object */;
+}
