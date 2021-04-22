@@ -20,5 +20,5 @@ s.subspec 'wcdb' do |cs|
     cs.dependency 'ZXKitLogger/core'
     cs.dependency 'WCDB.swift'
 end
-s.default_subspecs = "Core"
+s.default_subspecs = "core"
 end
