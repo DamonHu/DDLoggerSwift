@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import HDCommonToolsSwift
+import ZXKitUtil
 
 //输出内容需要遵循的协议
 public protocol LogContent {
@@ -21,14 +21,14 @@ extension Dictionary: LogContent {
             let data = try? JSONSerialization.data(withJSONObject: self, options:JSONSerialization.WritingOptions.prettyPrinted)
             if let data = data {
                 let string = String(data: data, encoding: String.Encoding.utf8) ?? "\(self)"
-                return string.hd.unicodeDecode()
+                return string.zx.unicodeDecode()
             } else {
                 let string = "\(self)"
-                return string.hd.unicodeDecode()
+                return string.zx.unicodeDecode()
             }
         } else {
             let string = "\(self)"
-            return string.hd.unicodeDecode()
+            return string.zx.unicodeDecode()
         }
     }
 }
@@ -39,20 +39,20 @@ extension Array: LogContent {
             let data = try? JSONSerialization.data(withJSONObject: self, options:JSONSerialization.WritingOptions.prettyPrinted)
             if let data = data {
                 let string = String(data: data, encoding: String.Encoding.utf8) ?? "\(self)"
-                return string.hd.unicodeDecode()
+                return string.zx.unicodeDecode()
             } else {
                 let string = "\(self)"
-                return string.hd.unicodeDecode()
+                return string.zx.unicodeDecode()
             }
         } else {
             let string = "\(self)"
-            return string.hd.unicodeDecode()
+            return string.zx.unicodeDecode()
         }
     }
 }
 
 extension String: LogContent {
     public var logStringValue: String {
-        return self.hd.unicodeDecode()
+        return self.zx.unicodeDecode()
     }
 }

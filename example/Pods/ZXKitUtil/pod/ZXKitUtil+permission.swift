@@ -1,6 +1,6 @@
 //
-//  HDCommonToolsSwift+permission.swift
-//  HDCommonToolsSwift
+//  ZXKitUtil+permission.swift
+//  ZXKitUtil
 //
 //  Created by Damon on 2020/7/3.
 //  Copyright © 2020 Damon. All rights reserved.
@@ -11,7 +11,10 @@ import AVFoundation
 import Photos
 import UserNotifications
 
-public enum HDPermissionType {
+private var mLocationManager: CLLocationManager?   //定位管理
+private var locationComplete: ((ZXKitUtilPermissionStatus) -> Void)?    //定位结束
+
+public enum ZXKitUtilPermissionType {
     case audio          //麦克风权限
     case video          //相机权限
     case photoLibrary   //相册权限
@@ -19,7 +22,7 @@ public enum HDPermissionType {
     case notification   //通知权限
 }
 
-public enum HDPermissionStatus {
+public enum ZXKitUtilPermissionStatus {
     case authorized     //用户允许
     case restricted     //被限制修改不了状态,比如家长控制选项等
     case denied         //用户拒绝
@@ -27,9 +30,9 @@ public enum HDPermissionStatus {
     case limited        //部分允许，iOS14之后增加的特性
 }
 
-public extension HDCommonToolsSwift {
+public extension ZXKitUtil {
     ///请求权限
-    func requestPermission(type: HDPermissionType, complete: @escaping ((HDPermissionStatus) -> Void)) -> Void {
+    func requestPermission(type: ZXKitUtilPermissionType, complete: @escaping ((ZXKitUtilPermissionStatus) -> Void)) -> Void {
         switch type {
         case .audio:
             AVCaptureDevice.requestAccess(for: .audio) { (granted) in
@@ -82,7 +85,7 @@ public extension HDCommonToolsSwift {
     }
     
     ///检测权限
-    func checkPermission(type: HDPermissionType, complete: @escaping ((HDPermissionStatus) -> Void)) -> Void {
+    func checkPermission(type: ZXKitUtilPermissionType, complete: @escaping ((ZXKitUtilPermissionStatus) -> Void)) -> Void {
         switch type {
         case .audio:
             let status = AVCaptureDevice.authorizationStatus(for: AVMediaType.audio)
@@ -157,7 +160,7 @@ public extension HDCommonToolsSwift {
     }
 }
 
-extension HDCommonToolsSwift: CLLocationManagerDelegate {
+extension ZXKitUtil: CLLocationManagerDelegate {
     public func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         guard let locationComplete = locationComplete  else { return }
         switch status {
@@ -195,6 +198,3 @@ extension HDCommonToolsSwift: CLLocationManagerDelegate {
         }
     }
 }
-
-private var mLocationManager: CLLocationManager?   //标记是否循环震动
-private var locationComplete: ((HDPermissionStatus) -> Void)?

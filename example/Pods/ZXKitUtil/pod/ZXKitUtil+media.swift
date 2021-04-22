@@ -1,6 +1,6 @@
 //
-//  HDCommonToolsSwift+media.swift
-//  HDCommonToolsSwift
+//  ZXKitUtil+media.swift
+//  ZXKitUtil
 //
 //  Created by Damon on 2020/7/4.
 //  Copyright © 2020 Damon. All rights reserved.
@@ -9,7 +9,10 @@
 import Foundation
 import AVFoundation
 
-public extension HDCommonToolsSwift {
+private var vibrateRepeat = false   //标记是否循环震动
+private var audioPlayer: AVAudioPlayer? //音乐播放器
+
+public extension ZXKitUtil {
     
     ///获取指定video的时长， 单位秒
     func getVideoDuration(videoURL: URL) -> Double {
@@ -43,8 +46,8 @@ public extension HDCommonToolsSwift {
         
         
         if musicURL.absoluteString.hasPrefix("http://") || musicURL.absoluteString.hasPrefix("https://") {
-            let name = musicURL.path.hd.encryptString(encryType: .md5)
-            let path = HDCommonToolsSwift.shared.createFileDirectory(in: .caches, directoryName: "music").appendingPathComponent(name, isDirectory: false)
+            let name = musicURL.path.zx.encryptString(encryType: .md5)
+            let path = ZXKitUtil.shared().createFileDirectory(in: .caches, directoryName: "music").appendingPathComponent(name, isDirectory: false)
             let audioData = try? Data(contentsOf: musicURL)
             try? audioData?.write(to: path)
             musicURL = path
@@ -106,6 +109,3 @@ public extension HDCommonToolsSwift {
         AudioServicesDisposeSystemSoundID(kSystemSoundID_Vibrate)
     }
 }
-
-private var vibrateRepeat = false   //标记是否循环震动
-private var audioPlayer: AVAudioPlayer?

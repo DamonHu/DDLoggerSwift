@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import HDCommonToolsSwift
+import ZXKitUtil
 import CommonCrypto
 
 ///log的级别，对应不同的颜色
@@ -82,15 +82,15 @@ public class ZXKitLogger {
                     self.mWindow?.mFloatButton?.setTitle("\(fps)FPS", for: UIControl.State.normal)
                     self.mWindow?.mFloatButton?.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .bold)
                     if fps >= 55 {
-                        self.mWindow?.mFloatButton?.backgroundColor = UIColor(hexValue: 0x5dae8b)
+                        self.mWindow?.mFloatButton?.backgroundColor = UIColor.zx.color(hexValue: 0x5dae8b)
                     } else if (fps >= 50 && fps < 55) {
-                        self.mWindow?.mFloatButton?.backgroundColor = UIColor(hexValue: 0xf0a500)
+                        self.mWindow?.mFloatButton?.backgroundColor = UIColor.zx.color(hexValue: 0xf0a500)
                     } else {
-                        self.mWindow?.mFloatButton?.backgroundColor = UIColor(hexValue: 0xaa2b1d)
+                        self.mWindow?.mFloatButton?.backgroundColor = UIColor.zx.color(hexValue: 0xaa2b1d)
                     }
                 } else {
                     self.mWindow?.mFloatButton?.titleLabel?.font = UIFont.systemFont(ofSize: 23, weight: .bold)
-                    self.mWindow?.mFloatButton?.backgroundColor = UIColor(hexValue: 0x5dae8b)
+                    self.mWindow?.mFloatButton?.backgroundColor = UIColor.zx.color(hexValue: 0x5dae8b)
                     self.mWindow?.mFloatButton?.setTitle(NSLocalizedString("H", comment: ""), for: UIControl.State.normal)
                 }
             }

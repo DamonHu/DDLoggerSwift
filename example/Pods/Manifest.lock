@@ -1,22 +1,22 @@
 PODS:
-  - HDCommonToolsSwift (2.1.5):
-    - HDCommonToolsSwift/Core (= 2.1.5)
-  - HDCommonToolsSwift/Core (2.1.5)
   - SnapKit (5.0.1)
+  - ZXKitUtil (0.0.8):
+    - ZXKitUtil/core (= 0.0.8)
+  - ZXKitUtil/core (0.0.8)
 
 DEPENDENCIES:
-  - HDCommonToolsSwift
   - SnapKit
+  - ZXKitUtil
 
 SPEC REPOS:
   trunk:
-    - HDCommonToolsSwift
     - SnapKit
+    - ZXKitUtil
 
 SPEC CHECKSUMS:
-  HDCommonToolsSwift: b969dc8e49a762392b48f6ee5035ddeb22d5ffcf
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
+  ZXKitUtil: 3e4847994fbea5751bdef7e6bda6ff40a60b3493
 
-PODFILE CHECKSUM: aa2829c62de6273f15311f65beb6a1192492d36e
+PODFILE CHECKSUM: fbd028e500bab5eca912e349507a311960b38b26
 
 COCOAPODS: 1.9.1

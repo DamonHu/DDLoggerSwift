@@ -1,6 +1,6 @@
 //
-//  UIView+hd.swift
-//  HDCommonToolsSwift
+//  UIView+zx.swift
+//  ZXKitUtil
 //
 //  Created by Damon on 2020/7/5.
 //  Copyright © 2020 Damon. All rights reserved.
@@ -8,11 +8,11 @@
 
 import UIKit
 
-extension UIView: HDNameSpaceWrappable {
+extension UIView: ZXKitUtilNameSpaceWrappable {
 
 }
 
-public extension HDNameSpace where T : UIView {
+public extension ZXKitUtilNameSpace where T : UIView {
     ///添加阴影
     func addLayerShadow(color: UIColor, offset: CGSize, radius: CGFloat, cornerRadius: CGFloat? = nil) -> Void {
         object.layer.shadowColor = color.cgColor

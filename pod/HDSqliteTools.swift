@@ -13,7 +13,7 @@ import SQLite3
 #else
 //
 #endif
-import HDCommonToolsSwift
+import ZXKitUtil
 
 class HDSqliteTools {
     var db: OpaquePointer?
@@ -26,8 +26,8 @@ class HDSqliteTools {
     
     //获取数据库文件夹
     func getDBFolder() -> URL {
-        let dbFolder = ZXKitLogger.mUserID.hd.encryptString(encryType: .md5)
-        let path = HDCommonToolsSwift.shared.createFileDirectory(in: .caches, directoryName: dbFolder)
+        let dbFolder = ZXKitLogger.mUserID.zx.encryptString(encryType: .md5)
+        let path = ZXKitUtil.shared().createFileDirectory(in: .caches, directoryName: dbFolder)
         return path
     }
 

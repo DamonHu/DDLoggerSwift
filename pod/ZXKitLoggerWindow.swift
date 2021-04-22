@@ -8,7 +8,7 @@
 
 import UIKit
 import SnapKit
-import HDCommonToolsSwift
+import ZXKitUtil
 
 class ZXKitLoggerWindow: UIWindow {
     private var mLogDataArray = [ZXKitLoggerItem]()  //输出的日志信息
@@ -199,11 +199,11 @@ class ZXKitLoggerWindow: UIWindow {
         floatWidow.isUserInteractionEnabled = true
         
         let floatButton = UIButton(type: UIButton.ButtonType.custom)
-        floatButton.backgroundColor = UIColor(hexValue: 0x5dae8b)
+        floatButton.backgroundColor = UIColor.zx.color(hexValue: 0x5dae8b)
         floatButton.setTitle(NSLocalizedString("H", comment: ""), for: UIControl.State.normal)
         floatButton.titleLabel?.font = UIFont.systemFont(ofSize: 23, weight: .bold)
-        floatButton.layer.borderColor = UIColor(hexValue: 0xffffff).cgColor
-        floatButton.hd.addLayerShadow(color: UIColor(hexValue: 0x333333), offset: CGSize(width: 2, height: 2), radius: 4, cornerRadius: 30)
+        floatButton.layer.borderColor = UIColor.zx.color(hexValue: 0xffffff).cgColor
+        floatButton.zx.addLayerShadow(color: UIColor.zx.color(hexValue: 0x333333), offset: CGSize(width: 2, height: 2), radius: 4, cornerRadius: 30)
         floatButton.layer.borderWidth = 4.0
         floatButton.addTarget(self, action: #selector(p_show), for: UIControl.Event.touchUpInside)
         floatButton.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
@@ -389,7 +389,7 @@ private extension ZXKitLoggerWindow {
     }
 
     @objc private func p_touchMove(p:UIPanGestureRecognizer) {
-        guard let window = HDCommonToolsSwift.shared.getCurrentNormalWindow() else { return }
+        guard let window = ZXKitUtil.shared().getCurrentNormalWindow() else { return }
         let panPoint = p.location(in: window)
         //跟随手指拖拽
         if p.state == .changed {
@@ -424,7 +424,7 @@ private extension ZXKitLoggerWindow {
         let dataList = HDSqliteTools.shared.getAllLog(name: self.mShareFileName).reversed()
         //写入到text文件好解析
         //文件路径
-        let logFilePathURL = HDCommonToolsSwift.shared.getFileDirectory(type: .caches).appendingPathComponent("HDWindowLogger.log", isDirectory: false)
+        let logFilePathURL = ZXKitUtil.shared().getFileDirectory(type: .caches).appendingPathComponent("HDWindowLogger.log", isDirectory: false)
         if FileManager.default.fileExists(atPath: logFilePathURL.path) {
             try? FileManager.default.removeItem(at: logFilePathURL)
         }
@@ -442,7 +442,7 @@ private extension ZXKitLoggerWindow {
             activityVC.popoverPresentationController?.sourceRect = self.mShareButton.frame
         }
         self.hideLogWindow()
-        HDCommonToolsSwift.shared.getCurrentVC()?.present(activityVC, animated: true, completion: nil)
+        ZXKitUtil.shared().getCurrentVC()?.present(activityVC, animated: true, completion: nil)
     }
 
     @objc private func p_share() {

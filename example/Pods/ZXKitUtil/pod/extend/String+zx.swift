@@ -1,6 +1,6 @@
 //
-//  String+hd.swift
-//  HDCommonToolsSwift
+//  String+zx.swift
+//  ZXKitUtil
 //
 //  Created by Damon on 2020/7/3.
 //  Copyright © 2020 Damon. All rights reserved.
@@ -9,7 +9,7 @@
 import Foundation
 import CommonCrypto
 
-public enum HDEncryType {
+public enum ZXKitUtilEncryType {
     case md5
     case sha1
     case sha224
@@ -19,11 +19,11 @@ public enum HDEncryType {
     case base64
 }
 
-extension String: HDNameSpaceWrappable {
+extension String: ZXKitUtilNameSpaceWrappable {
     
 }
 
-public extension HDNameSpace where T == String {
+public extension ZXKitUtilNameSpace where T == String {
     ///截取字符串
     func subString(rang: NSRange) -> String {
         var string = String()
@@ -81,19 +81,19 @@ public extension HDNameSpace where T == String {
     ///aes256解密
     func aes256Decrypt(password: String, ivString: String = "abcdefghijklmnop") -> String {
         guard let data = Data(base64Encoded: object) else { return "" }
-        let encryptData = self.p_crypt(data: data, password: password, ivString: ivString, option: CCOperation(kCCDecrypt))
+        let encryptData = self._crypt(data: data, password: password, ivString: ivString, option: CCOperation(kCCDecrypt))
         return String(data: encryptData, encoding: String.Encoding.utf8) ?? ""
     }
     
     ///aes256加密
     func aes256Encrypt(password: String, ivString: String = "abcdefghijklmnop") -> String {
         guard let data = object.data(using:String.Encoding.utf8) else { return "" }
-        let encryptData = self.p_crypt(data: data, password: password, ivString: ivString, option: CCOperation(kCCEncrypt))
+        let encryptData = self._crypt(data: data, password: password, ivString: ivString, option: CCOperation(kCCEncrypt))
         return encryptData.base64EncodedString()
     }
     
     //MARK: 加密
-    func encryptString(encryType: HDEncryType, lowercase: Bool = true) -> String {
+    func encryptString(encryType: ZXKitUtilEncryType, lowercase: Bool = true) -> String {
         let data: Data = object.data(using: String.Encoding.utf8) ?? Data()
         var output = NSMutableString()
         
@@ -174,19 +174,21 @@ public extension HDNameSpace where T == String {
         }
         return String(output)
     }
-    
-    private func p_crypt(data: Data, password: String, ivString: String, option: CCOperation) -> Data {
+}
+
+private extension ZXKitUtilNameSpace where T == String {
+    func _crypt(data: Data, password: String, ivString: String, option: CCOperation) -> Data {
         guard let iv = ivString.data(using:String.Encoding.utf8) else { return Data() }
         guard let key = password.data(using:String.Encoding.utf8) else { return Data() }
-        
+
         let cryptLength = data.count + kCCBlockSizeAES128
         var cryptData   = Data(count: cryptLength)
-        
+
         let keyLength = kCCKeySizeAES256
         let options   = CCOptions(kCCOptionPKCS7Padding)
-        
+
         var bytesLength = Int(0)
-        
+
         let status = cryptData.withUnsafeMutableBytes { cryptBytes in
             data.withUnsafeBytes { dataBytes in
                 iv.withUnsafeBytes { ivBytes in
@@ -196,11 +198,11 @@ public extension HDNameSpace where T == String {
                 }
             }
         }
-        
+
         guard UInt32(status) == UInt32(kCCSuccess) else {
             return Data()
         }
-        
+
         cryptData.removeSubrange(bytesLength..<cryptData.count)
         return cryptData
     }

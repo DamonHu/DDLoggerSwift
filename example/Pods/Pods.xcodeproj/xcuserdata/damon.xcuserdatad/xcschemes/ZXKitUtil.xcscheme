@@ -14,9 +14,9 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "5F06AB8FE5C7E6773A91ABBC3C5F46BA"
-               BuildableName = "HDCommonToolsSwift.framework"
-               BlueprintName = "HDCommonToolsSwift"
+               BlueprintIdentifier = "4B09DDD2A3083E311C984F301582897A"
+               BuildableName = "ZXKitUtil.framework"
+               BlueprintName = "ZXKitUtil"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

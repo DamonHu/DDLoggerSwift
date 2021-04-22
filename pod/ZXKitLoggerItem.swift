@@ -8,7 +8,7 @@
 
 import UIKit
 import CommonCrypto
-import HDCommonToolsSwift
+import ZXKitUtil
 
 enum Section: CaseIterable {
     case main
@@ -45,7 +45,7 @@ public class ZXKitLoggerItem {
                 } else if ZXKitLogger.mPrivacyPassword.count != kCCKeySizeAES256 {
                     contentString = NSLocalizedString("密码设置长度错误，需要32个字符", comment: "") + contentString
                 } else if !ZXKitLogger.shared.mPasswordCorrect {
-                    contentString = contentString.hd.aes256Encrypt(password: ZXKitLogger.mPrivacyPassword)
+                    contentString = contentString.zx.aes256Encrypt(password: ZXKitLogger.mPrivacyPassword)
                 }
             }
         }
