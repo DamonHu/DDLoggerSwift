@@ -38,7 +38,23 @@ You can choose to install using cocoaPod, or you can download the source file di
 pod 'ZXKitLogger'
 ```
 
-### 1.2, file installation
+#### 1.1.1, wcdb compatible
+
+If you have integrated Tencent's [Tencent / wcdb] (https://github.com/Tencent/wcdb), the system functions of `sqlite` have been modified and optimized, which will cause the same error as the function name. You can use the wcdb version
+
+```
+Pod'ZXKitCore/wcdb'
+```
+
+### 1.2, support ZXKit quick start
+
+This tool supports `ZXKit` quick start, If you want to use this function, you can add the following pod command
+
+```
+pod'ZXKitCore/zxkit'
+```
+
+### 1.3, file installation
 
 You can drag the files in the `pod` folder into the project under the project.
 

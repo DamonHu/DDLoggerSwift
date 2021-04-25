@@ -34,14 +34,18 @@ pod 'ZXKitLogger'
 如果你集成了腾讯的[Tencent/wcdb](https://github.com/Tencent/wcdb)，由于修改优化了`sqlite`的系统功能，会导致函数名一样报错，可以使用wcdb版本
 
 ```
-pod 'ZXKitCore/WCDB'
+pod 'ZXKitCore/wcdb'
 ```
 
-#### 1.1.2、支持ZXKit
+### 1.2、支持ZXKit快捷启动
 
+该工具支持`ZXKit`快捷启动，如果需要，可以执行该命令
 
+```
+pod 'ZXKitCore/zxkit'
+```
 
-### 1.2、文件安装
+### 1.3、文件安装
 
 可以将工程底下，`pod`文件夹内的文件拖入项目即可
 
