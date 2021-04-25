@@ -1,0 +1,23 @@
+/* 
+  Localizable.strings
+  ZXKitLogger
+
+  Created by Damon on 2019/6/24.
+  Copyright © 2019 Damon. All rights reserved.
+*/
+"ZXKitLogger: Click Log To Copy" = "ZXKitLogger: 点击对应日志可快速复制";
+"Please select the log to share" = "请选择要分享的日志";
+"Clean Log" = "清除Log";
+"Scale" = "伸缩";
+"Hide" = "隐藏";
+"Share" = "分享Log";
+"Auto scroll" = "自动滚动";
+"Log has been copied" = "日志已拷贝到剪切板";
+"Log filter and search" = "内容过滤查找";
+"Decrypt" = "解密";
+"Enter password to view" = "输入密码查看加密数据";
+"The password requires 32 characters" = "密码设置长度错误，需要32个字符";
+"Password is not set" = "密码未设置";
+"result: 0" = "0条结果";
+"Previous" = "上一条";
+"Next" = "下一条";

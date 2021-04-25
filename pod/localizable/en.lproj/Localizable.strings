@@ -1,0 +1,23 @@
+/* 
+  Localizable.strings
+  ZXKitLogger
+
+  Created by Damon on 2019/6/24.
+  Copyright © 2019 Damon. All rights reserved.
+*/
+"ZXKitLogger: Click Log To Copy" = "ZXKitLogger: Click Log To Copy";
+"Please select the log to share" = "Please select the log to share";
+"Clean Log" = "Clean Log";
+"Scale" = "Scale";
+"Hide" = "Hide";
+"Share" = "Share";
+"Auto scroll" = "Auto scroll";
+"Log has been copied" = "Log has been copied";
+"Log filter and search" = "Log filter and search";
+"Decrypt" = "Decrypt";
+"Enter password to view" = "Enter password to view";
+"The password requires 32 characters" = "The password requires 32 characters";
+"Password is not set" = "Password is not set";
+"result: 0" = "result: 0";
+"Previous" = "Previous";
+"Next" = "Next";

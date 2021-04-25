@@ -123,16 +123,16 @@ ZXKitLogger.userID = "1001"
 ZXKitLogger.cleanLog()
 ```
 
-### 5、隐藏整个log窗口
+### 5、关闭整个log窗口
 
 ```
-ZXKitLogger.hide()
+ZXKitLogger.close()
 ```
 
 ### 6、仅隐藏log输出窗口
 
 ```
-ZXKitLogger.hideLogWindow()
+ZXKitLogger.hide()
 ```
 
 ### 7、设置显示log最大记录数，0为不限制, 默认为100

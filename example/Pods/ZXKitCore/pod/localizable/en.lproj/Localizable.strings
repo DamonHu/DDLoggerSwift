@@ -1,0 +1,13 @@
+/* 
+  Localizable.strings
+  ZXKit
+
+  Created by Damon on 2021/4/25.
+  
+*/
+"UI" = "UI";
+"Data" = "Data";
+"Other" = "Other";
+"close" = "close";
+"hide" = "hide";
+

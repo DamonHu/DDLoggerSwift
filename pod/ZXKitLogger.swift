@@ -62,7 +62,7 @@ public class ZXKitLogger {
     public static var isSyncConsole = true   //是否在xcode底部的调试栏同步输出内容
     public static var privacyLogPassword = "" {
         willSet {
-            assert(newValue.count == kCCKeySizeAES256, NSLocalizedString("密码设置长度错误，需要32个字符", comment: ""))
+            assert(newValue.count == kCCKeySizeAES256, NSLocalizedString("The password requires 32 characters", comment: ""))
         }
     }     //解密隐私数据的密码，默认为空不加密
     public static var logExpiryDay = 7        //本地日志文件的有效期（天），超出有效期的本地日志会被删除，0为没有有效期，默认为7天
@@ -179,16 +179,16 @@ public class ZXKitLogger {
     }
     
     /// 只隐藏log的输出窗口，保留悬浮图标
-    public class func hideLogWindow() {
+    public class func hide() {
         DispatchQueue.main.async {
-            self.shared.mWindow?.hideLogWindow()
+            self.shared.mWindow?.hide()
         }
     }
 
     ///  隐藏整个log窗口
-    public class func hide() {
+    public class func close() {
         DispatchQueue.main.async {
-            self.shared.mWindow?.hide()
+            self.shared.mWindow?.close()
         }
     }
 
@@ -247,4 +247,3 @@ private extension ZXKitLogger {
         }
     }
 }
-

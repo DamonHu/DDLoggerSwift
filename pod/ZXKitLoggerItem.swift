@@ -41,9 +41,9 @@ public class ZXKitLoggerItem {
             }
             if self.mLogItemType == .privacy {
                 if ZXKitLogger.privacyLogPassword.isEmpty {
-                    contentString = NSLocalizedString("密码未设置:", comment: "") + contentString
+                    contentString = NSLocalizedString("Password is not set", comment: "") + ":" +  contentString
                 } else if ZXKitLogger.privacyLogPassword.count != kCCKeySizeAES256 {
-                    contentString = NSLocalizedString("密码设置长度错误，需要32个字符", comment: "") + contentString
+                    contentString = NSLocalizedString("The password requires 32 characters", comment: "") + contentString
                 } else if !ZXKitLogger.shared.mPasswordCorrect {
                     contentString = contentString.zx.aes256Encrypt(password: ZXKitLogger.privacyLogPassword)
                 }
