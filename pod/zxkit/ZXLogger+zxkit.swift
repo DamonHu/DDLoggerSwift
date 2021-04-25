@@ -25,7 +25,7 @@ extension ZXKitLogger: ZXKitPluginProtocol {
     }
 
     public var pluginTitle: String {
-        return NSLocalizedString("ZXKitLogger", comment: "")
+        return NSLocalizedString("Logger", comment: "")
     }
 
     public var pluginType: ZXKitPluginType {

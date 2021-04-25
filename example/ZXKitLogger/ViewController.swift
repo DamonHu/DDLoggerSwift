@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ZXKitCore
 
 class ViewController: UIViewController {
 
@@ -45,6 +46,7 @@ class ViewController: UIViewController {
     }
 
     @objc func onClickButton() {
+        ZXKit.show()
         ZXNormalLog("点击了按钮111")
         ZXErrorLog("错误出现")
 //        return

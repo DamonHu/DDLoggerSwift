@@ -9,6 +9,9 @@
 import UIKit
 import ZXKitUtil
 import CommonCrypto
+#if canImport(ZXKitCore)
+import ZXKitCore
+#endif
 
 ///log的级别，对应不同的颜色
 public enum ZXKitLogType : Int {
@@ -100,6 +103,7 @@ public class ZXKitLogger {
     private var mWindow: ZXKitLoggerWindow?
     var mPasswordCorrect: Bool = false
     static let shared = ZXKitLogger()
+    static var hasRegistPlugin = false
 
     private let logQueue = DispatchQueue(label:"com.HDWindowLogger.logQueue", qos:.utility, attributes:.concurrent)
     //log的Public函数
@@ -107,6 +111,12 @@ public class ZXKitLogger {
     /// - Parameter log: 日志内容
     /// - Parameter logType: 日志类型
     public class func printLog(log:Any, logType:ZXKitLogType, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
+        #if canImport(ZXKitCore)
+        if !self.hasRegistPlugin {
+            ZXKit.regist(plugin: shared)
+            self.hasRegistPlugin = true
+        }
+        #endif
         shared.logQueue.async(group: nil, qos: .default, flags: .barrier) {
             let loggerItem = ZXKitLoggerItem()
             loggerItem.mLogItemType = logType
@@ -151,11 +161,9 @@ public class ZXKitLogger {
     
     ///  删除log日志
     public class func cleanLog() {
-//        self.shared.mLogDataArray.removeAll()
         DispatchQueue.main.async {
             self.shared.mWindow?.cleanDataArray()
         }
-
     }
     
     /// 显示log窗口
