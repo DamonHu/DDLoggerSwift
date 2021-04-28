@@ -17,7 +17,6 @@
 		E4AC94A4263162FA001FC322 /* ZXKitLoggerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AC949C263162FA001FC322 /* ZXKitLoggerTableViewCell.swift */; };
 		E4AC94A5263162FA001FC322 /* LogContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AC949D263162FA001FC322 /* LogContent.swift */; };
 		E4AC94A6263162FA001FC322 /* HDSqliteTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AC949E263162FA001FC322 /* HDSqliteTools.swift */; };
-		E4AC94A7263162FA001FC322 /* HDFPSTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AC949F263162FA001FC322 /* HDFPSTools.swift */; };
 		E4AC94A8263162FA001FC322 /* ZXKitLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AC94A0263162FA001FC322 /* ZXKitLogger.swift */; };
 		E4AC94A9263162FA001FC322 /* ZXKitLoggerWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AC94A1263162FA001FC322 /* ZXKitLoggerWindow.swift */; };
 		E4AC950C26355A80001FC322 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E4AC950926355A80001FC322 /* Localizable.strings */; };
@@ -46,7 +45,6 @@
 		E4AC949C263162FA001FC322 /* ZXKitLoggerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZXKitLoggerTableViewCell.swift; sourceTree = "<group>"; };
 		E4AC949D263162FA001FC322 /* LogContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogContent.swift; sourceTree = "<group>"; };
 		E4AC949E263162FA001FC322 /* HDSqliteTools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HDSqliteTools.swift; sourceTree = "<group>"; };
-		E4AC949F263162FA001FC322 /* HDFPSTools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HDFPSTools.swift; sourceTree = "<group>"; };
 		E4AC94A0263162FA001FC322 /* ZXKitLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZXKitLogger.swift; sourceTree = "<group>"; };
 		E4AC94A1263162FA001FC322 /* ZXKitLoggerWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZXKitLoggerWindow.swift; sourceTree = "<group>"; };
 		E4AC950A26355A80001FC322 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -132,7 +130,6 @@
 				E4AC949C263162FA001FC322 /* ZXKitLoggerTableViewCell.swift */,
 				E4AC949D263162FA001FC322 /* LogContent.swift */,
 				E4AC949E263162FA001FC322 /* HDSqliteTools.swift */,
-				E4AC949F263162FA001FC322 /* HDFPSTools.swift */,
 				E4AC94A0263162FA001FC322 /* ZXKitLogger.swift */,
 				E4AC94A1263162FA001FC322 /* ZXKitLoggerWindow.swift */,
 				E4AC965026395F22001FC322 /* ZXKitLoggerFloatWindow.swift */,
@@ -294,7 +291,6 @@
 				E48AABFB22C05EF600CC5F1C /* ViewController.swift in Sources */,
 				E4AC94A3263162FA001FC322 /* ZXKitLoggerItem.swift in Sources */,
 				E4AC94A9263162FA001FC322 /* ZXKitLoggerWindow.swift in Sources */,
-				E4AC94A7263162FA001FC322 /* HDFPSTools.swift in Sources */,
 				E4AC951F2635694C001FC322 /* ZXLogger+zxkit.swift in Sources */,
 				E4AC965126395F22001FC322 /* ZXKitLoggerFloatWindow.swift in Sources */,
 				E4AC94A5263162FA001FC322 /* LogContent.swift in Sources */,
