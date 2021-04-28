@@ -26,6 +26,10 @@ Declare an object and follow the `ZXKitPluginProtocol` protocol. Respectively re
 
 ```
 extension PluginDemo: ZXKitPluginProtocol {
+	var pluginIdentifier: String {
+        return "com.zxkit.pluginDemo"
+    }
+    
     var pluginIcon: UIImage? {
         return UIImage(named: "zxkit")
     }
@@ -72,13 +76,13 @@ ZXKit.resetFloatButton()
 
 ```
 //new plug-in regist
-NSNotification.Name. ZXKitPluginRegist
+NSNotification.Name.ZXKitPluginRegist
 //show
-NSNotification.Name. ZXKitShow
+NSNotification.Name.ZXKitShow
 //hide
-NSNotification.Name. ZXKitHide
+NSNotification.Name.ZXKitHide
 //close
-NSNotification.Name. ZXKitClose
+NSNotification.Name.ZXKitClose
 ```
 
 ## Default installation

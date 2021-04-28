@@ -18,6 +18,10 @@ func UIImageHDBoundle(named: String?) -> UIImage? {
 
 //ZXKitPlugin
 extension ZXKitLogger: ZXKitPluginProtocol {
+    public var pluginIdentifier: String {
+        return "com.zxkit.zxkitLogger"
+    }
+    
     public var pluginIcon: UIImage? {
         return UIImageHDBoundle(named: "logo")
     }

@@ -14,6 +14,7 @@ public enum ZXKitPluginType {
 }
 
 public protocol ZXKitPluginProtocol {
+    var pluginIdentifier: String { get }
     var pluginIcon: UIImage? { get }
     var pluginTitle: String { get }
     var pluginType: ZXKitPluginType { get }
