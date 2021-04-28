@@ -33,4 +33,8 @@ extension ZXKitLogger: ZXKitPluginProtocol {
     public func start() {
         ZXKitLogger.show()
     }
+
+    public static func registZXKit() {
+        ZXKit.regist(plugin: shared)
+    }
 }

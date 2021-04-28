@@ -37,15 +37,7 @@ pod 'ZXKitLogger'
 pod 'ZXKitCore/wcdb'
 ```
 
-### 1.2、支持ZXKit快捷启动
-
-该工具支持`ZXKit`快捷启动，如果需要，可以执行该命令
-
-```
-pod 'ZXKitCore/zxkit'
-```
-
-### 1.3、文件安装
+### 1.2、文件安装
 
 可以将工程底下，`pod`文件夹内的文件拖入项目即可
 
@@ -206,6 +198,21 @@ extension URL: LogContent {
     }
 }
 ```
+
+### 支持ZXKit快捷启动
+
+该工具支持`ZXKit`快捷启动，如果需要在ZXKit工具集中显示，可以执行该命令
+
+```
+pod 'ZXKitCore/zxkit'
+```
+
+之后注册到`ZXKit`即可
+
+```
+ZXKitLogger.registZXKit()
+```
+
 
 ## 四、 敏感信息输出加密和解密
 

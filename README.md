@@ -46,15 +46,8 @@ If you have integrated Tencent's [Tencent / wcdb] (https://github.com/Tencent/wc
 Pod'ZXKitCore/wcdb'
 ```
 
-### 1.2, support ZXKit quick start
 
-This tool supports `ZXKit` quick start, If you want to use this function, you can add the following pod command
-
-```
-pod'ZXKitCore/zxkit'
-```
-
-### 1.3, file installation
+### 1.2, file installation
 
 You can drag the files in the `pod` folder into the project under the project.
 
@@ -210,6 +203,20 @@ extension URL: LogContent {
         return self.path
     }
 }
+```
+
+### 1.2, support ZXKit quick start
+
+This tool supports `ZXKit` quick start, If you want to use this function, you can add the following pod command
+
+```
+pod'ZXKitCore/zxkit'
+```
+
+Then register to 'zxkit'
+
+```
+ZXKitLogger.registZXKit()
 ```
 
 ## IV. sensitive information output encryption and decryption
