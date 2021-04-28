@@ -9,6 +9,7 @@
 import UIKit
 import ZXKitUtil
 import CommonCrypto
+import ZXKitFPS
 
 ///log的级别，对应不同的颜色
 public enum ZXKitLogType : Int {
@@ -70,33 +71,32 @@ public class ZXKitLogger {
     public static var userID = "0"             //为不同用户创建的独立的日志库
     public static var isShowFPS = true {
         willSet {
-            shared.mFPSTools.isShowFPS = newValue
-        }
-    }            //是否显示屏幕FPS状态
-    //MARK: Private
-    private lazy var mFPSTools: HDFPSTools = {
-        let tFPSTools = HDFPSTools { [weak self] (fps) in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                if ZXKitLogger.isShowFPS {
-                    self.floatWindow?.mButton.setTitle("\(fps)FPS", for: UIControl.State.normal)
-                    self.floatWindow?.mButton.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .bold)
-                    if fps >= 55 {
-                        self.floatWindow?.mButton.backgroundColor = UIColor.zx.color(hexValue: 0x5dae8b)
-                    } else if (fps >= 50 && fps < 55) {
-                        self.floatWindow?.mButton.backgroundColor = UIColor.zx.color(hexValue: 0xf0a500)
-                    } else {
-                        self.floatWindow?.mButton.backgroundColor = UIColor.zx.color(hexValue: 0xaa2b1d)
+            if newValue {
+                shared.mFPSTools.start { (fps) in
+                    DispatchQueue.main.async {
+                        shared.floatWindow?.mButton.setTitle("\(fps)FPS", for: UIControl.State.normal)
+                        shared.floatWindow?.mButton.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .bold)
+                        if fps >= 55 {
+                            shared.floatWindow?.mButton.backgroundColor = UIColor.zx.color(hexValue: 0x5dae8b)
+                        } else if (fps >= 50 && fps < 55) {
+                            shared.floatWindow?.mButton.backgroundColor = UIColor.zx.color(hexValue: 0xf0a500)
+                        } else {
+                            shared.floatWindow?.mButton.backgroundColor = UIColor.zx.color(hexValue: 0xaa2b1d)
+                        }
                     }
-                } else {
-                    self.floatWindow?.mButton.titleLabel?.font = UIFont.systemFont(ofSize: 23, weight: .bold)
-                    self.floatWindow?.mButton.backgroundColor = UIColor.zx.color(hexValue: 0x5dae8b)
-                    self.floatWindow?.mButton.setTitle(NSLocalizedString("H", comment: ""), for: UIControl.State.normal)
+                }
+            } else {
+                DispatchQueue.main.async {
+                    shared.mFPSTools.stop()
+                    shared.floatWindow?.mButton.titleLabel?.font = UIFont.systemFont(ofSize: 23, weight: .bold)
+                    shared.floatWindow?.mButton.backgroundColor = UIColor.zx.color(hexValue: 0x5dae8b)
+                    shared.floatWindow?.mButton.setTitle(NSLocalizedString("H", comment: ""), for: UIControl.State.normal)
                 }
             }
         }
-        return tFPSTools
-    }()
+    }            //是否显示屏幕FPS状态
+    //MARK: Private
+    private let mFPSTools = ZXKitFPS()
     private var loggerWindow: ZXKitLoggerWindow?
     private var floatWindow: ZXKitLoggerFloatWindow?
     var isPasswordCorrect: Bool = false
@@ -182,6 +182,9 @@ public class ZXKitLogger {
     public class func hide() {
         DispatchQueue.main.async {
             self.shared.loggerWindow?.isHidden = true
+            #if canImport(ZXKitCore)
+            ZXWarnLog(NSLocalizedString("The float button already exists", comment: ""))
+            #else
             //float window
             if let window = self.shared.floatWindow {
                 window.isHidden = false
@@ -199,6 +202,7 @@ public class ZXKitLogger {
                 }
                 self.shared.floatWindow?.isHidden = false
             }
+            #endif
         }
     }
 
