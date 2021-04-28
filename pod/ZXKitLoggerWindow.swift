@@ -16,14 +16,12 @@ class ZXKitLoggerWindow: UIWindow {
     private var mCurrentSearchIndex = 0             //当前搜索到的索引
     private var mFileDateNameList = [String]()      //可以分享的文件列表
     private var mShareFileName = ""                 //选中去分享的文件名
-    
-    var mFloatButton: UIButton?
-    var isShow = false {
+
+    override var isHidden: Bool {
         willSet {
-            if newValue {
+            super.isHidden = newValue
+            if !newValue {
                 self.changeWindowFrame()
-                self.isHidden = false
-                self.mFloatWindow.isHidden = true
                 if self.mLogDataArray.isEmpty {
                     //第一条信息
                     let loggerItem = ZXKitLoggerItem()
@@ -32,13 +30,10 @@ class ZXKitLoggerWindow: UIWindow {
                     loggerItem.mLogContent = NSLocalizedString("ZXKitLogger: Click Log To Copy", comment: "")
                     self.mLogDataArray.append(loggerItem)
                 }
-                self.p_reloadFilter()
-            } else {
-                self.isHidden = true
-                self.mFloatWindow.isHidden = false
+                self._reloadFilter()
             }
         }
-    }   //显示窗口
+    }
 
     
     required init?(coder: NSCoder) {
@@ -48,12 +43,12 @@ class ZXKitLoggerWindow: UIWindow {
     @available(iOS 13.0, *)
     override init(windowScene: UIWindowScene) {
         super.init(windowScene: windowScene)
-        self.p_init()
+        self._init()
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.p_init()
+        self._init()
     }
 
     func insert(model: ZXKitLoggerItem) {
@@ -61,8 +56,8 @@ class ZXKitLoggerWindow: UIWindow {
             self.mLogDataArray.removeFirst()
         }
         self.mLogDataArray.append(model)
-        if self.isShow {
-            self.p_reloadFilter(model: model)
+        if !self.isHidden {
+            self._reloadFilter(model: model)
         }
     }
 
@@ -70,19 +65,10 @@ class ZXKitLoggerWindow: UIWindow {
     func cleanDataArray() {
         self.mLogDataArray.removeAll()
         self.mFilterIndexArray.removeAll()
-        self.p_reloadFilter()
+        self._reloadFilter()
     }
 
-    //只隐藏log的输出窗口，保留悬浮图标
-    @objc func hide() {
-        self.isShow = false
-    }
 
-    @objc func close() {
-        self.isShow = false
-        self.isHidden = true
-        self.mFloatWindow.isHidden = true
-    }
     
     //MARK: UI布局
     private lazy var mBGView: UIView = {
@@ -176,45 +162,7 @@ class ZXKitLoggerWindow: UIWindow {
         return switchLabel
     }()
     
-    private lazy var mFloatWindow: UIWindow = {
-        var floatWidow: UIWindow
-        var tmpFloatWindo: UIWindow?
-        if #available(iOS 13.0, *) {
-            for windowScene:UIWindowScene in ((UIApplication.shared.connectedScenes as? Set<UIWindowScene>)!) {
-                if windowScene.activationState == .foregroundActive {
-                    tmpFloatWindo = UIWindow(windowScene: windowScene)
-                    tmpFloatWindo?.frame = CGRect(x: UIScreen.main.bounds.size.width - 80, y: 100, width: 60, height: 60)
-                }
-            }
-        }
-        if let window = tmpFloatWindo {
-            floatWidow = window
-        } else {
-            floatWidow = UIWindow(frame: CGRect(x: UIScreen.main.bounds.size.width - 80, y: 100, width: 60, height: 60))
-        }
-        
-        floatWidow.rootViewController = UIViewController()
-        floatWidow.windowLevel = UIWindow.Level.alert
-        floatWidow.backgroundColor = UIColor.clear
-        floatWidow.isUserInteractionEnabled = true
-        
-        let floatButton = UIButton(type: UIButton.ButtonType.custom)
-        floatButton.backgroundColor = UIColor.zx.color(hexValue: 0x5dae8b)
-        floatButton.setTitle(NSLocalizedString("H", comment: ""), for: UIControl.State.normal)
-        floatButton.titleLabel?.font = UIFont.systemFont(ofSize: 23, weight: .bold)
-        floatButton.layer.borderColor = UIColor.zx.color(hexValue: 0xffffff).cgColor
-        floatButton.zx.addLayerShadow(color: UIColor.zx.color(hexValue: 0x333333), offset: CGSize(width: 2, height: 2), radius: 4, cornerRadius: 30)
-        floatButton.layer.borderWidth = 4.0
-        floatButton.addTarget(self, action: #selector(p_show), for: UIControl.Event.touchUpInside)
-        floatButton.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
-        
-        let pan = UIPanGestureRecognizer(target: self, action: #selector(p_touchMove(p:)))
-        floatButton.addGestureRecognizer(pan)
-        mFloatButton = floatButton
-        
-        floatWidow.rootViewController?.view.addSubview(floatButton)
-        return floatWidow
-    }()
+
     
     private lazy var mSearchBar: UISearchBar = {
         let searchBar = UISearchBar()
@@ -307,29 +255,29 @@ private extension ZXKitLoggerWindow {
     }
 
     //MARK: Private method
-    private func p_init() {
+    private func _init() {
         self.rootViewController = UIViewController()
         self.windowLevel =  UIWindow.Level.alert
         self.isUserInteractionEnabled = true
         self.backgroundColor = UIColor.clear
-        self.p_createUI()
-        self.p_bindClick()
+        self._createUI()
+        self._bindClick()
 
         NotificationCenter.default.addObserver(self, selector: #selector(changeWindowFrame), name: NSNotification.Name(UIApplication.didChangeStatusBarFrameNotification.rawValue), object: nil)
     }
 
-    private func p_bindClick() {
-        self.mScaleButton.addTarget(self, action: #selector(p_scale), for: UIControl.Event.touchUpInside)
-        self.mHideButton.addTarget(self, action: #selector(hide), for: UIControl.Event.touchUpInside)
+    private func _bindClick() {
+        self.mScaleButton.addTarget(self, action: #selector(_scale), for: UIControl.Event.touchUpInside)
+        self.mHideButton.addTarget(self, action: #selector(_hide), for: UIControl.Event.touchUpInside)
         self.mCleanButton.addTarget(self, action: #selector(cleanLog), for: UIControl.Event.touchUpInside)
-        self.mShareButton.addTarget(self, action: #selector(p_share), for: UIControl.Event.touchUpInside)
-        self.mPasswordButton.addTarget(self, action: #selector(p_decrypt), for: UIControl.Event.touchUpInside)
-        self.mPreviousButton.addTarget(self, action: #selector(p_previous), for: UIControl.Event.touchUpInside)
-        self.mNextButton.addTarget(self, action: #selector(p_next), for: UIControl.Event.touchUpInside)
+        self.mShareButton.addTarget(self, action: #selector(_share), for: UIControl.Event.touchUpInside)
+        self.mPasswordButton.addTarget(self, action: #selector(_decrypt), for: UIControl.Event.touchUpInside)
+        self.mPreviousButton.addTarget(self, action: #selector(_previous), for: UIControl.Event.touchUpInside)
+        self.mNextButton.addTarget(self, action: #selector(_next), for: UIControl.Event.touchUpInside)
     }
 
     //过滤刷新
-    private func p_reloadFilter(model: ZXKitLoggerItem? = nil) {
+    private func _reloadFilter(model: ZXKitLoggerItem? = nil) {
         self.mFilterIndexArray.removeAll()
         self.mPreviousButton.isEnabled = false
         self.mNextButton.isEnabled = false
@@ -358,7 +306,7 @@ private extension ZXKitLoggerWindow {
         }
     }
 
-    @objc private func p_previous() -> Void {
+    @objc private func _previous() -> Void {
         if (self.mFilterIndexArray.count > 0) {
             self.mCurrentSearchIndex = self.mCurrentSearchIndex - 1;
             if (self.mCurrentSearchIndex < 0) {
@@ -369,7 +317,7 @@ private extension ZXKitLoggerWindow {
         }
     }
 
-    @objc private func p_next() -> Void {
+    @objc private func _next() -> Void {
         if (self.mFilterIndexArray.count > 0) {
             self.mCurrentSearchIndex = self.mCurrentSearchIndex + 1;
             if (self.mCurrentSearchIndex == self.mFilterIndexArray.count) {
@@ -380,37 +328,20 @@ private extension ZXKitLoggerWindow {
         }
     }
 
-    @objc private func p_closePicker() {
+    @objc private func _closePicker() {
         self.mPickerBGView.isHidden = true
     }
 
-    @objc private func p_show() {
-        self.isShow = true
+    @objc private func _show() {
+        self.isHidden = false
     }
 
-    @objc private func p_touchMove(p:UIPanGestureRecognizer) {
-        guard let window = ZXKitUtil.shared().getCurrentNormalWindow() else { return }
-        let panPoint = p.location(in: window)
-        //跟随手指拖拽
-        if p.state == .changed {
-            self.mFloatWindow.center = CGPoint(x: panPoint.x, y: panPoint.y)
-            p.setTranslation(CGPoint.zero, in: self.mFloatWindow)
-        }
-        //弹回边界
-        if p.state == .ended || p.state == .cancelled {
-            var x: CGFloat = 50
-            if panPoint.x > (window.bounds.size.width) / 2.0 {
-                x = window.bounds.size.width - 50
-            }
-            let y = min(max(130, panPoint.y), window.bounds.size.height - 140)
-            p.setTranslation(CGPoint.zero, in: self.mFloatWindow)
-            UIView.animate(withDuration: 0.35) {
-                self.mFloatWindow.center = CGPoint(x: x, y: y)
-            }
-        }
+    //只隐藏log的输出窗口，保留悬浮图标
+    @objc func _hide() {
+        ZXKitLogger.hide()
     }
 
-    @objc private func p_scale() {
+    @objc private func _scale() {
         self.mScaleButton.isSelected = !self.mScaleButton.isSelected;
         if (self.mScaleButton.isSelected) {
             self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height - 70)
@@ -419,7 +350,7 @@ private extension ZXKitLoggerWindow {
         }
     }
 
-    @objc private func p_confirmPicker() {
+    @objc private func _confirmPicker() {
         self.mPickerBGView.isHidden = true
         let dataList = HDSqliteTools.shared.getAllLog(name: self.mShareFileName).reversed()
         //写入到text文件好解析
@@ -441,11 +372,11 @@ private extension ZXKitLoggerWindow {
             activityVC.popoverPresentationController?.sourceView = self.mShareButton
             activityVC.popoverPresentationController?.sourceRect = self.mShareButton.frame
         }
-        self.hide()
+        self._hide()
         ZXKitUtil.shared().getCurrentVC()?.present(activityVC, animated: true, completion: nil)
     }
 
-    @objc private func p_share() {
+    @objc private func _share() {
         self.mFileDateNameList = [String]()
         let path = HDSqliteTools.shared.getDBFolder()
         //数据库目录
@@ -465,7 +396,7 @@ private extension ZXKitLoggerWindow {
     }
 
     //解密
-    @objc private func p_decrypt() {
+    @objc private func _decrypt() {
         self.mPasswordTextField.resignFirstResponder()
         self.mSearchBar.resignFirstResponder()
         if self.mPasswordTextField.text != nil {
@@ -473,7 +404,7 @@ private extension ZXKitLoggerWindow {
         }
     }
 
-    private func p_createUI() {
+    private func _createUI() {
         self.rootViewController?.view.addSubview(self.mBGView)
         self.mBGView.snp.makeConstraints { (make) in
             make.left.right.bottom.equalToSuperview()
@@ -606,9 +537,9 @@ private extension ZXKitLoggerWindow {
         }
         self.mToolBar.layoutIfNeeded()
 
-        let closeBarItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.cancel, target: self, action: #selector(p_closePicker))
+        let closeBarItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.cancel, target: self, action: #selector(_closePicker))
         let fixBarItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
-        let doneBarItem = UIBarButtonItem(title: NSLocalizedString("Share", comment: ""), style:.plain, target: self, action: #selector(p_confirmPicker))
+        let doneBarItem = UIBarButtonItem(title: NSLocalizedString("Share", comment: ""), style:.plain, target: self, action: #selector(_confirmPicker))
         self.mToolBar.setItems([closeBarItem, fixBarItem, doneBarItem], animated: true)
 
         self.mPickerBGView.addSubview(self.mPickerView)
@@ -655,7 +586,7 @@ extension ZXKitLoggerWindow: UITableViewDataSource, UITableViewDelegate {
 extension ZXKitLoggerWindow: UISearchBarDelegate {
     //UISearchBarDelegate
     public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        self.p_reloadFilter()
+        self._reloadFilter()
     }
     
     public func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
@@ -670,8 +601,8 @@ extension ZXKitLoggerWindow: UISearchBarDelegate {
 extension ZXKitLoggerWindow: UITextFieldDelegate {
     //MAKR:UITextFieldDelegate
     public func textFieldDidEndEditing(_ textField: UITextField) {
-        ZXKitLogger.shared.mPasswordCorrect = (ZXKitLogger.privacyLogPassword == textField.text)
-        self.p_decrypt()
+        ZXKitLogger.shared.isPasswordCorrect = (ZXKitLogger.privacyLogPassword == textField.text)
+        self._decrypt()
     }
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         return textField.resignFirstResponder()

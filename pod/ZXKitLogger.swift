@@ -9,9 +9,6 @@
 import UIKit
 import ZXKitUtil
 import CommonCrypto
-#if canImport(ZXKitCore)
-import ZXKitCore
-#endif
 
 ///log的级别，对应不同的颜色
 public enum ZXKitLogType : Int {
@@ -82,28 +79,28 @@ public class ZXKitLogger {
             guard let self = self else { return }
             DispatchQueue.main.async {
                 if ZXKitLogger.isShowFPS {
-                    self.mWindow?.mFloatButton?.setTitle("\(fps)FPS", for: UIControl.State.normal)
-                    self.mWindow?.mFloatButton?.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .bold)
+                    self.floatWindow?.mButton.setTitle("\(fps)FPS", for: UIControl.State.normal)
+                    self.floatWindow?.mButton.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .bold)
                     if fps >= 55 {
-                        self.mWindow?.mFloatButton?.backgroundColor = UIColor.zx.color(hexValue: 0x5dae8b)
+                        self.floatWindow?.mButton.backgroundColor = UIColor.zx.color(hexValue: 0x5dae8b)
                     } else if (fps >= 50 && fps < 55) {
-                        self.mWindow?.mFloatButton?.backgroundColor = UIColor.zx.color(hexValue: 0xf0a500)
+                        self.floatWindow?.mButton.backgroundColor = UIColor.zx.color(hexValue: 0xf0a500)
                     } else {
-                        self.mWindow?.mFloatButton?.backgroundColor = UIColor.zx.color(hexValue: 0xaa2b1d)
+                        self.floatWindow?.mButton.backgroundColor = UIColor.zx.color(hexValue: 0xaa2b1d)
                     }
                 } else {
-                    self.mWindow?.mFloatButton?.titleLabel?.font = UIFont.systemFont(ofSize: 23, weight: .bold)
-                    self.mWindow?.mFloatButton?.backgroundColor = UIColor.zx.color(hexValue: 0x5dae8b)
-                    self.mWindow?.mFloatButton?.setTitle(NSLocalizedString("H", comment: ""), for: UIControl.State.normal)
+                    self.floatWindow?.mButton.titleLabel?.font = UIFont.systemFont(ofSize: 23, weight: .bold)
+                    self.floatWindow?.mButton.backgroundColor = UIColor.zx.color(hexValue: 0x5dae8b)
+                    self.floatWindow?.mButton.setTitle(NSLocalizedString("H", comment: ""), for: UIControl.State.normal)
                 }
             }
         }
         return tFPSTools
     }()
-    private var mWindow: ZXKitLoggerWindow?
-    var mPasswordCorrect: Bool = false
+    private var loggerWindow: ZXKitLoggerWindow?
+    private var floatWindow: ZXKitLoggerFloatWindow?
+    var isPasswordCorrect: Bool = false
     static let shared = ZXKitLogger()
-    static var hasRegistPlugin = false
 
     private let logQueue = DispatchQueue(label:"com.HDWindowLogger.logQueue", qos:.utility, attributes:.concurrent)
     //log的Public函数
@@ -111,12 +108,6 @@ public class ZXKitLogger {
     /// - Parameter log: 日志内容
     /// - Parameter logType: 日志类型
     public class func printLog(log:Any, logType:ZXKitLogType, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-        #if canImport(ZXKitCore)
-        if !self.hasRegistPlugin {
-            ZXKit.regist(plugin: shared)
-            self.hasRegistPlugin = true
-        }
-        #endif
         shared.logQueue.async(group: nil, qos: .default, flags: .barrier) {
             let loggerItem = ZXKitLoggerItem()
             loggerItem.mLogItemType = logType
@@ -133,10 +124,10 @@ public class ZXKitLogger {
                     print(loggerItem.getFullContentString())
                 }
                 //写入文件
-                self.shared.p_writeDB(log: loggerItem)
+                self.shared._writeDB(log: loggerItem)
                 //刷新列表
                 DispatchQueue.main.async {
-                    self.shared.mWindow?.insert(model: loggerItem)
+                    self.shared.loggerWindow?.insert(model: loggerItem)
                 }
             }
         }
@@ -162,26 +153,27 @@ public class ZXKitLogger {
     ///  删除log日志
     public class func cleanLog() {
         DispatchQueue.main.async {
-            self.shared.mWindow?.cleanDataArray()
+            self.shared.loggerWindow?.cleanDataArray()
         }
     }
     
     /// 显示log窗口
     public class func show() {
         DispatchQueue.main.async {
-            if self.shared.mWindow == nil {
+            self.shared.floatWindow?.isHidden = true
+            if self.shared.loggerWindow == nil {
                 if #available(iOS 13.0, *) {
                     for windowScene:UIWindowScene in ((UIApplication.shared.connectedScenes as? Set<UIWindowScene>)!) {
                         if windowScene.activationState == .foregroundActive {
-                            self.shared.mWindow = ZXKitLoggerWindow(windowScene: windowScene)
+                            self.shared.loggerWindow = ZXKitLoggerWindow(windowScene: windowScene)
                         }
                     }
                 }
-                if self.shared.mWindow == nil {
-                    self.shared.mWindow = ZXKitLoggerWindow(frame: CGRect.zero)
+                if self.shared.loggerWindow == nil {
+                    self.shared.loggerWindow = ZXKitLoggerWindow(frame: CGRect.zero)
                 }
             }
-            self.shared.mWindow?.isShow = true
+            self.shared.loggerWindow?.isHidden = false
             self.isShowFPS = true
         }
     }
@@ -189,14 +181,32 @@ public class ZXKitLogger {
     /// 只隐藏log的输出窗口，保留悬浮图标
     public class func hide() {
         DispatchQueue.main.async {
-            self.shared.mWindow?.hide()
+            self.shared.loggerWindow?.isHidden = true
+            //float window
+            if let window = self.shared.floatWindow {
+                window.isHidden = false
+            } else {
+                if #available(iOS 13.0, *) {
+                    for windowScene:UIWindowScene in ((UIApplication.shared.connectedScenes as? Set<UIWindowScene>)!) {
+                        if windowScene.activationState == .foregroundActive {
+                            self.shared.floatWindow = ZXKitLoggerFloatWindow(windowScene: windowScene)
+                            self.shared.floatWindow?.frame = CGRect(x: UIScreen.main.bounds.size.width - 80, y: 100, width: 60, height: 60)
+                        }
+                    }
+                }
+                if self.shared.floatWindow == nil {
+                    self.shared.floatWindow = ZXKitLoggerFloatWindow(frame: CGRect(x: UIScreen.main.bounds.size.width - 80, y: 100, width: 60, height: 60))
+                }
+                self.shared.floatWindow?.isHidden = false
+            }
         }
     }
 
     ///  隐藏整个log窗口
     public class func close() {
         DispatchQueue.main.async {
-            self.shared.mWindow?.close()
+            self.shared.loggerWindow?.isHidden = true
+            self.shared.floatWindow?.isHidden = true
         }
     }
 
@@ -219,17 +229,17 @@ public class ZXKitLogger {
     //MARK: init
     init() {
         if ZXKitLogger.logExpiryDay > 0 {
-            self.p_checkValidity()
+            self._checkValidity()
         }
     }
 }
 
 private extension ZXKitLogger {
-    func p_writeDB(log: ZXKitLoggerItem) -> Void {
+    func _writeDB(log: ZXKitLoggerItem) -> Void {
         HDSqliteTools.shared.insertLog(log: log)
     }
     
-    func p_checkValidity() {
+    func _checkValidity() {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let cachePath = HDSqliteTools.shared.getDBFolder()

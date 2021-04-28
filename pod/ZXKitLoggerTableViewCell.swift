@@ -29,14 +29,14 @@ class ZXKitLoggerTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.p_createUI()
+        self._createUI()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
     
-    private func p_createUI() -> Void {
+    private func _createUI() -> Void {
         self.backgroundColor = UIColor.clear
         self.contentView.addSubview(self.mContentLabel)
         self.mContentLabel.snp.makeConstraints { (make) in
