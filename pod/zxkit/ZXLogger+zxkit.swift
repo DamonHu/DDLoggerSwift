@@ -7,8 +7,6 @@
 //
 
 import Foundation
-
-#if canImport(ZXKitCore)
 import ZXKitCore
 
 func UIImageHDBoundle(named: String?) -> UIImage? {
@@ -21,7 +19,7 @@ func UIImageHDBoundle(named: String?) -> UIImage? {
 //ZXKitPlugin
 extension ZXKitLogger: ZXKitPluginProtocol {
     public var pluginIcon: UIImage? {
-        return UIImageHDBoundle(named: "log")
+        return UIImageHDBoundle(named: "logo")
     }
 
     public var pluginTitle: String {
@@ -36,4 +34,3 @@ extension ZXKitLogger: ZXKitPluginProtocol {
         ZXKitLogger.show()
     }
 }
-#endif

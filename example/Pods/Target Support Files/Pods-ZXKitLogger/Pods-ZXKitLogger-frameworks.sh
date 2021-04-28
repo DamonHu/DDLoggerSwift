@@ -199,11 +199,13 @@ fi
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ZXKitCore/ZXKitCore.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ZXKitFPS/ZXKitFPS.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ZXKitUtil/ZXKitUtil.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ZXKitCore/ZXKitCore.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ZXKitFPS/ZXKitFPS.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ZXKitUtil/ZXKitUtil.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then

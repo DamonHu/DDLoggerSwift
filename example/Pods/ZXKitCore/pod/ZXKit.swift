@@ -7,12 +7,34 @@
 
 import UIKit
 
+public extension NSNotification.Name {
+    static let ZXKitPluginRegist = NSNotification.Name("ZXKitPluginRegist")
+    static let ZXKitShow = NSNotification.Name("ZXKitShow")
+    static let ZXKitHide = NSNotification.Name("ZXKitHide")
+    static let ZXKitClose = NSNotification.Name("ZXKitClose")
+}
+
 public class ZXKit: NSObject {
-    static var window: ZXKitWindow?
-    static var floatWindow: ZXKitFloatWindow?
+    private static var window: ZXKitWindow?
+    private static var floatWindow: ZXKitFloatWindow?
     static var pluginList = [[ZXKitPluginProtocol](), [ZXKitPluginProtocol](), [ZXKitPluginProtocol]()]
+    
+    public static var floatButton: UIButton? {
+        return self.floatWindow?.mButton
+    }
+
+    public static func resetFloatButton() {
+        self.floatButton?.backgroundColor = UIColor.zx.color(hexValue: 0x5dae8b)
+        self.floatButton?.setTitle(NSLocalizedString("Z", comment: ""), for: UIControl.State.normal)
+        self.floatButton?.titleLabel?.font = UIFont.systemFont(ofSize: 23, weight: .bold)
+        self.floatButton?.layer.borderColor = UIColor.zx.color(hexValue: 0xffffff).cgColor
+        self.floatButton?.zx.addLayerShadow(color: UIColor.zx.color(hexValue: 0x333333), offset: CGSize(width: 2, height: 2), radius: 4, cornerRadius: 30)
+        self.floatButton?.layer.borderWidth = 4.0
+        self.floatButton?.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
+    }
 
     public static func regist(plugin: ZXKitPluginProtocol) {
+        NotificationCenter.default.post(name: .ZXKitPluginRegist, object: plugin)
         switch plugin.pluginType {
             case .ui:
                 self.pluginList[0].append(plugin)
@@ -21,7 +43,6 @@ public class ZXKit: NSObject {
             case .other:
                 self.pluginList[2].append(plugin)
         }
-
         if let window = self.window, !window.isHidden {
             DispatchQueue.main.async {
                 window.reloadData()
@@ -30,6 +51,7 @@ public class ZXKit: NSObject {
     }
 
     public static func show() {
+        NotificationCenter.default.post(name: .ZXKitShow, object: nil)
         self.floatWindow?.isHidden = true
         DispatchQueue.main.async {
             if let window = self.window {
@@ -52,6 +74,7 @@ public class ZXKit: NSObject {
     }
 
     public static func hide() {
+        NotificationCenter.default.post(name: .ZXKitHide, object: nil)
         DispatchQueue.main.async {
             self.window?.isHidden = true
             //float window
@@ -75,6 +98,7 @@ public class ZXKit: NSObject {
     }
 
     public static func close() {
+        NotificationCenter.default.post(name: .ZXKitClose, object: nil)
         DispatchQueue.main.async {
             self.window?.isHidden = true
             self.floatWindow?.isHidden = true
