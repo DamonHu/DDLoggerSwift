@@ -43,7 +43,7 @@ pod 'ZXKitLogger'
 If you have integrated Tencent's [Tencent / wcdb] (https://github.com/Tencent/wcdb), the system functions of `sqlite` have been modified and optimized, which will cause the same error as the function name. You can use the wcdb version
 
 ```
-Pod'ZXKitCore/wcdb'
+Pod 'ZXKitLogger/wcdb'
 ```
 
 
@@ -210,7 +210,7 @@ extension URL: LogContent {
 This tool supports `ZXKit` quick start, If you want to use this function, you can add the following pod command
 
 ```
-pod'ZXKitCore/zxkit'
+pod 'ZXKitLogger/zxkit'
 ```
 
 Then register to 'zxkit'
