@@ -8,6 +8,7 @@
 import UIKit
 
 class ZXKitWindow: UIWindow {
+    private var inputComplete: ((String)->Void)?
 
     @available(iOS 13.0, *)
     override init(windowScene: UIWindowScene) {
@@ -45,11 +46,59 @@ class ZXKitWindow: UIWindow {
         tCollectionView.register(ZXKitCollectionViewHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "ZXKitCollectionViewHeaderView")
         return tCollectionView
     }()
+
+    lazy var mInputBGView: UIView = {
+        let tView = UIView()
+        tView.isHidden = true
+        tView.backgroundColor = UIColor.zx.color(hexValue: 0x000000, alpha: 0.7)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(_endTextField))
+        tView.addGestureRecognizer(tap)
+        return tView
+    }()
+
+    lazy var mTextField: UITextField = {
+        let tTextField = UITextField()
+        tTextField.leftViewMode = .always
+        tTextField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 14, height: 10))
+        tTextField.backgroundColor = UIColor.zx.color(hexValue: 0xffffff, alpha: 0.8)
+        tTextField.font = .systemFont(ofSize: 14)
+        tTextField.placeholder = NSLocalizedString("input text", comment: "")
+        tTextField.clearButtonMode = .always
+        tTextField.layer.borderWidth = 1.0
+        tTextField.layer.borderColor = UIColor.zx.color(hexValue: 0xcccccc).cgColor
+        tTextField.delegate = self
+        tTextField.textColor = UIColor.zx.color(hexValue: 0x333333)
+        return tTextField
+    }()
+
+    lazy var mButton: UIButton = {
+        let tButton = UIButton(type: .custom)
+        tButton.addTarget(self, action: #selector(_endTextField), for: .touchUpInside)
+        tButton.setTitle(NSLocalizedString("confirm", comment: ""), for: .normal)
+        tButton.setTitleColor(UIColor.zx.color(hexValue: 0xffffff), for: .normal)
+        tButton.backgroundColor = UIColor.zx.color(hexValue: 0x5dae8b)
+        tButton.layer.borderWidth = 1.0
+        tButton.layer.borderColor = UIColor.zx.color(hexValue: 0xcccccc).cgColor
+        return tButton
+    }()
 }
 
 extension ZXKitWindow {
     func reloadData() {
         self.mCollectionView.reloadData()
+    }
+
+    func showInput(complete: ((String)->Void)?) {
+        self.inputComplete = complete
+        self.mInputBGView.isHidden = false
+        self.mTextField.becomeFirstResponder()
+    }
+
+    func hideInput() {
+        self.mTextField.endEditing(true)
+        self.mInputBGView.isHidden = true
+        self.mTextField.placeholder = NSLocalizedString("input text", comment: "")
+        self.mTextField.text = ""
     }
 }
 
@@ -77,8 +126,26 @@ extension ZXKitWindow: UICollectionViewDelegate,UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let plugin = ZXKit.pluginList[indexPath.section][indexPath.item]
-        ZXKit.hide()
-        plugin.start()
+        if plugin.isRunning {
+            plugin.stop()
+            self.reloadData()
+        } else {
+            plugin.start()
+            self.reloadData()
+        }
+
+    }
+}
+
+extension ZXKitWindow: UITextFieldDelegate {
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if let complete = self.inputComplete {
+            complete(textField.text ?? "")
+        }
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        return textField.resignFirstResponder()
     }
 }
 
@@ -118,6 +185,10 @@ private extension ZXKitWindow {
         ZXKit.hide()
     }
 
+    @objc func _endTextField() {
+        self.hideInput()
+    }
+
     func _createUI() {
         guard let navigationController = self.rootViewController as? UINavigationController, let rootViewController = navigationController.topViewController else {
             return
@@ -128,6 +199,29 @@ private extension ZXKitWindow {
             $0.left.right.equalToSuperview()
             $0.top.equalTo(rootViewController.view.safeAreaLayoutGuide.snp.top)
             $0.bottom.equalTo(rootViewController.view.safeAreaLayoutGuide.snp.bottom)
+        }
+
+        rootViewController.view.addSubview(mInputBGView)
+        mInputBGView.snp.makeConstraints {
+            $0.left.right.equalToSuperview()
+            $0.top.equalTo(rootViewController.view.safeAreaLayoutGuide.snp.top)
+            $0.bottom.equalTo(rootViewController.view.safeAreaLayoutGuide.snp.bottom)
+        }
+
+        mInputBGView.addSubview(mTextField)
+        mTextField.snp.makeConstraints {
+            $0.left.equalToSuperview()
+            $0.width.equalTo(UIScreen.main.bounds.width*2.0/3.0)
+            $0.top.equalTo(rootViewController.view.safeAreaLayoutGuide.snp.top)
+            $0.height.equalTo(38)
+        }
+
+        mInputBGView.addSubview(mButton)
+        mButton.snp.makeConstraints {
+            $0.left.equalTo(mTextField.snp.right)
+            $0.right.equalToSuperview()
+            $0.top.equalTo(mTextField)
+            $0.height.equalTo(38)
         }
     }
 }

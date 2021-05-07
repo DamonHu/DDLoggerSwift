@@ -47,7 +47,7 @@ pod 'ZXKitFPS/zxkit'
 After integration, register to the tool to be displayed in the list
 
 ```
-ZXKit.regist(plugin: fps)
+fps.registZXKitPlugin()
 ```
 
 ## License

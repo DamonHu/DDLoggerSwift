@@ -22,11 +22,15 @@ pod 'ZXKitCore/core'
 
 ## 2. Implement the agreement
 
-Declare an object and follow the `ZXKitPluginProtocol` protocol. Respectively return the corresponding icon, plug-in name, plug-in type grouping, and startup function
+Declare an object and follow the `ZXKitPluginProtocol` protocol. Respectively return the unique ID of the plug-in, the corresponding icon, plug-in name, plug-in type grouping, and startup function
 
 ```
+class PluginDemo: NSObject {
+    var isPluginRunning = true
+}
+
 extension PluginDemo: ZXKitPluginProtocol {
-	var pluginIdentifier: String {
+    var pluginIdentifier: String {
         return "com.zxkit.pluginDemo"
     }
     
@@ -44,13 +48,23 @@ extension PluginDemo: ZXKitPluginProtocol {
 
     func start() {
         print("start plugin")
+        isPluginRunning = true
+    }
+    
+    var isRunning: Bool {
+        return isPluginRunning
+    }
+
+    func stop() {
+        print("plugin stop running")
+        isPluginRunning = false
     }
 }
 ```
 
 ## 3. Register the plug-in
 
-After that, you can register the plug-in, you only need to register once globally, and multiple registrations will cause repeated display
+After that, you can register the plug-in, you only need to register once globally
 
 ## 4. Done
 
@@ -68,6 +82,20 @@ ZXKit.floatButton
 
 ```
 ZXKit.resetFloatButton()
+```
+
+### 5.3、Display textField
+
+```
+ZXKit.showInput { (text) in
+	print(text)
+}
+```
+
+### 5.4、get textField
+
+```
+ZXKit.textField
 ```
 
 ## 2、NSNotification

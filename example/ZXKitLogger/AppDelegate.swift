@@ -18,6 +18,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let vc = ViewController()
         self.window?.rootViewController = vc
         self.window?.makeKeyAndVisible()
+
+        //如果需要支持zxkit，需要先注册
+        ZXKitLogger.registZXKit()
+
         return true
     }
 

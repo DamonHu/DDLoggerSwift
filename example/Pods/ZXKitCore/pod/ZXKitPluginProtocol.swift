@@ -18,6 +18,8 @@ public protocol ZXKitPluginProtocol {
     var pluginIcon: UIImage? { get }
     var pluginTitle: String { get }
     var pluginType: ZXKitPluginType { get }
+    var isRunning: Bool { get }
 
     func start()
+    func stop()
 }
