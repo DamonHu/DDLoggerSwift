@@ -35,10 +35,23 @@ extension ZXKitLogger: ZXKitPluginProtocol {
     }
 
     public func start() {
+        ZXKit.hide()
         ZXKitLogger.show()
     }
 
-    public static func registZXKit() {
+    public var isRunning: Bool {
+        return true
+    }
+
+    public func stop() {
+        ZXWarnLog(NSLocalizedString("System basic plug-in cannot be stopped", comment: ""))
+        ZXKit.hide()
+        ZXKitLogger.show()
+    }
+}
+
+public extension ZXKitLogger {
+    static func registZXKit() {
         ZXKit.regist(plugin: shared)
     }
 }
