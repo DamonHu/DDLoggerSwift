@@ -201,16 +201,24 @@ extension URL: LogContent {
 
 ### 支持ZXKit快捷启动
 
-该工具支持`ZXKit`快捷启动，如果需要在ZXKit工具集中显示，可以执行该命令
+**该插件已经默认集成在[ZXKitSwift](https://github.com/ZXKitCode/ZXKitSwift)中，如果您已经集成了`ZXKitSwift`，无需重复集成**
+
+该工具支持`ZXKit`工具类中显示，如果需要在ZXKit工具集中显示，可以执行该命令
 
 ```
 pod 'ZXKitLogger/zxkit'
 ```
 
-之后注册到`ZXKit`即可
+之后可在`AppDelegate`的启动函数中注册到`ZXKit`即可
 
 ```
-ZXKitLogger.registZXKit()
+func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+	
+	ZXKitLogger.registZXKit()
+	
+	return true
+}
+
 ```
 
 

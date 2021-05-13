@@ -207,16 +207,23 @@ extension URL: LogContent {
 
 ### 1.2, support ZXKit quick start
 
+**The plug-in has been integrated in [ZXKitSwift](https://github.com/ZXKitCode/ZXKitSwift) by default, if you have already integrated `ZXKitSwift`, there is no need to repeat the integration**
+
 This tool supports `ZXKit` quick start, If you want to use this function, you can add the following pod command
 
 ```
 pod 'ZXKitLogger/zxkit'
 ```
 
-Then register to 'zxkit'
+Then register to 'zxkit' in `AppDelegate`
 
 ```
-ZXKitLogger.registZXKit()
+func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+	
+	ZXKitLogger.registZXKit()
+	
+	return true
+}
 ```
 
 ## IV. sensitive information output encryption and decryption
