@@ -15,6 +15,7 @@ s.subspec 'core' do |cs|
     cs.source_files = "pod/*.swift","pod/localizable/**/*"
     cs.dependency 'ZXKitFPS'
     cs.dependency 'ZXKitUtil'
+    cs.dependency 'SnapKit'
 end
 s.subspec 'wcdb' do |cs|
     cs.dependency 'ZXKitLogger/core'
