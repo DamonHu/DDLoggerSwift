@@ -355,7 +355,7 @@ private extension ZXKitLoggerWindow {
         let dataList = HDSqliteTools.shared.getAllLog(name: self.mShareFileName).reversed()
         //写入到text文件好解析
         //文件路径
-        let logFilePathURL = ZXKitUtil.shared().getFileDirectory(type: .caches).appendingPathComponent("HDWindowLogger.log", isDirectory: false)
+        let logFilePathURL = ZXKitUtil.shared.getFileDirectory(type: .caches).appendingPathComponent("HDWindowLogger.log", isDirectory: false)
         if FileManager.default.fileExists(atPath: logFilePathURL.path) {
             try? FileManager.default.removeItem(at: logFilePathURL)
         }
@@ -373,7 +373,7 @@ private extension ZXKitLoggerWindow {
             activityVC.popoverPresentationController?.sourceRect = self.mShareButton.frame
         }
         self._hide()
-        ZXKitUtil.shared().getCurrentVC()?.present(activityVC, animated: true, completion: nil)
+        ZXKitUtil.shared.getCurrentVC()?.present(activityVC, animated: true, completion: nil)
     }
 
     @objc private func _share() {

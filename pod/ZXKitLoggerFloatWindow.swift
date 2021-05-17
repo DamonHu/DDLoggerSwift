@@ -70,7 +70,7 @@ private extension ZXKitLoggerFloatWindow {
     }
 
     @objc private func _touchMove(p:UIPanGestureRecognizer) {
-        guard let window = ZXKitUtil.shared().getCurrentNormalWindow() else { return }
+        guard let window = ZXKitUtil.shared.getCurrentNormalWindow() else { return }
         let panPoint = p.location(in: window)
         //跟随手指拖拽
         if p.state == .changed {
