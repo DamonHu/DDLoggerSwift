@@ -1,18 +1,18 @@
 PODS:
   - SnapKit (5.0.1)
-  - ZXKitCore/core (0.1.1):
+  - ZXKitCore/core (0.1.3):
     - SnapKit
     - ZXKitUtil
-  - ZXKitFPS (0.0.4):
-    - ZXKitFPS/core (= 0.0.4)
-  - ZXKitFPS/core (0.0.4)
-  - ZXKitUtil (0.0.8):
-    - ZXKitUtil/core (= 0.0.8)
-  - ZXKitUtil/core (0.0.8)
+  - ZXKitFPS (0.0.5):
+    - ZXKitFPS/core (= 0.0.5)
+  - ZXKitFPS/core (0.0.5)
+  - ZXKitUtil (0.1.0):
+    - ZXKitUtil/core (= 0.1.0)
+  - ZXKitUtil/core (0.1.0)
 
 DEPENDENCIES:
   - SnapKit
-  - ZXKitCore/core
+  - ZXKitCore/core (= 0.1.3)
   - ZXKitFPS
   - ZXKitUtil
 
@@ -25,10 +25,10 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
-  ZXKitCore: 2be2db255567163ad6c5f0ec27758643db18d8cb
-  ZXKitFPS: 9d6d437cfd63c9a21baa1095329005ea4b8057a9
-  ZXKitUtil: 3e4847994fbea5751bdef7e6bda6ff40a60b3493
+  ZXKitCore: 84e9f5a1ea1efb2710c8ceabd4f4860bd91fcf7d
+  ZXKitFPS: 4af1789e55750cfeb5153a42be5845ed008ce729
+  ZXKitUtil: a374e2c80d5274c5e2d97f42bad5597a8812be89
 
-PODFILE CHECKSUM: 09563b944bc75d8d985e454a95619af4dbcf56ba
+PODFILE CHECKSUM: fa533d5c0825ae227eb155b5c8155e99207c6b96
 
 COCOAPODS: 1.9.1

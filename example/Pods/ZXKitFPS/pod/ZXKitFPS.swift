@@ -8,12 +8,16 @@
 import Foundation
 import UIKit
 
+#if canImport(ZXKitCore)
+import ZXKitCore
+#endif
+
 open class ZXKitFPS {
     private var displayLink: CADisplayLink?     //fps显示
     private var lastTime: TimeInterval = 0
     private var count = 0
     private var complete: ((Int) -> Void)?
-    var isRunning = false
+    public var isRunning = false
 
     public init() {}
 
@@ -25,6 +29,9 @@ open class ZXKitFPS {
     }
 
     public func stop() {
+        #if canImport(ZXKitCore)
+        ZXKit.resetFloatButton()
+        #endif
         isRunning = false
         self.displayLink?.invalidate()
     }
