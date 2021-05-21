@@ -10,6 +10,13 @@ import UIKit
 import SnapKit
 import ZXKitUtil
 
+func UIImageHDBoundle(named: String?) -> UIImage? {
+    guard let name = named else { return nil }
+    guard let bundlePath = Bundle(for: ZXKitLogger.self).path(forResource: "ZXKitLogger", ofType: "bundle") else { return nil }
+    let bundle = Bundle(path: bundlePath)
+    return UIImage(named: name, in: bundle, compatibleWith: nil)
+}
+
 class ZXKitLoggerWindow: UIWindow {
     private var mLogDataArray = [ZXKitLoggerItem]()  //输出的日志信息
     private var mFilterIndexArray = [IndexPath]()   //索引的排序
@@ -35,7 +42,78 @@ class ZXKitLoggerWindow: UIWindow {
         }
     }
 
-    
+    var isFullScreen = false {
+        willSet {
+            if (newValue) {
+                self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height - 70)
+            } else {
+                self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 350)
+            }
+        }
+    }
+
+
+    //解密栏
+    var isDecryptViewHidden = true {
+        willSet {
+            self.mPasswordTextField.isHidden = newValue
+            self.mPasswordButton.isHidden = newValue
+            if !newValue {
+                self.mPasswordTextField.becomeFirstResponder()
+            } else {
+                self.mPasswordTextField.resignFirstResponder()
+            }
+        }
+    }
+
+    //滚动设置
+    var isScrollViewHidden = true {
+        willSet {
+            self.mAutoScrollSwitch.isHidden = newValue
+            self.mSwitchLabel.isHidden = newValue
+        }
+    }
+
+    //搜索栏
+    var isSearchViewHidden = true {
+        willSet {
+            self.mSearchBar.isHidden = newValue
+            self.mPreviousButton.isHidden = newValue
+            self.mNextButton.isHidden = newValue
+            self.mSearchNumLabel.isHidden = newValue
+            self.mSearchBar.text = nil
+            if !newValue {
+                self.mSearchBar.becomeFirstResponder()
+            } else {
+                self.mSearchBar.resignFirstResponder()
+            }
+        }
+    }
+
+    var isShowMenu = false {
+        willSet {
+            if newValue {
+                UIView.transition(with: self.mContentBGView, duration: 0.8, options: UIView.AnimationOptions.transitionFlipFromLeft, animations: {
+                    self.mContentBGView.alpha = 0
+                }) { (finish) in
+                    self.mContentBGView.isHidden = true
+                    self.mMenuView.isHidden = false
+                    self.mContentBGView.alpha = 1
+                }
+
+            } else {
+                UIView.transition(with: self.mMenuView, duration: 0.8, options: UIView.AnimationOptions.transitionFlipFromRight, animations: {
+                    self.mMenuView.alpha = 0
+                }) { (finish) in
+                    self.mContentBGView.isHidden = false
+                    self.mMenuView.isHidden = true
+                    self.mMenuView.alpha = 1
+                }
+            }
+        }
+    }
+
+
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
@@ -71,10 +149,10 @@ class ZXKitLoggerWindow: UIWindow {
 
     
     //MARK: UI布局
-    private lazy var mBGView: UIView = {
-        let mBGView = UIView()
-        mBGView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.6)
-        return mBGView
+    private lazy var mContentBGView: UIView = {
+        let mContentBGView = UIView()
+        mContentBGView.backgroundColor = UIColor.zx.color(hexValue: 0x000000, alpha: 0.6)
+        return mContentBGView
     }()
     private lazy var mTableView: UITableView = {
         let tableView = UITableView(frame: CGRect.zero, style: UITableView.Style.plain)
@@ -85,7 +163,7 @@ class ZXKitLoggerWindow: UIWindow {
         tableView.showsVerticalScrollIndicator = true
         tableView.keyboardDismissMode = UIScrollView.KeyboardDismissMode.onDrag
         tableView.backgroundColor = UIColor.clear
-        tableView.separatorColor = UIColor(red: 242.0/255.0, green: 242.0/255.0, blue: 240.0/255.0, alpha: 1.0)
+        tableView.separatorColor = UIColor.zx.color(hexValue: 0xfcfcfc)
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
         tableView.separatorStyle = UITableViewCell.SeparatorStyle.singleLine
         tableView.rowHeight = UITableView.automaticDimension
@@ -93,38 +171,70 @@ class ZXKitLoggerWindow: UIWindow {
         tableView.register(ZXKitLoggerTableViewCell.self, forCellReuseIdentifier: "ZXKitLoggerTableViewCell")
         return tableView
     }()
-    
-    private lazy var mCleanButton: UIButton = {
-        let button = UIButton(type: UIButton.ButtonType.custom)
-        button.backgroundColor = UIColor(red: 255.0/255.0, green: 118.0/255.0, blue: 118.0/255.0, alpha: 1.0)
-        button.setTitle(NSLocalizedString("Clean Log", comment: ""), for: UIControl.State.normal)
-        return button
+
+    private lazy var mNormalStackView: UIStackView = {
+        let titleList = [NSLocalizedString("Scale", comment: ""), NSLocalizedString("Hide", comment: ""), NSLocalizedString("Clean Log", comment: ""), NSLocalizedString("More", comment: "")]
+        let colorList = [UIColor.zx.color(hexValue: 0x91c788), UIColor.zx.color(hexValue: 0xFF7676), UIColor.zx.color(hexValue: 0x5DAE8B), UIColor.zx.color(hexValue: 0x45526c)]
+        var stackSubViews = [UIButton]()
+        for i in 0..<titleList.count {
+            let button = UIButton(type: .custom)
+            button.addTarget(self, action: #selector(_bindClick(button:)), for: .touchUpInside)
+            button.backgroundColor = colorList[i]
+            button.setTitleColor(UIColor.zx.color(hexValue: 0xffffff), for: .normal)
+            button.setTitle(titleList[i], for: .normal)
+            button.tag = i
+            stackSubViews.append(button)
+        }
+        let tStackView = UIStackView(arrangedSubviews: stackSubViews)
+        tStackView.alignment = .fill
+        tStackView.distribution = .fillEqually
+        return tStackView
     }()
-    
-    private lazy var mScaleButton: UIButton = {
-        let button = UIButton(type: UIButton.ButtonType.custom)
-        button.backgroundColor = UIColor(red: 168.0/255.0, green: 223.0/255.0, blue: 101.0/255.0, alpha: 1.0)
-        button.setTitle(NSLocalizedString("Scale", comment: ""), for: UIControl.State.normal)
-        return button
-    }()
-    
-    private lazy var mHideButton: UIButton = {
-        let button = UIButton(type: UIButton.ButtonType.custom)
-        button.backgroundColor = UIColor(red: 93.0/255.0, green: 174.0/255.0, blue: 139.0/255.0, alpha: 1.0)
-        button.setTitle(NSLocalizedString("Hide", comment: ""), for: UIControl.State.normal)
-        return button
-    }()
-    
-    private lazy var mShareButton: UIButton = {
-        let button = UIButton(type: UIButton.ButtonType.custom)
-        button.backgroundColor = UIColor(red: 246.0/255.0, green: 244.0/255.0, blue: 157.0/255.0, alpha: 1.0)
-        button.setTitleColor(UIColor(red: 255.0/255.0, green: 118.0/255.0, blue: 118.0/255.0, alpha: 1.0), for: UIControl.State.normal)
-        button.setTitle(NSLocalizedString("Share", comment: ""), for: UIControl.State.normal)
-        return button
+
+    private lazy var mMenuView: ZXKitLoggerMenuView = {
+        let tMenuView = ZXKitLoggerMenuView()
+        tMenuView.isHidden = true
+        tMenuView.clickSubject = {(index) -> Void in
+            self.isShowMenu = false
+            self.isDecryptViewHidden = true
+            self.isScrollViewHidden = true
+            self.isSearchViewHidden = true
+            switch index {
+                case 0:
+                    break
+                case 1:
+                    self.isDecryptViewHidden = false
+                case 2:
+                    self.isSearchViewHidden = false
+                case 3:
+                    self._share()
+                case 4:
+                    self.isScrollViewHidden = false
+                case 5:
+                    let folder = ZXKitLogger.getDBFolder()
+                    let size = ZXKitUtil.shared.getFileDirectorySize(fileDirectoryPth: folder)
+                    //数据库条数
+                    var count = 0
+                    if let enumer = FileManager.default.enumerator(at: folder, includingPropertiesForKeys: [URLResourceKey.creationDateKey]) {
+                        while let file = enumer.nextObject() {
+                            if let file: URL = file as? URL, file.lastPathComponent.hasSuffix(".db") {
+                               count = count + 1
+                            }
+                        }
+                    }
+                    let info = "\n" + NSLocalizedString("current log count", comment: "") + ": \(self.mLogDataArray.count)" +  "\n" + NSLocalizedString("LogFile count", comment: "") + ": \(count)" + "\n" + NSLocalizedString("LogFile total size", comment: "") + ": \(size/1024.0)kb"
+                    ZXWarnLog(info)
+                default:
+                    break
+            }
+        };
+        return tMenuView
     }()
     
     private lazy var mPasswordTextField: UITextField = {
         let tTextField = UITextField()
+        tTextField.backgroundColor = UIColor.zx.color(hexValue: 0x687980)
+        tTextField.isHidden = true
         tTextField.isSecureTextEntry = true
         tTextField.delegate = self
         let arrtibutedString = NSMutableAttributedString(string: NSLocalizedString("Enter password to view", comment: ""), attributes: [NSAttributedString.Key.foregroundColor : UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 0.7), NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14)])
@@ -138,34 +248,37 @@ class ZXKitLoggerWindow: UIWindow {
     
     private lazy var mPasswordButton: UIButton = {
         let button = UIButton(type: UIButton.ButtonType.custom)
+        button.isHidden = true
         button.backgroundColor = UIColor(red: 93.0/255.0, green: 174.0/255.0, blue: 139.0/255.0, alpha: 1.0)
         button.setTitleColor(UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0), for: UIControl.State.normal)
         button.setTitle(NSLocalizedString("Decrypt", comment: ""), for: UIControl.State.normal)
         button.layer.masksToBounds = true
         button.layer.borderColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0).cgColor
         button.layer.borderWidth = 1.0
+        button.addTarget(self, action: #selector(_decrypt), for: UIControl.Event.touchUpInside)
         return button
     }()
     
     private lazy var mAutoScrollSwitch: UISwitch = {
         let autoScrollSwitch = UISwitch()
+        autoScrollSwitch.isHidden = true
         autoScrollSwitch.setOn(true, animated: false)
         return autoScrollSwitch
     }()
     
     private lazy var mSwitchLabel: UILabel = {
         let switchLabel = UILabel()
+        switchLabel.isHidden = true
         switchLabel.text = NSLocalizedString("Auto scroll", comment: "")
         switchLabel.textAlignment = NSTextAlignment.center
-        switchLabel.font = UIFont.systemFont(ofSize: 13)
+        switchLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold)
         switchLabel.textColor = UIColor.white
         return switchLabel
     }()
     
-
-    
     private lazy var mSearchBar: UISearchBar = {
         let searchBar = UISearchBar()
+        searchBar.isHidden = true
         searchBar.placeholder = NSLocalizedString("Log filter and search", comment: "")
         searchBar.barStyle = UIBarStyle.default
         searchBar.backgroundImage = UIImage()
@@ -176,29 +289,34 @@ class ZXKitLoggerWindow: UIWindow {
     
     private lazy var mPreviousButton: UIButton = {
         let button = UIButton(type: UIButton.ButtonType.custom)
+        button.isHidden = true
         button.backgroundColor = UIColor(red: 255.0/255.0, green: 118.0/255.0, blue: 118.0/255.0, alpha: 1.0)
         button.setTitleColor(UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0), for: UIControl.State.normal)
         button.setTitleColor(UIColor(red: 102.0/255.0, green: 102.0/255.0, blue: 102.0/255.0, alpha: 1.0), for: UIControl.State.disabled)
         button.setTitle(NSLocalizedString("Previous", comment: ""), for: UIControl.State.normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         button.isEnabled = false
+        button.addTarget(self, action: #selector(_previous), for: UIControl.Event.touchUpInside)
         return button
     }()
     
     private lazy var mNextButton: UIButton = {
         let button = UIButton(type: UIButton.ButtonType.custom)
+        button.isHidden = true
         button.backgroundColor = UIColor(red: 93.0/255.0, green: 174.0/255.0, blue: 139.0/255.0, alpha: 1.0)
         button.setTitleColor(UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0), for: UIControl.State.normal)
         button.setTitleColor(UIColor(red: 102.0/255.0, green: 102.0/255.0, blue: 102.0/255.0, alpha: 1.0), for: UIControl.State.disabled)
         button.setTitle(NSLocalizedString("Next", comment: ""), for: UIControl.State.normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         button.isEnabled = false
+        button.addTarget(self, action: #selector(_next), for: UIControl.Event.touchUpInside)
         return button
     }()
     
     private lazy var mSearchNumLabel: UILabel = {
         let tLabel = UILabel()
-        tLabel.text = NSLocalizedString("result: 0", comment: "")
+        tLabel.isHidden = true
+        tLabel.text = "0"
         tLabel.textAlignment = NSTextAlignment.center
         tLabel.font = UIFont.systemFont(ofSize: 12)
         tLabel.textColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0)
@@ -208,7 +326,7 @@ class ZXKitLoggerWindow: UIWindow {
     
     private lazy var mTipLabel: UILabel = {
         let tLabel = UILabel()
-        tLabel.text = "HDWindowLogger Powered by DamonHu"
+        tLabel.text = "ZXKitLogger Powered by DamonHu"
         tLabel.textAlignment = NSTextAlignment.center
         tLabel.font = UIFont.systemFont(ofSize: 12)
         tLabel.textColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 0.8)
@@ -245,7 +363,7 @@ class ZXKitLoggerWindow: UIWindow {
 private extension ZXKitLoggerWindow {
     @objc func changeWindowFrame() {
         self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 350)
-        self.mBGView.snp.updateConstraints { (make) in
+        self.mContentBGView.snp.updateConstraints { (make) in
             make.top.equalToSuperview().offset(UIApplication.shared.statusBarFrame.height)
         }
     }
@@ -261,19 +379,23 @@ private extension ZXKitLoggerWindow {
         self.isUserInteractionEnabled = true
         self.backgroundColor = UIColor.clear
         self._createUI()
-        self._bindClick()
 
         NotificationCenter.default.addObserver(self, selector: #selector(changeWindowFrame), name: NSNotification.Name(UIApplication.didChangeStatusBarFrameNotification.rawValue), object: nil)
     }
 
-    private func _bindClick() {
-        self.mScaleButton.addTarget(self, action: #selector(_scale), for: UIControl.Event.touchUpInside)
-        self.mHideButton.addTarget(self, action: #selector(_hide), for: UIControl.Event.touchUpInside)
-        self.mCleanButton.addTarget(self, action: #selector(cleanLog), for: UIControl.Event.touchUpInside)
-        self.mShareButton.addTarget(self, action: #selector(_share), for: UIControl.Event.touchUpInside)
-        self.mPasswordButton.addTarget(self, action: #selector(_decrypt), for: UIControl.Event.touchUpInside)
-        self.mPreviousButton.addTarget(self, action: #selector(_previous), for: UIControl.Event.touchUpInside)
-        self.mNextButton.addTarget(self, action: #selector(_next), for: UIControl.Event.touchUpInside)
+    @objc private func _bindClick(button: UIButton) {
+        switch button.tag {
+            case 0:
+                self.isFullScreen = !self.isFullScreen
+            case 1:
+                self._hide()
+            case 2:
+                self.cleanLog()
+            case 3:
+                self.isShowMenu = true
+            default:
+                break
+        }
     }
 
     //过滤刷新
@@ -281,7 +403,7 @@ private extension ZXKitLoggerWindow {
         self.mFilterIndexArray.removeAll()
         self.mPreviousButton.isEnabled = false
         self.mNextButton.isEnabled = false
-        self.mSearchNumLabel.text = NSLocalizedString("result: 0", comment: "");
+        self.mSearchNumLabel.text = "0"
 
         let searchText = self.mSearchBar.text ?? "";
         if !searchText.isEmpty {
@@ -337,17 +459,11 @@ private extension ZXKitLoggerWindow {
     }
 
     //只隐藏log的输出窗口，保留悬浮图标
-    @objc func _hide() {
+    func _hide() {
         ZXKitLogger.hide()
-    }
-
-    @objc private func _scale() {
-        self.mScaleButton.isSelected = !self.mScaleButton.isSelected;
-        if (self.mScaleButton.isSelected) {
-            self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height - 70)
-        } else {
-            self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 350)
-        }
+        self.isDecryptViewHidden = true
+        self.isScrollViewHidden = true
+        self.isSearchViewHidden = true
     }
 
     @objc private func _confirmPicker() {
@@ -369,14 +485,14 @@ private extension ZXKitLoggerWindow {
         let activityVC = UIActivityViewController(activityItems: [logFilePathURL], applicationActivities: nil)
         if UIDevice.current.model == "iPad" {
             activityVC.modalPresentationStyle = UIModalPresentationStyle.popover
-            activityVC.popoverPresentationController?.sourceView = self.mShareButton
-            activityVC.popoverPresentationController?.sourceRect = self.mShareButton.frame
+            activityVC.popoverPresentationController?.sourceView = self.mMenuView.subviews.first
+            activityVC.popoverPresentationController?.sourceRect = self.mMenuView.subviews.first?.frame ?? .zero
         }
         self._hide()
         ZXKitUtil.shared.getCurrentVC()?.present(activityVC, animated: true, completion: nil)
     }
 
-    @objc private func _share() {
+    private func _share() {
         self.mFileDateNameList = [String]()
         let path = HDSqliteTools.shared.getDBFolder()
         //数据库目录
@@ -405,50 +521,40 @@ private extension ZXKitLoggerWindow {
     }
 
     private func _createUI() {
-        self.rootViewController?.view.addSubview(self.mBGView)
-        self.mBGView.snp.makeConstraints { (make) in
+        self.rootViewController?.view.addSubview(self.mContentBGView)
+        self.mContentBGView.snp.makeConstraints { (make) in
+            make.left.right.bottom.equalToSuperview()
+            make.top.equalToSuperview().offset(UIApplication.shared.statusBarFrame.height)
+        }
+        //菜单view
+        self.rootViewController?.view.addSubview(self.mMenuView)
+        self.mMenuView.snp.makeConstraints { (make) in
             make.left.right.bottom.equalToSuperview()
             make.top.equalToSuperview().offset(UIApplication.shared.statusBarFrame.height)
         }
         self.changeWindowFrame()
-        //按钮
-        self.mBGView.addSubview(self.mScaleButton)
-        self.mScaleButton.snp.makeConstraints { (make) in
-            make.left.top.equalToSuperview()
-            make.width.equalToSuperview().dividedBy(4)
-            make.height.equalTo(40)
+        //顶部按钮
+        self.mContentBGView.addSubview(self.mNormalStackView)
+        self.mNormalStackView.snp.makeConstraints {
+            $0.top.left.right.equalToSuperview()
+            $0.height.equalTo(40)
         }
-        self.mBGView.addSubview(self.mHideButton)
-        self.mHideButton.snp.makeConstraints { (make) in
-            make.top.equalTo(self.mScaleButton)
-            make.left.equalTo(self.mScaleButton.snp.right)
-            make.width.equalTo(self.mScaleButton)
-            make.height.equalTo(self.mScaleButton)
+        //滚动日志窗
+        self.mContentBGView.addSubview(self.mTableView)
+        self.mTableView.snp.makeConstraints { (make) in
+            make.left.right.equalToSuperview()
+            make.top.equalTo(self.mNormalStackView.snp.bottom)
+            make.bottom.equalToSuperview().offset(-20)
         }
-        self.mBGView.addSubview(self.mShareButton)
-        self.mShareButton.snp.makeConstraints { (make) in
-            make.top.equalTo(self.mScaleButton)
-            make.left.equalTo(self.mHideButton.snp.right)
-            make.width.equalTo(self.mScaleButton)
-            make.height.equalTo(self.mScaleButton)
-        }
-        self.mBGView.addSubview(self.mCleanButton)
-        self.mCleanButton.snp.makeConstraints { (make) in
-            make.top.equalTo(self.mScaleButton)
-            make.left.equalTo(self.mShareButton.snp.right)
-            make.width.equalTo(self.mScaleButton)
-            make.height.equalTo(self.mScaleButton)
-        }
-
         //私密解锁
-        self.mBGView.addSubview(self.mPasswordTextField)
+        self.mContentBGView.addSubview(self.mPasswordTextField)
         self.mPasswordTextField.snp.makeConstraints { (make) in
             make.left.equalToSuperview()
-            make.top.equalTo(self.mScaleButton.snp.bottom)
-            make.width.equalToSuperview().dividedBy(3)
+            make.top.equalTo(self.mNormalStackView.snp.bottom)
+            make.width.equalToSuperview().dividedBy(1.5)
             make.height.equalTo(40)
         }
-        self.mBGView.addSubview(self.mPasswordButton)
+        self.mContentBGView.addSubview(self.mPasswordButton)
         self.mPasswordButton.snp.makeConstraints { (make) in
             make.left.equalTo(self.mPasswordTextField.snp.right)
             make.top.equalTo(self.mPasswordTextField)
@@ -456,67 +562,58 @@ private extension ZXKitLoggerWindow {
             make.height.equalTo(40)
         }
         //开关视图
-        self.mBGView.addSubview(self.mAutoScrollSwitch)
+        self.mContentBGView.addSubview(self.mAutoScrollSwitch)
         self.mAutoScrollSwitch.snp.makeConstraints { (make) in
-            make.right.equalToSuperview().offset(-10)
+            make.right.equalToSuperview().offset(-20)
             make.centerY.equalTo(self.mPasswordButton)
         }
-        self.mBGView.addSubview(self.mSwitchLabel)
+        self.mContentBGView.addSubview(self.mSwitchLabel)
         self.mSwitchLabel.snp.makeConstraints { (make) in
-            make.left.equalTo(self.mPasswordButton.snp.right)
-            make.right.equalTo(self.mAutoScrollSwitch.snp.left)
+            make.right.equalTo(self.mAutoScrollSwitch.snp.left).offset(-10)
             make.centerY.equalTo(self.mAutoScrollSwitch)
         }
 
-        //滚动日志窗
-        self.mBGView.addSubview(self.mTableView)
-        self.mTableView.snp.makeConstraints { (make) in
-            make.left.right.equalToSuperview()
-            make.top.equalTo(self.mPasswordTextField.snp.bottom)
-            make.bottom.equalToSuperview().offset(-60)
-        }
-
         //搜索框
-        self.mBGView.addSubview(self.mSearchBar)
+        self.mContentBGView.addSubview(self.mSearchBar)
         self.mSearchBar.snp.makeConstraints { (make) in
             make.left.equalToSuperview()
-            make.top.equalTo(self.mTableView.snp.bottom)
             make.bottom.equalToSuperview().offset(-20)
-            make.width.equalToSuperview().dividedBy(2)
+            make.height.equalTo(40)
+            make.width.equalToSuperview().dividedBy(1.5)
         }
 
-        self.mBGView.addSubview(self.mPreviousButton)
+        self.mContentBGView.addSubview(self.mPreviousButton)
         self.mPreviousButton.snp.makeConstraints { (make) in
             make.top.bottom.equalTo(self.mSearchBar)
             make.left.equalTo(self.mSearchBar.snp.right)
-            make.width.equalToSuperview().dividedBy(6)
+            make.width.equalToSuperview().dividedBy(9)
         }
 
-        self.mBGView.addSubview(self.mNextButton)
+        self.mContentBGView.addSubview(self.mNextButton)
         self.mNextButton.snp.makeConstraints { (make) in
             make.top.bottom.equalTo(self.mSearchBar)
             make.left.equalTo(self.mPreviousButton.snp.right)
-            make.width.equalToSuperview().dividedBy(6)
+            make.width.equalToSuperview().dividedBy(9)
         }
 
-        self.mBGView.addSubview(self.mSearchNumLabel)
+        self.mContentBGView.addSubview(self.mSearchNumLabel)
         self.mSearchNumLabel.snp.makeConstraints { (make) in
             make.top.bottom.equalTo(self.mSearchBar)
             make.left.equalTo(self.mNextButton.snp.right)
-            make.width.equalToSuperview().dividedBy(6)
+            make.width.equalToSuperview().dividedBy(9)
         }
 
-        self.mBGView.addSubview(self.mTipLabel)
+        self.mContentBGView.addSubview(self.mTipLabel)
         self.mTipLabel.snp.makeConstraints { (make) in
             make.left.right.equalToSuperview()
             make.top.equalTo(self.mSearchBar.snp.bottom);
             make.bottom.equalToSuperview()
         }
 
-        self.mBGView.addSubview(self.mPickerBGView)
+        self.mContentBGView.addSubview(self.mPickerBGView)
         self.mPickerBGView.snp.makeConstraints { (make) in
-            make.top.equalTo(self.mBGView)
-            make.left.right.bottom.equalTo(self.mBGView)
+            make.top.equalTo(self.mContentBGView)
+            make.left.right.bottom.equalTo(self.mContentBGView)
         }
 
         let tipLabel = UILabel()

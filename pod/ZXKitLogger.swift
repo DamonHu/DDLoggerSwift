@@ -183,7 +183,7 @@ public class ZXKitLogger {
         DispatchQueue.main.async {
             self.shared.loggerWindow?.isHidden = true
             #if canImport(ZXKitCore)
-            ZXWarnLog(NSLocalizedString("The float button already exists", comment: ""))
+//            ZXWarnLog(NSLocalizedString("The float button already exists", comment: ""))
             #else
             //float window
             if let window = self.shared.floatWindow {
