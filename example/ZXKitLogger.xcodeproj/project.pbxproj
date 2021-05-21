@@ -23,6 +23,17 @@
 		E4AC951F2635694C001FC322 /* ZXLogger+zxkit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AC951E2635694C001FC322 /* ZXLogger+zxkit.swift */; };
 		E4AC964D26395ED1001FC322 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = E4AC964C26395ED1001FC322 /* logo.png */; };
 		E4AC965126395F22001FC322 /* ZXKitLoggerFloatWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AC965026395F22001FC322 /* ZXKitLoggerFloatWindow.swift */; };
+		E4EC33D6265789BC00074E19 /* ZXKitLoggerMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EC33D5265789BB00074E19 /* ZXKitLoggerMenuView.swift */; };
+		E4EC33D826578A4C00074E19 /* ZXKitLoggerMenuCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EC33D726578A4B00074E19 /* ZXKitLoggerMenuCollectionViewCell.swift */; };
+		E4EC33DA2657AFDB00074E19 /* icon_search.png in Resources */ = {isa = PBXBuildFile; fileRef = E4EC33D92657AFDA00074E19 /* icon_search.png */; };
+		E4EC33DC2657B04700074E19 /* icon_decrypt.png in Resources */ = {isa = PBXBuildFile; fileRef = E4EC33DB2657B04700074E19 /* icon_decrypt.png */; };
+		E4EC33DE2657B08200074E19 /* icon_share.png in Resources */ = {isa = PBXBuildFile; fileRef = E4EC33DD2657B08200074E19 /* icon_share.png */; };
+		E4EC33E02657B0BA00074E19 /* icon_scroll.png in Resources */ = {isa = PBXBuildFile; fileRef = E4EC33DF2657B0BA00074E19 /* icon_scroll.png */; };
+		E4EC33E22657B12700074E19 /* icon_back.png in Resources */ = {isa = PBXBuildFile; fileRef = E4EC33E12657B12700074E19 /* icon_back.png */; };
+		E4EC33E42657B17A00074E19 /* icon_analyse.png in Resources */ = {isa = PBXBuildFile; fileRef = E4EC33E32657B17A00074E19 /* icon_analyse.png */; };
+		E4EC33E62657B1BB00074E19 /* icon_fixed.png in Resources */ = {isa = PBXBuildFile; fileRef = E4EC33E52657B1BB00074E19 /* icon_fixed.png */; };
+		E4EC33E82657B21A00074E19 /* icon_delete.png in Resources */ = {isa = PBXBuildFile; fileRef = E4EC33E72657B21A00074E19 /* icon_delete.png */; };
+		E4EC33EA2657B25D00074E19 /* icon_normal_back.png in Resources */ = {isa = PBXBuildFile; fileRef = E4EC33E92657B25D00074E19 /* icon_normal_back.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +60,17 @@
 		E4AC951E2635694C001FC322 /* ZXLogger+zxkit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ZXLogger+zxkit.swift"; sourceTree = "<group>"; };
 		E4AC964C26395ED1001FC322 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
 		E4AC965026395F22001FC322 /* ZXKitLoggerFloatWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZXKitLoggerFloatWindow.swift; sourceTree = "<group>"; };
+		E4EC33D5265789BB00074E19 /* ZXKitLoggerMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZXKitLoggerMenuView.swift; sourceTree = "<group>"; };
+		E4EC33D726578A4B00074E19 /* ZXKitLoggerMenuCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZXKitLoggerMenuCollectionViewCell.swift; sourceTree = "<group>"; };
+		E4EC33D92657AFDA00074E19 /* icon_search.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_search.png; sourceTree = "<group>"; };
+		E4EC33DB2657B04700074E19 /* icon_decrypt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_decrypt.png; sourceTree = "<group>"; };
+		E4EC33DD2657B08200074E19 /* icon_share.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_share.png; sourceTree = "<group>"; };
+		E4EC33DF2657B0BA00074E19 /* icon_scroll.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_scroll.png; sourceTree = "<group>"; };
+		E4EC33E12657B12700074E19 /* icon_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_back.png; sourceTree = "<group>"; };
+		E4EC33E32657B17A00074E19 /* icon_analyse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_analyse.png; sourceTree = "<group>"; };
+		E4EC33E52657B1BB00074E19 /* icon_fixed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_fixed.png; sourceTree = "<group>"; };
+		E4EC33E72657B21A00074E19 /* icon_delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_delete.png; sourceTree = "<group>"; };
+		E4EC33E92657B25D00074E19 /* icon_normal_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_normal_back.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +139,8 @@
 				E4AC94A0263162FA001FC322 /* ZXKitLogger.swift */,
 				E4AC94A1263162FA001FC322 /* ZXKitLoggerWindow.swift */,
 				E4AC965026395F22001FC322 /* ZXKitLoggerFloatWindow.swift */,
+				E4EC33D5265789BB00074E19 /* ZXKitLoggerMenuView.swift */,
+				E4EC33D726578A4B00074E19 /* ZXKitLoggerMenuCollectionViewCell.swift */,
 			);
 			name = pod;
 			path = ../../pod;
@@ -141,6 +165,15 @@
 		E4AC9519263566D1001FC322 /* icon */ = {
 			isa = PBXGroup;
 			children = (
+				E4EC33E92657B25D00074E19 /* icon_normal_back.png */,
+				E4EC33E72657B21A00074E19 /* icon_delete.png */,
+				E4EC33E52657B1BB00074E19 /* icon_fixed.png */,
+				E4EC33E32657B17A00074E19 /* icon_analyse.png */,
+				E4EC33E12657B12700074E19 /* icon_back.png */,
+				E4EC33DF2657B0BA00074E19 /* icon_scroll.png */,
+				E4EC33DD2657B08200074E19 /* icon_share.png */,
+				E4EC33DB2657B04700074E19 /* icon_decrypt.png */,
+				E4EC33D92657AFDA00074E19 /* icon_search.png */,
 				E4AC964C26395ED1001FC322 /* logo.png */,
 			);
 			path = icon;
@@ -223,8 +256,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4EC33EA2657B25D00074E19 /* icon_normal_back.png in Resources */,
+				E4EC33E82657B21A00074E19 /* icon_delete.png in Resources */,
 				E48AAC0322C05EF700CC5F1C /* LaunchScreen.storyboard in Resources */,
+				E4EC33DC2657B04700074E19 /* icon_decrypt.png in Resources */,
+				E4EC33E42657B17A00074E19 /* icon_analyse.png in Resources */,
 				E4AC950C26355A80001FC322 /* Localizable.strings in Resources */,
+				E4EC33E22657B12700074E19 /* icon_back.png in Resources */,
+				E4EC33E62657B1BB00074E19 /* icon_fixed.png in Resources */,
+				E4EC33DA2657AFDB00074E19 /* icon_search.png in Resources */,
+				E4EC33E02657B0BA00074E19 /* icon_scroll.png in Resources */,
+				E4EC33DE2657B08200074E19 /* icon_share.png in Resources */,
 				E4AC964D26395ED1001FC322 /* logo.png in Resources */,
 				E48AAC0022C05EF700CC5F1C /* Assets.xcassets in Resources */,
 				E48AABFE22C05EF600CC5F1C /* Main.storyboard in Resources */,
@@ -284,9 +326,11 @@
 				E4AC94A3263162FA001FC322 /* ZXKitLoggerItem.swift in Sources */,
 				E4AC94A9263162FA001FC322 /* ZXKitLoggerWindow.swift in Sources */,
 				E4AC951F2635694C001FC322 /* ZXLogger+zxkit.swift in Sources */,
+				E4EC33D826578A4C00074E19 /* ZXKitLoggerMenuCollectionViewCell.swift in Sources */,
 				E4AC965126395F22001FC322 /* ZXKitLoggerFloatWindow.swift in Sources */,
 				E4AC94A5263162FA001FC322 /* LogContent.swift in Sources */,
 				E4AC94A6263162FA001FC322 /* HDSqliteTools.swift in Sources */,
+				E4EC33D6265789BC00074E19 /* ZXKitLoggerMenuView.swift in Sources */,
 				E4AC94A4263162FA001FC322 /* ZXKitLoggerTableViewCell.swift in Sources */,
 				E4AC94A8263162FA001FC322 /* ZXKitLogger.swift in Sources */,
 				E48AABF722C05EF600CC5F1C /* AppDelegate.swift in Sources */,
