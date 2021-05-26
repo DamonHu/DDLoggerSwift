@@ -62,15 +62,15 @@ ZXKitLogger.show()
 四种输出方式字体颜色显示不同，对应的printLog不同的类型
 
 ```
-ZXDebugLog(log)	//调试输出，内容不会写入到窗口，只在xcode输出
+printLog(log)	//调试输出，内容不会写入到窗口，只在xcode输出
 
-ZXNormalLog(log)	//日志为绿色
+printNormal(log)	//日志为绿色
 
-ZXWarnLog(log)	//日志为黄色
+printWarn(log)	//日志为黄色
 
-ZXErrorLog(log)	//日志为红色
+printError(log)	//日志为红色
 
-ZXPrivacyLog(log)	//加密数据的输出，具体加密方式在下面的加密中说明
+printPrivacy(log)	//加密数据的输出，具体加密方式在下面的加密中说明
 
 ```
 
@@ -231,7 +231,7 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
 ZXKitLogger.privacyLogPassword = "12345678901234561234567890123456"
 
 //2、输出加密内容
-ZXPrivacyLog("这个是加密数据的测试数据222")
+printPrivacy("这个是加密数据的测试数据222")
 ```
 
 ### 4.2、显示窗内容解密

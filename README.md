@@ -71,15 +71,15 @@ ZXKitLogger.show()
 The font colors of the three output methods are different, and the corresponding types of printLog are different.
 
 ```
-ZXDebugLog(log)	//the log will not be written to the window, only output in xcode
+printLog(log)	//the log will not be written to the window, only output in xcode
 
-ZXNormalLog (log) // Log's textColor is green
+printNormal(log) // Log's textColor is green
 
-ZXWarnLog (log) // log's textColor is yellow
+printWarn(log) // log's textColor is yellow
 
-ZXErrorLog (log) // Log's textColor is red
+printError(log) // Log's textColor is red
 
-ZXPrivacyLog (log) // Output of encrypted data, the specific encryption method is described in the following encryption
+printPrivacy(log) // Output of encrypted data, the specific encryption method is described in the following encryption
 ```
 
 Output format
@@ -235,7 +235,7 @@ If there is sensitive information that you don't want users to see when debuggin
 ZXKitLogger.privacyLogPassword = "12345678901234561234567890123456"
 
 // 2, output encrypted content
-HDPrivacyLog ("This is test data 222 for encrypted data")
+printPrivacy("This is test data 222 for encrypted data")
 ```
 
 ### 4.2 Decrypt the contents of the display window
