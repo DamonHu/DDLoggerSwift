@@ -35,7 +35,7 @@ class ViewController: UIViewController {
         self.clickButton.addTarget(self, action: #selector(onClickButton), for: UIControl.Event.touchUpInside)
         self.deleteButton.addTarget(self, action: #selector(onClickdeleteButton), for: UIControl.Event.touchUpInside)
 
-        ZXNormalLog("调试数据文件地址", ZXKitLogger.getDBFolder().path)
+        printNormal("调试数据文件地址", ZXKitLogger.getDBFolder().path)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -47,28 +47,28 @@ class ViewController: UIViewController {
 
     @objc func onClickButton() {
         ZXKit.show()
-        ZXNormalLog("点击了按钮111")
-        ZXErrorLog("错误出现")
+        printNormal("点击了按钮111")
+        printError("错误出现")
 //        return
         for _ in 0..<100 {
-            ZXDebugLog("测试输出，不会写入悬浮窗")
-            ZXDebugLog("测试输出，不会写入悬浮窗","222222","3333333")
+            printLog("测试输出，不会写入悬浮窗")
+            printLog("测试输出，不会写入悬浮窗","222222","3333333")
             //普通输出
-            ZXNormalLog("点击了按钮111")
-            ZXNormalLog("输出多个",22)
+            printNormal("点击了按钮111")
+            printNormal("输出多个",22)
             //输出警告内容
-            ZXWarnLog("警告提示")
+            printWarn("警告提示")
             //输出错误内容
-            ZXErrorLog("错误出现")
+            printError("错误出现")
             //输出加密内容
             ZXKitLogger.privacyLogPassword = "12345678901234561234567890123456" //设置加密内容密码
-            ZXPrivacyLog("这个是加密数据的测试数据222")
+            printPrivacy("这个是加密数据的测试数据222")
             //输出字典
             let dicObj = ["hhhhhhh":"撒旦法是打发斯蒂芬是打发斯蒂芬","77777":"数据库的复健科花见花开会尽快圣诞节开发和金黄色的费四大皆空回复就开始和豆腐是砍价的回复斯柯达金凤凰"]
-            ZXNormalLog(dicObj)
+            printNormal(dicObj)
             //输出数组
             let arrayObj = ["1111111","22222222","sdjkhfsjkdfjkhsdhjfk","3333sjdhgfhjg"]
-            ZXNormalLog(arrayObj)
+            printNormal(arrayObj)
         }
     }
     
