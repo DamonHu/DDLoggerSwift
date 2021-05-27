@@ -12,12 +12,17 @@ import CommonCrypto
 import ZXKitFPS
 
 ///log的级别，对应不同的颜色
-public enum ZXKitLogType : Int {
-    case normal = 0   //textColor #50d890
-    case warn         //textColor #f6f49d
-    case error        //textColor #ff7676
-    case privacy      //textColor #42e6a4
-    case debug        //only show in debug output
+public struct ZXKitLogType : OptionSet {
+    public static let debug = ZXKitLogType([])        //only show in debug output
+    public static let info = ZXKitLogType(rawValue: 1)    //textColor #50d890
+    public static let warn = ZXKitLogType(rawValue: 2)         //textColor #f6f49d
+    public static let error = ZXKitLogType(rawValue: 3)        //textColor #ff7676
+    public static let privacy = ZXKitLogType(rawValue: 4)      //textColor #42e6a4
+
+    public let rawValue: Int
+    public init(rawValue: Int) {
+        self.rawValue = rawValue
+    }
 }
 
 ///快速输出log
@@ -29,11 +34,11 @@ public func printLog(_ log:Any ..., file:String = #file, funcName:String = #func
     ZXKitLogger.printLog(log: log, logType: ZXKitLogType.debug, file:file, funcName:funcName, lineNum:lineNum)
 }
 //普通类型的输出
-public func printNormal(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    ZXKitLogger.printLog(log: log, logType: ZXKitLogType.normal, file:file, funcName:funcName, lineNum:lineNum)
+public func printInfo(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
+    ZXKitLogger.printLog(log: log, logType: ZXKitLogType.info, file:file, funcName:funcName, lineNum:lineNum)
 }
-public func printNormal(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    ZXKitLogger.printLog(log: log, logType: ZXKitLogType.normal, file:file, funcName:funcName, lineNum:lineNum)
+public func printInfo(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
+    ZXKitLogger.printLog(log: log, logType: ZXKitLogType.info, file:file, funcName:funcName, lineNum:lineNum)
 }
 //警告类型的输出
 public func printWarn(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
@@ -68,13 +73,13 @@ public func ZXDebugLog(_ log:Any ..., file:String = #file, funcName:String = #fu
     ZXKitLogger.printLog(log: log, logType: ZXKitLogType.debug, file:file, funcName:funcName, lineNum:lineNum)
 }
 //普通类型的输出
-@available(*, deprecated, message: "use printNormal() instand of it")
+@available(*, deprecated, message: "use printInfo() instand of it")
 public func ZXNormalLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    ZXKitLogger.printLog(log: log, logType: ZXKitLogType.normal, file:file, funcName:funcName, lineNum:lineNum)
+    ZXKitLogger.printLog(log: log, logType: ZXKitLogType.info, file:file, funcName:funcName, lineNum:lineNum)
 }
-@available(*, deprecated, message: "use printNormal() instand of it")
+@available(*, deprecated, message: "use printInfo() instand of it")
 public func ZXNormalLog(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    ZXKitLogger.printLog(log: log, logType: ZXKitLogType.normal, file:file, funcName:funcName, lineNum:lineNum)
+    ZXKitLogger.printLog(log: log, logType: ZXKitLogType.info, file:file, funcName:funcName, lineNum:lineNum)
 }
 //警告类型的输出
 @available(*, deprecated, message: "use printWarn() instand of it")
@@ -110,6 +115,7 @@ public func ZXPrivacyLog(_ log:Any ..., file:String = #file, funcName:String = #
 public class ZXKitLogger {
     public static var isFullLogOut = true    //是否完整输出日志文件名等调试内容
     public static var isSyncConsole = true   //是否在xcode底部的调试栏同步输出内容
+    public static var storageLevels: ZXKitLogType = [.info, .warn, .error, .privacy]    //存储到数据库的级别
     public static var privacyLogPassword = "" {
         willSet {
             assert(newValue.count == kCCKeySizeAES256, NSLocalizedString("The password requires 32 characters", comment: ""))
@@ -166,12 +172,10 @@ public class ZXKitLogger {
             loggerItem.mLogDebugContent = "[File:\(fileName)]:[Line:\(lineNum):[Function:\(funcName)]]-Log:"
             loggerItem.mLogContent = log
 
-            if logType == .debug {
+            if self.isSyncConsole {
                 print(loggerItem.getFullContentString())
-            } else {
-                if self.isSyncConsole {
-                    print(loggerItem.getFullContentString())
-                }
+            }
+            if self.storageLevels.contains(logType) {
                 //写入文件
                 self.shared._writeDB(log: loggerItem)
                 //刷新列表

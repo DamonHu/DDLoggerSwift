@@ -16,7 +16,7 @@ enum Section: CaseIterable {
 ///log的内容
 public class ZXKitLoggerItem {
     let identifier = UUID()                                 //用于hash计算
-    public var mLogItemType = ZXKitLogType.normal             //log类型
+    public var mLogItemType = ZXKitLogType.info             //log类型
     public var mLogDebugContent: String = ""              //log输出的文件、行数、函数名
     public var mLogContent: Any?                         //log的内容
     public var mCreateDate = Date()                      //log日期
@@ -52,7 +52,7 @@ public class ZXKitLoggerItem {
         
         if ZXKitLogger.isFullLogOut {
             switch mLogItemType {
-                case .normal:
+                case .info:
                     return dateStr + "  >   ✅✅" +  mLogDebugContent + "\n" + contentString + "\n"
                 case .warn:
                     return dateStr + "  >   ⚠️⚠️" +  mLogDebugContent + "\n" + contentString + "\n"
@@ -60,12 +60,12 @@ public class ZXKitLoggerItem {
                     return dateStr + "  >   ❌❌" +  mLogDebugContent + "\n" + contentString + "\n"
                 case .privacy:
                     return dateStr + "  >   ⛔️⛔️" +  mLogDebugContent + "\n" + contentString + "\n"
-                case .debug:
+                default:
                     return dateStr + "  >   🖤🖤" +  mLogDebugContent + "\n" + contentString + "\n"
             }
         } else {
             switch mLogItemType {
-                case .normal:
+                case .info:
                     return dateStr + "  >   ✅✅" + contentString + "\n"
                 case .warn:
                     return dateStr + "  >   ⚠️⚠️" + contentString + "\n"
@@ -73,7 +73,7 @@ public class ZXKitLoggerItem {
                     return dateStr + "  >   ❌❌" + contentString + "\n"
                 case .privacy:
                     return dateStr + "  >   ⛔️⛔️" + contentString + "\n"
-                case .debug:
+                default:
                     return dateStr + "  >   🖤🖤" + contentString + "\n"
             }
         }

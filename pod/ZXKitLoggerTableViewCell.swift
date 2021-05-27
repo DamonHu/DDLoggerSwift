@@ -48,7 +48,7 @@ class ZXKitLoggerTableViewCell: UITableViewCell {
     
     func updateWithLoggerItem(loggerItem:ZXKitLoggerItem, highlightText:String) {
         switch loggerItem.mLogItemType {
-        case .normal:
+        case .info:
             self.mContentLabel.textColor = UIColor(red: 80.0/255.0, green: 216.0/255.0, blue: 144.0/255.0, alpha: 1.0)
             break
         case .warn:
