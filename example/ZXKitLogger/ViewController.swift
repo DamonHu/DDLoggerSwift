@@ -35,7 +35,8 @@ class ViewController: UIViewController {
         self.clickButton.addTarget(self, action: #selector(onClickButton), for: UIControl.Event.touchUpInside)
         self.deleteButton.addTarget(self, action: #selector(onClickdeleteButton), for: UIControl.Event.touchUpInside)
 
-        printNormal("调试数据文件地址", ZXKitLogger.getDBFolder().path)
+        printInfo("调试数据文件地址", ZXKitLogger.getDBFolder().path)
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -47,15 +48,15 @@ class ViewController: UIViewController {
 
     @objc func onClickButton() {
         ZXKit.show()
-        printNormal("点击了按钮111")
+        printInfo("点击了按钮111")
         printError("错误出现")
 //        return
         for _ in 0..<100 {
             printLog("测试输出，不会写入悬浮窗")
             printLog("测试输出，不会写入悬浮窗","222222","3333333")
             //普通输出
-            printNormal("点击了按钮111")
-            printNormal("输出多个",22)
+            printInfo("点击了按钮111")
+            printInfo("输出多个",22)
             //输出警告内容
             printWarn("警告提示")
             //输出错误内容
@@ -65,10 +66,10 @@ class ViewController: UIViewController {
             printPrivacy("这个是加密数据的测试数据222")
             //输出字典
             let dicObj = ["hhhhhhh":"撒旦法是打发斯蒂芬是打发斯蒂芬","77777":"数据库的复健科花见花开会尽快圣诞节开发和金黄色的费四大皆空回复就开始和豆腐是砍价的回复斯柯达金凤凰"]
-            printNormal(dicObj)
+            printInfo(dicObj)
             //输出数组
             let arrayObj = ["1111111","22222222","sdjkhfsjkdfjkhsdhjfk","3333sjdhgfhjg"]
-            printNormal(arrayObj)
+            printInfo(arrayObj)
         }
     }
     
