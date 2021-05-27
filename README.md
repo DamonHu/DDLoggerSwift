@@ -73,7 +73,7 @@ The font colors of the three output methods are different, and the corresponding
 ```
 printLog(log)	//the log will not be written to the window, only output in xcode
 
-printNormal(log) // Log's textColor is green
+printInfo(log) // Log's textColor is green
 
 printWarn(log) // log's textColor is yellow
 
@@ -160,7 +160,17 @@ ZXKitLogger.deleteLogFile()
 ZXKitLogger.logExpiryDay = 0
 ```
 
-### 10、Get the array of logs. You can specify the date
+### 10、storageLevels
+
+The included log level will be stored in the database. By default, the debug level is not stored
+
+```
+
+ZXKitLogger.storageLevels = [.info, .warn, .error, .privacy]
+
+```
+
+### 11、Get the array of logs. You can specify the date
 
 ```
 //today
@@ -240,7 +250,7 @@ printPrivacy("This is test data 222 for encrypted data")
 
 ### 4.2 Decrypt the contents of the display window
 
-After the setting, the display in the display window is `This content is encrypted, please view it after decryption`, enter the set encryption password and click decrypt to display the normal encrypted content.
+After the setting, the display in the display window is `This content is encrypted, please view it after decryption`, enter the set encryption password and click decrypt to display the info encrypted content.
 
 ### 4.1. Decrypting shared files
 
@@ -267,7 +277,7 @@ Here are a few online sites recommended, you can also Google it by yourself
 
 ## V. Other instructions
 
-1. For the convenience of viewing, it is divided into three types: normal, warning and error. It corresponds to three different colors for easy viewing.
+1. For the convenience of viewing, it is divided into three types: info, warning and error. It corresponds to three different colors for easy viewing.
 2. Click the corresponding cell to copy the output log directly to the system clipboard.
 3. Share the system share that is called. Which software you can share depends on which software is installed on your phone.
 

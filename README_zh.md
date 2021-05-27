@@ -64,7 +64,7 @@ ZXKitLogger.show()
 ```
 printLog(log)	//调试输出，内容不会写入到窗口，只在xcode输出
 
-printNormal(log)	//日志为绿色
+printInfo(log)	//日志为绿色
 
 printWarn(log)	//日志为黄色
 
@@ -155,7 +155,17 @@ ZXKitLogger.deleteLogFile()
 ZXKitLogger.logExpiryDay = 0
 ```
 
-### 10、获取数据库存储的日志信息数组，也可以指定日期
+### 10、存储日志的级别
+
+包含在内的日志级别会被存储到数据库，默认debug级别不存储
+
+```
+
+ZXKitLogger.storageLevels = [.info, .warn, .error, .privacy]
+
+```
+
+### 11、获取数据库存储的日志信息数组，也可以指定日期
 
 ```
 //获取今日的日志
@@ -163,6 +173,7 @@ ZXKitLogger.getAllLog()
 //指定日期
 ZXKitLogger.getAllLog(date: Date(timeIntervalSinceNow: 1000))
 ```
+
 
 如果你想获取所有日志文件，可以获取日志存储的文件夹，返回的是一个URL结果，然后自己进行遍历去处理
 
