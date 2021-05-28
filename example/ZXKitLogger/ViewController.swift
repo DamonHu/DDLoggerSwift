@@ -34,23 +34,21 @@ class ViewController: UIViewController {
         self.view.addSubview(self.deleteButton)
         self.clickButton.addTarget(self, action: #selector(onClickButton), for: UIControl.Event.touchUpInside)
         self.deleteButton.addTarget(self, action: #selector(onClickdeleteButton), for: UIControl.Event.touchUpInside)
-
-        printInfo("调试数据文件地址", ZXKitLogger.getDBFolder().path)
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         //配置ZXKitLogger
         ZXKitLogger.show()
-        ZXKitLogger.isFullLogOut = true
+        //输出加密内容
+        ZXKitLogger.privacyLogPassword = "12345678901234561234567890123456" //设置加密内容密码
     }
 
     @objc func onClickButton() {
-        ZXKit.show()
+//        ZXKit.show()
         printInfo("点击了按钮111")
         printError("错误出现")
-//        return
+        printInfo("调试数据文件地址", ZXKitLogger.getDBFolder().path)
         for _ in 0..<100 {
             printLog("测试输出，不会写入悬浮窗")
             printLog("测试输出，不会写入悬浮窗","222222","3333333")
@@ -61,8 +59,7 @@ class ViewController: UIViewController {
             printWarn("警告提示")
             //输出错误内容
             printError("错误出现")
-            //输出加密内容
-            ZXKitLogger.privacyLogPassword = "12345678901234561234567890123456" //设置加密内容密码
+
             printPrivacy("这个是加密数据的测试数据222")
             //输出字典
             let dicObj = ["hhhhhhh":"撒旦法是打发斯蒂芬是打发斯蒂芬","77777":"数据库的复健科花见花开会尽快圣诞节开发和金黄色的费四大皆空回复就开始和豆腐是砍价的回复斯柯达金凤凰"]
