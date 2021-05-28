@@ -66,47 +66,47 @@ public func printPrivacy(_ log:Any ..., file:String = #file, funcName:String = #
 //测试输出，不会写入到悬浮窗中
 @available(*, deprecated, message: "use printLog() instand of it")
 public func ZXDebugLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    ZXKitLogger.printLog(log: log, logType: ZXKitLogType.debug, file:file, funcName:funcName, lineNum:lineNum)
+    printLog(log, file: file, funcName: funcName, lineNum: lineNum)
 }
 @available(*, deprecated, message: "use printLog() instand of it")
 public func ZXDebugLog(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    ZXKitLogger.printLog(log: log, logType: ZXKitLogType.debug, file:file, funcName:funcName, lineNum:lineNum)
+    printLog(log, file: file, funcName: funcName, lineNum: lineNum)
 }
 //普通类型的输出
 @available(*, deprecated, message: "use printInfo() instand of it")
 public func ZXNormalLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    ZXKitLogger.printLog(log: log, logType: ZXKitLogType.info, file:file, funcName:funcName, lineNum:lineNum)
+    printInfo(log, file: file, funcName: funcName, lineNum: lineNum)
 }
 @available(*, deprecated, message: "use printInfo() instand of it")
 public func ZXNormalLog(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    ZXKitLogger.printLog(log: log, logType: ZXKitLogType.info, file:file, funcName:funcName, lineNum:lineNum)
+    printInfo(log, file: file, funcName: funcName, lineNum: lineNum)
 }
 //警告类型的输出
 @available(*, deprecated, message: "use printWarn() instand of it")
 public func ZXWarnLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    ZXKitLogger.printLog(log: log, logType: ZXKitLogType.warn, file:file, funcName:funcName, lineNum:lineNum)
+    printWarn(log, file: file, funcName: funcName, lineNum: lineNum)
 }
 @available(*, deprecated, message: "use printWarn() instand of it")
 public func ZXWarnLog(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    ZXKitLogger.printLog(log: log, logType: ZXKitLogType.warn, file:file, funcName:funcName, lineNum:lineNum)
+    printWarn(log, file: file, funcName: funcName, lineNum: lineNum)
 }
 //错误类型的输出
 @available(*, deprecated, message: "use printError() instand of it")
 public func ZXErrorLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    ZXKitLogger.printLog(log: log, logType: ZXKitLogType.error, file:file, funcName:funcName, lineNum:lineNum)
+    printError(log, file: file, funcName: funcName, lineNum: lineNum)
 }
 @available(*, deprecated, message: "use printError() instand of it")
 public func ZXErrorLog(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    ZXKitLogger.printLog(log: log, logType: ZXKitLogType.error, file:file, funcName:funcName, lineNum:lineNum)
+    printError(log, file: file, funcName: funcName, lineNum: lineNum)
 }
 //加密类型的输出
 @available(*, deprecated, message: "use printPrivacy() instand of it")
 public func ZXPrivacyLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    ZXKitLogger.printLog(log: log, logType: ZXKitLogType.privacy, file:file, funcName:funcName, lineNum:lineNum)
+    printPrivacy(log, file: file, funcName: funcName, lineNum: lineNum)
 }
 @available(*, deprecated, message: "use printPrivacy() instand of it")
 public func ZXPrivacyLog(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    ZXKitLogger.printLog(log: log, logType: ZXKitLogType.privacy, file:file, funcName:funcName, lineNum:lineNum)
+    printPrivacy(log, file: file, funcName: funcName, lineNum: lineNum)
 }
 
 
@@ -116,11 +116,12 @@ public class ZXKitLogger {
     public static var isFullLogOut = true    //是否完整输出日志文件名等调试内容
     public static var isSyncConsole = true   //是否在xcode底部的调试栏同步输出内容
     public static var storageLevels: ZXKitLogType = [.info, .warn, .error, .privacy]    //存储到数据库的级别
+    //解密隐私数据的密码，默认为空不加密
     public static var privacyLogPassword = "" {
         willSet {
             assert(newValue.count == kCCKeySizeAES256, NSLocalizedString("The password requires 32 characters", comment: ""))
         }
-    }     //解密隐私数据的密码，默认为空不加密
+    }
     public static var logExpiryDay = 7        //本地日志文件的有效期（天），超出有效期的本地日志会被删除，0为没有有效期，默认为7天
     public static var maxDisplayCount = 100       //屏幕最大的显示数量，适量即可，0为不限制
     public static var userID = "0"             //为不同用户创建的独立的日志库
@@ -175,13 +176,13 @@ public class ZXKitLogger {
             if self.isSyncConsole {
                 print(loggerItem.getFullContentString())
             }
+            //刷新列表
+            DispatchQueue.main.async {
+                self.shared.loggerWindow?.insert(model: loggerItem)
+            }
+            //写入文件
             if self.storageLevels.contains(logType) {
-                //写入文件
                 self.shared._writeDB(log: loggerItem)
-                //刷新列表
-                DispatchQueue.main.async {
-                    self.shared.loggerWindow?.insert(model: loggerItem)
-                }
             }
         }
     }
