@@ -85,12 +85,16 @@ printPrivacy(log) // Output of encrypted data, the specific encryption method is
 Output format
 
 ```
-13: 45: 00.153> [
-  "1111111",
-  "22222222",
-  "sdjkhfsjkdfjkhsdhjfk",
-  "3333sjdhgfhjg"
+10:33:00.457  >   ✅✅[File:ViewController.swift]:[Line:69:[Function:onClickButton()]]-Log:
+[
+  "1111111",
+  "22222222",
+  "sdjkhfsjkdfjkhsdhjfk",
+  "3333sjdhgfhjg"
 ]
+
+10:33:00.458  >   🖤🖤[File:ViewController.swift]:[Line:53:[Function:onClickButton()]]-Log:
+测试输出，不会写入悬浮窗
 ```
 
 ## III. more settings
