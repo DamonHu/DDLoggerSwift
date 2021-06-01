@@ -32,3 +32,4 @@
 "LogFile count" = "日志文件数量";
 "LogFile total size" = "日志文件总大小";
 "current log count" = "当前日志条数";
+"Invalid encryption" = "加密无效";

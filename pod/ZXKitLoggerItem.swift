@@ -45,7 +45,7 @@ public class ZXKitLoggerItem {
                 } else if ZXKitLogger.privacyLogPassword.count != kCCKeySizeAES256 {
                     contentString = NSLocalizedString("The password requires 32 characters", comment: "") + contentString
                 } else if !ZXKitLogger.shared.isPasswordCorrect {
-                    contentString = contentString.zx.aes256Encrypt(password: ZXKitLogger.privacyLogPassword)
+                    contentString = contentString.zx.aes256Encrypt(password: ZXKitLogger.privacyLogPassword) ?? NSLocalizedString("Invalid encryption", comment: "")
                 }
             }
         }
