@@ -77,12 +77,16 @@ printPrivacy(log)	//加密数据的输出，具体加密方式在下面的加密
 输出格式
 
 ```
-13:45:00.153  >   [
+10:33:00.457  >   ✅✅[File:ViewController.swift]:[Line:69:[Function:onClickButton()]]-Log:
+[
   "1111111",
   "22222222",
   "sdjkhfsjkdfjkhsdhjfk",
   "3333sjdhgfhjg"
 ]
+
+10:33:00.458  >   🖤🖤[File:ViewController.swift]:[Line:53:[Function:onClickButton()]]-Log:
+测试输出，不会写入悬浮窗
 ```
 
 ## 三、更多设置
