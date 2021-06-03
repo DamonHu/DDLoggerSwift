@@ -20,7 +20,7 @@ extension ZXKitLogger: ZXKitPluginProtocol {
     }
 
     public var pluginTitle: String {
-        return NSLocalizedString("Logger", comment: "")
+        return "Logger".ZXLocaleString
     }
 
     public var pluginType: ZXKitPluginType {

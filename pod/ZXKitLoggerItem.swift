@@ -41,11 +41,11 @@ public class ZXKitLoggerItem {
             }
             if self.mLogItemType == .privacy {
                 if ZXKitLogger.privacyLogPassword.isEmpty {
-                    contentString = NSLocalizedString("Password is not set", comment: "") + ":" +  contentString
+                    contentString = "Password is not set".ZXLocaleString + ":" +  contentString
                 } else if ZXKitLogger.privacyLogPassword.count != kCCKeySizeAES256 {
-                    contentString = NSLocalizedString("The password requires 32 characters", comment: "") + contentString
+                    contentString = "The password requires 32 characters".ZXLocaleString + contentString
                 } else if !ZXKitLogger.shared.isPasswordCorrect {
-                    contentString = contentString.zx.aes256Encrypt(password: ZXKitLogger.privacyLogPassword) ?? NSLocalizedString("Invalid encryption", comment: "")
+                    contentString = contentString.zx.aes256Encrypt(password: ZXKitLogger.privacyLogPassword) ?? "Invalid encryption".ZXLocaleString
                 }
             }
         }

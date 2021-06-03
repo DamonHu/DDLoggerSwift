@@ -119,7 +119,7 @@ public class ZXKitLogger {
     //解密隐私数据的密码，默认为空不加密
     public static var privacyLogPassword = "" {
         willSet {
-            assert(newValue.count == kCCKeySizeAES256, NSLocalizedString("The password requires 32 characters", comment: ""))
+            assert(newValue.count == kCCKeySizeAES256, "The password requires 32 characters".ZXLocaleString)
         }
     }
     public static var logExpiryDay = 7        //本地日志文件的有效期（天），超出有效期的本地日志会被删除，0为没有有效期，默认为7天
@@ -146,7 +146,7 @@ public class ZXKitLogger {
                     shared.mFPSTools.stop()
                     shared.floatWindow?.mButton.titleLabel?.font = UIFont.systemFont(ofSize: 23, weight: .bold)
                     shared.floatWindow?.mButton.backgroundColor = UIColor.zx.color(hexValue: 0x5dae8b)
-                    shared.floatWindow?.mButton.setTitle(NSLocalizedString("H", comment: ""), for: UIControl.State.normal)
+                    shared.floatWindow?.mButton.setTitle("H".ZXLocaleString, for: UIControl.State.normal)
                 }
             }
         }

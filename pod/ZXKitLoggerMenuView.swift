@@ -52,7 +52,7 @@ private extension ZXKitLoggerMenuView {
 
     func _loadData() {
         mCollectionList.removeAll()
-        let titleList = [NSLocalizedString("Back", comment: ""), NSLocalizedString("Decrypt", comment: ""), NSLocalizedString("Search", comment: ""), NSLocalizedString("Share", comment: ""), NSLocalizedString("Scroll", comment: ""), NSLocalizedString("Analyse", comment: "")]
+        let titleList = ["Back".ZXLocaleString, "Decrypt".ZXLocaleString, "Search".ZXLocaleString, "Share".ZXLocaleString, "Scroll".ZXLocaleString, "Analyse".ZXLocaleString]
         let imageList = [UIImageHDBoundle(named: "icon_normal_back"), UIImageHDBoundle(named: "icon_decrypt"), UIImageHDBoundle(named: "icon_search"), UIImageHDBoundle(named: "icon_share"), UIImageHDBoundle(named: "icon_fixed"), UIImageHDBoundle(named: "icon_analyse")]
 
         for i in 0..<titleList.count {

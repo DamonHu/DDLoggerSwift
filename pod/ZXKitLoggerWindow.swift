@@ -12,9 +12,18 @@ import ZXKitUtil
 
 func UIImageHDBoundle(named: String?) -> UIImage? {
     guard let name = named else { return nil }
-    guard let bundlePath = Bundle(for: ZXKitLogger.self).path(forResource: "ZXKitLogger", ofType: "bundle") else { return nil }
-    let bundle = Bundle(path: bundlePath)
+    guard let bundlePath = Bundle(for: ZXKitLogger.self).path(forResource: "ZXKitLogger", ofType: "bundle") else { return UIImage(named: name) }
+    guard let bundle = Bundle(path: bundlePath) else { return UIImage(named: name) }
     return UIImage(named: name, in: bundle, compatibleWith: nil)
+}
+
+extension String{
+    var ZXLocaleString: String {
+        guard let bundlePath = Bundle(for: ZXKitLogger.self).path(forResource: "ZXKitLogger", ofType: "bundle") else { return NSLocalizedString(self, comment: "") }
+        guard let bundle = Bundle(path: bundlePath) else { return NSLocalizedString(self, comment: "") }
+        let msg = NSLocalizedString(self, tableName: nil, bundle: bundle, value: "", comment: "")
+        return msg
+    }
 }
 
 class ZXKitLoggerWindow: UIWindow {
@@ -34,7 +43,7 @@ class ZXKitLoggerWindow: UIWindow {
                     let loggerItem = ZXKitLoggerItem()
                     loggerItem.mLogItemType = ZXKitLogType.warn
                     loggerItem.mCreateDate = Date()
-                    loggerItem.mLogContent = NSLocalizedString("ZXKitLogger: Click Log To Copy", comment: "")
+                    loggerItem.mLogContent = "ZXKitLogger: Click Log To Copy".ZXLocaleString
                     self.mLogDataArray.append(loggerItem)
                 }
                 self._reloadFilter()
@@ -173,7 +182,7 @@ class ZXKitLoggerWindow: UIWindow {
     }()
 
     private lazy var mNormalStackView: UIStackView = {
-        let titleList = [NSLocalizedString("Scale", comment: ""), NSLocalizedString("Hide", comment: ""), NSLocalizedString("Clean Log", comment: ""), NSLocalizedString("More", comment: "")]
+        let titleList = ["Scale".ZXLocaleString, "Hide".ZXLocaleString, "Clean Log".ZXLocaleString, "More".ZXLocaleString]
         let colorList = [UIColor.zx.color(hexValue: 0x91c788), UIColor.zx.color(hexValue: 0xFF7676), UIColor.zx.color(hexValue: 0x5DAE8B), UIColor.zx.color(hexValue: 0x45526c)]
         var stackSubViews = [UIButton]()
         for i in 0..<titleList.count {
@@ -222,8 +231,8 @@ class ZXKitLoggerWindow: UIWindow {
                             }
                         }
                     }
-                    let info = "\n" + NSLocalizedString("current log count", comment: "") + ": \(self.mLogDataArray.count)" +  "\n" + NSLocalizedString("LogFile count", comment: "") + ": \(count)" + "\n" + NSLocalizedString("LogFile total size", comment: "") + ": \(size/1024.0)kb"
-                    ZXWarnLog(info)
+                    let info = "\n" + "current log count".ZXLocaleString + ": \(self.mLogDataArray.count)" +  "\n" + "LogFile count".ZXLocaleString + ": \(count)" + "\n" + "LogFile total size".ZXLocaleString + ": \(size/1024.0)kb"
+                    printWarn(info)
                 default:
                     break
             }
@@ -237,7 +246,7 @@ class ZXKitLoggerWindow: UIWindow {
         tTextField.isHidden = true
         tTextField.isSecureTextEntry = true
         tTextField.delegate = self
-        let arrtibutedString = NSMutableAttributedString(string: NSLocalizedString("Enter password to view", comment: ""), attributes: [NSAttributedString.Key.foregroundColor : UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 0.7), NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14)])
+        let arrtibutedString = NSMutableAttributedString(string: "Enter password to view".ZXLocaleString, attributes: [NSAttributedString.Key.foregroundColor : UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 0.7), NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14)])
         tTextField.attributedPlaceholder = arrtibutedString
         tTextField.textColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0)
         tTextField.layer.masksToBounds = true
@@ -251,7 +260,7 @@ class ZXKitLoggerWindow: UIWindow {
         button.isHidden = true
         button.backgroundColor = UIColor(red: 93.0/255.0, green: 174.0/255.0, blue: 139.0/255.0, alpha: 1.0)
         button.setTitleColor(UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0), for: UIControl.State.normal)
-        button.setTitle(NSLocalizedString("Decrypt", comment: ""), for: UIControl.State.normal)
+        button.setTitle("Decrypt".ZXLocaleString, for: UIControl.State.normal)
         button.layer.masksToBounds = true
         button.layer.borderColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0).cgColor
         button.layer.borderWidth = 1.0
@@ -269,7 +278,7 @@ class ZXKitLoggerWindow: UIWindow {
     private lazy var mSwitchLabel: UILabel = {
         let switchLabel = UILabel()
         switchLabel.isHidden = true
-        switchLabel.text = NSLocalizedString("Auto scroll", comment: "")
+        switchLabel.text = "Auto scroll".ZXLocaleString
         switchLabel.textAlignment = NSTextAlignment.center
         switchLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold)
         switchLabel.textColor = UIColor.white
@@ -279,7 +288,7 @@ class ZXKitLoggerWindow: UIWindow {
     private lazy var mSearchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.isHidden = true
-        searchBar.placeholder = NSLocalizedString("Log filter and search", comment: "")
+        searchBar.placeholder = "Log filter and search".ZXLocaleString
         searchBar.barStyle = UIBarStyle.default
         searchBar.backgroundImage = UIImage()
         searchBar.backgroundColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0)
@@ -293,7 +302,7 @@ class ZXKitLoggerWindow: UIWindow {
         button.backgroundColor = UIColor(red: 255.0/255.0, green: 118.0/255.0, blue: 118.0/255.0, alpha: 1.0)
         button.setTitleColor(UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0), for: UIControl.State.normal)
         button.setTitleColor(UIColor(red: 102.0/255.0, green: 102.0/255.0, blue: 102.0/255.0, alpha: 1.0), for: UIControl.State.disabled)
-        button.setTitle(NSLocalizedString("Previous", comment: ""), for: UIControl.State.normal)
+        button.setTitle("Previous".ZXLocaleString, for: UIControl.State.normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         button.isEnabled = false
         button.addTarget(self, action: #selector(_previous), for: UIControl.Event.touchUpInside)
@@ -306,7 +315,7 @@ class ZXKitLoggerWindow: UIWindow {
         button.backgroundColor = UIColor(red: 93.0/255.0, green: 174.0/255.0, blue: 139.0/255.0, alpha: 1.0)
         button.setTitleColor(UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0), for: UIControl.State.normal)
         button.setTitleColor(UIColor(red: 102.0/255.0, green: 102.0/255.0, blue: 102.0/255.0, alpha: 1.0), for: UIControl.State.disabled)
-        button.setTitle(NSLocalizedString("Next", comment: ""), for: UIControl.State.normal)
+        button.setTitle("Next".ZXLocaleString, for: UIControl.State.normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         button.isEnabled = false
         button.addTarget(self, action: #selector(_next), for: UIControl.Event.touchUpInside)
@@ -617,7 +626,7 @@ private extension ZXKitLoggerWindow {
         }
 
         let tipLabel = UILabel()
-        tipLabel.text = NSLocalizedString("Please select the log to share", comment: "");
+        tipLabel.text = "Please select the log to share".ZXLocaleString
         tipLabel.font = UIFont.systemFont(ofSize: 14, weight: UIFont.Weight.medium)
         self.mPickerBGView.addSubview(tipLabel)
         tipLabel.snp.makeConstraints { (make) in
@@ -636,7 +645,7 @@ private extension ZXKitLoggerWindow {
 
         let closeBarItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.cancel, target: self, action: #selector(_closePicker))
         let fixBarItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
-        let doneBarItem = UIBarButtonItem(title: NSLocalizedString("Share", comment: ""), style:.plain, target: self, action: #selector(_confirmPicker))
+        let doneBarItem = UIBarButtonItem(title: "Share".ZXLocaleString, style:.plain, target: self, action: #selector(_confirmPicker))
         self.mToolBar.setItems([closeBarItem, fixBarItem, doneBarItem], animated: true)
 
         self.mPickerBGView.addSubview(self.mPickerView)
@@ -675,7 +684,7 @@ extension ZXKitLoggerWindow: UITableViewDataSource, UITableViewDelegate {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "HH:mm:ss.SSS"
         let dateStr = dateFormatter.string(from: loggerItem.mCreateDate)
-        let tipString = dateStr + " " + NSLocalizedString("Log has been copied", comment: "")
+        let tipString = dateStr + " " + "Log has been copied".ZXLocaleString
         ZXWarnLog(tipString)
     }
 }
