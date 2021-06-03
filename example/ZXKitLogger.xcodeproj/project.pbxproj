@@ -19,10 +19,10 @@
 		E4AC94A6263162FA001FC322 /* HDSqliteTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AC949E263162FA001FC322 /* HDSqliteTools.swift */; };
 		E4AC94A8263162FA001FC322 /* ZXKitLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AC94A0263162FA001FC322 /* ZXKitLogger.swift */; };
 		E4AC94A9263162FA001FC322 /* ZXKitLoggerWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AC94A1263162FA001FC322 /* ZXKitLoggerWindow.swift */; };
-		E4AC950C26355A80001FC322 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E4AC950926355A80001FC322 /* Localizable.strings */; };
 		E4AC951F2635694C001FC322 /* ZXLogger+zxkit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AC951E2635694C001FC322 /* ZXLogger+zxkit.swift */; };
 		E4AC964D26395ED1001FC322 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = E4AC964C26395ED1001FC322 /* logo.png */; };
 		E4AC965126395F22001FC322 /* ZXKitLoggerFloatWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AC965026395F22001FC322 /* ZXKitLoggerFloatWindow.swift */; };
+		E4D1A3EF266918C900420162 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E4D1A3EC266918C900420162 /* Localizable.strings */; };
 		E4EC33D6265789BC00074E19 /* ZXKitLoggerMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EC33D5265789BB00074E19 /* ZXKitLoggerMenuView.swift */; };
 		E4EC33D826578A4C00074E19 /* ZXKitLoggerMenuCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EC33D726578A4B00074E19 /* ZXKitLoggerMenuCollectionViewCell.swift */; };
 		E4EC33DA2657AFDB00074E19 /* icon_search.png in Resources */ = {isa = PBXBuildFile; fileRef = E4EC33D92657AFDA00074E19 /* icon_search.png */; };
@@ -55,11 +55,11 @@
 		E4AC949E263162FA001FC322 /* HDSqliteTools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HDSqliteTools.swift; sourceTree = "<group>"; };
 		E4AC94A0263162FA001FC322 /* ZXKitLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZXKitLogger.swift; sourceTree = "<group>"; };
 		E4AC94A1263162FA001FC322 /* ZXKitLoggerWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZXKitLoggerWindow.swift; sourceTree = "<group>"; };
-		E4AC950A26355A80001FC322 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		E4AC950B26355A80001FC322 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E4AC951E2635694C001FC322 /* ZXLogger+zxkit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ZXLogger+zxkit.swift"; sourceTree = "<group>"; };
 		E4AC964C26395ED1001FC322 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
 		E4AC965026395F22001FC322 /* ZXKitLoggerFloatWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZXKitLoggerFloatWindow.swift; sourceTree = "<group>"; };
+		E4D1A3ED266918C900420162 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		E4D1A3EE266918C900420162 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E4EC33D5265789BB00074E19 /* ZXKitLoggerMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZXKitLoggerMenuView.swift; sourceTree = "<group>"; };
 		E4EC33D726578A4B00074E19 /* ZXKitLoggerMenuCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZXKitLoggerMenuCollectionViewCell.swift; sourceTree = "<group>"; };
 		E4EC33D92657AFDA00074E19 /* icon_search.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_search.png; sourceTree = "<group>"; };
@@ -131,7 +131,6 @@
 			children = (
 				E4AC951D26356932001FC322 /* zxkit */,
 				E4AC9518263566C8001FC322 /* assets */,
-				E4AC950826355A80001FC322 /* localizable */,
 				E4AC949B263162FA001FC322 /* ZXKitLoggerItem.swift */,
 				E4AC949C263162FA001FC322 /* ZXKitLoggerTableViewCell.swift */,
 				E4AC949D263162FA001FC322 /* LogContent.swift */,
@@ -146,17 +145,10 @@
 			path = ../../pod;
 			sourceTree = "<group>";
 		};
-		E4AC950826355A80001FC322 /* localizable */ = {
-			isa = PBXGroup;
-			children = (
-				E4AC950926355A80001FC322 /* Localizable.strings */,
-			);
-			path = localizable;
-			sourceTree = "<group>";
-		};
 		E4AC9518263566C8001FC322 /* assets */ = {
 			isa = PBXGroup;
 			children = (
+				E4D1A3EB266918C900420162 /* localizable */,
 				E4AC9519263566D1001FC322 /* icon */,
 			);
 			path = assets;
@@ -185,6 +177,14 @@
 				E4AC951E2635694C001FC322 /* ZXLogger+zxkit.swift */,
 			);
 			path = zxkit;
+			sourceTree = "<group>";
+		};
+		E4D1A3EB266918C900420162 /* localizable */ = {
+			isa = PBXGroup;
+			children = (
+				E4D1A3EC266918C900420162 /* Localizable.strings */,
+			);
+			path = localizable;
 			sourceTree = "<group>";
 		};
 		EC4B5B4A1D19E7DB05519A10 /* Frameworks */ = {
@@ -259,9 +259,9 @@
 				E4EC33EA2657B25D00074E19 /* icon_normal_back.png in Resources */,
 				E4EC33E82657B21A00074E19 /* icon_delete.png in Resources */,
 				E48AAC0322C05EF700CC5F1C /* LaunchScreen.storyboard in Resources */,
+				E4D1A3EF266918C900420162 /* Localizable.strings in Resources */,
 				E4EC33DC2657B04700074E19 /* icon_decrypt.png in Resources */,
 				E4EC33E42657B17A00074E19 /* icon_analyse.png in Resources */,
-				E4AC950C26355A80001FC322 /* Localizable.strings in Resources */,
 				E4EC33E22657B12700074E19 /* icon_back.png in Resources */,
 				E4EC33E62657B1BB00074E19 /* icon_fixed.png in Resources */,
 				E4EC33DA2657AFDB00074E19 /* icon_search.png in Resources */,
@@ -358,11 +358,11 @@
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
-		E4AC950926355A80001FC322 /* Localizable.strings */ = {
+		E4D1A3EC266918C900420162 /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				E4AC950A26355A80001FC322 /* zh-Hans */,
-				E4AC950B26355A80001FC322 /* en */,
+				E4D1A3ED266918C900420162 /* zh-Hans */,
+				E4D1A3EE266918C900420162 /* en */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
