@@ -685,7 +685,7 @@ extension ZXKitLoggerWindow: UITableViewDataSource, UITableViewDelegate {
         dateFormatter.dateFormat = "HH:mm:ss.SSS"
         let dateStr = dateFormatter.string(from: loggerItem.mCreateDate)
         let tipString = dateStr + " " + "Log has been copied".ZXLocaleString
-        ZXWarnLog(tipString)
+        printWarn(tipString)
     }
 }
 
