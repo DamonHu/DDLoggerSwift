@@ -14,15 +14,23 @@ class ViewController: UIViewController {
     lazy var clickButton: UIButton = {
         let button = UIButton(type: UIButton.ButtonType.custom)
         button.backgroundColor = UIColor.red
-        button.frame = CGRect(x: 0, y: UIScreen.main.bounds.size.height - 130, width: 120, height: 100)
+        button.frame = CGRect(x: 0, y: UIScreen.main.bounds.size.height - 130, width: 100, height: 60)
         button.setTitle("添加日志", for: UIControl.State.normal)
+        return button
+    }()
+    
+    lazy var showButton: UIButton = {
+        let button = UIButton(type: UIButton.ButtonType.custom)
+        button.backgroundColor = UIColor.red
+        button.frame = CGRect(x: 120, y: UIScreen.main.bounds.size.height - 130, width: 100, height: 60)
+        button.setTitle("显示弹层", for: UIControl.State.normal)
         return button
     }()
     
     lazy var deleteButton: UIButton = {
            let button = UIButton(type: UIButton.ButtonType.custom)
            button.backgroundColor = UIColor.red
-           button.frame = CGRect(x: 150, y: UIScreen.main.bounds.size.height - 130, width: 150, height: 100)
+           button.frame = CGRect(x: 240, y: UIScreen.main.bounds.size.height - 130, width: 150, height: 60)
            button.setTitle("删除本地日志文件", for: UIControl.State.normal)
            return button
     }()
@@ -31,7 +39,10 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.white
         self.view.addSubview(self.clickButton)
+        self.view.addSubview(self.showButton)
         self.view.addSubview(self.deleteButton)
+        
+        self.showButton.addTarget(self, action: #selector(showButtonClick), for: UIControl.Event.touchUpInside)
         self.clickButton.addTarget(self, action: #selector(onClickButton), for: UIControl.Event.touchUpInside)
         self.deleteButton.addTarget(self, action: #selector(onClickdeleteButton), for: UIControl.Event.touchUpInside)
     }
@@ -39,9 +50,13 @@ class ViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         //配置ZXKitLogger
-        ZXKitLogger.show()
+        
         //输出加密内容
         ZXKitLogger.privacyLogPassword = "12345678901234561234567890123456" //设置加密内容密码
+    }
+    
+    @objc func showButtonClick(){
+        ZXKitLogger.show()
     }
 
     @objc func onClickButton() {

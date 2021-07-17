@@ -153,7 +153,22 @@ public class ZXKitLogger {
     }            //是否显示屏幕FPS状态
     //MARK: Private
     private let mFPSTools = ZXKitFPS()
-    private var loggerWindow: ZXKitLoggerWindow?
+//    private var loggerWindow: ZXKitLoggerWindow?
+    
+    lazy var loggerWindow: ZXKitLoggerWindow? = {
+        var window: ZXKitLoggerWindow?
+        if #available(iOS 13.0, *) {
+            for windowScene:UIWindowScene in ((UIApplication.shared.connectedScenes as? Set<UIWindowScene>)!) {
+                if windowScene.activationState == .foregroundActive {
+                    window = ZXKitLoggerWindow(windowScene: windowScene)
+                }
+            }
+        }
+        if window == nil {
+            window = ZXKitLoggerWindow(frame: CGRect.zero)
+        }
+        return window
+    }()
     private var floatWindow: ZXKitLoggerFloatWindow?
     var isPasswordCorrect: Bool = false
     static let shared = ZXKitLogger()
@@ -215,18 +230,6 @@ public class ZXKitLogger {
     public class func show() {
         DispatchQueue.main.async {
             self.shared.floatWindow?.isHidden = true
-            if self.shared.loggerWindow == nil {
-                if #available(iOS 13.0, *) {
-                    for windowScene:UIWindowScene in ((UIApplication.shared.connectedScenes as? Set<UIWindowScene>)!) {
-                        if windowScene.activationState == .foregroundActive {
-                            self.shared.loggerWindow = ZXKitLoggerWindow(windowScene: windowScene)
-                        }
-                    }
-                }
-                if self.shared.loggerWindow == nil {
-                    self.shared.loggerWindow = ZXKitLoggerWindow(frame: CGRect.zero)
-                }
-            }
             self.shared.loggerWindow?.isHidden = false
             self.isShowFPS = true
         }
