@@ -172,7 +172,7 @@ public class ZXKitLogger {
     private var floatWindow: ZXKitLoggerFloatWindow?
     var isPasswordCorrect: Bool = false
     static let shared = ZXKitLogger()
-    private let logQueue = DispatchQueue(label:"com.HDWindowLogger.logQueue", qos:.utility, attributes:.concurrent)
+    private let logQueue = DispatchQueue(label:"com.ZXKitLogger.logQueue", qos:.utility, attributes:.concurrent)
 
     //log的Public函数
     /// 根据日志的输出类型去输出相应的日志，不同日志类型颜色不一样
