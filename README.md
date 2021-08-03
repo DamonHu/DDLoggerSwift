@@ -158,10 +158,10 @@ ZXKitLogger.maxDisplayCount = 100
 ZXKitLogger.deleteLogFile()
 ```
 
-### 9、 The validity period of the local log file (days), the local log beyond the validity period will be deleted, 0 is no validity period, the default is 7 days
+### 9、 The validity period of the local log file (days), the local log beyond the validity period will be deleted, 0 is no validity period, default is 30 days
 
 ```
-ZXKitLogger.logExpiryDay = 0
+ZXKitLogger.logExpiryDay = 30
 ```
 
 ### 10、storageLevels

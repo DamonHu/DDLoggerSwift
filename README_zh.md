@@ -153,10 +153,10 @@ ZXKitLogger.maxDisplayCount = 100
 ZXKitLogger.deleteLogFile()
 ```
 
-### 9、 本地日志文件的有效期（天），超出有效期的本地日志会被删除，0为没有有效期，默认为7天
+### 9、 本地日志文件的有效期（天），超出有效期的本地日志会被删除，0为没有有效期，默认为30天
 
 ```
-ZXKitLogger.logExpiryDay = 0
+ZXKitLogger.logExpiryDay = 30
 ```
 
 ### 10、存储日志的级别

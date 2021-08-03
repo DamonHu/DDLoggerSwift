@@ -64,7 +64,8 @@ class ViewController: UIViewController {
         printInfo("点击了按钮111")
         printError("错误出现")
         printInfo("调试数据文件地址", ZXKitLogger.getDBFolder().path)
-        for _ in 0..<100 {
+
+        for _ in 0..<1000 {
             printLog("测试输出，不会写入悬浮窗")
             printLog("测试输出，不会写入悬浮窗","222222","3333333")
             //普通输出
