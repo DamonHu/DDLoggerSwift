@@ -27,7 +27,7 @@ class HDSqliteTools {
     //获取数据库文件夹
     func getDBFolder() -> URL {
         let dbFolder = ZXKitLogger.userID.zx.encryptString(encryType: .md5) ?? "ZXKitLog"
-        let path = ZXKitUtil.shared.createFileDirectory(in: .caches, directoryName: dbFolder)
+        let path = ZXKitUtil.shared.createFileDirectory(in: .documents, directoryName: dbFolder)
         return path
     }
 
