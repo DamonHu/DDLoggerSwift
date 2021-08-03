@@ -116,15 +116,16 @@ public class ZXKitLogger {
     public static var isFullLogOut = true    //是否完整输出日志文件名等调试内容
     public static var isSyncConsole = true   //是否在xcode底部的调试栏同步输出内容
     public static var storageLevels: ZXKitLogType = [.info, .warn, .error, .privacy]    //存储到数据库的级别
+    public static var logExpiryDay = 30        //本地日志文件的有效期（天），超出有效期的本地日志会被删除，0为没有有效期，默认为30天
+    public static var maxDisplayCount = 100       //屏幕最大的显示数量，适量即可，0为不限制
+    public static var userID = "0"             //为不同用户创建的独立的日志库
     //解密隐私数据的密码，默认为空不加密
     public static var privacyLogPassword = "" {
         willSet {
             assert(newValue.count == kCCKeySizeAES256, "The password requires 32 characters".ZXLocaleString)
         }
     }
-    public static var logExpiryDay = 7        //本地日志文件的有效期（天），超出有效期的本地日志会被删除，0为没有有效期，默认为7天
-    public static var maxDisplayCount = 100       //屏幕最大的显示数量，适量即可，0为不限制
-    public static var userID = "0"             //为不同用户创建的独立的日志库
+    //是否显示屏幕FPS状态
     public static var isShowFPS = true {
         willSet {
             if newValue {
@@ -150,12 +151,11 @@ public class ZXKitLogger {
                 }
             }
         }
-    }            //是否显示屏幕FPS状态
+    }
+
     //MARK: Private
     private let mFPSTools = ZXKitFPS()
-//    private var loggerWindow: ZXKitLoggerWindow?
-    
-    lazy var loggerWindow: ZXKitLoggerWindow? = {
+    private lazy var loggerWindow: ZXKitLoggerWindow? = {
         var window: ZXKitLoggerWindow?
         if #available(iOS 13.0, *) {
             for windowScene:UIWindowScene in ((UIApplication.shared.connectedScenes as? Set<UIWindowScene>)!) {
@@ -172,8 +172,8 @@ public class ZXKitLogger {
     private var floatWindow: ZXKitLoggerFloatWindow?
     var isPasswordCorrect: Bool = false
     static let shared = ZXKitLogger()
-
     private let logQueue = DispatchQueue(label:"com.HDWindowLogger.logQueue", qos:.utility, attributes:.concurrent)
+
     //log的Public函数
     /// 根据日志的输出类型去输出相应的日志，不同日志类型颜色不一样
     /// - Parameter log: 日志内容
@@ -311,7 +311,7 @@ private extension ZXKitLogger {
                     if file.hasSuffix(".db") {
                         //截取日期
                         let index2 = file.startIndex
-                        let index3 = file.index(file.startIndex, offsetBy: 9)
+                        let index3 = file.index(index2, offsetBy: 9)
                         let dateString = file[index2...index3]
                         let fileDate = dateFormatter.date(from: String(dateString))
                         if let fileDate = fileDate {
