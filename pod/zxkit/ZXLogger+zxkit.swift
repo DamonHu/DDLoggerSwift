@@ -7,6 +7,7 @@
 //
 
 import Foundation
+#if canImport(ZXKitCore)
 import ZXKitCore
 
 //ZXKitPlugin
@@ -47,3 +48,5 @@ public extension ZXKitLogger {
         ZXKit.regist(plugin: shared)
     }
 }
+
+#endif

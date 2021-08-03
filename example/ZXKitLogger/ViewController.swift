@@ -7,7 +7,9 @@
 //
 
 import UIKit
+#if canImport(ZXKitCore)
 import ZXKitCore
+#endif
 
 class ViewController: UIViewController {
 

@@ -8,6 +8,6 @@ target 'ZXKitLogger' do
   # Pods for ZXKitLogger
   pod 'SnapKit'
   pod 'ZXKitUtil'
-  pod 'ZXKitCore/core'
+#  pod 'ZXKitCore/core'
   pod 'ZXKitFPS'
 end

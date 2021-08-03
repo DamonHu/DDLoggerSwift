@@ -132,7 +132,7 @@ public extension ZXKitUtil {
             if #available(iOS 10.3, *) {
                 SKStoreReviewController.requestReview()
             } else {
-                print("ios10.3以下版本不支持")
+                assert(false, "ios10.3以下版本不支持")
             };
         case .appStore:
             var url = URL(string: "itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=\(appleID)&mt=8")!

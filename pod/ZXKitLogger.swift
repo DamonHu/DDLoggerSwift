@@ -119,14 +119,36 @@ public class ZXKitLogger {
     public static var logExpiryDay = 30        //本地日志文件的有效期（天），超出有效期的本地日志会被删除，0为没有有效期，默认为30天
     public static var maxDisplayCount = 100       //屏幕最大的显示数量，适量即可，0为不限制
     public static var userID = "0"             //为不同用户创建的独立的日志库
+    public static var isShowFPS = true         //是否显示屏幕FPS状态
     //解密隐私数据的密码，默认为空不加密
     public static var privacyLogPassword = "" {
         willSet {
             assert(newValue.count == kCCKeySizeAES256, "The password requires 32 characters".ZXLocaleString)
         }
     }
+
+    //MARK: Private
+    private let mFPSTools = ZXKitFPS()
+    private lazy var loggerWindow: ZXKitLoggerWindow? = {
+        var window: ZXKitLoggerWindow?
+        if #available(iOS 13.0, *) {
+            for windowScene:UIWindowScene in ((UIApplication.shared.connectedScenes as? Set<UIWindowScene>)!) {
+                if windowScene.activationState == .foregroundActive {
+                    window = ZXKitLoggerWindow(windowScene: windowScene)
+                }
+            }
+        }
+        if window == nil {
+            window = ZXKitLoggerWindow(frame: CGRect.zero)
+        }
+        return window
+    }()
+    private var floatWindow: ZXKitLoggerFloatWindow?
+    var isPasswordCorrect: Bool = false
+    static let shared = ZXKitLogger()
+    private let logQueue = DispatchQueue(label:"com.ZXKitLogger.logQueue", qos:.utility, attributes:.concurrent)
     //是否显示屏幕FPS状态
-    public static var isShowFPS = true {
+    private static var _isShowFPS = true {
         willSet {
             if newValue {
                 shared.mFPSTools.start { (fps) in
@@ -152,27 +174,6 @@ public class ZXKitLogger {
             }
         }
     }
-
-    //MARK: Private
-    private let mFPSTools = ZXKitFPS()
-    private lazy var loggerWindow: ZXKitLoggerWindow? = {
-        var window: ZXKitLoggerWindow?
-        if #available(iOS 13.0, *) {
-            for windowScene:UIWindowScene in ((UIApplication.shared.connectedScenes as? Set<UIWindowScene>)!) {
-                if windowScene.activationState == .foregroundActive {
-                    window = ZXKitLoggerWindow(windowScene: windowScene)
-                }
-            }
-        }
-        if window == nil {
-            window = ZXKitLoggerWindow(frame: CGRect.zero)
-        }
-        return window
-    }()
-    private var floatWindow: ZXKitLoggerFloatWindow?
-    var isPasswordCorrect: Bool = false
-    static let shared = ZXKitLogger()
-    private let logQueue = DispatchQueue(label:"com.ZXKitLogger.logQueue", qos:.utility, attributes:.concurrent)
 
     //log的Public函数
     /// 根据日志的输出类型去输出相应的日志，不同日志类型颜色不一样
@@ -231,7 +232,7 @@ public class ZXKitLogger {
         DispatchQueue.main.async {
             self.shared.floatWindow?.isHidden = true
             self.shared.loggerWindow?.isHidden = false
-            self.isShowFPS = true
+            self._isShowFPS = false
         }
     }
     
@@ -259,6 +260,9 @@ public class ZXKitLogger {
                 }
                 self.shared.floatWindow?.isHidden = false
             }
+            if self.isShowFPS {
+                self._isShowFPS = true
+            }
             #endif
         }
     }
@@ -268,6 +272,7 @@ public class ZXKitLogger {
         DispatchQueue.main.async {
             self.shared.loggerWindow?.isHidden = true
             self.shared.floatWindow?.isHidden = true
+            self._isShowFPS = false
         }
     }
 

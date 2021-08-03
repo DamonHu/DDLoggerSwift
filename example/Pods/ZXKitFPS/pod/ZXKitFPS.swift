@@ -33,6 +33,8 @@ open class ZXKitFPS {
         ZXKit.resetFloatButton()
         #endif
         isRunning = false
+        lastTime = 0
+        count = 0
         self.displayLink?.invalidate()
     }
 }
