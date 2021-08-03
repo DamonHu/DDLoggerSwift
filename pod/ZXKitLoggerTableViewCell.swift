@@ -63,7 +63,6 @@ class ZXKitLoggerTableViewCell: UITableViewCell {
         default:
             break
         }
-        
         loggerItem.getHighlightAttributedString(highlightString: highlightText) { (hasHighlightStr, hightlightAttributedString) in
             self.mContentLabel.attributedText = hightlightAttributedString
             if hasHighlightStr {

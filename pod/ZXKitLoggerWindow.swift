@@ -505,7 +505,7 @@ private extension ZXKitLoggerWindow {
         self.mFileDateNameList = [String]()
         let path = HDSqliteTools.shared.getDBFolder()
         //数据库目录
-        if let enumer = FileManager.default.enumerator(at: path, includingPropertiesForKeys: [URLResourceKey.creationDateKey]) {
+        if let enumer = FileManager.default.enumerator(at: path, includingPropertiesForKeys: [URLResourceKey.nameKey], options: [.skipsHiddenFiles, .skipsPackageDescendants]) {
             while let file = enumer.nextObject() {
                 if let file: URL = file as? URL, file.lastPathComponent.hasSuffix(".db") {
                     self.mFileDateNameList.append(file.lastPathComponent)
@@ -514,7 +514,7 @@ private extension ZXKitLoggerWindow {
         }
 
         //倒序，最后的放前面
-        self.mFileDateNameList = self.mFileDateNameList.reversed()
+        self.mFileDateNameList = self.mFileDateNameList.sorted().reversed()
         self.mPickerBGView.isHidden = !self.mPickerBGView.isHidden
         self.mPickerView.reloadAllComponents()
         self.mShareFileName = self.mFileDateNameList.first ?? ""
