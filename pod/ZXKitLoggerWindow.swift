@@ -50,17 +50,7 @@ class ZXKitLoggerWindow: UIWindow {
     private var mLogDataArray = [ZXKitLoggerItem]()  //输出的日志信息
     private var mFilterIndexArray = [IndexPath]()   //索引的排序
     private var mCurrentSearchIndex = 0             //当前搜索到的索引
-    private var mFileDateNameList = [String]()      //可以分享的文件列表
-    private var mShareFileName = ""                 //选中去分享的文件名
-    private var pickerType: PickerType = .share {
-        willSet {
-            if newValue == .share {
-                mPickerTipLabel.text = "Please select the log to share".ZXLocaleString
-            } else if newValue == .upload {
-                mPickerTipLabel.text = "Please select the log to upload".ZXLocaleString
-            }
-        }
-    }
+    
     override var isHidden: Bool {
         willSet {
             super.isHidden = newValue
@@ -209,7 +199,7 @@ class ZXKitLoggerWindow: UIWindow {
                 case 2:
                     self.isSearchViewHidden = false
                 case 3:
-                    self.showPicker(pickType: .share)
+                    ZXKitLogger.showShare()
                 case 4:
                     self.isScrollViewHidden = false
                 case 5:
@@ -227,7 +217,7 @@ class ZXKitLoggerWindow: UIWindow {
                     let info = "\n" + "current log count".ZXLocaleString + ": \(self.mLogDataArray.count)" +  "\n" + "LogFile count".ZXLocaleString + ": \(count)" + "\n" + "LogFile total size".ZXLocaleString + ": \(size/1024.0)kb"
                     printWarn(info)
                 case 6 :
-                    self.showPicker(pickType: .upload)
+                    ZXKitLogger.showUpload()
                 default:
                     break
             }
@@ -338,37 +328,7 @@ class ZXKitLoggerWindow: UIWindow {
         return tLabel
     }()
     
-    private lazy var mPickerBGView: UIView = {
-        let tView = UIView()
-        tView.backgroundColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0)
-        tView.isHidden = true
-        tView.layer.masksToBounds = true
-        tView.layer.borderColor = UIColor(red: 57.0/255.0, green: 74.0/255.0, blue: 81.0/255.0, alpha: 1.0).cgColor
-        tView.layer.borderWidth = 1.0
-        return tView
-    }()
-
-    private lazy var mPickerTipLabel: UILabel = {
-        let tipLabel = UILabel()
-        tipLabel.text = "Please select the log to share".ZXLocaleString
-        tipLabel.font = UIFont.systemFont(ofSize: 14, weight: UIFont.Weight.medium)
-        return tipLabel
-    }()
     
-    private lazy var mPickerView: UIPickerView = {
-        let tPicker = UIPickerView()
-        tPicker.backgroundColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0)
-        tPicker.isUserInteractionEnabled = true
-        tPicker.dataSource = self
-        tPicker.delegate = self
-        return tPicker
-    }()
-    
-    private lazy var mToolBar: UIToolbar = {
-        let tToolBar = UIToolbar()
-        tToolBar.barStyle = .default
-        return tToolBar
-    }()
 }
 
 extension ZXKitLoggerWindow {
@@ -387,26 +347,6 @@ extension ZXKitLoggerWindow {
         self.mLogDataArray.removeAll()
         self.mFilterIndexArray.removeAll()
         self._reloadFilter()
-    }
-
-    private func showPicker(pickType: PickerType) {
-        self.pickerType = pickType
-        self.mFileDateNameList = [String]()
-        let path = HDSqliteTools.shared.getDBFolder()
-        //数据库目录
-        if let enumer = FileManager.default.enumerator(at: path, includingPropertiesForKeys: [URLResourceKey.nameKey], options: [.skipsHiddenFiles, .skipsPackageDescendants]) {
-            while let file = enumer.nextObject() {
-                if let file: URL = file as? URL, file.lastPathComponent.hasSuffix(".db") {
-                    self.mFileDateNameList.append(file.lastPathComponent)
-                }
-            }
-        }
-
-        //倒序，最后的放前面
-        self.mFileDateNameList = self.mFileDateNameList.sorted().reversed()
-        self.mPickerBGView.isHidden = !self.mPickerBGView.isHidden
-        self.mPickerView.reloadAllComponents()
-        self.mShareFileName = self.mFileDateNameList.first ?? ""
     }
 }
 
@@ -500,10 +440,6 @@ private extension ZXKitLoggerWindow {
         }
     }
 
-    @objc private func _closePicker() {
-        self.mPickerBGView.isHidden = true
-    }
-
     @objc private func _show() {
         self.isHidden = false
     }
@@ -514,37 +450,6 @@ private extension ZXKitLoggerWindow {
         self.isDecryptViewHidden = true
         self.isScrollViewHidden = true
         self.isSearchViewHidden = true
-    }
-
-    @objc private func _confirmPicker() {
-        self.mPickerBGView.isHidden = true
-        if self.pickerType == .share {
-            let dataList = HDSqliteTools.shared.getAllLog(name: self.mShareFileName).reversed()
-            //写入到text文件好解析
-            //文件路径
-            let logFilePathURL = ZXKitUtil.shared.getFileDirectory(type: .caches).appendingPathComponent("ZXKitLogger.log", isDirectory: false)
-            if FileManager.default.fileExists(atPath: logFilePathURL.path) {
-                try? FileManager.default.removeItem(at: logFilePathURL)
-            }
-            do {
-                try dataList.joined(separator: "\n").write(to: logFilePathURL, atomically: false, encoding: String.Encoding.utf8)
-            } catch {
-                print(error)
-            }
-
-            //分享
-            let activityVC = UIActivityViewController(activityItems: [logFilePathURL], applicationActivities: nil)
-            if UIDevice.current.model == "iPad" {
-                activityVC.modalPresentationStyle = UIModalPresentationStyle.popover
-                activityVC.popoverPresentationController?.sourceView = self.mMenuView.subviews.first
-                activityVC.popoverPresentationController?.sourceRect = self.mMenuView.subviews.first?.frame ?? .zero
-            }
-            self._hide()
-            ZXKitUtil.shared.getCurrentVC()?.present(activityVC, animated: true, completion: nil)
-        } else if let complete = ZXKitLogger.uploadComplete {
-            let path = HDSqliteTools.shared.getDBFolder().appendingPathComponent(self.mShareFileName)
-            complete(path)
-        }
     }
 
     //解密
@@ -646,37 +551,7 @@ private extension ZXKitLoggerWindow {
             make.bottom.equalToSuperview()
         }
 
-        self.mContentBGView.addSubview(self.mPickerBGView)
-        self.mPickerBGView.snp.makeConstraints { (make) in
-            make.top.equalTo(self.mContentBGView)
-            make.left.right.bottom.equalTo(self.mContentBGView)
-        }
-
-        self.mPickerBGView.addSubview(mPickerTipLabel)
-        mPickerTipLabel.snp.makeConstraints { (make) in
-            make.centerX.equalToSuperview()
-            make.top.equalToSuperview().offset(20)
-            make.height.equalTo(40)
-        }
-
-        self.mPickerBGView.addSubview(self.mToolBar)
-        self.mToolBar.snp.makeConstraints { (make) in
-            make.top.equalTo(mPickerTipLabel.snp.bottom)
-            make.left.right.equalToSuperview()
-            make.height.equalTo(40)
-        }
-        self.mToolBar.layoutIfNeeded()
-
-        let closeBarItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.cancel, target: self, action: #selector(_closePicker))
-        let fixBarItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
-        let doneBarItem = UIBarButtonItem(title: "Done".ZXLocaleString, style:.plain, target: self, action: #selector(_confirmPicker))
-        self.mToolBar.setItems([closeBarItem, fixBarItem, doneBarItem], animated: true)
-
-        self.mPickerBGView.addSubview(self.mPickerView)
-        self.mPickerView.snp.makeConstraints { (make) in
-            make.top.equalTo(self.mToolBar.snp.bottom)
-            make.left.right.bottom.equalToSuperview()
-        }
+        
     }
 }
 
@@ -736,42 +611,5 @@ extension ZXKitLoggerWindow: UITextFieldDelegate {
     }
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         return textField.resignFirstResponder()
-    }
-}
-
-extension ZXKitLoggerWindow: UIPickerViewDelegate, UIPickerViewDataSource {
-    //MARK: UIPickerViewDelegate
-    public func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    
-    public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return self.mFileDateNameList.count
-    }
-    
-    public func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
-        return 40
-    }
-    
-    public func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
-        var titleView: UIView
-        if let label = view, label is UILabel {
-            (label as! UILabel).text = self.mFileDateNameList[row]
-            titleView = label
-        } else {
-            let label = UILabel()
-            label.font = UIFont.systemFont(ofSize: 15, weight: .medium)
-            label.text = self.mFileDateNameList[row]
-            label.textAlignment = .center
-            titleView = label
-        }
-        return titleView
-    }
-    
-    public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        if !self.mFileDateNameList.isEmpty {
-            self.mShareFileName = self.mFileDateNameList[row]
-        }
-
     }
 }

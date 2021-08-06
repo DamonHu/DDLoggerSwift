@@ -144,6 +144,20 @@ public class ZXKitLogger {
         }
         return window
     }()
+    private lazy var pickerWindow: ZXKitLoggerPickerWindow? = {
+        var window: ZXKitLoggerPickerWindow?
+        if #available(iOS 13.0, *) {
+            for windowScene:UIWindowScene in ((UIApplication.shared.connectedScenes as? Set<UIWindowScene>)!) {
+                if windowScene.activationState == .foregroundActive {
+                    window = ZXKitLoggerPickerWindow(windowScene: windowScene)
+                }
+            }
+        }
+        if window == nil {
+            window = ZXKitLoggerPickerWindow(frame: CGRect.zero)
+        }
+        return window
+    }()
     private var floatWindow: ZXKitLoggerFloatWindow?
     var isPasswordCorrect: Bool = false
     static let shared = ZXKitLogger()
@@ -241,6 +255,7 @@ public class ZXKitLogger {
     public class func hide() {
         DispatchQueue.main.async {
             self.shared.loggerWindow?.isHidden = true
+            self.shared.pickerWindow?.isHidden = true
             #if canImport(ZXKitCore)
 //            ZXWarnLog(NSLocalizedString("The float button already exists", comment: ""))
             #else
@@ -273,6 +288,7 @@ public class ZXKitLogger {
         DispatchQueue.main.async {
             self.shared.loggerWindow?.isHidden = true
             self.shared.floatWindow?.isHidden = true
+            self.shared.pickerWindow?.isHidden = true
             self._isShowFPS = false
         }
     }
@@ -296,12 +312,14 @@ public class ZXKitLogger {
 
     ///显示分享弹窗
     public class func showShare() {
-        
+        self.shared.pickerWindow?.isHidden = false
+        self.shared.pickerWindow?.showPicker(pickType: .share)
     }
 
     ///显示上传弹窗
     public class func showUpload() {
-
+        self.shared.pickerWindow?.isHidden = false
+        self.shared.pickerWindow?.showPicker(pickType: .upload)
     }
 
     //MARK: init
