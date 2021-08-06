@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9D4EB7EB041C697184564EFC /* Pods_ZXKitLogger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B91D3A8ABB0C8265D4D720F /* Pods_ZXKitLogger.framework */; };
+		E4039B4126BD3DED00F066A0 /* icon_upload.png in Resources */ = {isa = PBXBuildFile; fileRef = E4039B4026BD3DED00F066A0 /* icon_upload.png */; };
 		E48AABF722C05EF600CC5F1C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48AABF622C05EF600CC5F1C /* AppDelegate.swift */; };
 		E48AABFB22C05EF600CC5F1C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48AABFA22C05EF600CC5F1C /* ViewController.swift */; };
 		E48AABFE22C05EF600CC5F1C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E48AABFC22C05EF600CC5F1C /* Main.storyboard */; };
@@ -40,6 +41,7 @@
 		5B91D3A8ABB0C8265D4D720F /* Pods_ZXKitLogger.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ZXKitLogger.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CE82FAC490744A4AFEFF14B /* Pods-ZXKitLogger.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZXKitLogger.release.xcconfig"; path = "Target Support Files/Pods-ZXKitLogger/Pods-ZXKitLogger.release.xcconfig"; sourceTree = "<group>"; };
 		CB8CD0C462E3AD915D241470 /* Pods-ZXKitLogger.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZXKitLogger.debug.xcconfig"; path = "Target Support Files/Pods-ZXKitLogger/Pods-ZXKitLogger.debug.xcconfig"; sourceTree = "<group>"; };
+		E4039B4026BD3DED00F066A0 /* icon_upload.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_upload.png; sourceTree = "<group>"; };
 		E48AABF322C05EF600CC5F1C /* ZXKitLogger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZXKitLogger.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E48AABF622C05EF600CC5F1C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E48AABFA22C05EF600CC5F1C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -157,6 +159,7 @@
 		E4AC9519263566D1001FC322 /* icon */ = {
 			isa = PBXGroup;
 			children = (
+				E4039B4026BD3DED00F066A0 /* icon_upload.png */,
 				E4EC33E92657B25D00074E19 /* icon_normal_back.png */,
 				E4EC33E72657B21A00074E19 /* icon_delete.png */,
 				E4EC33E52657B1BB00074E19 /* icon_fixed.png */,
@@ -268,6 +271,7 @@
 				E4EC33E02657B0BA00074E19 /* icon_scroll.png in Resources */,
 				E4EC33DE2657B08200074E19 /* icon_share.png in Resources */,
 				E4AC964D26395ED1001FC322 /* logo.png in Resources */,
+				E4039B4126BD3DED00F066A0 /* icon_upload.png in Resources */,
 				E48AAC0022C05EF700CC5F1C /* Assets.xcassets in Resources */,
 				E48AABFE22C05EF600CC5F1C /* Main.storyboard in Resources */,
 			);

@@ -7,6 +7,7 @@
 */
 "ZXKitLogger: Click Log To Copy" = "ZXKitLogger: 点击对应日志可快速复制";
 "Please select the log to share" = "请选择要分享的日志";
+"Please select the log to upload" = "请选择要上传的日志";
 "Clean Log" = "清除Log";
 "Scale" = "伸缩";
 "Hide" = "隐藏";
@@ -26,9 +27,11 @@
 "System basic plug-in cannot be stopped" = "系统基础插件不能停止";
 "Analyse" = "分析";
 "Back" = "返回";
+"Upload" = "上传";
 "Search" = "搜索";
 "Scroll" = "滚动";
 "More" = "更多";
+"Done" = "完成";
 "LogFile count" = "日志文件数量";
 "LogFile total size" = "日志文件总大小";
 "current log count" = "当前日志条数";

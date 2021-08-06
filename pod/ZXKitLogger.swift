@@ -120,6 +120,7 @@ public class ZXKitLogger {
     public static var maxDisplayCount = 100       //屏幕最大的显示数量，适量即可，0为不限制
     public static var userID = "0"             //为不同用户创建的独立的日志库
     public static var isShowFPS = true         //是否显示屏幕FPS状态
+    public static var uploadComplete: ((URL) ->Void)?   //点击上传日志的回调
     //解密隐私数据的密码，默认为空不加密
     public static var privacyLogPassword = "" {
         willSet {
@@ -290,6 +291,17 @@ public class ZXKitLogger {
                 }
             }
         }
+    }
+
+
+    ///显示分享弹窗
+    public class func showShare() {
+        
+    }
+
+    ///显示上传弹窗
+    public class func showUpload() {
+
     }
 
     //MARK: init

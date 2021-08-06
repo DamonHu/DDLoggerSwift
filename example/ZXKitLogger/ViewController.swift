@@ -55,6 +55,10 @@ class ViewController: UIViewController {
         
         //输出加密内容
         ZXKitLogger.privacyLogPassword = "12345678901234561234567890123456" //设置加密内容密码
+
+        ZXKitLogger.uploadComplete = { file in
+            print(file)
+        }
     }
     
     @objc func showButtonClick(){

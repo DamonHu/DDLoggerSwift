@@ -86,7 +86,7 @@ private extension HDSqliteTools {
     func _getDataBasePath(name: String? = nil) -> URL {
         let path = self.getDBFolder()
         if let name = name {
-            return path.appendingPathComponent("\(name)")
+            return path.appendingPathComponent(name)
         } else {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd"

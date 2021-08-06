@@ -45,15 +45,21 @@ private extension ZXKitLoggerMenuView {
         self.backgroundColor = UIColor.zx.color(hexValue: 0x000000, alpha: 0.6)
         self.addSubview(mCollectionView)
         mCollectionView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(20)
-            $0.left.right.bottom.equalToSuperview()
+            $0.top.equalToSuperview().offset(10)
+            $0.left.right.equalToSuperview()
+            $0.bottom.equalToSuperview().offset(-10)
         }
     }
 
     func _loadData() {
         mCollectionList.removeAll()
-        let titleList = ["Back".ZXLocaleString, "Decrypt".ZXLocaleString, "Search".ZXLocaleString, "Share".ZXLocaleString, "Scroll".ZXLocaleString, "Analyse".ZXLocaleString]
-        let imageList = [UIImageHDBoundle(named: "icon_normal_back"), UIImageHDBoundle(named: "icon_decrypt"), UIImageHDBoundle(named: "icon_search"), UIImageHDBoundle(named: "icon_share"), UIImageHDBoundle(named: "icon_fixed"), UIImageHDBoundle(named: "icon_analyse")]
+        var titleList = ["Back".ZXLocaleString, "Decrypt".ZXLocaleString, "Search".ZXLocaleString, "Share".ZXLocaleString, "Scroll".ZXLocaleString, "Analyse".ZXLocaleString]
+        var imageList = [UIImageHDBoundle(named: "icon_normal_back"), UIImageHDBoundle(named: "icon_decrypt"), UIImageHDBoundle(named: "icon_search"), UIImageHDBoundle(named: "icon_share"), UIImageHDBoundle(named: "icon_fixed"), UIImageHDBoundle(named: "icon_analyse")]
+
+        if ZXKitLogger.uploadComplete != nil {
+            titleList.append("Upload".ZXLocaleString)
+            imageList.append(UIImageHDBoundle(named: "icon_upload"))
+        }
 
         for i in 0..<titleList.count {
             let model = ZXKitLoggerMenuCollectionViewCellModel(title: titleList[i], image: imageList[i])

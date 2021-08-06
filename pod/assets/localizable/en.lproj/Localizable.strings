@@ -7,6 +7,7 @@
 */
 "ZXKitLogger: Click Log To Copy" = "ZXKitLogger: Click Log To Copy";
 "Please select the log to share" = "Please select the log to share";
+"Please select the log to upload" = "Please select the log to upload";
 "Clean Log" = "Clean Log";
 "Scale" = "Scale";
 "Hide" = "Hide";
@@ -26,9 +27,11 @@
 "System basic plug-in cannot be stopped" = "System basic plug-in cannot be stopped";
 "Analyse" = "Analyse";
 "Back" = "Back";
+"Upload" = "Upload";
 "Search" = "Search";
 "Scroll" = "Scroll";
 "More" = "More";
+"Done" = "Done";
 "LogFile count" = "LogFile count";
 "LogFile total size" = "LogFile total size";
 "current log count" = "current log count";
