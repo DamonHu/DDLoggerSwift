@@ -63,6 +63,8 @@ class ViewController: UIViewController {
     
     @objc func showButtonClick(){
         ZXKitLogger.show()
+//        ZXKitLogger.showUpload()
+//        ZXKitLogger.showShare()
     }
 
     @objc func onClickButton() {
