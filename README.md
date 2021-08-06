@@ -209,6 +209,31 @@ if let enumer = FileManager.default.enumerator(atPath: dbFolder.path) {
 }
 ```
 
+### 12. Directly display log sharing window
+
+If you don't want users to see the log output window, but just let them share the log, you can call
+
+```
+ZXKitLogger.showShare()
+```
+
+### 13、Display log upload, select window and button
+
+If you want users to upload DB files, in addition to traversing by themselves, we also provide a shortcut scheme. Like sharing, call
+
+```
+ZXKitLogger.showUpload()
+```
+
+The upload option will appears. The callback determined after the user selects is in `uploadcomplete`. You can implement the callback, for example
+
+```
+ZXKitLogger.uploadComplete = { file in
+     print(file)
+     //Process upload
+}
+```
+
 ### LogContent protocol
 
 If you want to customize the output content, you can integrate and use this type of `LogContent` protocol. For example, you can print the `URL` type to output only its` path`. You can directly set the returned `logStringValue`.

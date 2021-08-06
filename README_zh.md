@@ -202,6 +202,31 @@ if let enumer = FileManager.default.enumerator(atPath: dbFolder.path) {
 }
 ```
 
+### 12、直接显示日志分享window
+
+如果你不想让用户看到日志输出的window，而仅仅是让分享日志，则可以调用
+
+```
+ZXKitLogger.showShare()
+```
+
+### 13、显示日志上传选择window和按钮
+
+如果你想让用户上传db文件，除了可以自己遍历，我们也提供了快捷方案，和分享一样，调用
+
+```
+ZXKitLogger.showUpload()
+```
+
+即可出现上传的选项，用户选择之后确定的回调在`uploadComplete`，你实现该回调即可，例如
+
+```
+ZXKitLogger.uploadComplete = { file in
+     print(file)
+     //处理上传
+}
+```
+
 ### LogContent协议
 
 如果你想自定义输出的内容，可以集成并该类型的LogContent协议，例如设置打印`URL`类型只输出它的`path`，可以直接设置返回的`logStringValue`即可。
