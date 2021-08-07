@@ -199,7 +199,7 @@ class ZXKitLoggerWindow: UIWindow {
                 case 2:
                     self.isSearchViewHidden = false
                 case 3:
-                    ZXKitLogger.showShare()
+                    ZXKitLogger.showShare(isCloseWhenComplete: false)
                 case 4:
                     self.isScrollViewHidden = false
                 case 5:
@@ -217,7 +217,7 @@ class ZXKitLoggerWindow: UIWindow {
                     let info = "\n" + "current log count".ZXLocaleString + ": \(self.mLogDataArray.count)" +  "\n" + "LogFile count".ZXLocaleString + ": \(count)" + "\n" + "LogFile total size".ZXLocaleString + ": \(size/1024.0)kb"
                     printWarn(info)
                 case 6 :
-                    ZXKitLogger.showUpload()
+                    ZXKitLogger.showUpload(isCloseWhenComplete: false)
                 default:
                     break
             }

@@ -27,6 +27,7 @@ class ZXKitLoggerPickerWindow: UIWindow {
     
     private var mFileDateNameList = [String]()      //可以分享的文件列表
     private var mShareFileName = ""                 //选中去分享的文件名
+    private var isCloseWhenComplete = false           //分享或者上传完毕之后是否关闭整个log
     private var pickerType: PickerType = .share {
         willSet {
             if newValue == .share {
@@ -77,8 +78,9 @@ class ZXKitLoggerPickerWindow: UIWindow {
 }
 
 extension ZXKitLoggerPickerWindow {
-    func showPicker(pickType: PickerType) {
+    func showPicker(pickType: PickerType, isCloseWhenComplete: Bool) {
         self.pickerType = pickType
+        self.isCloseWhenComplete = isCloseWhenComplete
         self.mFileDateNameList = [String]()
         let path = HDSqliteTools.shared.getDBFolder()
         //数据库目录
@@ -171,12 +173,20 @@ private extension ZXKitLoggerPickerWindow {
                 activityVC.popoverPresentationController?.sourceView = view
                 activityVC.popoverPresentationController?.sourceRect = CGRect(x: 0, y: UIScreenHeight - 200, width: UIScreenWidth, height: 200)
             }
-            ZXKitLogger.hide()
+            if isCloseWhenComplete {
+                ZXKitLogger.close()
+            } else {
+                ZXKitLogger.hide()
+            }
             ZXKitUtil.shared.getCurrentVC()?.present(activityVC, animated: true, completion: nil)
         } else if let complete = ZXKitLogger.uploadComplete {
             let path = HDSqliteTools.shared.getDBFolder().appendingPathComponent(self.mShareFileName)
             complete(path)
-            ZXKitLogger.hide()
+            if isCloseWhenComplete {
+                ZXKitLogger.close()
+            } else {
+                ZXKitLogger.hide()
+            }
         }
     }
 }

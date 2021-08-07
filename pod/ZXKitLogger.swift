@@ -311,15 +311,15 @@ public class ZXKitLogger {
 
 
     ///显示分享弹窗
-    public class func showShare() {
+    public class func showShare(isCloseWhenComplete: Bool = true) {
         self.shared.pickerWindow?.isHidden = false
-        self.shared.pickerWindow?.showPicker(pickType: .share)
+        self.shared.pickerWindow?.showPicker(pickType: .share, isCloseWhenComplete: isCloseWhenComplete)
     }
 
     ///显示上传弹窗
-    public class func showUpload() {
+    public class func showUpload(isCloseWhenComplete: Bool = true) {
         self.shared.pickerWindow?.isHidden = false
-        self.shared.pickerWindow?.showPicker(pickType: .upload)
+        self.shared.pickerWindow?.showPicker(pickType: .upload, isCloseWhenComplete: isCloseWhenComplete)
     }
 
     //MARK: init
