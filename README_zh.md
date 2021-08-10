@@ -336,11 +336,12 @@ printPrivacy("这个是加密数据的测试数据222")
 * [http://tools.bugscaner.com/cryptoaes/](http://tools.bugscaner.com/cryptoaes/)
 * [http://tool.chacuo.net/cryptaes](http://tool.chacuo.net/cryptaes)
 
-## 五、其他说明
+## 五、其他说明tips
 
 1. 为了查看方便，分为普通、警告、错误三种类型，对应了三种不同的颜色，方便查看
 2. 点击对应的cell可以直接将输出log复制到系统剪贴板
 3. 分享调用的系统分享，可以分享到哪个软件取决于你手机上安装的有哪些软件。
+4.   分享出去的log文件可在任意文本编辑器查看，在`VSCode`查看会有代码高亮效果
 
 ## License协议
 

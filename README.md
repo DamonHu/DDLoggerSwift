@@ -341,11 +341,12 @@ Here are a few online sites recommended, you can also Google it by yourself
 * [http://tools.bugscaner.com/cryptoaes/](http://tools.bugscaner.com/cryptoaes/)
 * [http://tool.chacuo.net/cryptaes](http://tool.chacuo.net/cryptaes)
 
-## V. Other instructions
+## V. Other Tips
 
 1. For the convenience of viewing, it is divided into three types: info, warning and error. It corresponds to three different colors for easy viewing.
 2. Click the corresponding cell to copy the output log directly to the system clipboard.
 3. Share the system share that is called. Which software you can share depends on which software is installed on your phone.
+4. The shared log file can be viewed in any text editor. When viewed in 'vscode', the code will be highlighted
 
 ## License
 
