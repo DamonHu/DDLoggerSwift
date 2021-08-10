@@ -87,16 +87,25 @@ printPrivacy(log) // Output of encrypted data, the specific encryption method is
 Output format
 
 ```
-10:33:00.457  >   ✅✅[File:ViewController.swift]:[Line:69:[Function:onClickButton()]]-Log:
-[
-  "1111111",
-  "22222222",
-  "sdjkhfsjkdfjkhsdhjfk",
-  "3333sjdhgfhjg"
-]
+13:36:08.474 ---- ⚠️⚠️ ---- File: ViewController.swift -- Line: 82 -- Function:ViewController.swift.onClickButton() ----
+警告提示
 
-10:33:00.458  >   🖤🖤[File:ViewController.swift]:[Line:53:[Function:onClickButton()]]-Log:
-测试输出，不会写入悬浮窗
+13:36:08.476 ---- ❌❌ ---- File: ViewController.swift -- Line: 84 -- Function:ViewController.swift.onClickButton() ----
+错误出现
+
+13:36:08.487 ---- ⛔️⛔️ ---- File: ViewController.swift -- Line: 86 -- Function:ViewController.swift.onClickButton() ----
+AAuKjIm5hC2jiPqz7OKHAngWspeACyWZufDguqdOcugituhWV8jnbr/6SHYoK0/9
+
+13:36:08.489 ---- ✅✅ ---- File: ViewController.swift -- Line: 89 -- Function:ViewController.swift.onClickButton() ----
+{
+  "hhhhhhh" : "撒旦法是打发斯蒂芬是打发斯蒂芬",
+  "77777" : "数据库的复健科花见花开会尽快圣诞节开发和金黄色的费四大皆空回复就开始和豆腐是砍价的回复斯柯达金凤凰"
+}
+13:36:08.468 ---- 🖤🖤 ---- File: ViewController.swift -- Line: 77 -- Function:ViewController.swift.onClickButton() ----
+[
+  "222222",
+  "3333333"
+]
 ```
 
 ## III. more settings
@@ -107,16 +116,42 @@ Output format
 ZXKitLogger.isFullLogOut = true
 ```
 
-If set to output all debugging information, the output format is as follows, including the output file, the number of lines called, and the function called
+If it is set to `true`, the output format is as follows, including the output file, the number of lines called, and the function name
 
 ```
-13: 51: 38.498> [File: ViewController.swift]: [Line: 41: [Function: onClickButton ()]]-Log:
-[
-  "1111111",
-  "22222222",
-  "sdjkhfsjkdfjkhsdhjfk",
-  "3333sjdhgfhjg"
-]
+13:36:08.474 ---- ⚠️⚠️ ---- File: ViewController.swift -- Line: 82 -- Function:ViewController.swift.onClickButton() ----
+警告提示
+
+13:36:08.476 ---- ❌❌ ---- File: ViewController.swift -- Line: 84 -- Function:ViewController.swift.onClickButton() ----
+错误出现
+
+13:36:08.487 ---- ⛔️⛔️ ---- File: ViewController.swift -- Line: 86 -- Function:ViewController.swift.onClickButton() ----
+AAuKjIm5hC2jiPqz7OKHAngWspeACyWZufDguqdOcugituhWV8jnbr/6SHYoK0/9
+
+13:36:08.489 ---- ✅✅ ---- File: ViewController.swift -- Line: 89 -- Function:ViewController.swift.onClickButton() ----
+{
+  "hhhhhhh" : "撒旦法是打发斯蒂芬是打发斯蒂芬",
+  "77777" : "数据库的复健科花见花开会尽快圣诞节开发和金黄色的费四大皆空回复就开始和豆腐是砍价的回复斯柯达金凤凰"
+}
+```
+
+If it is set to `false`, the output format is as follows
+
+```
+13:35:17.059 ---- ⚠️⚠️ ---- 
+警告提示
+
+13:35:17.060 ---- ❌❌ ---- 
+错误出现
+
+13:35:17.061 ---- ⛔️⛔️ ---- 
+AAuKjIm5hC2jiPqz7OKHAngWspeACyWZufDguqdOcugituhWV8jnbr/6SHYoK0/9
+
+13:35:17.063 ---- ✅✅ ---- 
+{
+  "77777" : "数据库的复健科花见花开会尽快圣诞节开发和金黄色的费四大皆空回复就开始和豆腐是砍价的回复斯柯达金凤凰",
+  "hhhhhhh" : "撒旦法是打发斯蒂芬是打发斯蒂芬"
+}
 ```
 
 ### 2、 Whether to output content synchronously in the debug bar at the bottom of xcode

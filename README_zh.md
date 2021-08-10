@@ -62,7 +62,7 @@ ZXKitLogger.show()
 四种输出方式字体颜色显示不同，对应的printLog不同的类型
 
 ```
-printLog(log)	//调试输出，内容不会写入到窗口，只在xcode输出
+printLog(log)	//调试输出，默认不会写入数据库
 
 printInfo(log)	//日志为绿色
 
@@ -77,16 +77,25 @@ printPrivacy(log)	//加密数据的输出，具体加密方式在下面的加密
 输出格式
 
 ```
-10:33:00.457  >   ✅✅[File:ViewController.swift]:[Line:69:[Function:onClickButton()]]-Log:
-[
-  "1111111",
-  "22222222",
-  "sdjkhfsjkdfjkhsdhjfk",
-  "3333sjdhgfhjg"
-]
+13:36:08.474 ---- ⚠️⚠️ ---- File: ViewController.swift -- Line: 82 -- Function:ViewController.swift.onClickButton() ----
+警告提示
 
-10:33:00.458  >   🖤🖤[File:ViewController.swift]:[Line:53:[Function:onClickButton()]]-Log:
-测试输出，不会写入悬浮窗
+13:36:08.476 ---- ❌❌ ---- File: ViewController.swift -- Line: 84 -- Function:ViewController.swift.onClickButton() ----
+错误出现
+
+13:36:08.487 ---- ⛔️⛔️ ---- File: ViewController.swift -- Line: 86 -- Function:ViewController.swift.onClickButton() ----
+AAuKjIm5hC2jiPqz7OKHAngWspeACyWZufDguqdOcugituhWV8jnbr/6SHYoK0/9
+
+13:36:08.489 ---- ✅✅ ---- File: ViewController.swift -- Line: 89 -- Function:ViewController.swift.onClickButton() ----
+{
+  "hhhhhhh" : "撒旦法是打发斯蒂芬是打发斯蒂芬",
+  "77777" : "数据库的复健科花见花开会尽快圣诞节开发和金黄色的费四大皆空回复就开始和豆腐是砍价的回复斯柯达金凤凰"
+}
+13:36:08.468 ---- 🖤🖤 ---- File: ViewController.swift -- Line: 77 -- Function:ViewController.swift.onClickButton() ----
+[
+  "222222",
+  "3333333"
+]
 ```
 
 ## 三、更多设置
@@ -99,16 +108,42 @@ printPrivacy(log)	//加密数据的输出，具体加密方式在下面的加密
 ZXKitLogger.isFullLogOut = true
 ```
 
-如果设置为输出全部调试信息，那么输出的格式是下面这样的，包含了输出文件、调用的行数、和调用的函数
+如果设置为`true`，那么输出的格式是下面这样的，包含了输出文件、调用的行数、和调用的函数
 
 ```
-13:51:38.498  >   [File:ViewController.swift]:[Line:41:[Function:onClickButton()]]-Log:
-[
-  "1111111",
-  "22222222",
-  "sdjkhfsjkdfjkhsdhjfk",
-  "3333sjdhgfhjg"
-]
+13:36:08.474 ---- ⚠️⚠️ ---- File: ViewController.swift -- Line: 82 -- Function:ViewController.swift.onClickButton() ----
+警告提示
+
+13:36:08.476 ---- ❌❌ ---- File: ViewController.swift -- Line: 84 -- Function:ViewController.swift.onClickButton() ----
+错误出现
+
+13:36:08.487 ---- ⛔️⛔️ ---- File: ViewController.swift -- Line: 86 -- Function:ViewController.swift.onClickButton() ----
+AAuKjIm5hC2jiPqz7OKHAngWspeACyWZufDguqdOcugituhWV8jnbr/6SHYoK0/9
+
+13:36:08.489 ---- ✅✅ ---- File: ViewController.swift -- Line: 89 -- Function:ViewController.swift.onClickButton() ----
+{
+  "hhhhhhh" : "撒旦法是打发斯蒂芬是打发斯蒂芬",
+  "77777" : "数据库的复健科花见花开会尽快圣诞节开发和金黄色的费四大皆空回复就开始和豆腐是砍价的回复斯柯达金凤凰"
+}
+```
+
+设置为`false`的输出样式
+
+```
+13:35:17.059 ---- ⚠️⚠️ ---- 
+警告提示
+
+13:35:17.060 ---- ❌❌ ---- 
+错误出现
+
+13:35:17.061 ---- ⛔️⛔️ ---- 
+AAuKjIm5hC2jiPqz7OKHAngWspeACyWZufDguqdOcugituhWV8jnbr/6SHYoK0/9
+
+13:35:17.063 ---- ✅✅ ---- 
+{
+  "77777" : "数据库的复健科花见花开会尽快圣诞节开发和金黄色的费四大皆空回复就开始和豆腐是砍价的回复斯柯达金凤凰",
+  "hhhhhhh" : "撒旦法是打发斯蒂芬是打发斯蒂芬"
+}
 ```
 
 ### 2、是否在xcode底部的调试栏同步输出内容
