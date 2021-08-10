@@ -53,28 +53,28 @@ public class ZXKitLoggerItem {
         if ZXKitLogger.isFullLogOut {
             switch mLogItemType {
                 case .info:
-                    return dateStr + "  >   ✅✅" +  mLogDebugContent + "\n" + contentString + "\n"
+                    return dateStr + " ---- ✅✅ ---- " +  mLogDebugContent + "\n" + contentString + "\n"
                 case .warn:
-                    return dateStr + "  >   ⚠️⚠️" +  mLogDebugContent + "\n" + contentString + "\n"
+                    return dateStr + " ---- ⚠️⚠️ ---- " +  mLogDebugContent + "\n" + contentString + "\n"
                 case .error:
-                    return dateStr + "  >   ❌❌" +  mLogDebugContent + "\n" + contentString + "\n"
+                    return dateStr + " ---- ❌❌ ---- " +  mLogDebugContent + "\n" + contentString + "\n"
                 case .privacy:
-                    return dateStr + "  >   ⛔️⛔️" +  mLogDebugContent + "\n" + contentString + "\n"
+                    return dateStr + " ---- ⛔️⛔️ ---- " +  mLogDebugContent + "\n" + contentString + "\n"
                 default:
-                    return dateStr + "  >   🖤🖤" +  mLogDebugContent + "\n" + contentString + "\n"
+                    return dateStr + " ---- 🖤🖤 ---- " +  mLogDebugContent + "\n" + contentString + "\n"
             }
         } else {
             switch mLogItemType {
                 case .info:
-                    return dateStr + "  >   ✅✅" + contentString + "\n"
+                    return dateStr + " ---- ✅✅ ---- " + "\n" + contentString + "\n"
                 case .warn:
-                    return dateStr + "  >   ⚠️⚠️" + contentString + "\n"
+                    return dateStr + " ---- ⚠️⚠️ ---- " + "\n" + contentString + "\n"
                 case .error:
-                    return dateStr + "  >   ❌❌" + contentString + "\n"
+                    return dateStr + " ---- ❌❌ ---- " + "\n" + contentString + "\n"
                 case .privacy:
-                    return dateStr + "  >   ⛔️⛔️" + contentString + "\n"
+                    return dateStr + " ---- ⛔️⛔️ ---- " + "\n" + contentString + "\n"
                 default:
-                    return dateStr + "  >   🖤🖤" + contentString + "\n"
+                    return dateStr + " ---- 🖤🖤 ---- " + "\n" + contentString + "\n"
             }
         }
     }

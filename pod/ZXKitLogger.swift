@@ -201,7 +201,7 @@ public class ZXKitLogger {
             loggerItem.mCreateDate = Date()
 
             let fileName = (file as NSString).lastPathComponent;
-            loggerItem.mLogDebugContent = "[File:\(fileName)]:[Line:\(lineNum):[Function:\(funcName)]]-Log:"
+            loggerItem.mLogDebugContent = "File: \(fileName) -- Line: \(lineNum) -- Function:\(fileName).\(funcName) ----"
             loggerItem.mLogContent = log
 
             if self.isSyncConsole {
