@@ -55,7 +55,6 @@ class ViewController: UIViewController {
         
         //输出加密内容
         ZXKitLogger.privacyLogPassword = "12345678901234561234567890123456" //设置加密内容密码
-
         ZXKitLogger.uploadComplete = { file in
             print(file)
         }
@@ -74,8 +73,8 @@ class ViewController: UIViewController {
         printInfo("调试数据文件地址", ZXKitLogger.getDBFolder().path)
 
         for _ in 0..<1000 {
-            printLog("测试输出，不会写入悬浮窗")
-            printLog("测试输出，不会写入悬浮窗","222222","3333333")
+            printLog("测试输出，默认不会写入数据库")
+            printLog("测试输出，默认不会写入数据库","222222","3333333")
             //普通输出
             printInfo("点击了按钮111")
             printInfo("输出多个",22)
