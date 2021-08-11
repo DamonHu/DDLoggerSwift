@@ -29,7 +29,7 @@ public class ZXKitLoggerItem {
     public func getFullContentString() -> String {
         //日期
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "HH:mm:ss.SSS"
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
         let dateStr = dateFormatter.string(from: mCreateDate)
         //内容
         var contentString = ""
@@ -61,7 +61,7 @@ public class ZXKitLoggerItem {
                 case .privacy:
                     return dateStr + " ---- ⛔️⛔️ ---- " +  mLogDebugContent + "\n" + contentString + "\n"
                 default:
-                    return dateStr + " ---- 🖤🖤 ---- " +  mLogDebugContent + "\n" + contentString + "\n"
+                    return dateStr + " ---- 💜💜 ---- " +  mLogDebugContent + "\n" + contentString + "\n"
             }
         } else {
             switch mLogItemType {
@@ -74,7 +74,7 @@ public class ZXKitLoggerItem {
                 case .privacy:
                     return dateStr + " ---- ⛔️⛔️ ---- " + "\n" + contentString + "\n"
                 default:
-                    return dateStr + " ---- 🖤🖤 ---- " + "\n" + contentString + "\n"
+                    return dateStr + " ---- 💜💜 ---- " + "\n" + contentString + "\n"
             }
         }
     }

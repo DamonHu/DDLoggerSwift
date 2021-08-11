@@ -51,7 +51,6 @@ class ViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        //配置ZXKitLogger
         
         //输出加密内容
         ZXKitLogger.privacyLogPassword = "12345678901234561234567890123456" //设置加密内容密码
