@@ -77,25 +77,23 @@ printPrivacy(log)	//加密数据的输出，具体加密方式在下面的加密
 输出格式
 
 ```
-13:36:08.474 ---- ⚠️⚠️ ---- File: ViewController.swift -- Line: 82 -- Function:ViewController.swift.onClickButton() ----
+2021-08-11 10:07:28.378 ---- ⚠️⚠️ ---- File: ViewController.swift -- Line: 82 -- Function:ViewController.swift.onClickButton() ----
 警告提示
 
-13:36:08.476 ---- ❌❌ ---- File: ViewController.swift -- Line: 84 -- Function:ViewController.swift.onClickButton() ----
+2021-08-11 10:07:28.380 ---- ❌❌ ---- File: ViewController.swift -- Line: 84 -- Function:ViewController.swift.onClickButton() ----
 错误出现
 
-13:36:08.487 ---- ⛔️⛔️ ---- File: ViewController.swift -- Line: 86 -- Function:ViewController.swift.onClickButton() ----
+2021-08-11 10:07:28.381 ---- ⛔️⛔️ ---- File: ViewController.swift -- Line: 86 -- Function:ViewController.swift.onClickButton() ----
 AAuKjIm5hC2jiPqz7OKHAngWspeACyWZufDguqdOcugituhWV8jnbr/6SHYoK0/9
 
-13:36:08.489 ---- ✅✅ ---- File: ViewController.swift -- Line: 89 -- Function:ViewController.swift.onClickButton() ----
+2021-08-11 10:07:28.383 ---- ✅✅ ---- File: ViewController.swift -- Line: 89 -- Function:ViewController.swift.onClickButton() ----
 {
-  "hhhhhhh" : "撒旦法是打发斯蒂芬是打发斯蒂芬",
-  "77777" : "数据库的复健科花见花开会尽快圣诞节开发和金黄色的费四大皆空回复就开始和豆腐是砍价的回复斯柯达金凤凰"
+  "77777" : "数据库的复健科花见花开会尽快圣诞节开发和金黄色的费四大皆空回复就开始和豆腐是砍价的回复斯柯达金凤凰",
+  "hhhhhhh" : "撒旦法是打发斯蒂芬是打发斯蒂芬"
 }
-13:36:08.468 ---- 🖤🖤 ---- File: ViewController.swift -- Line: 77 -- Function:ViewController.swift.onClickButton() ----
-[
-  "222222",
-  "3333333"
-]
+
+2021-08-11 10:07:28.388 ---- 💜💜 ---- File: ViewController.swift -- Line: 76 -- Function:ViewController.swift.onClickButton() ----
+测试输出，默认不会写入数据库
 ```
 
 ## 三、更多设置
@@ -125,25 +123,31 @@ AAuKjIm5hC2jiPqz7OKHAngWspeACyWZufDguqdOcugituhWV8jnbr/6SHYoK0/9
   "hhhhhhh" : "撒旦法是打发斯蒂芬是打发斯蒂芬",
   "77777" : "数据库的复健科花见花开会尽快圣诞节开发和金黄色的费四大皆空回复就开始和豆腐是砍价的回复斯柯达金凤凰"
 }
+
+2021-08-11 10:07:28.388 ---- 💜💜 ---- File: ViewController.swift -- Line: 76 -- Function:ViewController.swift.onClickButton() ----
+测试输出，默认不会写入数据库
 ```
 
 设置为`false`的输出样式
 
 ```
-13:35:17.059 ---- ⚠️⚠️ ---- 
+2021-08-11 10:10:33.309 ---- ⚠️⚠️ ---- 
 警告提示
 
-13:35:17.060 ---- ❌❌ ---- 
+2021-08-11 10:10:33.310 ---- ❌❌ ---- 
 错误出现
 
-13:35:17.061 ---- ⛔️⛔️ ---- 
+2021-08-11 10:10:33.312 ---- ⛔️⛔️ ---- 
 AAuKjIm5hC2jiPqz7OKHAngWspeACyWZufDguqdOcugituhWV8jnbr/6SHYoK0/9
 
-13:35:17.063 ---- ✅✅ ---- 
+2021-08-11 10:10:33.318 ---- ✅✅ ---- 
 {
-  "77777" : "数据库的复健科花见花开会尽快圣诞节开发和金黄色的费四大皆空回复就开始和豆腐是砍价的回复斯柯达金凤凰",
-  "hhhhhhh" : "撒旦法是打发斯蒂芬是打发斯蒂芬"
+  "hhhhhhh" : "撒旦法是打发斯蒂芬是打发斯蒂芬",
+  "77777" : "数据库的复健科花见花开会尽快圣诞节开发和金黄色的费四大皆空回复就开始和豆腐是砍价的回复斯柯达金凤凰"
 }
+
+2021-08-11 10:10:33.323 ---- 💜💜 ---- 
+测试输出，默认不会写入数据库
 ```
 
 ### 2、是否在xcode底部的调试栏同步输出内容
@@ -302,7 +306,7 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
 如果存在敏感信息，不希望用户或者手机调试时看到，简单两步就可以设置加密
 
 ```
-//1、设置加密密码，32个字符数字
+//1、设置加密密码，32个字符数字。默认为12345678901234561234567890123456
 ZXKitLogger.privacyLogPassword = "12345678901234561234567890123456"
 
 //2、输出加密内容

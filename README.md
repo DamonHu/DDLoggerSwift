@@ -87,25 +87,23 @@ printPrivacy(log) // Output of encrypted data, the specific encryption method is
 Output format
 
 ```
-13:36:08.474 ---- ⚠️⚠️ ---- File: ViewController.swift -- Line: 82 -- Function:ViewController.swift.onClickButton() ----
+2021-08-11 10:07:28.378 ---- ⚠️⚠️ ---- File: ViewController.swift -- Line: 82 -- Function:ViewController.swift.onClickButton() ----
 警告提示
 
-13:36:08.476 ---- ❌❌ ---- File: ViewController.swift -- Line: 84 -- Function:ViewController.swift.onClickButton() ----
+2021-08-11 10:07:28.380 ---- ❌❌ ---- File: ViewController.swift -- Line: 84 -- Function:ViewController.swift.onClickButton() ----
 错误出现
 
-13:36:08.487 ---- ⛔️⛔️ ---- File: ViewController.swift -- Line: 86 -- Function:ViewController.swift.onClickButton() ----
+2021-08-11 10:07:28.381 ---- ⛔️⛔️ ---- File: ViewController.swift -- Line: 86 -- Function:ViewController.swift.onClickButton() ----
 AAuKjIm5hC2jiPqz7OKHAngWspeACyWZufDguqdOcugituhWV8jnbr/6SHYoK0/9
 
-13:36:08.489 ---- ✅✅ ---- File: ViewController.swift -- Line: 89 -- Function:ViewController.swift.onClickButton() ----
+2021-08-11 10:07:28.383 ---- ✅✅ ---- File: ViewController.swift -- Line: 89 -- Function:ViewController.swift.onClickButton() ----
 {
-  "hhhhhhh" : "撒旦法是打发斯蒂芬是打发斯蒂芬",
-  "77777" : "数据库的复健科花见花开会尽快圣诞节开发和金黄色的费四大皆空回复就开始和豆腐是砍价的回复斯柯达金凤凰"
+  "77777" : "数据库的复健科花见花开会尽快圣诞节开发和金黄色的费四大皆空回复就开始和豆腐是砍价的回复斯柯达金凤凰",
+  "hhhhhhh" : "撒旦法是打发斯蒂芬是打发斯蒂芬"
 }
-13:36:08.468 ---- 🖤🖤 ---- File: ViewController.swift -- Line: 77 -- Function:ViewController.swift.onClickButton() ----
-[
-  "222222",
-  "3333333"
-]
+
+2021-08-11 10:07:28.388 ---- 💜💜 ---- File: ViewController.swift -- Line: 76 -- Function:ViewController.swift.onClickButton() ----
+测试输出，默认不会写入数据库
 ```
 
 ## III. more settings
@@ -119,39 +117,45 @@ ZXKitLogger.isFullLogOut = true
 If it is set to `true`, the output format is as follows, including the output file, the number of lines called, and the function name
 
 ```
-13:36:08.474 ---- ⚠️⚠️ ---- File: ViewController.swift -- Line: 82 -- Function:ViewController.swift.onClickButton() ----
+2021-08-11 10:07:28.378 ---- ⚠️⚠️ ---- File: ViewController.swift -- Line: 82 -- Function:ViewController.swift.onClickButton() ----
 警告提示
 
-13:36:08.476 ---- ❌❌ ---- File: ViewController.swift -- Line: 84 -- Function:ViewController.swift.onClickButton() ----
+2021-08-11 10:07:28.380 ---- ❌❌ ---- File: ViewController.swift -- Line: 84 -- Function:ViewController.swift.onClickButton() ----
 错误出现
 
-13:36:08.487 ---- ⛔️⛔️ ---- File: ViewController.swift -- Line: 86 -- Function:ViewController.swift.onClickButton() ----
+2021-08-11 10:07:28.381 ---- ⛔️⛔️ ---- File: ViewController.swift -- Line: 86 -- Function:ViewController.swift.onClickButton() ----
 AAuKjIm5hC2jiPqz7OKHAngWspeACyWZufDguqdOcugituhWV8jnbr/6SHYoK0/9
 
-13:36:08.489 ---- ✅✅ ---- File: ViewController.swift -- Line: 89 -- Function:ViewController.swift.onClickButton() ----
+2021-08-11 10:07:28.383 ---- ✅✅ ---- File: ViewController.swift -- Line: 89 -- Function:ViewController.swift.onClickButton() ----
 {
-  "hhhhhhh" : "撒旦法是打发斯蒂芬是打发斯蒂芬",
-  "77777" : "数据库的复健科花见花开会尽快圣诞节开发和金黄色的费四大皆空回复就开始和豆腐是砍价的回复斯柯达金凤凰"
+  "77777" : "数据库的复健科花见花开会尽快圣诞节开发和金黄色的费四大皆空回复就开始和豆腐是砍价的回复斯柯达金凤凰",
+  "hhhhhhh" : "撒旦法是打发斯蒂芬是打发斯蒂芬"
 }
+
+2021-08-11 10:07:28.388 ---- 💜💜 ---- File: ViewController.swift -- Line: 76 -- Function:ViewController.swift.onClickButton() ----
+测试输出，默认不会写入数据库
 ```
 
 If it is set to `false`, the output format is as follows
 
 ```
-13:35:17.059 ---- ⚠️⚠️ ---- 
+2021-08-11 10:10:33.309 ---- ⚠️⚠️ ---- 
 警告提示
 
-13:35:17.060 ---- ❌❌ ---- 
+2021-08-11 10:10:33.310 ---- ❌❌ ---- 
 错误出现
 
-13:35:17.061 ---- ⛔️⛔️ ---- 
+2021-08-11 10:10:33.312 ---- ⛔️⛔️ ---- 
 AAuKjIm5hC2jiPqz7OKHAngWspeACyWZufDguqdOcugituhWV8jnbr/6SHYoK0/9
 
-13:35:17.063 ---- ✅✅ ---- 
+2021-08-11 10:10:33.318 ---- ✅✅ ---- 
 {
-  "77777" : "数据库的复健科花见花开会尽快圣诞节开发和金黄色的费四大皆空回复就开始和豆腐是砍价的回复斯柯达金凤凰",
-  "hhhhhhh" : "撒旦法是打发斯蒂芬是打发斯蒂芬"
+  "hhhhhhh" : "撒旦法是打发斯蒂芬是打发斯蒂芬",
+  "77777" : "数据库的复健科花见花开会尽快圣诞节开发和金黄色的费四大皆空回复就开始和豆腐是砍价的回复斯柯达金凤凰"
 }
+
+2021-08-11 10:10:33.323 ---- 💜💜 ---- 
+测试输出，默认不会写入数据库
 ```
 
 ### 2、 Whether to output content synchronously in the debug bar at the bottom of xcode
