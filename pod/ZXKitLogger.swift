@@ -123,11 +123,11 @@ public class ZXKitLogger {
     public static var uploadComplete: ((URL) ->Void)?   //点击上传日志的回调
     /*隐私数据采用AESCBC加密
      *需要设置密码privacyLogPassword
-     *初始向量privacyLogiv
+     *初始向量privacyLogIv
      *结果编码类型可以选择base64和hex编码
      **/
     public static var privacyLogPassword = "12345678901234561234567890123456"
-    public static var privacyLogiv = "abcdefghijklmnop"
+    public static var privacyLogIv = "abcdefghijklmnop"
     public static var privacyResultEncodeType = ZXKitUtilEncodeType.hex
 
     //MARK: Private

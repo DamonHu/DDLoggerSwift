@@ -40,7 +40,7 @@ public class ZXKitLoggerItem {
                 contentString = "\(mContent)"
             }
             if self.mLogItemType == .privacy {
-                contentString = contentString.zx.aesCBCEncrypt(password: ZXKitLogger.privacyLogPassword, ivString: ZXKitLogger.privacyLogiv, encodeType: ZXKitLogger.privacyResultEncodeType) ?? "Invalid encryption".ZXLocaleString
+                contentString = contentString.zx.aesCBCEncrypt(password: ZXKitLogger.privacyLogPassword, ivString: ZXKitLogger.privacyLogIv, encodeType: ZXKitLogger.privacyResultEncodeType) ?? "Invalid encryption".ZXLocaleString
             }
         }
         
