@@ -54,22 +54,59 @@ public extension ZXKitUtilNameSpace where T == String {
         return unicodeStr
     }
     
+    ///字符串转hex字符串
+    func hexEncoded() -> String? {
+        let data = object.data(using: String.Encoding.utf8)
+        return data?.zx.hexEncodedString()
+    }
+    
     ///base64解码
     func base64Decode(lowercase: Bool = true) -> String? {
         let decodeData = Data(base64Encoded: object)
         return decodeData?.zx.base64Decode(lowercase: lowercase)
     }
     
-    ///aes256解密
-    func aes256Decrypt(password: String, ivString: String = "abcdefghijklmnop") -> String? {
-        let data = Data(base64Encoded: object)
-        return data?.zx.aes256Decrypt(password: password, ivString: ivString)
+    /*
+     AES加密
+     model: CBC
+     padding: PKCS7Padding
+     AES block Size: 128
+     **/
+    func aesCBCEncrypt(password: String, ivString: String = "abcdefghijklmnop", encodeType: ZXKitUtilEncodeType = .base64) -> String? {
+        let data = object.data(using:String.Encoding.utf8)
+        return data?.zx.aesCBCEncrypt(password: password, ivString: ivString, encodeType: encodeType)
     }
     
-    ///aes256加密
-    func aes256Encrypt(password: String, ivString: String = "abcdefghijklmnop") -> String? {
+    ///aes CBC解密
+    func aesCBCDecrypt(password: String, ivString: String = "abcdefghijklmnop", encodeType: ZXKitUtilEncodeType = .base64) -> String? {
+        if encodeType == .base64 {
+            let data = Data(base64Encoded: object)
+            return data?.zx.aesCBCDecrypt(password: password, ivString: ivString)
+        } else {
+            let data = Data.zx.data(hexString: object)
+            return data?.zx.aesCBCDecrypt(password: password, ivString: ivString)
+        }
+    }
+    
+    /*
+     AES加密
+     model: GCM
+     **/
+    @available(iOS 13.0, *)
+    func aesGCMEncrypt(password: String, encodeType: ZXKitUtilEncodeType = .base64) -> String? {
         let data = object.data(using:String.Encoding.utf8)
-        return data?.zx.aes256Encrypt(password: password, ivString: ivString)
+        return data?.zx.aesGCMEncrypt(password: password, encodeType: encodeType)
+    }
+    
+    @available(iOS 13.0, *)
+    func aesGCMDecrypt(password: String, encodeType: ZXKitUtilEncodeType = .base64) -> String? {
+        if encodeType == .base64 {
+            let data = Data(base64Encoded: object)
+            return data?.zx.aesGCMDecrypt(password: password)
+        } else {
+            let data = Data.zx.data(hexString: object)
+            return data?.zx.aesGCMDecrypt(password: password)
+        }
     }
     
     //MARK: 加密

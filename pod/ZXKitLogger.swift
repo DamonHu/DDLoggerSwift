@@ -121,12 +121,14 @@ public class ZXKitLogger {
     public static var userID = "0"             //为不同用户创建的独立的日志库
     public static var isShowFPS = true         //是否显示屏幕FPS状态
     public static var uploadComplete: ((URL) ->Void)?   //点击上传日志的回调
-    //解密隐私数据的密码，默认为12345678901234561234567890123456
-    public static var privacyLogPassword = "12345678901234561234567890123456" {
-        willSet {
-            assert(newValue.count == kCCKeySizeAES256, "The password requires 32 characters".ZXLocaleString)
-        }
-    }
+    /*隐私数据采用AESCBC加密
+     *需要设置密码privacyLogPassword
+     *初始向量privacyLogiv
+     *结果编码类型可以选择base64和hex编码
+     **/
+    public static var privacyLogPassword = "12345678901234561234567890123456"
+    public static var privacyLogiv = "abcdefghijklmnop"
+    public static var privacyResultEncodeType = ZXKitUtilEncodeType.hex
 
     //MARK: Private
     private let mFPSTools = ZXKitFPS()

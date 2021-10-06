@@ -40,13 +40,7 @@ public class ZXKitLoggerItem {
                 contentString = "\(mContent)"
             }
             if self.mLogItemType == .privacy {
-                if ZXKitLogger.privacyLogPassword.isEmpty {
-                    contentString = "Password is not set".ZXLocaleString + ":" +  contentString
-                } else if ZXKitLogger.privacyLogPassword.count != kCCKeySizeAES256 {
-                    contentString = "The password requires 32 characters".ZXLocaleString + contentString
-                } else if !ZXKitLogger.shared.isPasswordCorrect {
-                    contentString = contentString.zx.aes256Encrypt(password: ZXKitLogger.privacyLogPassword) ?? "Invalid encryption".ZXLocaleString
-                }
+                contentString = contentString.zx.aesCBCEncrypt(password: ZXKitLogger.privacyLogPassword, ivString: ZXKitLogger.privacyLogiv, encodeType: ZXKitLogger.privacyResultEncodeType) ?? "Invalid encryption".ZXLocaleString
             }
         }
         

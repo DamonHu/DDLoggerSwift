@@ -71,7 +71,7 @@ class ViewController: UIViewController {
         printError("错误出现")
         printInfo("调试数据文件地址", ZXKitLogger.getDBFolder().path)
 
-        for _ in 0..<1000 {
+        for _ in 0..<10 {
             printLog("测试输出，默认不会写入数据库")
             printLog("测试输出，默认不会写入数据库","222222","3333333")
             //普通输出

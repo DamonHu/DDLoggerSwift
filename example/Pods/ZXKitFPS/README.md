@@ -38,16 +38,25 @@ fps.stop()
 
 ## zxkit support
 
+The plug-in has been integrated in [ZXKitSwift](https://github.com/ZXKitCode/ZXKitSwift) by default, if you have already integrated `ZXKitSwift`, there is no need to repeat the integration
+
 this plugin supports `ZXKit`，If you need to display in the ZXKit toolset, you can use the following command to integrate
 
 ```
 pod 'ZXKitFPS/zxkit'
 ```
 
-After integration, register to the tool to be displayed in the list
+then regist to `ZXKit` in `AppDelegate`
+
 
 ```
-fps.registZXKitPlugin()
+func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+	
+	let fps = ZXKitFPS()
+	fps.registZXKitPlugin()
+	
+	return true
+}
 ```
 
 ## License
