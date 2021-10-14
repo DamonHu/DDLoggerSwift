@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 s.name = 'ZXKitLogger'
 s.swift_version = '5.0'
-s.version = '2.7.4'
+s.version = '2.8.0'
 s.license= { :type => "Apache-2.0", :file => "LICENSE" }
 s.summary = 'The iOS side displays the output log log on the screen, and can generate log file sharing, which is convenient for debugging information'
 s.homepage = 'https://github.com/ZXKitCode/ZXKitLogger'
@@ -17,7 +17,7 @@ s.subspec 'core' do |cs|
     cs.library = 'sqlite3'
     cs.source_files = "pod/*.swift"
     cs.dependency 'ZXKitFPS'
-    cs.dependency 'ZXKitUtil', '~>3.1.0'
+    cs.dependency 'ZXKitUtil', '~>3.2.0'
     cs.dependency 'SnapKit'
 end
 s.subspec 'wcdb' do |cs|
