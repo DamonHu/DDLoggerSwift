@@ -300,7 +300,7 @@ Then register to 'zxkit' in `AppDelegate`
 ```
 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 	
-	ZXKitLogger.registZXKit()
+	ZXKit.regist(plugin: ZXKitLogger.shared)
 	
 	return true
 }

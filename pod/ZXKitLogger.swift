@@ -113,6 +113,7 @@ public func ZXPrivacyLog(_ log:Any ..., file:String = #file, funcName:String = #
 
 ///log的输出
 public class ZXKitLogger {
+    public static let shared = ZXKitLogger()
     public static var isFullLogOut = true    //是否完整输出日志文件名等调试内容
     public static var isSyncConsole = true   //是否在xcode底部的调试栏同步输出内容
     public static var storageLevels: ZXKitLogType = [.info, .warn, .error, .privacy]    //存储到数据库的级别
@@ -162,7 +163,6 @@ public class ZXKitLogger {
     }()
     private var floatWindow: ZXKitLoggerFloatWindow?
     var isPasswordCorrect: Bool = false
-    static let shared = ZXKitLogger()
     private let logQueue = DispatchQueue(label:"com.ZXKitLogger.logQueue", qos:.utility, attributes:.concurrent)
     //是否显示屏幕FPS状态
     private static var _isShowFPS = true {
