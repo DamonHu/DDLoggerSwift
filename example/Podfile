@@ -6,7 +6,6 @@ target 'ZXKitLogger' do
   use_frameworks!
 
   # Pods for ZXKitLogger
-  pod 'SnapKit'
   pod 'ZXKitUtil', '~>3.2.0'
 #  pod 'ZXKitCore/core'
   pod 'ZXKitFPS'

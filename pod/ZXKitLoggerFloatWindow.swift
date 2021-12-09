@@ -30,6 +30,7 @@ class ZXKitLoggerFloatWindow: UIWindow {
 
     lazy var mButton: UIButton = {
         let button = UIButton(type: .custom)
+        button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.zx.color(hexValue: 0x5dae8b)
         button.setTitle("Z".ZXLocaleString, for: UIControl.State.normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 23, weight: .bold)
@@ -62,11 +63,11 @@ private extension ZXKitLoggerFloatWindow {
         guard let rootViewController = self.rootViewController else {
             return
         }
-
         rootViewController.view.addSubview(mButton)
-        mButton.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
+        mButton.leftAnchor.constraint(equalTo: rootViewController.view.leftAnchor).isActive = true
+        mButton.rightAnchor.constraint(equalTo: rootViewController.view.rightAnchor).isActive = true
+        mButton.topAnchor.constraint(equalTo: rootViewController.view.topAnchor).isActive = true
+        mButton.bottomAnchor.constraint(equalTo: rootViewController.view.bottomAnchor).isActive = true
     }
 
     @objc private func _touchMove(p:UIPanGestureRecognizer) {

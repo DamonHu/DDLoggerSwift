@@ -55,7 +55,11 @@ public extension ZXKitUtilNameSpace where T == String {
         return self.encodeString(from: .system(.nonLossyASCII), to: .system(.utf8))
     }
 
-    //字符串转义
+    /// 字符串转格式
+    /// - Parameters:
+    ///   - originType: 字符串原来的编码格式
+    ///   - encodeType: 即将转换的编码格式
+    /// - Returns: 转换成功的新字符串
     func encodeString(from originType: ZXKitUtilEncodeType = .system(.utf8), to encodeType: ZXKitUtilEncodeType) -> String? {
         let data = Data.zx.data(from: object, encodeType: originType)
         return data?.zx.encodeString(encodeType: encodeType)
@@ -91,6 +95,7 @@ public extension ZXKitUtilNameSpace where T == String {
     }
 }
 
+#if canImport(CryptoKit)
 @available(iOS 13.0, *)
 public extension ZXKitUtilNameSpace where T == String {
     /*
@@ -141,3 +146,4 @@ public extension ZXKitUtilNameSpace where T == String {
         return data?.zx.hmac(hashType: hashType, key: key, encodeType: encodeType)
     }
 }
+#endif

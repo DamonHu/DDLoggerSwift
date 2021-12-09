@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SnapKit
 import ZXKitUtil
 
 func UIImageHDBoundle(named: String?) -> UIImage? {
@@ -143,11 +142,13 @@ class ZXKitLoggerWindow: UIWindow {
     //MARK: UI布局
     private lazy var mContentBGView: UIView = {
         let mContentBGView = UIView()
-        mContentBGView.backgroundColor = UIColor.zx.color(hexValue: 0x000000, alpha: 0.6)
+        mContentBGView.translatesAutoresizingMaskIntoConstraints = false
+        mContentBGView.backgroundColor = UIColor.zx.color(hexValue: 0x272d55, alpha: 0.6)
         return mContentBGView
     }()
     private lazy var mTableView: UITableView = {
         let tableView = UITableView(frame: CGRect.zero, style: UITableView.Style.plain)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.scrollsToTop = true
         tableView.dataSource = self
         tableView.delegate = self
@@ -178,6 +179,7 @@ class ZXKitLoggerWindow: UIWindow {
             stackSubViews.append(button)
         }
         let tStackView = UIStackView(arrangedSubviews: stackSubViews)
+        tStackView.translatesAutoresizingMaskIntoConstraints = false
         tStackView.alignment = .fill
         tStackView.distribution = .fillEqually
         return tStackView
@@ -185,6 +187,7 @@ class ZXKitLoggerWindow: UIWindow {
 
     private lazy var mMenuView: ZXKitLoggerMenuView = {
         let tMenuView = ZXKitLoggerMenuView()
+        tMenuView.translatesAutoresizingMaskIntoConstraints = false
         tMenuView.isHidden = true
         tMenuView.clickSubject = {(index) -> Void in
             self.isShowMenu = false
@@ -227,6 +230,7 @@ class ZXKitLoggerWindow: UIWindow {
     
     private lazy var mPasswordTextField: UITextField = {
         let tTextField = UITextField()
+        tTextField.translatesAutoresizingMaskIntoConstraints = false
         tTextField.backgroundColor = UIColor.zx.color(hexValue: 0x687980)
         tTextField.isHidden = true
         tTextField.isSecureTextEntry = true
@@ -242,6 +246,7 @@ class ZXKitLoggerWindow: UIWindow {
     
     private lazy var mPasswordButton: UIButton = {
         let button = UIButton(type: UIButton.ButtonType.custom)
+        button.translatesAutoresizingMaskIntoConstraints = false
         button.isHidden = true
         button.backgroundColor = UIColor(red: 93.0/255.0, green: 174.0/255.0, blue: 139.0/255.0, alpha: 1.0)
         button.setTitleColor(UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0), for: UIControl.State.normal)
@@ -255,6 +260,7 @@ class ZXKitLoggerWindow: UIWindow {
     
     private lazy var mAutoScrollSwitch: UISwitch = {
         let autoScrollSwitch = UISwitch()
+        autoScrollSwitch.translatesAutoresizingMaskIntoConstraints = false
         autoScrollSwitch.isHidden = true
         autoScrollSwitch.setOn(true, animated: false)
         return autoScrollSwitch
@@ -262,6 +268,7 @@ class ZXKitLoggerWindow: UIWindow {
     
     private lazy var mSwitchLabel: UILabel = {
         let switchLabel = UILabel()
+        switchLabel.translatesAutoresizingMaskIntoConstraints = false
         switchLabel.isHidden = true
         switchLabel.text = "Auto scroll".ZXLocaleString
         switchLabel.textAlignment = NSTextAlignment.center
@@ -272,6 +279,7 @@ class ZXKitLoggerWindow: UIWindow {
     
     private lazy var mSearchBar: UISearchBar = {
         let searchBar = UISearchBar()
+        searchBar.translatesAutoresizingMaskIntoConstraints = false
         searchBar.isHidden = true
         searchBar.placeholder = "Log filter and search".ZXLocaleString
         searchBar.barStyle = UIBarStyle.default
@@ -283,6 +291,7 @@ class ZXKitLoggerWindow: UIWindow {
     
     private lazy var mPreviousButton: UIButton = {
         let button = UIButton(type: UIButton.ButtonType.custom)
+        button.translatesAutoresizingMaskIntoConstraints = false
         button.isHidden = true
         button.backgroundColor = UIColor(red: 255.0/255.0, green: 118.0/255.0, blue: 118.0/255.0, alpha: 1.0)
         button.setTitleColor(UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0), for: UIControl.State.normal)
@@ -296,6 +305,7 @@ class ZXKitLoggerWindow: UIWindow {
     
     private lazy var mNextButton: UIButton = {
         let button = UIButton(type: UIButton.ButtonType.custom)
+        button.translatesAutoresizingMaskIntoConstraints = false
         button.isHidden = true
         button.backgroundColor = UIColor(red: 93.0/255.0, green: 174.0/255.0, blue: 139.0/255.0, alpha: 1.0)
         button.setTitleColor(UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0), for: UIControl.State.normal)
@@ -309,6 +319,7 @@ class ZXKitLoggerWindow: UIWindow {
     
     private lazy var mSearchNumLabel: UILabel = {
         let tLabel = UILabel()
+        tLabel.translatesAutoresizingMaskIntoConstraints = false
         tLabel.isHidden = true
         tLabel.text = "0"
         tLabel.textAlignment = NSTextAlignment.center
@@ -320,6 +331,7 @@ class ZXKitLoggerWindow: UIWindow {
     
     private lazy var mTipLabel: UILabel = {
         let tLabel = UILabel()
+        tLabel.translatesAutoresizingMaskIntoConstraints = false
         tLabel.text = "ZXKitLogger Powered by DamonHu"
         tLabel.textAlignment = NSTextAlignment.center
         tLabel.font = UIFont.systemFont(ofSize: 12)
@@ -353,8 +365,8 @@ extension ZXKitLoggerWindow {
 private extension ZXKitLoggerWindow {
     @objc func changeWindowFrame() {
         self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 350)
-        self.mContentBGView.snp.updateConstraints { (make) in
-            make.top.equalToSuperview().offset(UIApplication.shared.statusBarFrame.height)
+        if let view = self.rootViewController?.view {
+            self.mContentBGView.topAnchor.constraint(equalTo: view.topAnchor, constant: UIApplication.shared.statusBarFrame.height).isActive = true
         }
     }
 
@@ -462,95 +474,87 @@ private extension ZXKitLoggerWindow {
     }
 
     private func _createUI() {
-        self.rootViewController?.view.addSubview(self.mContentBGView)
-        self.mContentBGView.snp.makeConstraints { (make) in
-            make.left.right.bottom.equalToSuperview()
-            make.top.equalToSuperview().offset(UIApplication.shared.statusBarFrame.height)
-        }
+        guard let view = self.rootViewController?.view else { return }
+
+        view.addSubview(self.mContentBGView)
+        self.mContentBGView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        self.mContentBGView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        self.mContentBGView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        self.mContentBGView.topAnchor.constraint(equalTo: view.topAnchor, constant: UIApplication.shared.statusBarFrame.height).isActive = true
+
         //菜单view
-        self.rootViewController?.view.addSubview(self.mMenuView)
-        self.mMenuView.snp.makeConstraints { (make) in
-            make.left.right.bottom.equalToSuperview()
-            make.top.equalToSuperview().offset(UIApplication.shared.statusBarFrame.height)
-        }
+        view.addSubview(self.mMenuView)
+        self.mMenuView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        self.mMenuView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        self.mMenuView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        self.mMenuView.topAnchor.constraint(equalTo: view.topAnchor, constant: UIApplication.shared.statusBarFrame.height).isActive = true
         self.changeWindowFrame()
         //顶部按钮
         self.mContentBGView.addSubview(self.mNormalStackView)
-        self.mNormalStackView.snp.makeConstraints {
-            $0.top.left.right.equalToSuperview()
-            $0.height.equalTo(40)
-        }
+        self.mNormalStackView.topAnchor.constraint(equalTo: self.mContentBGView.topAnchor).isActive = true
+        self.mNormalStackView.leftAnchor.constraint(equalTo: self.mContentBGView.leftAnchor).isActive = true
+        self.mNormalStackView.rightAnchor.constraint(equalTo: self.mContentBGView.rightAnchor).isActive = true
+        self.mNormalStackView.heightAnchor.constraint(equalToConstant: 40).isActive = true
         //滚动日志窗
         self.mContentBGView.addSubview(self.mTableView)
-        self.mTableView.snp.makeConstraints { (make) in
-            make.left.right.equalToSuperview()
-            make.top.equalTo(self.mNormalStackView.snp.bottom)
-            make.bottom.equalToSuperview().offset(-20)
-        }
+        self.mTableView.leftAnchor.constraint(equalTo: self.mContentBGView.leftAnchor).isActive = true
+        self.mTableView.rightAnchor.constraint(equalTo: self.mContentBGView.rightAnchor).isActive = true
+        self.mTableView.topAnchor.constraint(equalTo: self.mNormalStackView.bottomAnchor).isActive = true
+        self.mTableView.bottomAnchor.constraint(equalTo: self.mContentBGView.bottomAnchor, constant: -20).isActive = true
+
         //私密解锁
         self.mContentBGView.addSubview(self.mPasswordTextField)
-        self.mPasswordTextField.snp.makeConstraints { (make) in
-            make.left.equalToSuperview()
-            make.top.equalTo(self.mNormalStackView.snp.bottom)
-            make.width.equalToSuperview().dividedBy(1.5)
-            make.height.equalTo(40)
-        }
+        self.mPasswordTextField.leftAnchor.constraint(equalTo: self.mContentBGView.leftAnchor).isActive = true
+        self.mPasswordTextField.topAnchor.constraint(equalTo: self.mNormalStackView.bottomAnchor).isActive = true
+        self.mPasswordTextField.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        self.mPasswordTextField.widthAnchor.constraint(equalTo: self.mContentBGView.widthAnchor, multiplier: 1.0/1.5).isActive = true
+
         self.mContentBGView.addSubview(self.mPasswordButton)
-        self.mPasswordButton.snp.makeConstraints { (make) in
-            make.left.equalTo(self.mPasswordTextField.snp.right)
-            make.top.equalTo(self.mPasswordTextField)
-            make.width.equalToSuperview().dividedBy(3)
-            make.height.equalTo(40)
-        }
+        self.mPasswordButton.leftAnchor.constraint(equalTo: self.mPasswordTextField.rightAnchor).isActive = true
+        self.mPasswordButton.topAnchor.constraint(equalTo: self.mPasswordTextField.topAnchor).isActive = true
+        self.mPasswordButton.widthAnchor.constraint(equalTo: self.mContentBGView.widthAnchor, multiplier: 1.0/3.0).isActive = true
+        self.mPasswordButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+
         //开关视图
         self.mContentBGView.addSubview(self.mAutoScrollSwitch)
-        self.mAutoScrollSwitch.snp.makeConstraints { (make) in
-            make.right.equalToSuperview().offset(-20)
-            make.centerY.equalTo(self.mPasswordButton)
-        }
+        self.mAutoScrollSwitch.rightAnchor.constraint(equalTo: self.mContentBGView.rightAnchor, constant: -20).isActive = true
+        self.mAutoScrollSwitch.centerYAnchor.constraint(equalTo: self.mPasswordButton.centerYAnchor).isActive = true
+
         self.mContentBGView.addSubview(self.mSwitchLabel)
-        self.mSwitchLabel.snp.makeConstraints { (make) in
-            make.right.equalTo(self.mAutoScrollSwitch.snp.left).offset(-10)
-            make.centerY.equalTo(self.mAutoScrollSwitch)
-        }
+        self.mSwitchLabel.rightAnchor.constraint(equalTo: self.mAutoScrollSwitch.leftAnchor, constant: -10).isActive = true
+        self.mSwitchLabel.centerYAnchor.constraint(equalTo: self.mAutoScrollSwitch.centerYAnchor).isActive = true
 
         //搜索框
         self.mContentBGView.addSubview(self.mSearchBar)
-        self.mSearchBar.snp.makeConstraints { (make) in
-            make.left.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-20)
-            make.height.equalTo(40)
-            make.width.equalToSuperview().dividedBy(1.5)
-        }
+        self.mSearchBar.leftAnchor.constraint(equalTo: self.mContentBGView.leftAnchor).isActive = true
+        self.mSearchBar.bottomAnchor.constraint(equalTo: self.mContentBGView.bottomAnchor, constant: -20).isActive = true
+        self.mSearchBar.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        self.mSearchBar.widthAnchor.constraint(equalTo: self.mContentBGView.widthAnchor, multiplier: 1.0/1.5).isActive = true
 
         self.mContentBGView.addSubview(self.mPreviousButton)
-        self.mPreviousButton.snp.makeConstraints { (make) in
-            make.top.bottom.equalTo(self.mSearchBar)
-            make.left.equalTo(self.mSearchBar.snp.right)
-            make.width.equalToSuperview().dividedBy(9)
-        }
+        self.mPreviousButton.leftAnchor.constraint(equalTo: self.mSearchBar.rightAnchor).isActive = true
+        self.mPreviousButton.bottomAnchor.constraint(equalTo: self.mSearchBar.bottomAnchor).isActive = true
+        self.mPreviousButton.topAnchor.constraint(equalTo: self.mSearchBar.topAnchor).isActive = true
+        self.mPreviousButton.widthAnchor.constraint(equalTo: self.mContentBGView.widthAnchor, multiplier: 1.0/9.0).isActive = true
 
         self.mContentBGView.addSubview(self.mNextButton)
-        self.mNextButton.snp.makeConstraints { (make) in
-            make.top.bottom.equalTo(self.mSearchBar)
-            make.left.equalTo(self.mPreviousButton.snp.right)
-            make.width.equalToSuperview().dividedBy(9)
-        }
+        self.mNextButton.topAnchor.constraint(equalTo: self.mSearchBar.topAnchor).isActive = true
+        self.mNextButton.bottomAnchor.constraint(equalTo: self.mSearchBar.bottomAnchor).isActive = true
+        self.mNextButton.leftAnchor.constraint(equalTo: self.mPreviousButton.rightAnchor).isActive = true
+        self.mNextButton.widthAnchor.constraint(equalTo: self.mContentBGView.widthAnchor, multiplier: 1.0/9.0).isActive = true
 
         self.mContentBGView.addSubview(self.mSearchNumLabel)
-        self.mSearchNumLabel.snp.makeConstraints { (make) in
-            make.top.bottom.equalTo(self.mSearchBar)
-            make.left.equalTo(self.mNextButton.snp.right)
-            make.width.equalToSuperview().dividedBy(9)
-        }
+        self.mSearchNumLabel.topAnchor.constraint(equalTo: self.mSearchBar.topAnchor).isActive = true
+        self.mSearchNumLabel.bottomAnchor.constraint(equalTo: self.mSearchBar.bottomAnchor).isActive = true
+        self.mSearchNumLabel.leftAnchor.constraint(equalTo: self.mNextButton.rightAnchor).isActive = true
+        self.mSearchNumLabel.widthAnchor.constraint(equalTo: self.mContentBGView.widthAnchor, multiplier: 1.0/9.0).isActive = true
+
 
         self.mContentBGView.addSubview(self.mTipLabel)
-        self.mTipLabel.snp.makeConstraints { (make) in
-            make.left.right.equalToSuperview()
-            make.top.equalTo(self.mSearchBar.snp.bottom);
-            make.bottom.equalToSuperview()
-        }
-
+        self.mTipLabel.topAnchor.constraint(equalTo: self.mSearchBar.bottomAnchor).isActive = true
+        self.mTipLabel.bottomAnchor.constraint(equalTo: self.mContentBGView.bottomAnchor).isActive = true
+        self.mTipLabel.leftAnchor.constraint(equalTo: self.mContentBGView.leftAnchor).isActive = true
+        self.mTipLabel.rightAnchor.constraint(equalTo: self.mContentBGView.rightAnchor).isActive = true
         
     }
 }

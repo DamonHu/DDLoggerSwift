@@ -12,6 +12,7 @@ class ZXKitLoggerTableViewCell: UITableViewCell {
     
     private lazy var mContentLabel: UILabel = {
         var label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
         label.font = UIFont.systemFont(ofSize: 13)
         return label
@@ -39,11 +40,10 @@ class ZXKitLoggerTableViewCell: UITableViewCell {
     private func _createUI() -> Void {
         self.backgroundColor = UIColor.clear
         self.contentView.addSubview(self.mContentLabel)
-        self.mContentLabel.snp.makeConstraints { (make) in
-            make.left.equalToSuperview().offset(10)
-            make.right.equalToSuperview().offset(-10)
-            make.top.bottom.equalToSuperview()
-        }
+        self.mContentLabel.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 10)
+        self.mContentLabel.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -10)
+        self.mContentLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor)
+        self.mContentLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor)
     }
     
     func updateWithLoggerItem(loggerItem:ZXKitLoggerItem, highlightText:String) {

@@ -52,8 +52,7 @@ then regist to `ZXKit` in `AppDelegate`
 ```
 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 	
-	let fps = ZXKitFPS()
-	fps.registZXKitPlugin()
+	ZXKit.regist(plugin: ZXKitFPS())
 	
 	return true
 }

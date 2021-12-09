@@ -26,10 +26,11 @@ class ZXKitLoggerMenuView: UIView {
         let tCollectionViewLayout = UICollectionViewFlowLayout()
         tCollectionViewLayout.scrollDirection = UICollectionView.ScrollDirection.vertical
         tCollectionViewLayout.itemSize = CGSize(width: 100, height: 100)
-        tCollectionViewLayout.minimumLineSpacing = 0
-        tCollectionViewLayout.minimumInteritemSpacing = 0
+        tCollectionViewLayout.minimumLineSpacing = 5
+        tCollectionViewLayout.minimumInteritemSpacing = 5
         tCollectionViewLayout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         let tCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: tCollectionViewLayout)
+        tCollectionView.translatesAutoresizingMaskIntoConstraints = false
         tCollectionView.backgroundColor = UIColor.clear
         tCollectionView.dataSource = self
         tCollectionView.delegate = self
@@ -42,19 +43,18 @@ class ZXKitLoggerMenuView: UIView {
 
 private extension ZXKitLoggerMenuView {
     func _createUI() {
-        self.backgroundColor = UIColor.zx.color(hexValue: 0x000000, alpha: 0.6)
+        self.backgroundColor = UIColor.zx.color(hexValue: 0x272d55)
         self.addSubview(mCollectionView)
-        mCollectionView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(10)
-            $0.left.right.equalToSuperview()
-            $0.bottom.equalToSuperview().offset(-10)
-        }
+        mCollectionView.topAnchor.constraint(equalTo: self.topAnchor, constant: 10).isActive = true
+        mCollectionView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+        mCollectionView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+        mCollectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10).isActive = true
     }
 
     func _loadData() {
         mCollectionList.removeAll()
         var titleList = ["Back".ZXLocaleString, "Decrypt".ZXLocaleString, "Search".ZXLocaleString, "Share".ZXLocaleString, "Scroll".ZXLocaleString, "Analyse".ZXLocaleString]
-        var imageList = [UIImageHDBoundle(named: "icon_normal_back"), UIImageHDBoundle(named: "icon_decrypt"), UIImageHDBoundle(named: "icon_search"), UIImageHDBoundle(named: "icon_share"), UIImageHDBoundle(named: "icon_fixed"), UIImageHDBoundle(named: "icon_analyse")]
+        var imageList = [UIImageHDBoundle(named: "icon_back"), UIImageHDBoundle(named: "icon_decrypt"), UIImageHDBoundle(named: "icon_search"), UIImageHDBoundle(named: "icon_share"), UIImageHDBoundle(named: "icon_scroll"), UIImageHDBoundle(named: "icon_analyse")]
 
         if ZXKitLogger.uploadComplete != nil {
             titleList.append("Upload".ZXLocaleString)
