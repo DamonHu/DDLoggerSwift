@@ -558,7 +558,7 @@ private extension ZXKitLoggerWindow {
         self.mTableView.leftAnchor.constraint(equalTo: self.mContentBGView.leftAnchor).isActive = true
         self.mTableView.rightAnchor.constraint(equalTo: self.mContentBGView.rightAnchor).isActive = true
         self.mTableView.topAnchor.constraint(equalTo: self.mNavigationBar.bottomAnchor).isActive = true
-        self.mTableView.bottomAnchor.constraint(equalTo: self.mContentBGView.bottomAnchor, constant: -20).isActive = true
+        self.mTableView.bottomAnchor.constraint(equalTo: self.mContentBGView.bottomAnchor).isActive = true
 
         //私密解锁
         self.mContentBGView.addSubview(self.mPasswordTextField)
@@ -585,7 +585,7 @@ private extension ZXKitLoggerWindow {
         //搜索框
         self.mContentBGView.addSubview(self.mSearchBar)
         self.mSearchBar.leftAnchor.constraint(equalTo: self.mContentBGView.leftAnchor).isActive = true
-        self.mSearchBar.bottomAnchor.constraint(equalTo: self.mContentBGView.bottomAnchor, constant: -20).isActive = true
+        self.mSearchBar.bottomAnchor.constraint(equalTo: self.mContentBGView.bottomAnchor).isActive = true
         self.mSearchBar.heightAnchor.constraint(equalToConstant: 40).isActive = true
         self.mSearchBar.widthAnchor.constraint(equalTo: self.mContentBGView.widthAnchor, multiplier: 1.0/1.5).isActive = true
 

@@ -40,10 +40,10 @@ class ZXKitLoggerTableViewCell: UITableViewCell {
     private func _createUI() -> Void {
         self.backgroundColor = UIColor.clear
         self.contentView.addSubview(self.mContentLabel)
-        self.mContentLabel.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 10)
-        self.mContentLabel.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -10)
-        self.mContentLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor)
-        self.mContentLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor)
+        self.mContentLabel.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 10).isActive = true
+        self.mContentLabel.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -10).isActive = true
+        self.mContentLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor).isActive = true
+        self.mContentLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor).isActive = true
     }
     
     func updateWithLoggerItem(loggerItem:ZXKitLoggerItem, highlightText:String) {
