@@ -165,27 +165,6 @@ class ZXKitLoggerWindow: UIWindow {
         return tableView
     }()
 
-//    private lazy var mNormalStackView: UIStackView = {
-//        let titleList = ["Scale".ZXLocaleString, "Hide".ZXLocaleString, "Clean Log".ZXLocaleString, "More".ZXLocaleString]
-//        let colorList = [UIColor.zx.color(hexValue: 0x91c788), UIColor.zx.color(hexValue: 0xFF7676), UIColor.zx.color(hexValue: 0x5DAE8B), UIColor.zx.color(hexValue: 0x45526c)]
-//        var stackSubViews = [UIButton]()
-//        for i in 0..<titleList.count {
-//            let button = UIButton(type: .custom)
-//            button.addTarget(self, action: #selector(_bindClick(button:)), for: .touchUpInside)
-////            button.backgroundColor = colorList[i]
-//            button.setTitleColor(UIColor.zx.color(hexValue: 0xffffff), for: .normal)
-//            button.setTitle(titleList[i], for: .normal)
-//            button.tag = i
-//            stackSubViews.append(button)
-//        }
-//        let tStackView = UIStackView(arrangedSubviews: stackSubViews)
-//        tStackView.backgroundColor = UIColor.zx.color(hexValue: 0x45526c)
-//        tStackView.translatesAutoresizingMaskIntoConstraints = false
-//        tStackView.alignment = .fill
-//        tStackView.distribution = .fillEqually
-//        return tStackView
-//    }()
-
     lazy var mNavigationBar: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.zx.color(hexValue: 0x45526c)
@@ -503,8 +482,12 @@ private extension ZXKitLoggerWindow {
     @objc private func _decrypt() {
         self.mPasswordTextField.resignFirstResponder()
         self.mSearchBar.resignFirstResponder()
-        if self.mPasswordTextField.text != nil {
+        self.mPasswordTextField.isHidden = true
+        self.mPasswordButton.isHidden = true
+        if ZXKitLogger.shared.isPasswordCorrect {
             self.mTableView.reloadData()
+        } else {
+            printError("Password Error".ZXLocaleString)
         }
     }
 
@@ -625,6 +608,7 @@ extension ZXKitLoggerWindow: UITableViewDataSource, UITableViewDelegate {
         } else {
             loggerCell.backgroundColor = UIColor.clear
         }
+        loggerCell.selectionStyle = .none
         loggerCell.updateWithLoggerItem(loggerItem: loggerItem, highlightText: self.mSearchBar.text ?? "")
         return loggerCell
     }
@@ -661,7 +645,6 @@ extension ZXKitLoggerWindow: UITextFieldDelegate {
     //MAKR:UITextFieldDelegate
     public func textFieldDidEndEditing(_ textField: UITextField) {
         ZXKitLogger.shared.isPasswordCorrect = (ZXKitLogger.privacyLogPassword == textField.text)
-        self._decrypt()
     }
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         return textField.resignFirstResponder()

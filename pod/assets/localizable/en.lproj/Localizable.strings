@@ -19,6 +19,7 @@
 "Enter password to view" = "Enter password to view";
 "The password requires 32 characters" = "The password requires 32 characters";
 "Password is not set" = "Password is not set";
+"Password Error" = "Password Error";
 "result: 0" = "result: 0";
 "Previous" = "Pre";
 "Next" = "Next";

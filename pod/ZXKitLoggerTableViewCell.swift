@@ -42,8 +42,8 @@ class ZXKitLoggerTableViewCell: UITableViewCell {
         self.contentView.addSubview(self.mContentLabel)
         self.mContentLabel.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 10).isActive = true
         self.mContentLabel.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -10).isActive = true
-        self.mContentLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor).isActive = true
-        self.mContentLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor).isActive = true
+        self.mContentLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 5).isActive = true
+        self.mContentLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -2).isActive = true
     }
     
     func updateWithLoggerItem(loggerItem:ZXKitLoggerItem, highlightText:String) {
@@ -66,7 +66,7 @@ class ZXKitLoggerTableViewCell: UITableViewCell {
         loggerItem.getHighlightAttributedString(highlightString: highlightText) { (hasHighlightStr, hightlightAttributedString) in
             self.mContentLabel.attributedText = hightlightAttributedString
             if hasHighlightStr {
-                self.contentView.backgroundColor = UIColor(red: 145.0/255.0, green: 109.0/255.0, blue: 213.0/255.0, alpha: 1.0)
+                self.contentView.backgroundColor = UIColor.zx.color(hexValue: 0xe58e23)
             } else {
                 self.contentView.backgroundColor = UIColor.clear
             }

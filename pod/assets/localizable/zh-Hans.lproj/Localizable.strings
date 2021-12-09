@@ -18,6 +18,7 @@
 "Decrypt" = "解密";
 "Enter password to view" = "输入密码查看加密数据";
 "The password requires 32 characters" = "密码设置长度错误，需要32个字符";
+"Password Error" = "密码错误";
 "Password is not set" = "密码未设置";
 "result: 0" = "0条结果";
 "Previous" = "上条";
