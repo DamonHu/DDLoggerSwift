@@ -165,26 +165,61 @@ class ZXKitLoggerWindow: UIWindow {
         return tableView
     }()
 
-    private lazy var mNormalStackView: UIStackView = {
-        let titleList = ["Scale".ZXLocaleString, "Hide".ZXLocaleString, "Clean Log".ZXLocaleString, "More".ZXLocaleString]
-        let colorList = [UIColor.zx.color(hexValue: 0x91c788), UIColor.zx.color(hexValue: 0xFF7676), UIColor.zx.color(hexValue: 0x5DAE8B), UIColor.zx.color(hexValue: 0x45526c)]
-        var stackSubViews = [UIButton]()
-        for i in 0..<titleList.count {
-            let button = UIButton(type: .custom)
-            button.addTarget(self, action: #selector(_bindClick(button:)), for: .touchUpInside)
-            button.backgroundColor = colorList[i]
-            button.setTitleColor(UIColor.zx.color(hexValue: 0xffffff), for: .normal)
-            button.setTitle(titleList[i], for: .normal)
-            button.tag = i
-            stackSubViews.append(button)
-        }
-        let tStackView = UIStackView(arrangedSubviews: stackSubViews)
-        tStackView.translatesAutoresizingMaskIntoConstraints = false
-        tStackView.alignment = .fill
-        tStackView.distribution = .fillEqually
-        return tStackView
-    }()
+//    private lazy var mNormalStackView: UIStackView = {
+//        let titleList = ["Scale".ZXLocaleString, "Hide".ZXLocaleString, "Clean Log".ZXLocaleString, "More".ZXLocaleString]
+//        let colorList = [UIColor.zx.color(hexValue: 0x91c788), UIColor.zx.color(hexValue: 0xFF7676), UIColor.zx.color(hexValue: 0x5DAE8B), UIColor.zx.color(hexValue: 0x45526c)]
+//        var stackSubViews = [UIButton]()
+//        for i in 0..<titleList.count {
+//            let button = UIButton(type: .custom)
+//            button.addTarget(self, action: #selector(_bindClick(button:)), for: .touchUpInside)
+////            button.backgroundColor = colorList[i]
+//            button.setTitleColor(UIColor.zx.color(hexValue: 0xffffff), for: .normal)
+//            button.setTitle(titleList[i], for: .normal)
+//            button.tag = i
+//            stackSubViews.append(button)
+//        }
+//        let tStackView = UIStackView(arrangedSubviews: stackSubViews)
+//        tStackView.backgroundColor = UIColor.zx.color(hexValue: 0x45526c)
+//        tStackView.translatesAutoresizingMaskIntoConstraints = false
+//        tStackView.alignment = .fill
+//        tStackView.distribution = .fillEqually
+//        return tStackView
+//    }()
 
+    lazy var mNavigationBar: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.zx.color(hexValue: 0x45526c)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    lazy var mScaleButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.tag = 0
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImageHDBoundle(named: "icon_scale"), for: .normal)
+        button.addTarget(self, action: #selector(_bindClick(button:)), for: .touchUpInside)
+        return button
+    }()
+    
+    lazy var mDeleteButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.tag = 2
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImageHDBoundle(named: "icon_delete"), for: .normal)
+        button.addTarget(self, action: #selector(_bindClick(button:)), for: .touchUpInside)
+        return button
+    }()
+    
+    lazy var mMenuButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.tag = 1
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImageHDBoundle(named: "icon_normal_back"), for: .normal)
+        button.addTarget(self, action: #selector(_bindClick(button:)), for: .touchUpInside)
+        return button
+    }()
+    
     private lazy var mMenuView: ZXKitLoggerMenuView = {
         let tMenuView = ZXKitLoggerMenuView()
         tMenuView.translatesAutoresizingMaskIntoConstraints = false
@@ -198,14 +233,16 @@ class ZXKitLoggerWindow: UIWindow {
                 case 0:
                     break
                 case 1:
-                    self.isDecryptViewHidden = false
+                    self._hide()
                 case 2:
-                    self.isSearchViewHidden = false
+                    self.isDecryptViewHidden = false
                 case 3:
-                    ZXKitLogger.showShare(isCloseWhenComplete: false)
+                    self.isSearchViewHidden = false
                 case 4:
-                    self.isScrollViewHidden = false
+                    ZXKitLogger.showShare(isCloseWhenComplete: false)
                 case 5:
+                    self.isScrollViewHidden = false
+                case 6:
                     let folder = ZXKitLogger.getDBFolder()
                     let size = ZXKitUtil.shared.getFileDirectorySize(fileDirectoryPth: folder)
                     //数据库条数
@@ -219,7 +256,7 @@ class ZXKitLoggerWindow: UIWindow {
                     }
                     let info = "\n" + "current log count".ZXLocaleString + ": \(self.mLogDataArray.count)" +  "\n" + "LogFile count".ZXLocaleString + ": \(count)" + "\n" + "LogFile total size".ZXLocaleString + ": \(size/1024.0)kb"
                     printWarn(info)
-                case 6 :
+                case 7:
                     ZXKitLogger.showUpload(isCloseWhenComplete: false)
                 default:
                     break
@@ -332,9 +369,9 @@ class ZXKitLoggerWindow: UIWindow {
     private lazy var mTipLabel: UILabel = {
         let tLabel = UILabel()
         tLabel.translatesAutoresizingMaskIntoConstraints = false
-        tLabel.text = "ZXKitLogger Powered by DamonHu"
+        tLabel.text = "ZXKitLogger"
         tLabel.textAlignment = NSTextAlignment.center
-        tLabel.font = UIFont.systemFont(ofSize: 12)
+        tLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         tLabel.textColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 0.8)
         tLabel.backgroundColor = UIColor.clear
         return tLabel
@@ -390,11 +427,9 @@ private extension ZXKitLoggerWindow {
             case 0:
                 self.isFullScreen = !self.isFullScreen
             case 1:
-                self._hide()
+                self.isShowMenu = true
             case 2:
                 self.cleanLog()
-            case 3:
-                self.isShowMenu = true
             default:
                 break
         }
@@ -480,32 +515,55 @@ private extension ZXKitLoggerWindow {
         self.mContentBGView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         self.mContentBGView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         self.mContentBGView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        self.mContentBGView.topAnchor.constraint(equalTo: view.topAnchor, constant: UIApplication.shared.statusBarFrame.height).isActive = true
+        self.mContentBGView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
 
         //菜单view
         view.addSubview(self.mMenuView)
         self.mMenuView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         self.mMenuView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         self.mMenuView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        self.mMenuView.topAnchor.constraint(equalTo: view.topAnchor, constant: UIApplication.shared.statusBarFrame.height).isActive = true
+        self.mMenuView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         self.changeWindowFrame()
+        
         //顶部按钮
-        self.mContentBGView.addSubview(self.mNormalStackView)
-        self.mNormalStackView.topAnchor.constraint(equalTo: self.mContentBGView.topAnchor).isActive = true
-        self.mNormalStackView.leftAnchor.constraint(equalTo: self.mContentBGView.leftAnchor).isActive = true
-        self.mNormalStackView.rightAnchor.constraint(equalTo: self.mContentBGView.rightAnchor).isActive = true
-        self.mNormalStackView.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        self.mContentBGView.addSubview(self.mNavigationBar)
+        self.mNavigationBar.topAnchor.constraint(equalTo: self.mContentBGView.topAnchor).isActive = true
+        self.mNavigationBar.leftAnchor.constraint(equalTo: self.mContentBGView.leftAnchor).isActive = true
+        self.mNavigationBar.rightAnchor.constraint(equalTo: self.mContentBGView.rightAnchor).isActive = true
+        self.mNavigationBar.heightAnchor.constraint(equalToConstant: 40 + UIApplication.shared.statusBarFrame.height).isActive = true
+        //放大
+        self.mNavigationBar.addSubview(self.mScaleButton)
+        mScaleButton.bottomAnchor.constraint(equalTo: self.mNavigationBar.bottomAnchor, constant: -7).isActive = true
+        mScaleButton.leftAnchor.constraint(equalTo: self.mNavigationBar.leftAnchor, constant: 20).isActive = true
+        mScaleButton.widthAnchor.constraint(equalToConstant: 22).isActive = true
+        mScaleButton.heightAnchor.constraint(equalToConstant: 22).isActive = true
+        //清除
+        self.mNavigationBar.addSubview(self.mDeleteButton)
+        mDeleteButton.bottomAnchor.constraint(equalTo: self.mNavigationBar.bottomAnchor, constant: -5).isActive = true
+        mDeleteButton.leftAnchor.constraint(equalTo: self.mScaleButton.rightAnchor, constant: 20).isActive = true
+        mDeleteButton.widthAnchor.constraint(equalToConstant: 28).isActive = true
+        mDeleteButton.heightAnchor.constraint(equalToConstant: 28).isActive = true
+        //菜单
+        self.mNavigationBar.addSubview(self.mMenuButton)
+        mMenuButton.bottomAnchor.constraint(equalTo: self.mNavigationBar.bottomAnchor, constant: -5).isActive = true
+        mMenuButton.rightAnchor.constraint(equalTo: self.mNavigationBar.rightAnchor, constant: -20).isActive = true
+        mMenuButton.widthAnchor.constraint(equalToConstant: 25).isActive = true
+        mMenuButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        //标题
+        self.mNavigationBar.addSubview(self.mTipLabel)
+        self.mTipLabel.centerXAnchor.constraint(equalTo: self.mNavigationBar.centerXAnchor).isActive = true
+        self.mTipLabel.bottomAnchor.constraint(equalTo: self.mNavigationBar.bottomAnchor, constant: -10).isActive = true
         //滚动日志窗
         self.mContentBGView.addSubview(self.mTableView)
         self.mTableView.leftAnchor.constraint(equalTo: self.mContentBGView.leftAnchor).isActive = true
         self.mTableView.rightAnchor.constraint(equalTo: self.mContentBGView.rightAnchor).isActive = true
-        self.mTableView.topAnchor.constraint(equalTo: self.mNormalStackView.bottomAnchor).isActive = true
+        self.mTableView.topAnchor.constraint(equalTo: self.mNavigationBar.bottomAnchor).isActive = true
         self.mTableView.bottomAnchor.constraint(equalTo: self.mContentBGView.bottomAnchor, constant: -20).isActive = true
 
         //私密解锁
         self.mContentBGView.addSubview(self.mPasswordTextField)
         self.mPasswordTextField.leftAnchor.constraint(equalTo: self.mContentBGView.leftAnchor).isActive = true
-        self.mPasswordTextField.topAnchor.constraint(equalTo: self.mNormalStackView.bottomAnchor).isActive = true
+        self.mPasswordTextField.topAnchor.constraint(equalTo: self.mNavigationBar.bottomAnchor).isActive = true
         self.mPasswordTextField.heightAnchor.constraint(equalToConstant: 40).isActive = true
         self.mPasswordTextField.widthAnchor.constraint(equalTo: self.mContentBGView.widthAnchor, multiplier: 1.0/1.5).isActive = true
 
@@ -548,14 +606,6 @@ private extension ZXKitLoggerWindow {
         self.mSearchNumLabel.bottomAnchor.constraint(equalTo: self.mSearchBar.bottomAnchor).isActive = true
         self.mSearchNumLabel.leftAnchor.constraint(equalTo: self.mNextButton.rightAnchor).isActive = true
         self.mSearchNumLabel.widthAnchor.constraint(equalTo: self.mContentBGView.widthAnchor, multiplier: 1.0/9.0).isActive = true
-
-
-        self.mContentBGView.addSubview(self.mTipLabel)
-        self.mTipLabel.topAnchor.constraint(equalTo: self.mSearchBar.bottomAnchor).isActive = true
-        self.mTipLabel.bottomAnchor.constraint(equalTo: self.mContentBGView.bottomAnchor).isActive = true
-        self.mTipLabel.leftAnchor.constraint(equalTo: self.mContentBGView.leftAnchor).isActive = true
-        self.mTipLabel.rightAnchor.constraint(equalTo: self.mContentBGView.rightAnchor).isActive = true
-        
     }
 }
 
