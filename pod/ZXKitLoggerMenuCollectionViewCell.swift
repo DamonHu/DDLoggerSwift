@@ -11,10 +11,12 @@ import UIKit
 struct ZXKitLoggerMenuCollectionViewCellModel {
     var title = ""
     var image: UIImage?
-
+    var isSwitchItem: Bool?
 }
 
 class ZXKitLoggerMenuCollectionViewCell: UICollectionViewCell {
+    var switchSubject: ((_ index: Int, _ isOn: Bool) -> Void)?
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         self._createUI()
@@ -27,6 +29,14 @@ class ZXKitLoggerMenuCollectionViewCell: UICollectionViewCell {
     func updateUI(model: ZXKitLoggerMenuCollectionViewCellModel) {
         self.mTitleLabel.text = model.title
         self.mImageView.image = model.image
+        if let isSwitch = model.isSwitchItem {
+            self.mImageView.isHidden = true
+            self.mSwitchView.isHidden = false
+            self.mSwitchView.setOn(isSwitch, animated: true)
+        } else {
+            self.mImageView.isHidden = false
+            self.mSwitchView.isHidden = true
+        }
     }
 
     //MARK: UI
@@ -46,6 +56,13 @@ class ZXKitLoggerMenuCollectionViewCell: UICollectionViewCell {
         return tImageView
     }()
 
+    lazy var mSwitchView: UISwitch = {
+        let switchView = UISwitch()
+        switchView.addTarget(self, action: #selector(_switchChange(target:)), for: .valueChanged)
+        switchView.translatesAutoresizingMaskIntoConstraints = false
+        switchView.isHidden = true
+        return switchView
+    }()
 }
 
 private extension ZXKitLoggerMenuCollectionViewCell {
@@ -58,9 +75,19 @@ private extension ZXKitLoggerMenuCollectionViewCell {
         mImageView.widthAnchor.constraint(equalToConstant: 26).isActive = true
         mImageView.heightAnchor.constraint(equalToConstant: 26).isActive = true
 
+        self.contentView.addSubview(mSwitchView)
+        mSwitchView.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor).isActive = true
+        mSwitchView.bottomAnchor.constraint(equalTo: self.contentView.centerYAnchor, constant: 0).isActive = true
+
         self.contentView.addSubview(mTitleLabel)
         mTitleLabel.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 10).isActive = true
         mTitleLabel.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -10).isActive = true
         mTitleLabel.topAnchor.constraint(equalTo: self.contentView.centerYAnchor, constant: 10).isActive = true
+    }
+
+    @objc func _switchChange(target: UISwitch) {
+        if let switchSubject = self.switchSubject {
+            switchSubject(self.tag, target.isOn)
+        }
     }
 }

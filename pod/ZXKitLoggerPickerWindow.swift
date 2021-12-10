@@ -42,14 +42,14 @@ class ZXKitLoggerPickerWindow: UIWindow {
     private lazy var mContentBGView: UIView = {
         let mContentBGView = UIView()
         mContentBGView.translatesAutoresizingMaskIntoConstraints = false
-        mContentBGView.backgroundColor = UIColor.zx.color(hexValue: 0x000000, alpha: 0.6)
+        mContentBGView.backgroundColor = UIColor.zx.color(hexValue: 0x272d55)
         return mContentBGView
     }()
     
     private lazy var mPickerBGView: UIView = {
         let tView = UIView()
         tView.translatesAutoresizingMaskIntoConstraints = false
-        tView.backgroundColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0)
+        tView.backgroundColor = UIColor.zx.color(hexValue: 0x272d55)
         tView.layer.masksToBounds = true
         tView.layer.borderColor = UIColor(red: 57.0/255.0, green: 74.0/255.0, blue: 81.0/255.0, alpha: 1.0).cgColor
         tView.layer.borderWidth = 1.0
@@ -61,6 +61,7 @@ class ZXKitLoggerPickerWindow: UIWindow {
         tipLabel.translatesAutoresizingMaskIntoConstraints = false
         tipLabel.text = "Please select the log to share".ZXLocaleString
         tipLabel.font = UIFont.systemFont(ofSize: 14, weight: UIFont.Weight.medium)
+        tipLabel.textColor = UIColor.zx.color(hexValue: 0xffffff)
         return tipLabel
     }()
     
@@ -118,7 +119,7 @@ private extension ZXKitLoggerPickerWindow {
         self.mContentBGView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         self.mContentBGView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         self.mContentBGView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        self.mContentBGView.topAnchor.constraint(equalTo: view.topAnchor, constant: UIApplication.shared.statusBarFrame.height).isActive = true
+        self.mContentBGView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
 
         self.mContentBGView.addSubview(self.mPickerBGView)
         self.mPickerBGView.topAnchor.constraint(equalTo: self.mContentBGView.topAnchor).isActive = true

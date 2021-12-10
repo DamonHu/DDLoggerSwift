@@ -62,9 +62,9 @@ ZXKitLogger.show()
 四种输出方式字体颜色显示不同，对应的printLog不同的类型
 
 ```
-printLog(log)	//调试输出，默认不会写入数据库
+printDebug(log)	//调试输出，默认不会写入数据库
 
-printInfo(log)	//日志为绿色
+printLog(log)	//日志为绿色
 
 printWarn(log)	//日志为黄色
 

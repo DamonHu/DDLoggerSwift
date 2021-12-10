@@ -42,12 +42,15 @@ class ZXKitLoggerTableViewCell: UITableViewCell {
         self.contentView.addSubview(self.mContentLabel)
         self.mContentLabel.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 10).isActive = true
         self.mContentLabel.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -10).isActive = true
-        self.mContentLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 5).isActive = true
+        self.mContentLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 10).isActive = true
         self.mContentLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -2).isActive = true
     }
     
     func updateWithLoggerItem(loggerItem:ZXKitLoggerItem, highlightText:String) {
         switch loggerItem.mLogItemType {
+        case .debug:
+            self.mContentLabel.textColor = UIColor.zx.color(hexValue: 0xbf8bfb)
+            break
         case .info:
             self.mContentLabel.textColor = UIColor(red: 80.0/255.0, green: 216.0/255.0, blue: 144.0/255.0, alpha: 1.0)
             break
@@ -55,7 +58,7 @@ class ZXKitLoggerTableViewCell: UITableViewCell {
             self.mContentLabel.textColor = UIColor(red: 246.0/255.0, green: 244.0/255.0, blue: 157.0/255.0, alpha: 1.0)
             break
         case .error:
-            self.mContentLabel.textColor = UIColor(red: 255.0/255.0, green: 118.0/255.0, blue: 118.0/255.0, alpha: 1.0)
+            self.mContentLabel.textColor = UIColor.zx.color(hexValue: 0xFFAFAF)
             break
         case .privacy:
             self.mContentLabel.textColor = UIColor(red: 66.0/255.0, green: 230.0/255.0, blue: 164.0/255.0, alpha: 1.0)

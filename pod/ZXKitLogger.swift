@@ -26,18 +26,18 @@ public struct ZXKitLogType : OptionSet {
 }
 
 ///快速输出log
-//测试输出，不会写入到悬浮窗中
+/////测试输出，不会写入到悬浮窗中
+public func printDebug(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
+    ZXKitLogger.printLog(log: log, logType: ZXKitLogType.debug, file:file, funcName:funcName, lineNum:lineNum)
+}
+public func printDebug(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
+    ZXKitLogger.printLog(log: log, logType: ZXKitLogType.debug, file:file, funcName:funcName, lineNum:lineNum)
+}
+//普通输出
 public func printLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    ZXKitLogger.printLog(log: log, logType: ZXKitLogType.debug, file:file, funcName:funcName, lineNum:lineNum)
-}
-public func printLog(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    ZXKitLogger.printLog(log: log, logType: ZXKitLogType.debug, file:file, funcName:funcName, lineNum:lineNum)
-}
-//普通类型的输出
-public func printInfo(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
     ZXKitLogger.printLog(log: log, logType: ZXKitLogType.info, file:file, funcName:funcName, lineNum:lineNum)
 }
-public func printInfo(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
+public func printLog(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
     ZXKitLogger.printLog(log: log, logType: ZXKitLogType.info, file:file, funcName:funcName, lineNum:lineNum)
 }
 //警告类型的输出
@@ -64,13 +64,22 @@ public func printPrivacy(_ log:Any ..., file:String = #file, funcName:String = #
 
 //MARK: deprecated
 //测试输出，不会写入到悬浮窗中
-@available(*, deprecated, message: "use printLog() instand of it")
+@available(*, deprecated, message: "use printDebug() instand of it")
 public func ZXDebugLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
     printLog(log, file: file, funcName: funcName, lineNum: lineNum)
 }
-@available(*, deprecated, message: "use printLog() instand of it")
+@available(*, deprecated, message: "use printDebug() instand of it")
 public func ZXDebugLog(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
     printLog(log, file: file, funcName: funcName, lineNum: lineNum)
+}
+//普通类型的输出
+@available(*, deprecated, message: "use printLog() instand of it")
+public func printInfo(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
+    ZXKitLogger.printLog(log: log, logType: ZXKitLogType.info, file:file, funcName:funcName, lineNum:lineNum)
+}
+@available(*, deprecated, message: "use printLog() instand of it")
+public func printInfo(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
+    ZXKitLogger.printLog(log: log, logType: ZXKitLogType.info, file:file, funcName:funcName, lineNum:lineNum)
 }
 //普通类型的输出
 @available(*, deprecated, message: "use printInfo() instand of it")

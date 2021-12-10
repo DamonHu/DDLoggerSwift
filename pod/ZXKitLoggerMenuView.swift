@@ -11,7 +11,7 @@ import UIKit
 class ZXKitLoggerMenuView: UIView {
     var mCollectionList = [ZXKitLoggerMenuCollectionViewCellModel]()
     var clickSubject: ((_ index: Int) -> Void)?
-
+    private(set) var isAutoScrollSwitch = true
     override init(frame: CGRect) {
         super.init(frame: frame)
         self._createUI()
@@ -53,8 +53,8 @@ private extension ZXKitLoggerMenuView {
 
     func _loadData() {
         mCollectionList.removeAll()
-        var titleList = ["Back".ZXLocaleString, "Hide".ZXLocaleString, "Decrypt".ZXLocaleString, "Search".ZXLocaleString, "Share".ZXLocaleString, "Scroll".ZXLocaleString, "Analyse".ZXLocaleString]
-        var imageList = [UIImageHDBoundle(named: "icon_back"), UIImageHDBoundle(named: "icon_exit"), UIImageHDBoundle(named: "icon_decrypt"), UIImageHDBoundle(named: "icon_search"), UIImageHDBoundle(named: "icon_share"), UIImageHDBoundle(named: "icon_scroll"), UIImageHDBoundle(named: "icon_analyse")]
+        var titleList = ["Back".ZXLocaleString, "Hide".ZXLocaleString, "Share".ZXLocaleString, "Decrypt".ZXLocaleString, "Search".ZXLocaleString, "Auto scroll".ZXLocaleString, "Analyse".ZXLocaleString]
+        var imageList = [UIImageHDBoundle(named: "icon_back"), UIImageHDBoundle(named: "icon_exit"), UIImageHDBoundle(named: "icon_share"), UIImageHDBoundle(named: "icon_decrypt"), UIImageHDBoundle(named: "icon_search"),  UIImageHDBoundle(named: "icon_scroll"), UIImageHDBoundle(named: "icon_analyse")]
 
         if ZXKitLogger.uploadComplete != nil {
             titleList.append("Upload".ZXLocaleString)
@@ -62,7 +62,10 @@ private extension ZXKitLoggerMenuView {
         }
 
         for i in 0..<titleList.count {
-            let model = ZXKitLoggerMenuCollectionViewCellModel(title: titleList[i], image: imageList[i])
+            var model = ZXKitLoggerMenuCollectionViewCellModel(title: titleList[i], image: imageList[i])
+            if i == 5 {
+                model.isSwitchItem = true
+            }
             mCollectionList.append(model)
         }
         self.mCollectionView.reloadData()
@@ -79,6 +82,11 @@ extension ZXKitLoggerMenuView: UICollectionViewDelegate,UICollectionViewDataSour
         let model = self.mCollectionList[indexPath.item]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ZXKitLoggerMenuCollectionViewCell", for: indexPath) as! ZXKitLoggerMenuCollectionViewCell
         cell.updateUI(model: model)
+        cell.tag = indexPath.item
+        cell.switchSubject = { [weak self] (tag, isOn) in
+            guard let self = self else { return }
+            self.isAutoScrollSwitch = isOn
+        }
         return cell
     }
 
