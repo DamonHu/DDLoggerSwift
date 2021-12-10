@@ -24,9 +24,9 @@ The project uses' SQLite 'efficient storage, only records data during the backgr
 
 
 
-|mobile preview|Xcode preview|share & FPS|
-|----|----|----|
-|![](./readmeResources/mobile_preview.png)|![](./readmeResources/xcode_preview.png)|![](./readmeResources/share_preview.png)|
+|preview|share & FPS|
+|----|----|
+|![](./readmeResources/mobile_preview.png)<br/>Xcode Preview<br/>![](./readmeResources/xcode_preview.png)|![](./readmeResources/share_preview.png)|
 
 ![](./readmeResources/preview.png)
 

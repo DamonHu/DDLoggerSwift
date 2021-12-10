@@ -12,10 +12,9 @@
 |![](./readmeResources/preview.gif)|![](./readmeResources/debug.gif)|
 
 
-|手机预览图|XCode预览图|分享 & FPS|
-|----|----|----|
-|![](./readmeResources/mobile_preview.png)|![](./readmeResources/xcode_preview.png)|![](./readmeResources/share_preview.png)|
-
+|预览图|分享 & FPS|
+|----|----|
+|![](./readmeResources/mobile_preview.png)<br/>XCode预览图<br/>![](./readmeResources/xcode_preview.png)|![](./readmeResources/share_preview.png)|
 
 ![](./readmeResources/preview.png)
 
