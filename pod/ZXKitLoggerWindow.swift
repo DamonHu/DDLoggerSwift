@@ -73,7 +73,7 @@ class ZXKitLoggerWindow: UIWindow {
             if (newValue) {
                 self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height - 70)
             } else {
-                self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 380)
+                self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 420)
             }
         }
     }
@@ -208,14 +208,16 @@ class ZXKitLoggerWindow: UIWindow {
                 case 1:
                     self._hide()
                 case 2:
-                    ZXKitLogger.showShare(isCloseWhenComplete: false)
+                    self._close()
                 case 3:
-                    self.isDecryptViewHidden = false
+                    ZXKitLogger.showShare(isCloseWhenComplete: false)
                 case 4:
-                    self.isSearchViewHidden = false
+                    self.isDecryptViewHidden = false
                 case 5:
-                    break
+                    self.isSearchViewHidden = false
                 case 6:
+                    break
+                case 7:
                     let folder = ZXKitLogger.getDBFolder()
                     let size = ZXKitUtil.shared.getFileDirectorySize(fileDirectoryPth: folder)
                     //数据库条数
@@ -229,7 +231,7 @@ class ZXKitLoggerWindow: UIWindow {
                     }
                     let info = "\n" + "current log count".ZXLocaleString + ": \(self.mLogDataArray.count)" +  "\n" + "LogFile count".ZXLocaleString + ": \(count)" + "\n" + "LogFile total size".ZXLocaleString + ": \(size/1024.0)kb"
                     printWarn(info)
-                case 7:
+                case 8:
                     ZXKitLogger.showUpload(isCloseWhenComplete: false)
                 default:
                     break
@@ -355,7 +357,7 @@ extension ZXKitLoggerWindow {
 
 private extension ZXKitLoggerWindow {
     @objc func changeWindowFrame() {
-        self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 380)
+        self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 420)
         if let view = self.rootViewController?.view {
             self.mContentBGView.topAnchor.constraint(equalTo: view.topAnchor, constant: UIApplication.shared.statusBarFrame.height).isActive = true
         }
@@ -448,6 +450,12 @@ private extension ZXKitLoggerWindow {
     //只隐藏log的输出窗口，保留悬浮图标
     func _hide() {
         ZXKitLogger.hide()
+        self.isDecryptViewHidden = true
+        self.isSearchViewHidden = true
+    }
+    
+    func _close() {
+        ZXKitLogger.close()
         self.isDecryptViewHidden = true
         self.isSearchViewHidden = true
     }

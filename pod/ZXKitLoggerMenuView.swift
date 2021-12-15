@@ -43,7 +43,7 @@ class ZXKitLoggerMenuView: UIView {
 
 private extension ZXKitLoggerMenuView {
     func _createUI() {
-        self.backgroundColor = UIColor.zx.color(hexValue: 0x272d55)
+        self.backgroundColor = UIColor.zx.color(hexValue: 0x272d55, alpha: 0.8)
         self.addSubview(mCollectionView)
         mCollectionView.topAnchor.constraint(equalTo: self.topAnchor, constant: 10).isActive = true
         mCollectionView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
@@ -53,8 +53,8 @@ private extension ZXKitLoggerMenuView {
 
     func _loadData() {
         mCollectionList.removeAll()
-        var titleList = ["Back".ZXLocaleString, "Hide".ZXLocaleString, "Share".ZXLocaleString, "Decrypt".ZXLocaleString, "Search".ZXLocaleString, "Auto scroll".ZXLocaleString, "Analyse".ZXLocaleString]
-        var imageList = [UIImageHDBoundle(named: "icon_back"), UIImageHDBoundle(named: "icon_exit"), UIImageHDBoundle(named: "icon_share"), UIImageHDBoundle(named: "icon_decrypt"), UIImageHDBoundle(named: "icon_search"),  UIImageHDBoundle(named: "icon_scroll"), UIImageHDBoundle(named: "icon_analyse")]
+        var titleList = ["Back".ZXLocaleString, "Hide".ZXLocaleString, "Exit".ZXLocaleString, "Share".ZXLocaleString, "Decrypt".ZXLocaleString, "Search".ZXLocaleString, "Auto scroll".ZXLocaleString, "Analyse".ZXLocaleString]
+        var imageList = [UIImageHDBoundle(named: "icon_back"), UIImageHDBoundle(named: "icon_hide"), UIImageHDBoundle(named: "icon_exit"), UIImageHDBoundle(named: "icon_share"), UIImageHDBoundle(named: "icon_decrypt"), UIImageHDBoundle(named: "icon_search"),  UIImageHDBoundle(named: "icon_scroll"), UIImageHDBoundle(named: "icon_analyse")]
 
         if ZXKitLogger.uploadComplete != nil {
             titleList.append("Upload".ZXLocaleString)
@@ -63,7 +63,7 @@ private extension ZXKitLoggerMenuView {
 
         for i in 0..<titleList.count {
             var model = ZXKitLoggerMenuCollectionViewCellModel(title: titleList[i], image: imageList[i])
-            if i == 5 {
+            if i == 6 {
                 model.isSwitchItem = true
             }
             mCollectionList.append(model)

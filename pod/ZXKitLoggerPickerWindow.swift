@@ -114,7 +114,7 @@ private extension ZXKitLoggerPickerWindow {
     
     private func _createUI() {
         guard let view = self.rootViewController?.view else { return }
-        self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 350)
+        self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 420)
         self.rootViewController?.view.addSubview(self.mContentBGView)
         self.mContentBGView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         self.mContentBGView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true

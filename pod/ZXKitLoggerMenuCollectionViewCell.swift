@@ -61,13 +61,14 @@ class ZXKitLoggerMenuCollectionViewCell: UICollectionViewCell {
         switchView.addTarget(self, action: #selector(_switchChange(target:)), for: .valueChanged)
         switchView.translatesAutoresizingMaskIntoConstraints = false
         switchView.isHidden = true
+        switchView.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
         return switchView
     }()
 }
 
 private extension ZXKitLoggerMenuCollectionViewCell {
     func _createUI() {
-        self.backgroundColor = UIColor.zx.color(hexValue: 0x323764)
+        self.backgroundColor = UIColor.zx.color(hexValue: 0x323764, alpha: 0.5)
         self.layer.cornerRadius = 15
         self.contentView.addSubview(mImageView)
         mImageView.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor).isActive = true

@@ -8,9 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		9D4EB7EB041C697184564EFC /* Pods_ZXKitLogger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B91D3A8ABB0C8265D4D720F /* Pods_ZXKitLogger.framework */; };
-		E4039B4126BD3DED00F066A0 /* icon_upload.png in Resources */ = {isa = PBXBuildFile; fileRef = E4039B4026BD3DED00F066A0 /* icon_upload.png */; };
-		E468B38627623D770004A69C /* icon_delete.png in Resources */ = {isa = PBXBuildFile; fileRef = E468B38527623D770004A69C /* icon_delete.png */; };
-		E468B388276241FB0004A69C /* icon_exit.png in Resources */ = {isa = PBXBuildFile; fileRef = E468B387276241FB0004A69C /* icon_exit.png */; };
 		E48AABF722C05EF600CC5F1C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48AABF622C05EF600CC5F1C /* AppDelegate.swift */; };
 		E48AABFB22C05EF600CC5F1C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48AABFA22C05EF600CC5F1C /* ViewController.swift */; };
 		E48AABFE22C05EF600CC5F1C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E48AABFC22C05EF600CC5F1C /* Main.storyboard */; };
@@ -23,28 +20,17 @@
 		E4AC94A8263162FA001FC322 /* ZXKitLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AC94A0263162FA001FC322 /* ZXKitLogger.swift */; };
 		E4AC94A9263162FA001FC322 /* ZXKitLoggerWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AC94A1263162FA001FC322 /* ZXKitLoggerWindow.swift */; };
 		E4AC951F2635694C001FC322 /* ZXLogger+zxkit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AC951E2635694C001FC322 /* ZXLogger+zxkit.swift */; };
-		E4AC964D26395ED1001FC322 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = E4AC964C26395ED1001FC322 /* logo.png */; };
 		E4AC965126395F22001FC322 /* ZXKitLoggerFloatWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AC965026395F22001FC322 /* ZXKitLoggerFloatWindow.swift */; };
 		E4ADD75B26BD7804000BD07F /* ZXKitLoggerPickerWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4ADD75A26BD7804000BD07F /* ZXKitLoggerPickerWindow.swift */; };
 		E4D1A3EF266918C900420162 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E4D1A3EC266918C900420162 /* Localizable.strings */; };
 		E4EC33D6265789BC00074E19 /* ZXKitLoggerMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EC33D5265789BB00074E19 /* ZXKitLoggerMenuView.swift */; };
 		E4EC33D826578A4C00074E19 /* ZXKitLoggerMenuCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EC33D726578A4B00074E19 /* ZXKitLoggerMenuCollectionViewCell.swift */; };
-		E4EC33DA2657AFDB00074E19 /* icon_search.png in Resources */ = {isa = PBXBuildFile; fileRef = E4EC33D92657AFDA00074E19 /* icon_search.png */; };
-		E4EC33DC2657B04700074E19 /* icon_decrypt.png in Resources */ = {isa = PBXBuildFile; fileRef = E4EC33DB2657B04700074E19 /* icon_decrypt.png */; };
-		E4EC33DE2657B08200074E19 /* icon_share.png in Resources */ = {isa = PBXBuildFile; fileRef = E4EC33DD2657B08200074E19 /* icon_share.png */; };
-		E4EC33E02657B0BA00074E19 /* icon_scroll.png in Resources */ = {isa = PBXBuildFile; fileRef = E4EC33DF2657B0BA00074E19 /* icon_scroll.png */; };
-		E4EC33E22657B12700074E19 /* icon_back.png in Resources */ = {isa = PBXBuildFile; fileRef = E4EC33E12657B12700074E19 /* icon_back.png */; };
-		E4EC33E42657B17A00074E19 /* icon_analyse.png in Resources */ = {isa = PBXBuildFile; fileRef = E4EC33E32657B17A00074E19 /* icon_analyse.png */; };
-		E4EC33EA2657B25D00074E19 /* icon_normal_back.png in Resources */ = {isa = PBXBuildFile; fileRef = E4EC33E92657B25D00074E19 /* icon_normal_back.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		5B91D3A8ABB0C8265D4D720F /* Pods_ZXKitLogger.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ZXKitLogger.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CE82FAC490744A4AFEFF14B /* Pods-ZXKitLogger.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZXKitLogger.release.xcconfig"; path = "Target Support Files/Pods-ZXKitLogger/Pods-ZXKitLogger.release.xcconfig"; sourceTree = "<group>"; };
 		CB8CD0C462E3AD915D241470 /* Pods-ZXKitLogger.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZXKitLogger.debug.xcconfig"; path = "Target Support Files/Pods-ZXKitLogger/Pods-ZXKitLogger.debug.xcconfig"; sourceTree = "<group>"; };
-		E4039B4026BD3DED00F066A0 /* icon_upload.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_upload.png; sourceTree = "<group>"; };
-		E468B38527623D770004A69C /* icon_delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_delete.png; sourceTree = "<group>"; };
-		E468B387276241FB0004A69C /* icon_exit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_exit.png; sourceTree = "<group>"; };
 		E48AABF322C05EF600CC5F1C /* ZXKitLogger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZXKitLogger.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E48AABF622C05EF600CC5F1C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E48AABFA22C05EF600CC5F1C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -61,20 +47,12 @@
 		E4AC94A0263162FA001FC322 /* ZXKitLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZXKitLogger.swift; sourceTree = "<group>"; };
 		E4AC94A1263162FA001FC322 /* ZXKitLoggerWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZXKitLoggerWindow.swift; sourceTree = "<group>"; };
 		E4AC951E2635694C001FC322 /* ZXLogger+zxkit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ZXLogger+zxkit.swift"; sourceTree = "<group>"; };
-		E4AC964C26395ED1001FC322 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
 		E4AC965026395F22001FC322 /* ZXKitLoggerFloatWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZXKitLoggerFloatWindow.swift; sourceTree = "<group>"; };
 		E4ADD75A26BD7804000BD07F /* ZXKitLoggerPickerWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZXKitLoggerPickerWindow.swift; sourceTree = "<group>"; };
 		E4D1A3ED266918C900420162 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		E4D1A3EE266918C900420162 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E4EC33D5265789BB00074E19 /* ZXKitLoggerMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZXKitLoggerMenuView.swift; sourceTree = "<group>"; };
 		E4EC33D726578A4B00074E19 /* ZXKitLoggerMenuCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZXKitLoggerMenuCollectionViewCell.swift; sourceTree = "<group>"; };
-		E4EC33D92657AFDA00074E19 /* icon_search.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_search.png; sourceTree = "<group>"; };
-		E4EC33DB2657B04700074E19 /* icon_decrypt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_decrypt.png; sourceTree = "<group>"; };
-		E4EC33DD2657B08200074E19 /* icon_share.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_share.png; sourceTree = "<group>"; };
-		E4EC33DF2657B0BA00074E19 /* icon_scroll.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_scroll.png; sourceTree = "<group>"; };
-		E4EC33E12657B12700074E19 /* icon_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_back.png; sourceTree = "<group>"; };
-		E4EC33E32657B17A00074E19 /* icon_analyse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_analyse.png; sourceTree = "<group>"; };
-		E4EC33E92657B25D00074E19 /* icon_normal_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_normal_back.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,17 +140,6 @@
 		E4AC9519263566D1001FC322 /* icon */ = {
 			isa = PBXGroup;
 			children = (
-				E468B387276241FB0004A69C /* icon_exit.png */,
-				E468B38527623D770004A69C /* icon_delete.png */,
-				E4039B4026BD3DED00F066A0 /* icon_upload.png */,
-				E4EC33E92657B25D00074E19 /* icon_normal_back.png */,
-				E4EC33E32657B17A00074E19 /* icon_analyse.png */,
-				E4EC33E12657B12700074E19 /* icon_back.png */,
-				E4EC33DF2657B0BA00074E19 /* icon_scroll.png */,
-				E4EC33DD2657B08200074E19 /* icon_share.png */,
-				E4EC33DB2657B04700074E19 /* icon_decrypt.png */,
-				E4EC33D92657AFDA00074E19 /* icon_search.png */,
-				E4AC964C26395ED1001FC322 /* logo.png */,
 			);
 			path = icon;
 			sourceTree = "<group>";
@@ -262,20 +229,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E4EC33EA2657B25D00074E19 /* icon_normal_back.png in Resources */,
 				E48AAC0322C05EF700CC5F1C /* LaunchScreen.storyboard in Resources */,
 				E4D1A3EF266918C900420162 /* Localizable.strings in Resources */,
-				E4EC33DC2657B04700074E19 /* icon_decrypt.png in Resources */,
-				E4EC33E42657B17A00074E19 /* icon_analyse.png in Resources */,
-				E468B38627623D770004A69C /* icon_delete.png in Resources */,
-				E4EC33E22657B12700074E19 /* icon_back.png in Resources */,
-				E4EC33DA2657AFDB00074E19 /* icon_search.png in Resources */,
-				E4EC33E02657B0BA00074E19 /* icon_scroll.png in Resources */,
-				E4EC33DE2657B08200074E19 /* icon_share.png in Resources */,
-				E4AC964D26395ED1001FC322 /* logo.png in Resources */,
-				E4039B4126BD3DED00F066A0 /* icon_upload.png in Resources */,
 				E48AAC0022C05EF700CC5F1C /* Assets.xcassets in Resources */,
-				E468B388276241FB0004A69C /* icon_exit.png in Resources */,
 				E48AABFE22C05EF600CC5F1C /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
