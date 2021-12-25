@@ -33,11 +33,18 @@ public func printDebug(_ log:Any, file:String = #file, funcName:String = #functi
 public func printDebug(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
     ZXKitLogger.printLog(log: log, logType: ZXKitLogType.debug, file:file, funcName:funcName, lineNum:lineNum)
 }
-//普通输出
+//普通输出，默认为info和printInfo一致
 public func printLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
     ZXKitLogger.printLog(log: log, logType: ZXKitLogType.info, file:file, funcName:funcName, lineNum:lineNum)
 }
 public func printLog(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
+    ZXKitLogger.printLog(log: log, logType: ZXKitLogType.info, file:file, funcName:funcName, lineNum:lineNum)
+}
+//普通类型的输出
+public func printInfo(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
+    ZXKitLogger.printLog(log: log, logType: ZXKitLogType.info, file:file, funcName:funcName, lineNum:lineNum)
+}
+public func printInfo(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
     ZXKitLogger.printLog(log: log, logType: ZXKitLogType.info, file:file, funcName:funcName, lineNum:lineNum)
 }
 //警告类型的输出
@@ -72,15 +79,7 @@ public func ZXDebugLog(_ log:Any, file:String = #file, funcName:String = #functi
 public func ZXDebugLog(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
     printLog(log, file: file, funcName: funcName, lineNum: lineNum)
 }
-//普通类型的输出
-@available(*, deprecated, message: "use printLog() instand of it")
-public func printInfo(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    ZXKitLogger.printLog(log: log, logType: ZXKitLogType.info, file:file, funcName:funcName, lineNum:lineNum)
-}
-@available(*, deprecated, message: "use printLog() instand of it")
-public func printInfo(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    ZXKitLogger.printLog(log: log, logType: ZXKitLogType.info, file:file, funcName:funcName, lineNum:lineNum)
-}
+
 //普通类型的输出
 @available(*, deprecated, message: "use printInfo() instand of it")
 public func ZXNormalLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
@@ -268,7 +267,7 @@ public class ZXKitLogger {
             self.shared.loggerWindow?.isHidden = true
             self.shared.pickerWindow?.isHidden = true
             #if canImport(ZXKitCore)
-//            ZXWarnLog(NSLocalizedString("The float button already exists", comment: ""))
+            printLog(NSLocalizedString("The float button already exists", comment: ""))
             #else
             //float window
             if let window = self.shared.floatWindow {
