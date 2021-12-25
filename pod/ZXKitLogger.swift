@@ -267,7 +267,7 @@ public class ZXKitLogger {
             self.shared.loggerWindow?.isHidden = true
             self.shared.pickerWindow?.isHidden = true
             #if canImport(ZXKitCore)
-            printLog(NSLocalizedString("The float button already exists", comment: ""))
+            print(NSLocalizedString("The float button already exists", comment: ""))
             #else
             //float window
             if let window = self.shared.floatWindow {
