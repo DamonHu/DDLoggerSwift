@@ -16,8 +16,8 @@ public struct ZXKitLogType : OptionSet {
     public static let debug = ZXKitLogType([])        //only show in debug output
     public static let info = ZXKitLogType(rawValue: 1)    //textColor #50d890
     public static let warn = ZXKitLogType(rawValue: 2)         //textColor #f6f49d
-    public static let error = ZXKitLogType(rawValue: 3)        //textColor #ff7676
-    public static let privacy = ZXKitLogType(rawValue: 4)      //textColor #42e6a4
+    public static let error = ZXKitLogType(rawValue: 4)        //textColor #ff7676
+    public static let privacy = ZXKitLogType(rawValue: 8)      //textColor #42e6a4
 
     public let rawValue: Int
     public init(rawValue: Int) {
@@ -25,7 +25,6 @@ public struct ZXKitLogType : OptionSet {
     }
 }
 
-///快速输出log
 /////测试输出，不会写入到悬浮窗中
 public func printDebug(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
     ZXKitLogger.printLog(log: log, logType: ZXKitLogType.debug, file:file, funcName:funcName, lineNum:lineNum)
@@ -69,56 +68,6 @@ public func printPrivacy(_ log:Any ..., file:String = #file, funcName:String = #
     ZXKitLogger.printLog(log: log, logType: ZXKitLogType.privacy, file:file, funcName:funcName, lineNum:lineNum)
 }
 
-//MARK: deprecated
-//测试输出，不会写入到悬浮窗中
-@available(*, deprecated, message: "use printDebug() instand of it")
-public func ZXDebugLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    printLog(log, file: file, funcName: funcName, lineNum: lineNum)
-}
-@available(*, deprecated, message: "use printDebug() instand of it")
-public func ZXDebugLog(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    printLog(log, file: file, funcName: funcName, lineNum: lineNum)
-}
-
-//普通类型的输出
-@available(*, deprecated, message: "use printInfo() instand of it")
-public func ZXNormalLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    printInfo(log, file: file, funcName: funcName, lineNum: lineNum)
-}
-@available(*, deprecated, message: "use printInfo() instand of it")
-public func ZXNormalLog(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    printInfo(log, file: file, funcName: funcName, lineNum: lineNum)
-}
-//警告类型的输出
-@available(*, deprecated, message: "use printWarn() instand of it")
-public func ZXWarnLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    printWarn(log, file: file, funcName: funcName, lineNum: lineNum)
-}
-@available(*, deprecated, message: "use printWarn() instand of it")
-public func ZXWarnLog(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    printWarn(log, file: file, funcName: funcName, lineNum: lineNum)
-}
-//错误类型的输出
-@available(*, deprecated, message: "use printError() instand of it")
-public func ZXErrorLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    printError(log, file: file, funcName: funcName, lineNum: lineNum)
-}
-@available(*, deprecated, message: "use printError() instand of it")
-public func ZXErrorLog(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    printError(log, file: file, funcName: funcName, lineNum: lineNum)
-}
-//加密类型的输出
-@available(*, deprecated, message: "use printPrivacy() instand of it")
-public func ZXPrivacyLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    printPrivacy(log, file: file, funcName: funcName, lineNum: lineNum)
-}
-@available(*, deprecated, message: "use printPrivacy() instand of it")
-public func ZXPrivacyLog(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    printPrivacy(log, file: file, funcName: funcName, lineNum: lineNum)
-}
-
-
-
 ///log的输出
 public class ZXKitLogger {
     public static let shared = ZXKitLogger()
@@ -139,7 +88,7 @@ public class ZXKitLogger {
     public static var privacyLogIv = "abcdefghijklmnop"
     public static var privacyResultEncodeType = ZXKitUtilEncodeType.hex
 
-    //MARK: Private
+    //MARK: - Private变量
     private let mFPSTools = ZXKitFPS()
     private lazy var loggerWindow: ZXKitLoggerWindow? = {
         var window: ZXKitLoggerWindow?
@@ -200,7 +149,7 @@ public class ZXKitLogger {
         }
     }
 
-    //log的Public函数
+    //MARK: - Public函数
     /// 根据日志的输出类型去输出相应的日志，不同日志类型颜色不一样
     /// - Parameter log: 日志内容
     /// - Parameter logType: 日志类型
@@ -303,22 +252,28 @@ public class ZXKitLogger {
         }
     }
 
-    /// 删除本地日志文件
-    public class func deleteLogFile() {
+    /// 删除本地日志文件，如不指定则删除所有文件
+    public class func deleteLogFile(date: Date? = nil) {
         let dbFolder = self.getDBFolder()
-        
-        if let enumer = FileManager.default.enumerator(atPath: dbFolder.path) {
-            while let file = enumer.nextObject() {
-                if let file: String = file as? String {
-                    if file.hasSuffix(".db") {
-                        let logFilePath = dbFolder.appendingPathComponent(file, isDirectory: false)
-                        try? FileManager.default.removeItem(at: logFilePath)
+        if let date = date {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            let dateString = dateFormatter.string(from: date)
+            let logFilePath = dbFolder.appendingPathComponent("\(dateString).db", isDirectory: false)
+            try? FileManager.default.removeItem(at: logFilePath)
+        } else {
+            if let enumer = FileManager.default.enumerator(atPath: dbFolder.path) {
+                while let file = enumer.nextObject() {
+                    if let file: String = file as? String {
+                        if file.hasSuffix(".db") {
+                            let logFilePath = dbFolder.appendingPathComponent(file, isDirectory: false)
+                            try? FileManager.default.removeItem(at: logFilePath)
+                        }
                     }
                 }
             }
         }
     }
-
 
     ///显示分享弹窗
     public class func showShare(isCloseWhenComplete: Bool = true) {
@@ -370,4 +325,53 @@ private extension ZXKitLogger {
             }
         }
     }
+}
+
+
+//MARK: - deprecated method
+//测试输出，不会写入到悬浮窗中
+@available(*, deprecated, message: "use printDebug() instand of it")
+public func ZXDebugLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
+    printLog(log, file: file, funcName: funcName, lineNum: lineNum)
+}
+@available(*, deprecated, message: "use printDebug() instand of it")
+public func ZXDebugLog(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
+    printLog(log, file: file, funcName: funcName, lineNum: lineNum)
+}
+
+//普通类型的输出
+@available(*, deprecated, message: "use printInfo() instand of it")
+public func ZXNormalLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
+    printInfo(log, file: file, funcName: funcName, lineNum: lineNum)
+}
+@available(*, deprecated, message: "use printInfo() instand of it")
+public func ZXNormalLog(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
+    printInfo(log, file: file, funcName: funcName, lineNum: lineNum)
+}
+//警告类型的输出
+@available(*, deprecated, message: "use printWarn() instand of it")
+public func ZXWarnLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
+    printWarn(log, file: file, funcName: funcName, lineNum: lineNum)
+}
+@available(*, deprecated, message: "use printWarn() instand of it")
+public func ZXWarnLog(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
+    printWarn(log, file: file, funcName: funcName, lineNum: lineNum)
+}
+//错误类型的输出
+@available(*, deprecated, message: "use printError() instand of it")
+public func ZXErrorLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
+    printError(log, file: file, funcName: funcName, lineNum: lineNum)
+}
+@available(*, deprecated, message: "use printError() instand of it")
+public func ZXErrorLog(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
+    printError(log, file: file, funcName: funcName, lineNum: lineNum)
+}
+//加密类型的输出
+@available(*, deprecated, message: "use printPrivacy() instand of it")
+public func ZXPrivacyLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
+    printPrivacy(log, file: file, funcName: funcName, lineNum: lineNum)
+}
+@available(*, deprecated, message: "use printPrivacy() instand of it")
+public func ZXPrivacyLog(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
+    printPrivacy(log, file: file, funcName: funcName, lineNum: lineNum)
 }
