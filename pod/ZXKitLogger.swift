@@ -324,6 +324,8 @@ private extension ZXKitLogger {
                 }
             }
         }
+        //删除过期索引
+        HDSqliteTools.shared.deleteLog(timeStamp: (Date().timeIntervalSince1970 - Double(Self.logExpiryDay * 3600 * 24)))
     }
 }
 

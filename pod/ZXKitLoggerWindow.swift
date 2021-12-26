@@ -30,6 +30,12 @@ enum PickerType {
     case upload
 }
 
+enum TextInputType {
+    case none
+    case filter
+    case search
+}
+
 class ZXKitLoggerWindow: UIWindow {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
@@ -47,8 +53,25 @@ class ZXKitLoggerWindow: UIWindow {
     }
 
     private var mLogDataArray = [ZXKitLoggerItem]()  //输出的日志信息
+    private var mFullSearchLogArray = [String]()     //全文搜索的索引
+    
     private var mFilterIndexArray = [IndexPath]()   //索引的排序
     private var mCurrentSearchIndex = 0             //当前搜索到的索引
+    var inputType: TextInputType = .none {
+        didSet {
+            self.mSearchBar.isHidden = self.inputType == .none
+            self.mPreviousButton.isHidden = self.inputType == .none
+            self.mNextButton.isHidden = self.inputType == .none
+            self.mSearchNumLabel.isHidden = self.inputType == .none
+            self.mSearchBar.text = nil
+            if self.inputType != .none {
+                self.mSearchBar.becomeFirstResponder()
+            } else {
+                self.mSearchBar.resignFirstResponder()
+            }
+            self._reloadView()
+        }
+    }          //搜索类型
     
     override var isHidden: Bool {
         willSet {
@@ -63,7 +86,7 @@ class ZXKitLoggerWindow: UIWindow {
                     loggerItem.mLogContent = "ZXKitLogger: Click Log To Copy".ZXLocaleString
                     self.mLogDataArray.append(loggerItem)
                 }
-                self._reloadFilter()
+                self._reloadView()
             }
         }
     }
@@ -92,22 +115,6 @@ class ZXKitLoggerWindow: UIWindow {
         }
     }
 
-    //搜索栏
-    var isSearchViewHidden = true {
-        willSet {
-            self.mSearchBar.isHidden = newValue
-            self.mPreviousButton.isHidden = newValue
-            self.mNextButton.isHidden = newValue
-            self.mSearchNumLabel.isHidden = newValue
-            self.mSearchBar.text = nil
-            if !newValue {
-                self.mSearchBar.becomeFirstResponder()
-            } else {
-                self.mSearchBar.resignFirstResponder()
-            }
-        }
-    }
-
     var isShowMenu = false {
         willSet {
             if newValue {
@@ -118,7 +125,9 @@ class ZXKitLoggerWindow: UIWindow {
                     self.mMenuView.isHidden = false
                     self.mContentBGView.alpha = 1
                 }
-
+                //关闭之前的输入
+                self.isDecryptViewHidden = true
+                self.inputType = .none
             } else {
                 UIView.transition(with: self.mMenuView, duration: 0.8, options: UIView.AnimationOptions.transitionFlipFromRight, animations: {
                     self.mMenuView.alpha = 0
@@ -200,8 +209,6 @@ class ZXKitLoggerWindow: UIWindow {
         tMenuView.isHidden = true
         tMenuView.clickSubject = {(index) -> Void in
             self.isShowMenu = false
-            self.isDecryptViewHidden = true
-            self.isSearchViewHidden = true
             switch index {
                 case 0:
                     break
@@ -214,10 +221,12 @@ class ZXKitLoggerWindow: UIWindow {
                 case 4:
                     self.isDecryptViewHidden = false
                 case 5:
-                    self.isSearchViewHidden = false
+                    self.inputType = .filter
                 case 6:
-                    break
+                    self.inputType = .search
                 case 7:
+                    break
+                case 8:
                     let folder = ZXKitLogger.getDBFolder()
                     let size = ZXKitUtil.shared.getFileDirectorySize(fileDirectoryPth: folder)
                     //数据库条数
@@ -231,7 +240,7 @@ class ZXKitLoggerWindow: UIWindow {
                     }
                     let info = "\n" + "current log count".ZXLocaleString + ": \(self.mLogDataArray.count)" +  "\n" + "LogFile count".ZXLocaleString + ": \(count)" + "\n" + "LogFile total size".ZXLocaleString + ": \(size/1024.0)kb"
                     printWarn(info)
-                case 8:
+                case 9:
                     ZXKitLogger.showUpload(isCloseWhenComplete: false)
                 default:
                     break
@@ -322,6 +331,8 @@ class ZXKitLoggerWindow: UIWindow {
         return tLabel
     }()
     
+    
+    
     private lazy var mTipLabel: UILabel = {
         let tLabel = UILabel()
         tLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -332,10 +343,10 @@ class ZXKitLoggerWindow: UIWindow {
         tLabel.backgroundColor = UIColor.clear
         return tLabel
     }()
-    
-    
 }
 
+
+//MARK: - Function
 extension ZXKitLoggerWindow {
     func insert(model: ZXKitLoggerItem) {
         if ZXKitLogger.maxDisplayCount != 0 && self.mLogDataArray.count > ZXKitLogger.maxDisplayCount {
@@ -343,7 +354,7 @@ extension ZXKitLoggerWindow {
         }
         self.mLogDataArray.append(model)
         if !self.isHidden {
-            self._reloadFilter(model: model)
+            self._reloadView(model: model)
         }
     }
 
@@ -351,10 +362,11 @@ extension ZXKitLoggerWindow {
     func cleanDataArray() {
         self.mLogDataArray.removeAll()
         self.mFilterIndexArray.removeAll()
-        self._reloadFilter()
+        self._reloadView()
     }
 }
 
+//MARK: - private Function
 private extension ZXKitLoggerWindow {
     @objc func changeWindowFrame() {
         self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 420)
@@ -392,14 +404,24 @@ private extension ZXKitLoggerWindow {
     }
 
     //过滤刷新
-    private func _reloadFilter(model: ZXKitLoggerItem? = nil) {
+    private func _reloadView(model: ZXKitLoggerItem? = nil) {
         self.mFilterIndexArray.removeAll()
         self.mPreviousButton.isEnabled = false
         self.mNextButton.isEnabled = false
         self.mSearchNumLabel.text = "0"
 
         let searchText = self.mSearchBar.text ?? "";
-        if !searchText.isEmpty {
+        if inputType == .search {
+            self.mFullSearchLogArray = HDSqliteTools.shared.searchLog(keyword: searchText)
+            for (index, _) in mFullSearchLogArray.enumerated() {
+                let indexPath = IndexPath(row: index, section: 0)
+                self.mFilterIndexArray.append(indexPath)
+                self.mPreviousButton.isEnabled = true
+                self.mNextButton.isEnabled = true
+                self.mCurrentSearchIndex = self.mFilterIndexArray.count - 1;
+                self.mSearchNumLabel.text = "\(self.mCurrentSearchIndex + 1)/\(self.mFilterIndexArray.count)"
+            }
+        } else {
             let dataList = self.mLogDataArray
             for (index, item) in dataList.enumerated() {
                 if item.getFullContentString().localizedCaseInsensitiveContains(searchText) {
@@ -412,11 +434,19 @@ private extension ZXKitLoggerWindow {
                 }
             }
         }
+        
         self.mTableView.reloadData()
         if self.mMenuView.isAutoScrollSwitch {
-            guard self.mLogDataArray.count > 1 else { return }
-            DispatchQueue.main.async {
-                self.mTableView.scrollToRow(at: IndexPath(row: self.mLogDataArray.count - 1, section: 0), at: .bottom, animated: true)
+            if inputType == .search {
+                guard self.mFullSearchLogArray.count > 1 else { return }
+                DispatchQueue.main.async {
+                    self.mTableView.scrollToRow(at: IndexPath(row: self.mFullSearchLogArray.count - 1, section: 0), at: .bottom, animated: true)
+                }
+            } else {
+                guard self.mLogDataArray.count > 1 else { return }
+                DispatchQueue.main.async {
+                    self.mTableView.scrollToRow(at: IndexPath(row: self.mLogDataArray.count - 1, section: 0), at: .bottom, animated: true)
+                }
             }
         }
     }
@@ -451,13 +481,13 @@ private extension ZXKitLoggerWindow {
     func _hide() {
         ZXKitLogger.hide()
         self.isDecryptViewHidden = true
-        self.isSearchViewHidden = true
+        self.inputType = .none
     }
     
     func _close() {
         ZXKitLogger.close()
         self.isDecryptViewHidden = true
-        self.isSearchViewHidden = true
+        self.inputType = .none
     }
 
     //解密
@@ -568,34 +598,48 @@ private extension ZXKitLoggerWindow {
 extension ZXKitLoggerWindow: UITableViewDataSource, UITableViewDelegate {
     //MARK:UITableViewDelegate
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if inputType == .search {
+            return self.mFullSearchLogArray.count
+        }
         return self.mLogDataArray.count
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let loggerItem = self.mLogDataArray[indexPath.row]
-        
-        let loggerCell: ZXKitLoggerTableViewCell = tableView.dequeueReusableCell(withIdentifier: "ZXKitLoggerTableViewCell") as! ZXKitLoggerTableViewCell
-//        if indexPath.row%2 != 0 {
-//            loggerCell.backgroundColor = UIColor(red: 156.0/255.0, green: 44.0/255.0, blue: 44.0/255.0, alpha: 0.8)
-//        } else {
-//            loggerCell.backgroundColor = UIColor.clear
-//        }
-        loggerCell.backgroundColor = UIColor.clear
-        loggerCell.selectionStyle = .none
-        loggerCell.updateWithLoggerItem(loggerItem: loggerItem, highlightText: self.mSearchBar.text ?? "")
-        return loggerCell
+        if inputType == .search {
+            let loggerContent = self.mFullSearchLogArray[indexPath.row]
+            
+            let loggerCell = tableView.dequeueReusableCell(withIdentifier: "ZXKitLoggerTableViewCell") as! ZXKitLoggerTableViewCell
+            loggerCell.backgroundColor = UIColor.clear
+            loggerCell.selectionStyle = .none
+            loggerCell.update(content: loggerContent)
+            return loggerCell
+        } else {
+            let loggerItem = self.mLogDataArray[indexPath.row]
+            
+            let loggerCell = tableView.dequeueReusableCell(withIdentifier: "ZXKitLoggerTableViewCell") as! ZXKitLoggerTableViewCell
+            loggerCell.backgroundColor = UIColor.clear
+            loggerCell.selectionStyle = .none
+            loggerCell.updateWithLoggerItem(loggerItem: loggerItem, highlightText: self.mSearchBar.text ?? "")
+            return loggerCell
+        }
     }
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let loggerItem = self.mLogDataArray[indexPath.row]
-        let pasteboard = UIPasteboard.general
-        pasteboard.string = loggerItem.getFullContentString()
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "HH:mm:ss.SSS"
-        let dateStr = dateFormatter.string(from: loggerItem.mCreateDate)
-        let tipString = dateStr + " " + "Log has been copied".ZXLocaleString
-        printWarn(tipString)
+        if inputType == .search {
+            let loggerContent = self.mFullSearchLogArray[indexPath.row]
+            let pasteboard = UIPasteboard.general
+            pasteboard.string = loggerContent
+        } else {
+            let loggerItem = self.mLogDataArray[indexPath.row]
+            let pasteboard = UIPasteboard.general
+            pasteboard.string = loggerItem.getFullContentString()
+            
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "HH:mm:ss.SSS"
+            let dateStr = dateFormatter.string(from: loggerItem.mCreateDate)
+            let tipString = dateStr + " " + "Log has been copied".ZXLocaleString
+            printWarn(tipString)
+        }
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -618,7 +662,7 @@ extension ZXKitLoggerWindow: UITableViewDataSource, UITableViewDelegate {
 extension ZXKitLoggerWindow: UISearchBarDelegate {
     //UISearchBarDelegate
     public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        self._reloadFilter()
+        self._reloadView()
     }
     
     public func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {

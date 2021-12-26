@@ -74,5 +74,12 @@ class ZXKitLoggerTableViewCell: UITableViewCell {
                 self.contentView.backgroundColor = UIColor.clear
             }
         }
+        
+    }
+    
+    func update(content: String) {
+        self.contentView.backgroundColor = UIColor.clear
+        self.mContentLabel.textColor = UIColor(red: 80.0/255.0, green: 216.0/255.0, blue: 144.0/255.0, alpha: 1.0)
+        self.mContentLabel.text = content
     }
 }
