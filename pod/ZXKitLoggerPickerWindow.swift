@@ -84,24 +84,32 @@ class ZXKitLoggerPickerWindow: UIWindow {
 }
 
 extension ZXKitLoggerPickerWindow {
-    func showPicker(pickType: PickerType, isCloseWhenComplete: Bool) {
+    func showPicker(pickType: PickerType, date: Date?, isCloseWhenComplete: Bool) {
         self.pickerType = pickType
         self.isCloseWhenComplete = isCloseWhenComplete
-        self.mFileDateNameList = [String]()
-        let path = HDSqliteTools.shared.getDBFolder()
-        //数据库目录
-        if let enumer = FileManager.default.enumerator(at: path, includingPropertiesForKeys: [URLResourceKey.nameKey], options: [.skipsHiddenFiles, .skipsPackageDescendants]) {
-            while let file = enumer.nextObject() {
-                if let file: URL = file as? URL, file.lastPathComponent.hasSuffix(".db") {
-                    self.mFileDateNameList.append(file.lastPathComponent)
+        if let date = date {
+            //指定日期
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            self.mShareFileName = dateFormatter.string(from: date) + ".db"
+            self._confirmPicker()
+        } else {
+            self.mFileDateNameList = [String]()
+            let path = HDSqliteTools.shared.getDBFolder()
+            //数据库目录
+            if let enumer = FileManager.default.enumerator(at: path, includingPropertiesForKeys: [URLResourceKey.nameKey], options: [.skipsHiddenFiles, .skipsPackageDescendants]) {
+                while let file = enumer.nextObject() {
+                    if let file: URL = file as? URL, file.lastPathComponent.hasSuffix(".db") {
+                        self.mFileDateNameList.append(file.lastPathComponent)
+                    }
                 }
             }
-        }
 
-        //倒序，最后的放前面
-        self.mFileDateNameList = self.mFileDateNameList.sorted().reversed()
-        self.mPickerView.reloadAllComponents()
-        self.mShareFileName = self.mFileDateNameList.first ?? ""
+            //倒序，最后的放前面
+            self.mFileDateNameList = self.mFileDateNameList.sorted().reversed()
+            self.mPickerView.reloadAllComponents()
+            self.mShareFileName = self.mFileDateNameList.first ?? ""
+        }
     }
 }
 

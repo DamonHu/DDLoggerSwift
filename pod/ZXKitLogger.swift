@@ -193,6 +193,16 @@ public class ZXKitLogger {
     public class func getDBFolder() -> URL {
         return HDSqliteTools.shared.getDBFolder()
     }
+
+    ///获取log日志的数据库文件
+    public class func getDBFile(date: Date) -> URL {
+        let dbFolder = self.getDBFolder()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let dateString = dateFormatter.string(from: date)
+        let logFilePath = dbFolder.appendingPathComponent("\(dateString).db", isDirectory: false)
+        return logFilePath
+    }
     
     ///  删除log日志
     public class func cleanLog() {
@@ -254,14 +264,10 @@ public class ZXKitLogger {
 
     /// 删除本地日志文件，如不指定则删除所有文件
     public class func deleteLogFile(date: Date? = nil) {
-        let dbFolder = self.getDBFolder()
         if let date = date {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd"
-            let dateString = dateFormatter.string(from: date)
-            let logFilePath = dbFolder.appendingPathComponent("\(dateString).db", isDirectory: false)
-            try? FileManager.default.removeItem(at: logFilePath)
+            try? FileManager.default.removeItem(at: self.getDBFile(date: date))
         } else {
+            let dbFolder = self.getDBFolder()
             if let enumer = FileManager.default.enumerator(atPath: dbFolder.path) {
                 while let file = enumer.nextObject() {
                     if let file: String = file as? String {
@@ -276,15 +282,15 @@ public class ZXKitLogger {
     }
 
     ///显示分享弹窗
-    public class func showShare(isCloseWhenComplete: Bool = true) {
-        self.shared.pickerWindow?.isHidden = false
-        self.shared.pickerWindow?.showPicker(pickType: .share, isCloseWhenComplete: isCloseWhenComplete)
+    public class func showShare(date: Date? = nil, isCloseWhenComplete: Bool = true) {
+        self.shared.pickerWindow?.isHidden = date != nil
+        self.shared.pickerWindow?.showPicker(pickType: .share, date: date, isCloseWhenComplete: isCloseWhenComplete)
     }
 
     ///显示上传弹窗
-    public class func showUpload(isCloseWhenComplete: Bool = true) {
-        self.shared.pickerWindow?.isHidden = false
-        self.shared.pickerWindow?.showPicker(pickType: .upload, isCloseWhenComplete: isCloseWhenComplete)
+    public class func showUpload(date: Date? = nil, isCloseWhenComplete: Bool = true) {
+        self.shared.pickerWindow?.isHidden = date != nil
+        self.shared.pickerWindow?.showPicker(pickType: .upload, date: date, isCloseWhenComplete: isCloseWhenComplete)
     }
 
     //MARK: init
@@ -303,12 +309,12 @@ private extension ZXKitLogger {
     func _checkValidity() {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
-        let cachePath = HDSqliteTools.shared.getDBFolder()
 
+        let cachePath = HDSqliteTools.shared.getDBFolder()
         if let enumer = FileManager.default.enumerator(atPath: cachePath.path) {
             while let file = enumer.nextObject() {
                 if let file: String = file as? String {
-                    if file.hasSuffix(".db") {
+                    if file.hasSuffix(".db") && file.count > 10 {
                         //截取日期
                         let index2 = file.startIndex
                         let index3 = file.index(index2, offsetBy: 9)
