@@ -1,90 +1,86 @@
 # ZXKitLogger
 
-[中文文档](./README_zh.md)
+![](https://img.shields.io/badge/CocoaPods-supported-brightgreen) ![](https://img.shields.io/badge/Swift-5.0-brightgreen) ![](https://img.shields.io/badge/License-MIT-brightgreen) ![](https://img.shields.io/badge/version-iOS11.0-brightgreen)
 
-该项目由[HDWindowLoggerSwift](https://github.com/DamonHu/HDWindowLoggerSwift)更新升级而来
+[English](./README_en.md)
 
-Upgraded from [HDWindowLoggerSwift](https://github.com/DamonHu/HDWindowLoggerSwift)
+如果您需要的是快速集成多个调试功能，例如日志查看、网速测试、文件查看等功能，请使用 [DamonHu/ZXKitSwift](https://github.com/DamonHu/ZXKitSwift)。
 
-iOS端将输出日志log悬浮显示在屏幕上，可以生成日志文件分享，便于在真机没有连接xcode的情况下调试信息。可以分享、筛选log等操作。使用SQLite存储日志信息，支持系统分享和屏幕FPS显示
+**该插件已经默认集成在[ZXKitSwift](https://github.com/DamonHu/ZXKitSwift)中，如果您已经集成了`ZXKitSwift`，无需重复集成该插件**
 
-The iOS terminal will display the output log suspended on the screen, which can generate log file sharing, and debug information when the real machine is not connected to Xcode. You can share, filter logs and other operations. Use SQLite to store log information, support system sharing and screen FPS display
+iOS端将输出日志log悬浮显示在屏幕上，可以生成日志文件分享，便于在真机没有连接xcode的情况下调试信息。可以分享、筛选log等操作。使用SQLite存储日志信息，支持系统分享和屏幕FPS显示。后续更新会增加更多的功能，而不仅限于日志输出。
 
+调试窗口可在屏幕上显示，可以设置是否自动滚动日志便于调试，也可以将输出的日志分享到微信、twitter等程序，以便离线查看。同时可以搜索输出内容，敏感内容可以设置密码进行加密，分享出来的文件也会进行加密，可以通过密码在线解密。
 
-## Introduction to English
+该项目使用`sqlite`高效存储，后台运行期间只记录数据，不会影响界面性能，前台运行效率高，基本和Xcode同步输出日志，可以查看和xCode日志输出的对比gif图
 
-
-In addition to displaying on the screen, you can set whether to automatically scroll the log for debugging, or you can share the output log to WeChat, twitter, etc. for offline viewing. At the same time, you can search for output content, Sensitive content can be encrypted with a password, and shared files are also encrypted, and can be decrypted online with a password.
-
-The project uses' SQLite 'efficient storage, only records data during the background operation, and not affect the performance of the interface. The foreground operation is efficient. It basically outputs logs synchronously with Xcode, and you can view the GIF chart of the comparison with Xcode log output
-
-|Preview GIF picture|Xcode debug GIF|
+|预览gif图|Xcode对比gif图|
 |----|----|
 |![](./readmeResources/preview.gif)|![](./readmeResources/debug.gif)|
 
 
-
-|preview|share & FPS|
+|预览图|分享 & FPS|
 |----|----|
-|![](./readmeResources/mobile_preview.png)<br/>Xcode Preview<br/>![](./readmeResources/xcode_preview.png)|![](./readmeResources/share_preview.png)|
+|![](./readmeResources/mobile_preview.png)<br/>XCode预览图<br/>![](./readmeResources/xcode_preview.png)|![](./readmeResources/share_preview.png)|
 
 ![](./readmeResources/preview.png)
 
-## I. Installation
+## 一、安装
 
-You can choose to install using cocoaPod, or you can download the source file directly into the project.
+你可以选择使用cocoaPod安装，也可以直接下载源文件拖入项目中
 
-### 1.1, cocoaPod installation
+### 1.1、cocoaPod安装
 
 ```
 pod 'ZXKitLogger'
 ```
 
-#### 1.1.1, wcdb compatible
+#### 1.1.1、wcdb兼容
 
-If you have integrated Tencent's [Tencent / wcdb] (https://github.com/Tencent/wcdb), the system functions of `sqlite` have been modified and optimized, which will cause the same error as the function name. You can use the wcdb version
-
-```
-Pod 'ZXKitLogger/wcdb'
-```
-
-
-### 1.2, file installation
-
-You can drag the files in the `pod` folder into the project under the project.
-
-## II. Use
-
-### 1、Import header file
+如果你集成了腾讯的[Tencent/wcdb](https://github.com/Tencent/wcdb)，由于修改优化了`sqlite`的系统功能，会导致函数名一样报错，可以使用wcdb版本
 
 ```
-Import ZXKitLogger
+pod 'ZXKitLogger/wcdb'
 ```
 
+### 1.2、文件安装
 
-### 2、 display the floating window
+可以将工程底下，`pod`文件夹内的文件拖入项目即可
+
+## 二、使用
+
+简单三步即可调用
+
+### 1、导入头文件
+
+```
+import ZXKitLogger
+```
+
+### 2、显示悬浮窗
 
 ```
 ZXKitLogger.show()
 ```
 
-### 3 、 Print log content
+### 3、打印日志内容
 
-The font colors of the three output methods are different, and the corresponding types of printLog are different.
+四种输出方式字体颜色显示不同，对应的printLog不同的类型
 
 ```
-printDebug(log)	//the log will not be written to the window, only output in xcode
+printDebug(log)	//调试输出，默认不会写入数据库
 
-printLog(log) // Log's textColor is green
+printLog(log)	//日志为绿色
 
-printWarn(log) // log's textColor is yellow
+printWarn(log)	//日志为黄色
 
-printError(log) // Log's textColor is red
+printError(log)	//日志为红色
 
-printPrivacy(log) // Output of encrypted data, the specific encryption method is described in the following encryption
+printPrivacy(log)	//加密数据的输出，具体加密方式在下面的加密中说明
+
 ```
 
-Output format
+输出格式
 
 ```
 2021-08-11 10:07:28.378 ---- ⚠️⚠️ ---- File: ViewController.swift -- Line: 82 -- Function:ViewController.swift.onClickButton() ----
@@ -106,37 +102,39 @@ AAuKjIm5hC2jiPqz7OKHAngWspeACyWZufDguqdOcugituhWV8jnbr/6SHYoK0/9
 测试输出，默认不会写入数据库
 ```
 
-## III. more settings
+## 三、更多设置
 
-### 1、Set whether to output all information
+通过其他设置可以实现获取更多功能
+
+### 1、设置是否输出全部信息
 
 ```
 ZXKitLogger.isFullLogOut = true
 ```
 
-If it is set to `true`, the output format is as follows, including the output file, the number of lines called, and the function name
+如果设置为`true`，那么输出的格式是下面这样的，包含了输出文件、调用的行数、和调用的函数
 
 ```
-2021-08-11 10:07:28.378 ---- ⚠️⚠️ ---- File: ViewController.swift -- Line: 82 -- Function:ViewController.swift.onClickButton() ----
+13:36:08.474 ---- ⚠️⚠️ ---- File: ViewController.swift -- Line: 82 -- Function:ViewController.swift.onClickButton() ----
 警告提示
 
-2021-08-11 10:07:28.380 ---- ❌❌ ---- File: ViewController.swift -- Line: 84 -- Function:ViewController.swift.onClickButton() ----
+13:36:08.476 ---- ❌❌ ---- File: ViewController.swift -- Line: 84 -- Function:ViewController.swift.onClickButton() ----
 错误出现
 
-2021-08-11 10:07:28.381 ---- ⛔️⛔️ ---- File: ViewController.swift -- Line: 86 -- Function:ViewController.swift.onClickButton() ----
+13:36:08.487 ---- ⛔️⛔️ ---- File: ViewController.swift -- Line: 86 -- Function:ViewController.swift.onClickButton() ----
 AAuKjIm5hC2jiPqz7OKHAngWspeACyWZufDguqdOcugituhWV8jnbr/6SHYoK0/9
 
-2021-08-11 10:07:28.383 ---- ✅✅ ---- File: ViewController.swift -- Line: 89 -- Function:ViewController.swift.onClickButton() ----
+13:36:08.489 ---- ✅✅ ---- File: ViewController.swift -- Line: 89 -- Function:ViewController.swift.onClickButton() ----
 {
-  "77777" : "数据库的复健科花见花开会尽快圣诞节开发和金黄色的费四大皆空回复就开始和豆腐是砍价的回复斯柯达金凤凰",
-  "hhhhhhh" : "撒旦法是打发斯蒂芬是打发斯蒂芬"
+  "hhhhhhh" : "撒旦法是打发斯蒂芬是打发斯蒂芬",
+  "77777" : "数据库的复健科花见花开会尽快圣诞节开发和金黄色的费四大皆空回复就开始和豆腐是砍价的回复斯柯达金凤凰"
 }
 
 2021-08-11 10:07:28.388 ---- 💜💜 ---- File: ViewController.swift -- Line: 76 -- Function:ViewController.swift.onClickButton() ----
 测试输出，默认不会写入数据库
 ```
 
-If it is set to `false`, the output format is as follows
+设置为`false`的输出样式
 
 ```
 2021-08-11 10:10:33.309 ---- ⚠️⚠️ ---- 
@@ -158,56 +156,57 @@ AAuKjIm5hC2jiPqz7OKHAngWspeACyWZufDguqdOcugituhWV8jnbr/6SHYoK0/9
 测试输出，默认不会写入数据库
 ```
 
-### 2、 Whether to output content synchronously in the debug bar at the bottom of xcode
+### 2、是否在xcode底部的调试栏同步输出内容
 
 ```
 ZXKitLogger.isSyncConsole = true
 ```
 
-### 3、Separate log folder for different users
+### 3、针对不同用户设置独立日志文件夹
 
 ```
 ZXKitLogger.userID = "1001"
 ```
 
-### 4、Clear the log
+### 4、清空log
 
 ```
 ZXKitLogger.cleanLog()
 ```
 
-### 5、close the entire log window
+### 5、关闭整个log窗口
 
 ```
 ZXKitLogger.close()
 ```
 
-### 6、only hide the log output window
+### 6、仅隐藏log输出窗口
 
 ```
 ZXKitLogger.hide()
 ```
 
-### 7、set the log maximum number of records,  0 is not limited, default value is 100
+### 7、设置显示log最大记录数，0为不限制, 默认为100
 
 ```
 ZXKitLogger.maxDisplayCount = 100
 ```
-### 8、 delete the local LogFile
+
+### 8、 删除本地日志文件
 
 ```
 ZXKitLogger.deleteLogFile()
 ```
 
-### 9、 The validity period of the local log file (days), the local log beyond the validity period will be deleted, 0 is no validity period, default is 30 days
+### 9、 本地日志文件的有效期（天），超出有效期的本地日志会被删除，0为没有有效期，默认为30天
 
 ```
 ZXKitLogger.logExpiryDay = 30
 ```
 
-### 10、storageLevels
+### 10、存储日志的级别
 
-The included log level will be stored in the database. By default, the debug level is not stored
+包含在内的日志级别会被存储到数据库，默认debug级别不存储
 
 ```
 
@@ -215,145 +214,123 @@ ZXKitLogger.storageLevels = [.info, .warn, .error, .privacy]
 
 ```
 
-### 11、Get the array of logs. You can specify the date
+### 11、获取数据库存储的日志信息数组，也可以指定日期
 
 ```
-//today
+//获取今日的日志
 ZXKitLogger.getAllLog()
-
-//Special date
+//指定日期
 ZXKitLogger.getAllLog(date: Date(timeIntervalSinceNow: 1000))
 ```
 
-If you want to get all the log files, you can get the folder where the log is stored, return a URL result, and then traverse to process it yourself
+
+如果你想获取所有日志文件，可以获取日志存储的文件夹，返回的是一个URL结果，然后自己进行遍历去处理
 
 ```
 ZXKitLogger.getDBFolder()
 ```
 
-for example
+例如
 
 ```
 let dbFolder = ZXKitLogger.getDBFolder()
         
 if let enumer = FileManager.default.enumerator(atPath: dbFolder.path) {
     while let file = enumer.nextObject() {
-       if let file: String = file as? String {
+         if let file: String = file as? String {
             if file.hasSuffix(".db") {
-	            //Get the specific log file log
-                let logFilePath = dbFolder.appendingPathComponent(file, isDirectory: false)              
-            }
-        }
+            	//获取到具体的log文件日志
+                let logFilePath = dbFolder.appendingPathComponent(file, isDirectory: false)
+             }
+         }
     }
 }
 ```
 
-### 12. Directly display log sharing window
+### 12、直接显示日志分享window
 
-If you don't want users to see the log output window, but just let them share the log, you can call
+如果你不想让用户看到日志输出的window，而仅仅是让分享日志，则可以调用
 
 ```
 ZXKitLogger.showShare()
 ```
 
-### 13、Display log upload, select window and button
+### 13、显示日志上传选择window和按钮
 
-If you want users to upload DB files, in addition to traversing by themselves, we also provide a shortcut scheme. Like sharing, call
+如果你想让用户上传db文件，除了可以自己遍历，我们也提供了快捷方案，和分享一样，调用
 
 ```
 ZXKitLogger.showUpload()
 ```
 
-The upload option will appears. The callback determined after the user selects is in `uploadcomplete`. You can implement the callback, for example
+即可出现上传的选项，用户选择之后确定的回调在`uploadComplete`，你实现该回调即可，例如
 
 ```
 ZXKitLogger.uploadComplete = { file in
      print(file)
-     //Process upload
+     //处理上传
 }
 ```
 
-### LogContent protocol
+### LogContent协议
 
-If you want to customize the output content, you can integrate and use this type of `LogContent` protocol. For example, you can print the `URL` type to output only its` path`. You can directly set the returned `logStringValue`.
+如果你想自定义输出的内容，可以集成并该类型的LogContent协议，例如设置打印`URL`类型只输出它的`path`，可以直接设置返回的`logStringValue`即可。
 
 ```
 extension URL: LogContent {
-    public var logStringValue: String {
-        return self.path
-    }
+    public var logStringValue: String {
+        return self.path
+    }
 }
 ```
 
-### 1.2, support ZXKit quick start
 
-**The plug-in has been integrated in [ZXKitSwift](https://github.com/ZXKitCode/ZXKitSwift) by default, if you have already integrated `ZXKitSwift`, there is no need to repeat the integration**
+## 四、 敏感信息输出加密和解密
 
-This tool supports `ZXKit` quick start, If you want to use this function, you can add the following pod command
-
-```
-pod 'ZXKitLogger/zxkit'
-```
-
-Then register to 'zxkit' in `AppDelegate`
+如果存在敏感信息，不希望用户或者手机调试时看到，简单两步就可以设置加密
 
 ```
-func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-	
-	ZXKit.regist(plugin: ZXKitLogger.shared)
-	
-	return true
-}
-```
-
-## IV. sensitive information output encryption and decryption
-
-If there is sensitive information that you don't want users to see when debugging, you can set encryption in two simple steps
-
-```
-// 1. Set the encryption password,  32 characters
+//1、设置加密密码，32个字符数字。默认为12345678901234561234567890123456
 ZXKitLogger.privacyLogPassword = "12345678901234561234567890123456"
 
-// 2, output encrypted content
-printPrivacy("This is test data 222 for encrypted data")
+//2、输出加密内容
+printPrivacy("这个是加密数据的测试数据222")
 ```
 
-### 4.2 Decrypt the contents of the display window
+### 4.2、显示窗内容解密
 
-After the setting, the display in the display window is `This content is encrypted, please view it after decryption`, enter the set encryption password and click decrypt to display the info encrypted content.
+设置之后，在显示窗中的显示为`该内容已加密，请解密后查看`，输入设置的加密密码然后点击解密之后即可显示正常的加密内容。
 
-### 4.1. Decrypting shared files
+### 4.1、 分享文件解密
 
-* If the data has been decrypted in the display window, the content of the shared file will not be encrypted at this time, and all content will be displayed.
-* If it is not decrypted in the display window, the content of the file shared at this time is AES encrypted content, you can search the `AES Online Decryption Website` to decrypt the content, and the settings are as follows:
+* 如果已经在显示窗解密了数据，此时分享的文件内容不会加密，会显示所有内容。
+* 如果在显示窗中未解密，此时分享出的文件内容为AES加密内容，可以搜索`AES在线解密的网站`去解密内容，设置参照下图：
 
 ![](./readmeResources/decrypt.png)
 
-* Mode: CBC
-* Fill: Pkcs7
-* Data block: 128 bits
-* Offset: `abcdefghijklmnop`
-* Encoding: Base64
-* Character set: UTF8
-* Password: The password you set in the SDK yourself
+* 模式: CBC
+* 填充: Pkcs7
+* 数据块: 128位
+* 偏移量: abcdefghijklmnop
+* 编码: Base64
+* 字符集: UTF8
+* 密码: 你自己在sdk中设置的密码
 
-Then click Decrypt.
+然后点击解密即可。
 
-Here are a few online sites recommended, you can also Google it by yourself
+这里推荐几个在线的网站，你也可以自己百度
 
 * [https://oktools.net/aes](https://oktools.net/aes)
 * [http://tools.bugscaner.com/cryptoaes/](http://tools.bugscaner.com/cryptoaes/)
 * [http://tool.chacuo.net/cryptaes](http://tool.chacuo.net/cryptaes)
 
-## V. Other Tips
+## 五、其他说明tips
 
-1. For the convenience of viewing, it is divided into three types: info, warning and error. It corresponds to three different colors for easy viewing.
-2. Click the corresponding cell to copy the output log directly to the system clipboard.
-3. Share the system share that is called. Which software you can share depends on which software is installed on your phone.
-4. The shared log file can be viewed in any text editor. When viewed in 'vscode', the code will be highlighted
+1. 为了查看方便，分为普通、警告、错误三种类型，对应了三种不同的颜色，方便查看
+2. 点击对应的cell可以直接将输出log复制到系统剪贴板
+3. 分享调用的系统分享，可以分享到哪个软件取决于你手机上安装的有哪些软件。
+4.   分享出去的log文件可在任意文本编辑器查看，在`VSCode`查看会有代码高亮效果
 
 ## License
 
-![](https://camo.githubusercontent.com/eb9066a6d8e0950066f3757c420e3a607c0929583b48ebda6fd9a6f50ccfc8f1/68747470733a2f2f7777772e6170616368652e6f72672f696d672f41534632307468416e6e69766572736172792e6a7067)
-
-Base on Apache-2.0 License
+该项目基于MIT协议，您可以自由修改使用
