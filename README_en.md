@@ -12,9 +12,6 @@ The plug-in has been integrated in [ZXKitSwift](https://github.com/DamonHu/ZXKit
 The iOS terminal will display the output log suspended on the screen, which can generate log file sharing, and debug information when the real machine is not connected to Xcode. You can share, filter logs and other operations. Use SQLite to store log information, support system sharing and screen FPS display
 
 
-In addition to displaying on the screen, you can set whether to automatically scroll the log for debugging, or you can share the output log to WeChat, twitter, etc. for offline viewing. At the same time, you can search for output content, Sensitive content can be encrypted with a password, and shared files are also encrypted, and can be decrypted online with a password.
-
-The project uses' SQLite 'efficient storage, only records data during the background operation, and not affect the performance of the interface. The foreground operation is efficient. It basically outputs logs synchronously with Xcode, and you can view the GIF chart of the comparison with Xcode log output
 
 |Preview GIF picture|Xcode debug GIF|
 |----|----|
@@ -322,7 +319,13 @@ Here are a few online sites recommended, you can also Google it by yourself
 * [http://tools.bugscaner.com/cryptoaes/](http://tools.bugscaner.com/cryptoaes/)
 * [http://tool.chacuo.net/cryptaes](http://tool.chacuo.net/cryptaes)
 
-## V. Other Tips
+## V. Log viewing client
+
+This library uses `SQLite` to store log information. So you can use [ZXKitLogger_Mac](https://github.com/DamonHu/ZXKitLogger_Mac), the client of `ZXKitLogger` cooperates to view the export SQLite data.
+
+![](./readmeResources/Jietu20220731-212644.png)
+
+## Other Tips
 
 1. For the convenience of viewing, it is divided into three types: info, warning and error. It corresponds to three different colors for easy viewing.
 2. Click the corresponding cell to copy the output log directly to the system clipboard.

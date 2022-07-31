@@ -8,9 +8,7 @@
 
 **该插件已经默认集成在[ZXKitSwift](https://github.com/DamonHu/ZXKitSwift)中，如果您已经集成了`ZXKitSwift`，无需重复集成该插件**
 
-iOS端将输出日志log悬浮显示在屏幕上，可以生成日志文件分享，便于在真机没有连接xcode的情况下调试信息。可以分享、筛选log等操作。使用SQLite存储日志信息，支持系统分享和屏幕FPS显示。后续更新会增加更多的功能，而不仅限于日志输出。
-
-调试窗口可在屏幕上显示，可以设置是否自动滚动日志便于调试，也可以将输出的日志分享到微信、twitter等程序，以便离线查看。同时可以搜索输出内容，敏感内容可以设置密码进行加密，分享出来的文件也会进行加密，可以通过密码在线解密。
+iOS端将输出日志log悬浮显示在屏幕上，可以生成日志文件分享，便于在真机没有连接xcode的情况下调试信息。可以分享、筛选log等操作。
 
 该项目使用`sqlite`高效存储，后台运行期间只记录数据，不会影响界面性能，前台运行效率高，基本和Xcode同步输出日志，可以查看和xCode日志输出的对比gif图
 
@@ -324,7 +322,14 @@ printPrivacy("这个是加密数据的测试数据222")
 * [http://tools.bugscaner.com/cryptoaes/](http://tools.bugscaner.com/cryptoaes/)
 * [http://tool.chacuo.net/cryptaes](http://tool.chacuo.net/cryptaes)
 
-## 五、其他说明tips
+
+## 五、日志查看客户端
+
+该库使用SQLite存储日志信息，如果使用通用的SQLite查看工具，只是一条一条的表格，并且有的还收费。所以可以使用[ZXKitLogger_Mac](https://github.com/DamonHu/ZXKitLogger_Mac)的客户端配合查看`ZXKitLogger`导出的SQLite文件。
+
+![](./readmeResources/Jietu20220731-212644.png)
+
+## 六、其他说明tips
 
 1. 为了查看方便，分为普通、警告、错误三种类型，对应了三种不同的颜色，方便查看
 2. 点击对应的cell可以直接将输出log复制到系统剪贴板
