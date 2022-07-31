@@ -47,25 +47,7 @@ class ZXKitLoggerTableViewCell: UITableViewCell {
     }
     
     func updateWithLoggerItem(loggerItem:ZXKitLoggerItem, highlightText:String) {
-        switch loggerItem.mLogItemType {
-        case .debug:
-            self.mContentLabel.textColor = UIColor.zx.color(hexValue: 0xbf8bfb)
-            break
-        case .info:
-            self.mContentLabel.textColor = UIColor(red: 80.0/255.0, green: 216.0/255.0, blue: 144.0/255.0, alpha: 1.0)
-            break
-        case .warn:
-            self.mContentLabel.textColor = UIColor(red: 246.0/255.0, green: 244.0/255.0, blue: 157.0/255.0, alpha: 1.0)
-            break
-        case .error:
-            self.mContentLabel.textColor = UIColor.zx.color(hexValue: 0xFFAFAF)
-            break
-        case .privacy:
-            self.mContentLabel.textColor = UIColor(red: 66.0/255.0, green: 230.0/255.0, blue: 164.0/255.0, alpha: 1.0)
-            break
-        default:
-            break
-        }
+        self.mContentLabel.textColor = loggerItem.mLogItemType.textColor()
         loggerItem.getHighlightAttributedString(highlightString: highlightText) { (hasHighlightStr, hightlightAttributedString) in
             self.mContentLabel.attributedText = hightlightAttributedString
             if hasHighlightStr {

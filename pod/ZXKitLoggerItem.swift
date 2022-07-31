@@ -24,14 +24,11 @@ public class ZXKitLoggerItem {
     private var mCurrentHighlightString = ""            //当前需要高亮的字符串
     private var mCacheHasHighlightString = false        //上次查询是否包含高亮的字符串
     var mCacheHighlightCompleteString = NSMutableAttributedString()   //上次包含高亮支付的富文本
-    
-    //获取完整的输出内容
-    public func getFullContentString() -> String {
-        //日期
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
-        let dateStr = dateFormatter.string(from: mCreateDate)
-        //内容
+}
+
+public extension ZXKitLoggerItem {
+    //LogContent转字符串格式化
+    func getLogContent() -> String {
         var contentString = ""
         if let mContent = mLogContent  {
             if mContent is LogContent {
@@ -43,7 +40,18 @@ public class ZXKitLoggerItem {
                 contentString = contentString.zx.aesCBCEncrypt(password: ZXKitLogger.privacyLogPassword, ivString: ZXKitLogger.privacyLogIv, encodeType: ZXKitLogger.privacyResultEncodeType) ?? "Invalid encryption".ZXLocaleString
             }
         }
-        
+        return contentString
+    }
+    
+    //获取完整的输出内容
+     func getFullContentString() -> String {
+        //日期
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
+        let dateStr = dateFormatter.string(from: mCreateDate)
+        //内容
+        let contentString = self.getLogContent()
+        //所有的内容
         if ZXKitLogger.isFullLogOut {
             switch mLogItemType {
                 case .info:
@@ -74,7 +82,7 @@ public class ZXKitLoggerItem {
     }
     
     //根据需要高亮内容查询组装高亮内容
-    public func getHighlightAttributedString(highlightString: String, complete:(Bool, NSAttributedString)->Void) -> Void {
+    func getHighlightAttributedString(highlightString: String, complete:(Bool, NSAttributedString)->Void) -> Void {
         if highlightString.isEmpty {
             //空的直接返回
             let contentString = self.getFullContentString()

@@ -37,7 +37,7 @@ class HDSqliteTools {
 
     //插入数据
     func insertLog(log: ZXKitLoggerItem) {
-        let insertRowString = String(format: "insert into hdlog(log,logType,time) values ('%@','%d','%f')", log.getFullContentString(), log.mLogItemType.rawValue, Date().timeIntervalSince1970)
+        let insertRowString = String(format: "insert into hdlog(log, logType, time, debugContent, contentString) values ('%@','%d','%f', '%@', '%@')", log.getFullContentString(), log.mLogItemType.rawValue, Date().timeIntervalSince1970, log.mLogDebugContent, log.getLogContent())
         var insertStatement: OpaquePointer?
         //第一步
         let status = sqlite3_prepare_v2(logDB, insertRowString, -1, &insertStatement, nil)
@@ -124,7 +124,7 @@ private extension HDSqliteTools {
 
     //创建日志表
     func _createTable() {
-        let createTableString = "create table if not exists 'hdlog' ('id' integer primary key autoincrement not null,'log' text,'logType' integer,'time' float)"
+        let createTableString = "create table if not exists 'hdlog' ('id' integer primary key autoincrement not null,'log' text,'logType' integer,'time' float, 'debugContent' text, 'contentString' text)"
         var createTableStatement: OpaquePointer?
         if sqlite3_prepare_v2(logDB, createTableString, -1, &createTableStatement, nil) == SQLITE_OK {
             // 第二步
@@ -165,7 +165,7 @@ private extension HDSqliteTools {
     }
     //创建索引虚拟表
     func _createVirtualTable() {
-        let createTableString = "CREATE VIRTUAL TABLE IF NOT EXISTS logindex USING fts4(log, logType, time, tokenize=unicode61);"
+        let createTableString = "CREATE VIRTUAL TABLE IF NOT EXISTS logindex USING fts4(log, logType, time, debugContent, contentString, tokenize=unicode61);"
         var createTableStatement: OpaquePointer?
         if sqlite3_prepare_v2(self.indexDB, createTableString, -1, &createTableStatement, nil) == SQLITE_OK {
             // 第二步
@@ -175,7 +175,7 @@ private extension HDSqliteTools {
                 print("未成功创建虚拟表")
             }
         } else {
-            print("创建虚拟表sssssss", sqlite3_prepare_v2(self.indexDB, createTableString, -1, &createTableStatement, nil), SQLITE_OK, SQLITE_BUSY, SQLITE_ERROR)
+            print("创建虚拟表", sqlite3_prepare_v2(self.indexDB, createTableString, -1, &createTableStatement, nil), SQLITE_OK, SQLITE_BUSY, SQLITE_ERROR)
         }
         //第三步
         sqlite3_finalize(createTableStatement)
@@ -183,7 +183,7 @@ private extension HDSqliteTools {
     
     //插入数据
     func _insertVirtualLog(log: ZXKitLoggerItem) {
-        let insertRowString = String(format: "INSERT OR REPLACE INTO logindex(log,logType,time) VALUES ('%@','%d','%f')", log.getFullContentString(), log.mLogItemType.rawValue, Date().timeIntervalSince1970)
+        let insertRowString = String(format: "INSERT OR REPLACE INTO logindex(log, logType, time, debugContent, contentString) VALUES ('%@', '%d', '%f', '%@', '%@')", log.getFullContentString(), log.mLogItemType.rawValue, Date().timeIntervalSince1970, log.mLogDebugContent, log.getLogContent())
         var insertStatement: OpaquePointer?
         //第一步
         let status = sqlite3_prepare_v2(self.indexDB, insertRowString, -1, &insertStatement, nil)

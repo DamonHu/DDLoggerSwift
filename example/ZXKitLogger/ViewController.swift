@@ -57,6 +57,8 @@ class ViewController: UIViewController {
         ZXKitLogger.uploadComplete = { file in
             print(file)
         }
+        
+        printWarn(HDSqliteTools.shared.getDBFolder().path)
     }
     
     @objc func showButtonClick(){

@@ -25,6 +25,25 @@ public struct ZXKitLogType : OptionSet {
     }
 }
 
+extension ZXKitLogType {
+    func textColor() -> UIColor {
+        switch self {
+        case .debug:
+            return UIColor.zx.color(hexValue: 0xbf8bfb)
+        case .info:
+            return UIColor(red: 80.0/255.0, green: 216.0/255.0, blue: 144.0/255.0, alpha: 1.0)
+        case .warn:
+            return UIColor(red: 246.0/255.0, green: 244.0/255.0, blue: 157.0/255.0, alpha: 1.0)
+        case .error:
+            return UIColor.zx.color(hexValue: 0xFFAFAF)
+        case .privacy:
+            return UIColor(red: 66.0/255.0, green: 230.0/255.0, blue: 164.0/255.0, alpha: 1.0)
+        default:
+            return UIColor.black
+        }
+    }
+}
+
 /////测试输出，不会写入到悬浮窗中
 public func printDebug(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
     ZXKitLogger.printLog(log: log, logType: ZXKitLogType.debug, file:file, funcName:funcName, lineNum:lineNum)
