@@ -15,16 +15,6 @@ class ZXKitLoggerSocket: NSObject {
     private lazy var serverSocket: GCDAsyncUdpSocket = {
         let queue = DispatchQueue.init(label: "zxkitlogger_socket")
         let socket = GCDAsyncUdpSocket(delegate: self, delegateQueue: queue, socketQueue: queue)
-        do {
-            try socket.bind(toPort: ZXKitLogger.socketPort)
-        } catch {
-            printError("socket.bind error: \(error.localizedDescription)")
-        }
-        do {
-            try socket.beginReceiving()
-        } catch {
-            printError("socket.beginReceiving error: \(error.localizedDescription)")
-        }
         return socket
     }()
 
@@ -33,6 +23,22 @@ class ZXKitLoggerSocket: NSObject {
 }
 
 extension ZXKitLoggerSocket {
+    func start() {
+        if serverSocket.isConnected() {
+            print("isConnected")
+            return
+        }
+        do {
+            try serverSocket.bind(toPort: ZXKitLogger.socketPort)
+        } catch {
+            printError("socket.bind error: \(error.localizedDescription)")
+        }
+        do {
+            try serverSocket.beginReceiving()
+        } catch {
+            printError("socket.beginReceiving error: \(error.localizedDescription)")
+        }
+    }
     func sendMsg(loggerItem: ZXKitLoggerItem) {
         guard !self.addressList.isEmpty else { return }
         //如果有订阅的才发送
@@ -47,6 +53,19 @@ extension ZXKitLoggerSocket {
 }
 
 extension ZXKitLoggerSocket: GCDAsyncUdpSocketDelegate {
+    func udpSocket(_ sock: GCDAsyncUdpSocket, didConnectToAddress address: Data) {
+        print("address")
+    }
+    func udpSocket(_ sock: GCDAsyncUdpSocket, didNotConnect error: Error?) {
+        print("didNotConnect", error)
+    }
+    func udpSocket(_ sock: GCDAsyncUdpSocket, didSendDataWithTag tag: Int) {
+        print("didSend")
+    }
+    func udpSocket(_ sock: GCDAsyncUdpSocket, didNotSendDataWithTag tag: Int, dueToError error: Error?) {
+        print("didNotSendDataWithTag", error)
+    }
+    
     func udpSocket(_ sock: GCDAsyncUdpSocket, didReceive data: Data, fromAddress address: Data, withFilterContext filterContext: Any?) {
         //接受到需要log传输的消息，记录
         guard let receiveMsg = String(data: data, encoding: .utf8), receiveMsg == "ZXKitLogger_auth" else {
