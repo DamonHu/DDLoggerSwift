@@ -7,40 +7,56 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		04291CC1B25DA8D6B4B47CAAA8A5A458 /* Pods-ZXKitLogger-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = A513054EA8B409CBFC798D18BFBA286E /* Pods-ZXKitLogger-dummy.m */; };
-		2238DB5DDB0ABA905F1CC1B6AD60E68B /* ZXKitUtil+media.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155F628AAC7C9CB3D334578C79215A1C /* ZXKitUtil+media.swift */; };
-		2CB6DA60346B623FA632CBD886C51864 /* ZXKitUtil-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = C00F4A79CF566D5774D2D53D5CA193AD /* ZXKitUtil-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		2FF126982AB087A159BB26E0439FBB74 /* UIView+zx.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95F4D4E558DE1E43DDB7D61C501CFFE /* UIView+zx.swift */; };
-		40CFF7103759120E4D4F758E023F4C3C /* ZXKitUtil-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = B270AC42BB2349449E00DAD2680A699D /* ZXKitUtil-dummy.m */; };
-		4168BBE5D703B9E6719B96D50BF96C05 /* UIColor+zx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA2A799A5A10E1EA4B528C4A5CF5DDE /* UIColor+zx.swift */; };
-		41E111DACD1133CCDB0819883B924D53 /* String+zx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF8DB80A28E47A6A8D65B42BBDA8FA8 /* String+zx.swift */; };
-		5FB455835E2221BD6B3457E11DADFFCA /* Pods-ZXKitLogger-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = B0C1171587C9B5856CD10249A5BC9F32 /* Pods-ZXKitLogger-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		7E9A0EEA2C410C3B73210F1B6C82E485 /* ZXKitUtil+permission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C76DE3B5EAD74554F8D8593F6C4F0CB /* ZXKitUtil+permission.swift */; };
-		88E56AB129ACB499DB2E862EA566F95E /* ZXKitFPS-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = F951D79B50332DE85BADF4171A745D18 /* ZXKitFPS-dummy.m */; };
-		8EE578EDF3F60EFEDB60D05DC8144577 /* ZXKitUtil+file.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E5425502179D17AC77B851A7ADE9EA /* ZXKitUtil+file.swift */; };
-		8F42373229CF282BE60DD90670F168E0 /* ZXKitFPS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF13EB4F1E11DA9CC887710579CCACA /* ZXKitFPS.swift */; };
-		94F4E0AF1A9F7B7614A768420F786839 /* Data+zx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5909B52361C7EF81E61117932EF5D781 /* Data+zx.swift */; };
-		9CB4FA75DCC5D2A53FE95292690CC329 /* ZXKitFPS-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 7E8B6611BEEB1527571B7D2B87FE0D18 /* ZXKitFPS-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		A105A5AA56FD758F35C65F2633238A15 /* ZXKitNameSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F120E6BB5A496FB9421909611999B04 /* ZXKitNameSpace.swift */; };
-		A7F5BB93CE9B85824D5E08AA52644F0B /* ZXKitUtil+system.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB92A7465B0D7B3F88D2EAF0E199B09 /* ZXKitUtil+system.swift */; };
-		AA096AC01A69FA202D63DF2A5EC83F87 /* ZXKitUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = D97527A9656084DF1A56317B05B73DB9 /* ZXKitUtil.swift */; };
-		AB6B0A59FD66CF148BE7456187D4717E /* Date+zx.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA11F8ACF3537EF096849BC9DB674A5B /* Date+zx.swift */; };
-		BDBE410F2A6A84ABC3B27E010C0617A6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
-		C3478B296447EFEC97CE4C4247F18ACA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
-		D7AD8E88E0D86998B2BC7B7FBFC90B29 /* UIImage+zx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 361A5BEC08E7E06F4F24C2E0555E9549 /* UIImage+zx.swift */; };
-		E17393268A3D15C5A2C6D14C46CB4BAB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
-		FC79D3C9016CF788EFB8C0BE202801A8 /* ZXKitUtil+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69F2A135B0AFDB3FF6540225F6791D95 /* ZXKitUtil+UI.swift */; };
+		0318081CAA60F0B07E22136815DB34FE /* ZXKitFPS-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = F6FB1A14C79360904D2C4C7A4F8B50F9 /* ZXKitFPS-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		081E7B51BB5DE281BD7B15EF0CF1D1B7 /* ZXKitUtil+file.swift in Sources */ = {isa = PBXBuildFile; fileRef = A34FAE1055405D9345022E1B5E762256 /* ZXKitUtil+file.swift */; };
+		12F482FE2022286A223FFC9BFA84F83A /* CocoaAsyncSocket-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 765A34C8630B7AD262F92814D80062B1 /* CocoaAsyncSocket-dummy.m */; };
+		17E294030C45A7BAADF28E7BAA6F4DB1 /* UIColor+zx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4202535CD988D581D02009D05786D4C3 /* UIColor+zx.swift */; };
+		1C42218500C7AA6276A7FBB140BFC11F /* ZXKitUtil+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80096A71C9008C746A4FE7F86EC11105 /* ZXKitUtil+UI.swift */; };
+		26F87A3DC73299D66231DFE835E9C13D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CB6704A70D55B80A3F7281F31BAE70C /* Foundation.framework */; };
+		33A88215D5655DDBF56DEAA41CC8D8DA /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6BE90665B4A1053C5FF26D5289CBC83 /* CFNetwork.framework */; };
+		37B0BF2484BE142772F5429AEE5CF0B1 /* GCDAsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DE9F4FCAC2765C7FFB3B637FB42A3F5 /* GCDAsyncUdpSocket.m */; };
+		3A3D584C96F12229B1D4A14097CB9EE7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CB6704A70D55B80A3F7281F31BAE70C /* Foundation.framework */; };
+		4052D973FB00DD847143A048C119EA79 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CB6704A70D55B80A3F7281F31BAE70C /* Foundation.framework */; };
+		4FC2272F4C11472C903CFCC6A101313E /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = F4CBBDAC2F9F87EA42FD2F02097BDE86 /* GCDAsyncSocket.m */; };
+		63F5994FB8925406A9A61A29EF3243CB /* ZXKitFPS.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF3C6D79BB05DB8B220F1CACC9421CAF /* ZXKitFPS.swift */; };
+		67A4DC4B4DB5321811BC3D3627AE855E /* GCDAsyncSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 2002732AADFE91A049C417B1394C8E32 /* GCDAsyncSocket.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6F9D4BDE5F39D72024FBA89818EFD8C2 /* ZXKitUtil-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 9F35EC0040307CB4FB27E29FDCC260F2 /* ZXKitUtil-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7C1DD31A3A7A0FBBA1A9C88A92CAA28C /* CocoaAsyncSocket-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BF720E13630551B4F932999E874608A /* CocoaAsyncSocket-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8861DA09219E12C0A1DBA07EB1CEB94A /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ABAB7562D0623DFC2D01E0A09448472 /* Security.framework */; };
+		9A9EA8B08293F5DAC1D4611DD7AB6EB8 /* Date+zx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB848AE28C5F56D701454CB3148E132 /* Date+zx.swift */; };
+		9D75967CBF63DD2D9CC0D6D185FD6C67 /* ZXKitUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3B98A5558E6D3FFFCFFC8A4CCA230B3 /* ZXKitUtil.swift */; };
+		9DCDDB78B0451EF9048C56CE04BACE27 /* ZXKitUtil-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C31355E926FBCD5F92FF25FE374FF9E /* ZXKitUtil-dummy.m */; };
+		A335214357119B8AF2279D2B481FC5D8 /* UIImage+zx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0775C9E2B0E1AD6FB8A90880557D8995 /* UIImage+zx.swift */; };
+		AF77540AF2F3C7DC1E060D65C717E966 /* ZXKitFPS-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 018FE2B2BA9CC1ADED9F3CAE212E42E8 /* ZXKitFPS-dummy.m */; };
+		B03289FBACFC20CA9C93CACBC66290FB /* UIView+zx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87C7F564C9130A396C2058DBD1446285 /* UIView+zx.swift */; };
+		B19D3C79B36157522E7662E737D558EF /* GCDAsyncUdpSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 289B2E63C3419F56DF704E57C406C89E /* GCDAsyncUdpSocket.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B8490BD1495D160B9F064DF7D28EE41D /* ZXKitUtil+media.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78EB339919871AF4CD08D7FCB2FF2CB /* ZXKitUtil+media.swift */; };
+		C33714F5056BBB87435CB1A5B674CEB5 /* ZXKitNameSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99782543A737E16F3C7E7D6A75CF426B /* ZXKitNameSpace.swift */; };
+		CC247A63A351C0FF6486B3CF8DF2F793 /* Data+zx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5968584AB01DEC398FA4C62A382AE6 /* Data+zx.swift */; };
+		D45374B647C2E762A4863A4B963F4DFF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CB6704A70D55B80A3F7281F31BAE70C /* Foundation.framework */; };
+		D9061FB72EDA7588BEADE6F82B4C66D8 /* Pods-ZXKitLogger-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = B0C1171587C9B5856CD10249A5BC9F32 /* Pods-ZXKitLogger-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E07C4195F14073DA5047E0C0D31AA595 /* Pods-ZXKitLogger-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = A513054EA8B409CBFC798D18BFBA286E /* Pods-ZXKitLogger-dummy.m */; };
+		E22F3FADD60EB684EBA97F54A7CC4E0C /* String+zx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BEC7693935B26EF69C7E174B74CE0FD /* String+zx.swift */; };
+		F9AE3B50AB13CF0843151CA81EE0D564 /* ZXKitUtil+permission.swift in Sources */ = {isa = PBXBuildFile; fileRef = F742DD082BF80B58E93B2A08A61C8E0A /* ZXKitUtil+permission.swift */; };
+		FFC68853A341457F6425A100951ECF29 /* ZXKitUtil+system.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17FB6D629D907E83D80DF346CD695FDA /* ZXKitUtil+system.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		9CFC46918E4BDB58413CE2AC659434E0 /* PBXContainerItemProxy */ = {
+		23D8141B6846603DFB8B7847DB0EEF99 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6083682834ABE0AE7BD1CBF06CADD036;
+			remoteInfo = CocoaAsyncSocket;
+		};
+		A3147B7EC2D8B247BE895E520E32A487 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = DD3F864B84973D4FBC8C8BBD06F4C19D;
 			remoteInfo = ZXKitFPS;
 		};
-		C9C575A43C35D4EB55A2F1E2CFCDF548 /* PBXContainerItemProxy */ = {
+		A6E8F35FD2223FB1AF1D630A48802765 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
@@ -50,139 +66,169 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		155F628AAC7C9CB3D334578C79215A1C /* ZXKitUtil+media.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "ZXKitUtil+media.swift"; path = "pod/ZXKitUtil+media.swift"; sourceTree = "<group>"; };
-		2DD86A35A440A3D03F4341584B93EF64 /* ZXKitUtil.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = ZXKitUtil.framework; path = ZXKitUtil.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		361A5BEC08E7E06F4F24C2E0555E9549 /* UIImage+zx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UIImage+zx.swift"; path = "pod/extend/UIImage+zx.swift"; sourceTree = "<group>"; };
+		018FE2B2BA9CC1ADED9F3CAE212E42E8 /* ZXKitFPS-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "ZXKitFPS-dummy.m"; sourceTree = "<group>"; };
+		03F340557580BADDCC27FABD23FE4479 /* CocoaAsyncSocket.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = CocoaAsyncSocket.debug.xcconfig; sourceTree = "<group>"; };
+		0775C9E2B0E1AD6FB8A90880557D8995 /* UIImage+zx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UIImage+zx.swift"; path = "pod/extend/UIImage+zx.swift"; sourceTree = "<group>"; };
+		0936CB3B76510C6D0D04308666AD1F89 /* ZXKitFPS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = ZXKitFPS.release.xcconfig; sourceTree = "<group>"; };
+		0BEC7693935B26EF69C7E174B74CE0FD /* String+zx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "String+zx.swift"; path = "pod/extend/String+zx.swift"; sourceTree = "<group>"; };
+		17E096509207E1D1B0346C932612CB55 /* CocoaAsyncSocket-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "CocoaAsyncSocket-Info.plist"; sourceTree = "<group>"; };
+		17FB6D629D907E83D80DF346CD695FDA /* ZXKitUtil+system.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "ZXKitUtil+system.swift"; path = "pod/ZXKitUtil+system.swift"; sourceTree = "<group>"; };
+		2002732AADFE91A049C417B1394C8E32 /* GCDAsyncSocket.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GCDAsyncSocket.h; path = Source/GCD/GCDAsyncSocket.h; sourceTree = "<group>"; };
+		289B2E63C3419F56DF704E57C406C89E /* GCDAsyncUdpSocket.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GCDAsyncUdpSocket.h; path = Source/GCD/GCDAsyncUdpSocket.h; sourceTree = "<group>"; };
+		2DD86A35A440A3D03F4341584B93EF64 /* ZXKitUtil */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = ZXKitUtil; path = ZXKitUtil.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2F5968584AB01DEC398FA4C62A382AE6 /* Data+zx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Data+zx.swift"; path = "pod/extend/Data+zx.swift"; sourceTree = "<group>"; };
+		3759A9E2FA86792A37E0365EBCDA9ACF /* ZXKitFPS-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "ZXKitFPS-Info.plist"; sourceTree = "<group>"; };
+		40DBEE0120F3052995A8180D9C218438 /* ZXKitUtil.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = ZXKitUtil.debug.xcconfig; sourceTree = "<group>"; };
+		4202535CD988D581D02009D05786D4C3 /* UIColor+zx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UIColor+zx.swift"; path = "pod/extend/UIColor+zx.swift"; sourceTree = "<group>"; };
 		45BA910E940BDA3F50BD7DD1B034EA8C /* Pods-ZXKitLogger.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-ZXKitLogger.debug.xcconfig"; sourceTree = "<group>"; };
-		4C76DE3B5EAD74554F8D8593F6C4F0CB /* ZXKitUtil+permission.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "ZXKitUtil+permission.swift"; path = "pod/ZXKitUtil+permission.swift"; sourceTree = "<group>"; };
-		4EB92A7465B0D7B3F88D2EAF0E199B09 /* ZXKitUtil+system.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "ZXKitUtil+system.swift"; path = "pod/ZXKitUtil+system.swift"; sourceTree = "<group>"; };
-		5909B52361C7EF81E61117932EF5D781 /* Data+zx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Data+zx.swift"; path = "pod/extend/Data+zx.swift"; sourceTree = "<group>"; };
-		654CAF599F4853A9A0164B30A249DA42 /* ZXKitFPS-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "ZXKitFPS-Info.plist"; sourceTree = "<group>"; };
-		69F2A135B0AFDB3FF6540225F6791D95 /* ZXKitUtil+UI.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "ZXKitUtil+UI.swift"; path = "pod/ZXKitUtil+UI.swift"; sourceTree = "<group>"; };
-		73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		7E8B6611BEEB1527571B7D2B87FE0D18 /* ZXKitFPS-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ZXKitFPS-umbrella.h"; sourceTree = "<group>"; };
+		545CC84855A05EC412A3BC8657FB0D87 /* CocoaAsyncSocket.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = CocoaAsyncSocket.modulemap; sourceTree = "<group>"; };
+		5CB848AE28C5F56D701454CB3148E132 /* Date+zx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Date+zx.swift"; path = "pod/extend/Date+zx.swift"; sourceTree = "<group>"; };
+		5DF9014DF16F8BA39C94C5BBCC987F40 /* ZXKitUtil-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ZXKitUtil-prefix.pch"; sourceTree = "<group>"; };
+		688C9AA95193220C9B4278F8A7E5318E /* ZXKitUtil-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "ZXKitUtil-Info.plist"; sourceTree = "<group>"; };
+		6BF720E13630551B4F932999E874608A /* CocoaAsyncSocket-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "CocoaAsyncSocket-umbrella.h"; sourceTree = "<group>"; };
+		6C31355E926FBCD5F92FF25FE374FF9E /* ZXKitUtil-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "ZXKitUtil-dummy.m"; sourceTree = "<group>"; };
+		6CBEFE4F9E22AFDC6347A739BB35FF8C /* CocoaAsyncSocket */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = CocoaAsyncSocket; path = CocoaAsyncSocket.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6DE9F4FCAC2765C7FFB3B637FB42A3F5 /* GCDAsyncUdpSocket.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GCDAsyncUdpSocket.m; path = Source/GCD/GCDAsyncUdpSocket.m; sourceTree = "<group>"; };
+		765A34C8630B7AD262F92814D80062B1 /* CocoaAsyncSocket-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "CocoaAsyncSocket-dummy.m"; sourceTree = "<group>"; };
+		7ABAB7562D0623DFC2D01E0A09448472 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
+		7CB6704A70D55B80A3F7281F31BAE70C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		7E9BE04FFEBD9EB11E78F0E2AEB82EBB /* Pods-ZXKitLogger-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-ZXKitLogger-Info.plist"; sourceTree = "<group>"; };
-		7FF8DB80A28E47A6A8D65B42BBDA8FA8 /* String+zx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "String+zx.swift"; path = "pod/extend/String+zx.swift"; sourceTree = "<group>"; };
+		80096A71C9008C746A4FE7F86EC11105 /* ZXKitUtil+UI.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "ZXKitUtil+UI.swift"; path = "pod/ZXKitUtil+UI.swift"; sourceTree = "<group>"; };
 		875B8BE6A63CF7E6570D092BCB601FA7 /* Pods-ZXKitLogger-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-ZXKitLogger-frameworks.sh"; sourceTree = "<group>"; };
-		8AA2A799A5A10E1EA4B528C4A5CF5DDE /* UIColor+zx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UIColor+zx.swift"; path = "pod/extend/UIColor+zx.swift"; sourceTree = "<group>"; };
-		8CF13EB4F1E11DA9CC887710579CCACA /* ZXKitFPS.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ZXKitFPS.swift; path = pod/ZXKitFPS.swift; sourceTree = "<group>"; };
-		8D2336C6D0394001FE62371638C45684 /* Pods_ZXKitLogger.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_ZXKitLogger.framework; path = "Pods-ZXKitLogger.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
-		98DB39C27E58C13B9CFCE16A901F9594 /* ZXKitUtil.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = ZXKitUtil.modulemap; sourceTree = "<group>"; };
+		87C7F564C9130A396C2058DBD1446285 /* UIView+zx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UIView+zx.swift"; path = "pod/extend/UIView+zx.swift"; sourceTree = "<group>"; };
+		8D2336C6D0394001FE62371638C45684 /* Pods-ZXKitLogger */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-ZXKitLogger"; path = Pods_ZXKitLogger.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		99782543A737E16F3C7E7D6A75CF426B /* ZXKitNameSpace.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ZXKitNameSpace.swift; path = pod/extend/ZXKitNameSpace.swift; sourceTree = "<group>"; };
 		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		9F120E6BB5A496FB9421909611999B04 /* ZXKitNameSpace.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ZXKitNameSpace.swift; path = pod/extend/ZXKitNameSpace.swift; sourceTree = "<group>"; };
+		9F35EC0040307CB4FB27E29FDCC260F2 /* ZXKitUtil-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ZXKitUtil-umbrella.h"; sourceTree = "<group>"; };
+		A34FAE1055405D9345022E1B5E762256 /* ZXKitUtil+file.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "ZXKitUtil+file.swift"; path = "pod/ZXKitUtil+file.swift"; sourceTree = "<group>"; };
 		A513054EA8B409CBFC798D18BFBA286E /* Pods-ZXKitLogger-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-ZXKitLogger-dummy.m"; sourceTree = "<group>"; };
-		A553BAB397DD90263B8D229A27AC8796 /* ZXKitFPS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = ZXKitFPS.framework; path = ZXKitFPS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A8E5425502179D17AC77B851A7ADE9EA /* ZXKitUtil+file.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "ZXKitUtil+file.swift"; path = "pod/ZXKitUtil+file.swift"; sourceTree = "<group>"; };
+		A553BAB397DD90263B8D229A27AC8796 /* ZXKitFPS */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = ZXKitFPS; path = ZXKitFPS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6BE90665B4A1053C5FF26D5289CBC83 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/CFNetwork.framework; sourceTree = DEVELOPER_DIR; };
 		B0C1171587C9B5856CD10249A5BC9F32 /* Pods-ZXKitLogger-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-ZXKitLogger-umbrella.h"; sourceTree = "<group>"; };
-		B270AC42BB2349449E00DAD2680A699D /* ZXKitUtil-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "ZXKitUtil-dummy.m"; sourceTree = "<group>"; };
-		B2B2AC698E99312343FAE9C2213C77B7 /* ZXKitFPS.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = ZXKitFPS.modulemap; sourceTree = "<group>"; };
 		B784B8C51C0C48744D1752DAA358F07F /* Pods-ZXKitLogger.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-ZXKitLogger.release.xcconfig"; sourceTree = "<group>"; };
-		BDECACC88705C8EA8DBF2803893C7760 /* ZXKitFPS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = ZXKitFPS.debug.xcconfig; sourceTree = "<group>"; };
-		BFEC3A400FFCD28940E620041A609E62 /* ZXKitUtil-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "ZXKitUtil-Info.plist"; sourceTree = "<group>"; };
-		C00F4A79CF566D5774D2D53D5CA193AD /* ZXKitUtil-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ZXKitUtil-umbrella.h"; sourceTree = "<group>"; };
+		B78EB339919871AF4CD08D7FCB2FF2CB /* ZXKitUtil+media.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "ZXKitUtil+media.swift"; path = "pod/ZXKitUtil+media.swift"; sourceTree = "<group>"; };
+		BBDDF82A018B52CF72F294534E016775 /* CocoaAsyncSocket-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "CocoaAsyncSocket-prefix.pch"; sourceTree = "<group>"; };
+		C3B98A5558E6D3FFFCFFC8A4CCA230B3 /* ZXKitUtil.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ZXKitUtil.swift; path = pod/ZXKitUtil.swift; sourceTree = "<group>"; };
+		CDDED678B3D976EEF409E16B27872673 /* ZXKitUtil.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = ZXKitUtil.release.xcconfig; sourceTree = "<group>"; };
 		D4977019B0D91544C2051F83799AFA53 /* Pods-ZXKitLogger-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-ZXKitLogger-acknowledgements.plist"; sourceTree = "<group>"; };
-		D5EDDA1701E5ACF4267BBD1610DD7A45 /* ZXKitUtil.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = ZXKitUtil.debug.xcconfig; sourceTree = "<group>"; };
-		D97527A9656084DF1A56317B05B73DB9 /* ZXKitUtil.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ZXKitUtil.swift; path = pod/ZXKitUtil.swift; sourceTree = "<group>"; };
-		DA11F8ACF3537EF096849BC9DB674A5B /* Date+zx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Date+zx.swift"; path = "pod/extend/Date+zx.swift"; sourceTree = "<group>"; };
-		DBFC3A6EDD47705CC1179B7D89CDB73F /* ZXKitUtil-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ZXKitUtil-prefix.pch"; sourceTree = "<group>"; };
-		DD481925BCC2C82E4F4025AD6B2A3012 /* ZXKitFPS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = ZXKitFPS.release.xcconfig; sourceTree = "<group>"; };
-		E72FC65EC3AC68D88337A0E6A2685540 /* ZXKitUtil.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = ZXKitUtil.release.xcconfig; sourceTree = "<group>"; };
-		E759027F742ED7751F7E660DC87D6BBB /* ZXKitFPS-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ZXKitFPS-prefix.pch"; sourceTree = "<group>"; };
-		E95F4D4E558DE1E43DDB7D61C501CFFE /* UIView+zx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UIView+zx.swift"; path = "pod/extend/UIView+zx.swift"; sourceTree = "<group>"; };
+		D8C84B10C82FB388D38CA11E012A6DA9 /* CocoaAsyncSocket.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = CocoaAsyncSocket.release.xcconfig; sourceTree = "<group>"; };
+		D8DB49611AC1D372322CE36774EF0C34 /* ZXKitFPS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = ZXKitFPS.debug.xcconfig; sourceTree = "<group>"; };
+		DD304A67BE8C779202928C70B2F14DD5 /* ZXKitFPS.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = ZXKitFPS.modulemap; sourceTree = "<group>"; };
 		ED8F4FF6ED234ADC4C4240AA1F3F33C6 /* Pods-ZXKitLogger.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-ZXKitLogger.modulemap"; sourceTree = "<group>"; };
-		F951D79B50332DE85BADF4171A745D18 /* ZXKitFPS-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "ZXKitFPS-dummy.m"; sourceTree = "<group>"; };
+		EF08536560AB88327BF667DE1D9CC549 /* ZXKitUtil.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = ZXKitUtil.modulemap; sourceTree = "<group>"; };
+		EF3C6D79BB05DB8B220F1CACC9421CAF /* ZXKitFPS.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ZXKitFPS.swift; path = pod/ZXKitFPS.swift; sourceTree = "<group>"; };
+		F4CBBDAC2F9F87EA42FD2F02097BDE86 /* GCDAsyncSocket.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GCDAsyncSocket.m; path = Source/GCD/GCDAsyncSocket.m; sourceTree = "<group>"; };
+		F6FB1A14C79360904D2C4C7A4F8B50F9 /* ZXKitFPS-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ZXKitFPS-umbrella.h"; sourceTree = "<group>"; };
+		F742DD082BF80B58E93B2A08A61C8E0A /* ZXKitUtil+permission.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "ZXKitUtil+permission.swift"; path = "pod/ZXKitUtil+permission.swift"; sourceTree = "<group>"; };
 		FA6C5BCAB83509684833DD6FD971DC7A /* Pods-ZXKitLogger-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-ZXKitLogger-acknowledgements.markdown"; sourceTree = "<group>"; };
+		FB780302BD4347440B034CA69571072F /* ZXKitFPS-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ZXKitFPS-prefix.pch"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		5E22877F8F00E611485DE2AA56DFAE06 /* Frameworks */ = {
+		0475FD4712CA8506B198D8C23CA8BC8B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C3478B296447EFEC97CE4C4247F18ACA /* Foundation.framework in Frameworks */,
+				4052D973FB00DD847143A048C119EA79 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D8A5EA2B39B8CBD83D4C31DA8006EEA4 /* Frameworks */ = {
+		0911FE87F44DAFAF782E850F0ED4F94F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BDBE410F2A6A84ABC3B27E010C0617A6 /* Foundation.framework in Frameworks */,
+				3A3D584C96F12229B1D4A14097CB9EE7 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		ECEE770A99D40B809CBDD6008348CDE0 /* Frameworks */ = {
+		16AAB80385693449EC049D540ACD24A4 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E17393268A3D15C5A2C6D14C46CB4BAB /* Foundation.framework in Frameworks */,
+				D45374B647C2E762A4863A4B963F4DFF /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D37DD023A3721BF2E9A52660FA8A3C6D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				33A88215D5655DDBF56DEAA41CC8D8DA /* CFNetwork.framework in Frameworks */,
+				26F87A3DC73299D66231DFE835E9C13D /* Foundation.framework in Frameworks */,
+				8861DA09219E12C0A1DBA07EB1CEB94A /* Security.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		08180A11418A7CDD4BDA6F8865EFF588 /* Support Files */ = {
+		03C5C200A0787E300053CFA8F53CA094 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				B2B2AC698E99312343FAE9C2213C77B7 /* ZXKitFPS.modulemap */,
-				F951D79B50332DE85BADF4171A745D18 /* ZXKitFPS-dummy.m */,
-				654CAF599F4853A9A0164B30A249DA42 /* ZXKitFPS-Info.plist */,
-				E759027F742ED7751F7E660DC87D6BBB /* ZXKitFPS-prefix.pch */,
-				7E8B6611BEEB1527571B7D2B87FE0D18 /* ZXKitFPS-umbrella.h */,
-				BDECACC88705C8EA8DBF2803893C7760 /* ZXKitFPS.debug.xcconfig */,
-				DD481925BCC2C82E4F4025AD6B2A3012 /* ZXKitFPS.release.xcconfig */,
+				D5B250C191F0E4C7AD947CD0C88A0F4B /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		1D6D2865D543A5065A419EDEDF67879E /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				545CC84855A05EC412A3BC8657FB0D87 /* CocoaAsyncSocket.modulemap */,
+				765A34C8630B7AD262F92814D80062B1 /* CocoaAsyncSocket-dummy.m */,
+				17E096509207E1D1B0346C932612CB55 /* CocoaAsyncSocket-Info.plist */,
+				BBDDF82A018B52CF72F294534E016775 /* CocoaAsyncSocket-prefix.pch */,
+				6BF720E13630551B4F932999E874608A /* CocoaAsyncSocket-umbrella.h */,
+				03F340557580BADDCC27FABD23FE4479 /* CocoaAsyncSocket.debug.xcconfig */,
+				D8C84B10C82FB388D38CA11E012A6DA9 /* CocoaAsyncSocket.release.xcconfig */,
 			);
 			name = "Support Files";
-			path = "../Target Support Files/ZXKitFPS";
+			path = "../Target Support Files/CocoaAsyncSocket";
 			sourceTree = "<group>";
 		};
-		4F34760F097C11FEE8B3F0C1B1CC5D0A /* ZXKitFPS */ = {
+		21635393DD1D59E3FD3ED697D01F4A68 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				EFE3E16AF29D225626D3F498A30A5414 /* core */,
-				08180A11418A7CDD4BDA6F8865EFF588 /* Support Files */,
+				B91FEFD56E61D2A7077648841CBBF679 /* CocoaAsyncSocket */,
+				D8A26F6468967D61B3E5EBC21030FBCC /* ZXKitFPS */,
+				4A382AD3AE9A8E8EFF6E2F13197C8E29 /* ZXKitUtil */,
 			);
-			name = ZXKitFPS;
-			path = ZXKitFPS;
+			name = Pods;
 			sourceTree = "<group>";
 		};
-		5086469BDD19A98A1639C959CCE5070B /* Products */ = {
+		4248CCAF5AC67B7B4DA3FBB4A8A95B2D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8D2336C6D0394001FE62371638C45684 /* Pods_ZXKitLogger.framework */,
-				A553BAB397DD90263B8D229A27AC8796 /* ZXKitFPS.framework */,
-				2DD86A35A440A3D03F4341584B93EF64 /* ZXKitUtil.framework */,
+				6CBEFE4F9E22AFDC6347A739BB35FF8C /* CocoaAsyncSocket */,
+				8D2336C6D0394001FE62371638C45684 /* Pods-ZXKitLogger */,
+				A553BAB397DD90263B8D229A27AC8796 /* ZXKitFPS */,
+				2DD86A35A440A3D03F4341584B93EF64 /* ZXKitUtil */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		578452D2E740E91742655AC8F1636D1F /* iOS */ = {
+		4A382AD3AE9A8E8EFF6E2F13197C8E29 /* ZXKitUtil */ = {
 			isa = PBXGroup;
 			children = (
-				73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */,
+				CD39CBB7D477464C77D60AFD605EA335 /* core */,
+				B3800769E2700DD59BD18AFF882B2B60 /* Support Files */,
 			);
-			name = iOS;
+			name = ZXKitUtil;
+			path = ZXKitUtil;
 			sourceTree = "<group>";
 		};
-		6D0CAC46256FBD165F3EC1D5085C4730 /* core */ = {
+		7799F002A848F7D929D4D804534C263A /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				5909B52361C7EF81E61117932EF5D781 /* Data+zx.swift */,
-				DA11F8ACF3537EF096849BC9DB674A5B /* Date+zx.swift */,
-				7FF8DB80A28E47A6A8D65B42BBDA8FA8 /* String+zx.swift */,
-				8AA2A799A5A10E1EA4B528C4A5CF5DDE /* UIColor+zx.swift */,
-				361A5BEC08E7E06F4F24C2E0555E9549 /* UIImage+zx.swift */,
-				E95F4D4E558DE1E43DDB7D61C501CFFE /* UIView+zx.swift */,
-				9F120E6BB5A496FB9421909611999B04 /* ZXKitNameSpace.swift */,
-				D97527A9656084DF1A56317B05B73DB9 /* ZXKitUtil.swift */,
-				A8E5425502179D17AC77B851A7ADE9EA /* ZXKitUtil+file.swift */,
-				155F628AAC7C9CB3D334578C79215A1C /* ZXKitUtil+media.swift */,
-				4C76DE3B5EAD74554F8D8593F6C4F0CB /* ZXKitUtil+permission.swift */,
-				4EB92A7465B0D7B3F88D2EAF0E199B09 /* ZXKitUtil+system.swift */,
-				69F2A135B0AFDB3FF6540225F6791D95 /* ZXKitUtil+UI.swift */,
+				DD304A67BE8C779202928C70B2F14DD5 /* ZXKitFPS.modulemap */,
+				018FE2B2BA9CC1ADED9F3CAE212E42E8 /* ZXKitFPS-dummy.m */,
+				3759A9E2FA86792A37E0365EBCDA9ACF /* ZXKitFPS-Info.plist */,
+				FB780302BD4347440B034CA69571072F /* ZXKitFPS-prefix.pch */,
+				F6FB1A14C79360904D2C4C7A4F8B50F9 /* ZXKitFPS-umbrella.h */,
+				D8DB49611AC1D372322CE36774EF0C34 /* ZXKitFPS.debug.xcconfig */,
+				0936CB3B76510C6D0D04308666AD1F89 /* ZXKitFPS.release.xcconfig */,
 			);
-			name = core;
+			name = "Support Files";
+			path = "../Target Support Files/ZXKitFPS";
 			sourceTree = "<group>";
 		};
 		7A4E92E78CBADC6D9AECE27E9B65E77E /* Targets Support Files */ = {
@@ -191,16 +237,6 @@
 				84492A5163E1DE9230EA77C3E5E5B973 /* Pods-ZXKitLogger */,
 			);
 			name = "Targets Support Files";
-			sourceTree = "<group>";
-		};
-		8024DB013B9440F406EEEA5B262DF708 /* ZXKitUtil */ = {
-			isa = PBXGroup;
-			children = (
-				6D0CAC46256FBD165F3EC1D5085C4730 /* core */,
-				CE04ED5CE4FC177E739CE79F56401EBC /* Support Files */,
-			);
-			name = ZXKitUtil;
-			path = ZXKitUtil;
 			sourceTree = "<group>";
 		};
 		84492A5163E1DE9230EA77C3E5E5B973 /* Pods-ZXKitLogger */ = {
@@ -220,53 +256,89 @@
 			path = "Target Support Files/Pods-ZXKitLogger";
 			sourceTree = "<group>";
 		};
-		9C1516CF987EF7711668FAA1248F4BD6 /* Pods */ = {
+		B3800769E2700DD59BD18AFF882B2B60 /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				4F34760F097C11FEE8B3F0C1B1CC5D0A /* ZXKitFPS */,
-				8024DB013B9440F406EEEA5B262DF708 /* ZXKitUtil */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
-		CE04ED5CE4FC177E739CE79F56401EBC /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				98DB39C27E58C13B9CFCE16A901F9594 /* ZXKitUtil.modulemap */,
-				B270AC42BB2349449E00DAD2680A699D /* ZXKitUtil-dummy.m */,
-				BFEC3A400FFCD28940E620041A609E62 /* ZXKitUtil-Info.plist */,
-				DBFC3A6EDD47705CC1179B7D89CDB73F /* ZXKitUtil-prefix.pch */,
-				C00F4A79CF566D5774D2D53D5CA193AD /* ZXKitUtil-umbrella.h */,
-				D5EDDA1701E5ACF4267BBD1610DD7A45 /* ZXKitUtil.debug.xcconfig */,
-				E72FC65EC3AC68D88337A0E6A2685540 /* ZXKitUtil.release.xcconfig */,
+				EF08536560AB88327BF667DE1D9CC549 /* ZXKitUtil.modulemap */,
+				6C31355E926FBCD5F92FF25FE374FF9E /* ZXKitUtil-dummy.m */,
+				688C9AA95193220C9B4278F8A7E5318E /* ZXKitUtil-Info.plist */,
+				5DF9014DF16F8BA39C94C5BBCC987F40 /* ZXKitUtil-prefix.pch */,
+				9F35EC0040307CB4FB27E29FDCC260F2 /* ZXKitUtil-umbrella.h */,
+				40DBEE0120F3052995A8180D9C218438 /* ZXKitUtil.debug.xcconfig */,
+				CDDED678B3D976EEF409E16B27872673 /* ZXKitUtil.release.xcconfig */,
 			);
 			name = "Support Files";
 			path = "../Target Support Files/ZXKitUtil";
+			sourceTree = "<group>";
+		};
+		B91FEFD56E61D2A7077648841CBBF679 /* CocoaAsyncSocket */ = {
+			isa = PBXGroup;
+			children = (
+				2002732AADFE91A049C417B1394C8E32 /* GCDAsyncSocket.h */,
+				F4CBBDAC2F9F87EA42FD2F02097BDE86 /* GCDAsyncSocket.m */,
+				289B2E63C3419F56DF704E57C406C89E /* GCDAsyncUdpSocket.h */,
+				6DE9F4FCAC2765C7FFB3B637FB42A3F5 /* GCDAsyncUdpSocket.m */,
+				1D6D2865D543A5065A419EDEDF67879E /* Support Files */,
+			);
+			name = CocoaAsyncSocket;
+			path = CocoaAsyncSocket;
+			sourceTree = "<group>";
+		};
+		CD39CBB7D477464C77D60AFD605EA335 /* core */ = {
+			isa = PBXGroup;
+			children = (
+				2F5968584AB01DEC398FA4C62A382AE6 /* Data+zx.swift */,
+				5CB848AE28C5F56D701454CB3148E132 /* Date+zx.swift */,
+				0BEC7693935B26EF69C7E174B74CE0FD /* String+zx.swift */,
+				4202535CD988D581D02009D05786D4C3 /* UIColor+zx.swift */,
+				0775C9E2B0E1AD6FB8A90880557D8995 /* UIImage+zx.swift */,
+				87C7F564C9130A396C2058DBD1446285 /* UIView+zx.swift */,
+				99782543A737E16F3C7E7D6A75CF426B /* ZXKitNameSpace.swift */,
+				C3B98A5558E6D3FFFCFFC8A4CCA230B3 /* ZXKitUtil.swift */,
+				A34FAE1055405D9345022E1B5E762256 /* ZXKitUtil+file.swift */,
+				B78EB339919871AF4CD08D7FCB2FF2CB /* ZXKitUtil+media.swift */,
+				F742DD082BF80B58E93B2A08A61C8E0A /* ZXKitUtil+permission.swift */,
+				17FB6D629D907E83D80DF346CD695FDA /* ZXKitUtil+system.swift */,
+				80096A71C9008C746A4FE7F86EC11105 /* ZXKitUtil+UI.swift */,
+			);
+			name = core;
 			sourceTree = "<group>";
 		};
 		CF1408CF629C7361332E53B88F7BD30C = {
 			isa = PBXGroup;
 			children = (
 				9D940727FF8FB9C785EB98E56350EF41 /* Podfile */,
-				D210D550F4EA176C3123ED886F8F87F5 /* Frameworks */,
-				9C1516CF987EF7711668FAA1248F4BD6 /* Pods */,
-				5086469BDD19A98A1639C959CCE5070B /* Products */,
+				03C5C200A0787E300053CFA8F53CA094 /* Frameworks */,
+				21635393DD1D59E3FD3ED697D01F4A68 /* Pods */,
+				4248CCAF5AC67B7B4DA3FBB4A8A95B2D /* Products */,
 				7A4E92E78CBADC6D9AECE27E9B65E77E /* Targets Support Files */,
 			);
 			sourceTree = "<group>";
 		};
-		D210D550F4EA176C3123ED886F8F87F5 /* Frameworks */ = {
+		D5B250C191F0E4C7AD947CD0C88A0F4B /* iOS */ = {
 			isa = PBXGroup;
 			children = (
-				578452D2E740E91742655AC8F1636D1F /* iOS */,
+				A6BE90665B4A1053C5FF26D5289CBC83 /* CFNetwork.framework */,
+				7CB6704A70D55B80A3F7281F31BAE70C /* Foundation.framework */,
+				7ABAB7562D0623DFC2D01E0A09448472 /* Security.framework */,
 			);
-			name = Frameworks;
+			name = iOS;
 			sourceTree = "<group>";
 		};
-		EFE3E16AF29D225626D3F498A30A5414 /* core */ = {
+		D8A26F6468967D61B3E5EBC21030FBCC /* ZXKitFPS */ = {
 			isa = PBXGroup;
 			children = (
-				8CF13EB4F1E11DA9CC887710579CCACA /* ZXKitFPS.swift */,
+				FA6BDFAF8E6993FBCB223AE90239A0D9 /* core */,
+				7799F002A848F7D929D4D804534C263A /* Support Files */,
+			);
+			name = ZXKitFPS;
+			path = ZXKitFPS;
+			sourceTree = "<group>";
+		};
+		FA6BDFAF8E6993FBCB223AE90239A0D9 /* core */ = {
+			isa = PBXGroup;
+			children = (
+				EF3C6D79BB05DB8B220F1CACC9421CAF /* ZXKitFPS.swift */,
 			);
 			name = core;
 			sourceTree = "<group>";
@@ -274,27 +346,37 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		AF70043BFE3571C1F37E657D4A6F80D9 /* Headers */ = {
+		1082CC473EED2F25C8DC50F7BEA67EDD /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5FB455835E2221BD6B3457E11DADFFCA /* Pods-ZXKitLogger-umbrella.h in Headers */,
+				0318081CAA60F0B07E22136815DB34FE /* ZXKitFPS-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		BE48E789063C2303796376448C9AD21B /* Headers */ = {
+		17317FE99BCBCAE1DCC6BF783E1EFAF0 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9CB4FA75DCC5D2A53FE95292690CC329 /* ZXKitFPS-umbrella.h in Headers */,
+				7C1DD31A3A7A0FBBA1A9C88A92CAA28C /* CocoaAsyncSocket-umbrella.h in Headers */,
+				67A4DC4B4DB5321811BC3D3627AE855E /* GCDAsyncSocket.h in Headers */,
+				B19D3C79B36157522E7662E737D558EF /* GCDAsyncUdpSocket.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E33EEF1F29DBBDFAC6F6F9EAF50A12F3 /* Headers */ = {
+		7A0076AEFC4B6074FE87568CAC866D88 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2CB6DA60346B623FA632CBD886C51864 /* ZXKitUtil-umbrella.h in Headers */,
+				6F9D4BDE5F39D72024FBA89818EFD8C2 /* ZXKitUtil-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9BBB2FC7AE7B496C908CBA2D2D87E334 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D9061FB72EDA7588BEADE6F82B4C66D8 /* Pods-ZXKitLogger-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -303,32 +385,33 @@
 /* Begin PBXNativeTarget section */
 		129F6382F6A1DD6DA10334DEE39602F6 /* Pods-ZXKitLogger */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4D644C31D8CB96C4576F329B7753238A /* Build configuration list for PBXNativeTarget "Pods-ZXKitLogger" */;
+			buildConfigurationList = D5332FCA1990898DA723D64275E112BF /* Build configuration list for PBXNativeTarget "Pods-ZXKitLogger" */;
 			buildPhases = (
-				AF70043BFE3571C1F37E657D4A6F80D9 /* Headers */,
-				D83F68779E9C61D72F9B1533EDD9A3CE /* Sources */,
-				D8A5EA2B39B8CBD83D4C31DA8006EEA4 /* Frameworks */,
-				13E263F412BAB6DCAB139620D3F57CEE /* Resources */,
+				9BBB2FC7AE7B496C908CBA2D2D87E334 /* Headers */,
+				ED2389F3E543024063ED1D011DF74EFC /* Sources */,
+				0911FE87F44DAFAF782E850F0ED4F94F /* Frameworks */,
+				1844A281D70294544345E90F2D6F5D16 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				3F511E64C23BF50B67118EB9CFBD9ADF /* PBXTargetDependency */,
-				88B4AAF903B81E021FCFB85EBE941249 /* PBXTargetDependency */,
+				59559F92A3A63EE11BB84CFEB6DE30E8 /* PBXTargetDependency */,
+				3818AF4D146F0A58F1A409E77491D8D6 /* PBXTargetDependency */,
+				0F557B0690C76C7B88EEAB3B3860AE3B /* PBXTargetDependency */,
 			);
 			name = "Pods-ZXKitLogger";
-			productName = "Pods-ZXKitLogger";
-			productReference = 8D2336C6D0394001FE62371638C45684 /* Pods_ZXKitLogger.framework */;
+			productName = Pods_ZXKitLogger;
+			productReference = 8D2336C6D0394001FE62371638C45684 /* Pods-ZXKitLogger */;
 			productType = "com.apple.product-type.framework";
 		};
 		4B09DDD2A3083E311C984F301582897A /* ZXKitUtil */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C000C37D689D27917546BC6E8E870E83 /* Build configuration list for PBXNativeTarget "ZXKitUtil" */;
+			buildConfigurationList = 8D917E6996FE62321D9BAAAB67DDE543 /* Build configuration list for PBXNativeTarget "ZXKitUtil" */;
 			buildPhases = (
-				E33EEF1F29DBBDFAC6F6F9EAF50A12F3 /* Headers */,
-				38BE124BB7C60A54F9FA7B28DDEBD875 /* Sources */,
-				ECEE770A99D40B809CBDD6008348CDE0 /* Frameworks */,
-				79E031D0FBE799810034370D7EB4AA03 /* Resources */,
+				7A0076AEFC4B6074FE87568CAC866D88 /* Headers */,
+				09AA8DB85784FC4D6664059FEC3BA532 /* Sources */,
+				16AAB80385693449EC049D540ACD24A4 /* Frameworks */,
+				FCD5F44CC61845C9A96DC5D4D42865E1 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -336,17 +419,35 @@
 			);
 			name = ZXKitUtil;
 			productName = ZXKitUtil;
-			productReference = 2DD86A35A440A3D03F4341584B93EF64 /* ZXKitUtil.framework */;
+			productReference = 2DD86A35A440A3D03F4341584B93EF64 /* ZXKitUtil */;
+			productType = "com.apple.product-type.framework";
+		};
+		6083682834ABE0AE7BD1CBF06CADD036 /* CocoaAsyncSocket */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B0A95C19FCB7B5FAAC46BE001C359756 /* Build configuration list for PBXNativeTarget "CocoaAsyncSocket" */;
+			buildPhases = (
+				17317FE99BCBCAE1DCC6BF783E1EFAF0 /* Headers */,
+				B9BA2F3E20981E6576E8626EADB9300B /* Sources */,
+				D37DD023A3721BF2E9A52660FA8A3C6D /* Frameworks */,
+				3D473FD104BFCD98C99B267430355524 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CocoaAsyncSocket;
+			productName = CocoaAsyncSocket;
+			productReference = 6CBEFE4F9E22AFDC6347A739BB35FF8C /* CocoaAsyncSocket */;
 			productType = "com.apple.product-type.framework";
 		};
 		DD3F864B84973D4FBC8C8BBD06F4C19D /* ZXKitFPS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A49C9B3864715450675C06E890560427 /* Build configuration list for PBXNativeTarget "ZXKitFPS" */;
+			buildConfigurationList = 307B8D7BFC3F9E36C5C6E6B870B9D2AD /* Build configuration list for PBXNativeTarget "ZXKitFPS" */;
 			buildPhases = (
-				BE48E789063C2303796376448C9AD21B /* Headers */,
-				F2EF61C1F53E7ECBB24F527314AB5054 /* Sources */,
-				5E22877F8F00E611485DE2AA56DFAE06 /* Frameworks */,
-				406E284914673AD37AA96B91367610A0 /* Resources */,
+				1082CC473EED2F25C8DC50F7BEA67EDD /* Headers */,
+				33CFBF4FBC492A7C5BD039008DE70C46 /* Sources */,
+				0475FD4712CA8506B198D8C23CA8BC8B /* Frameworks */,
+				EE11089E9CD4502878358C28934A9001 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -354,7 +455,7 @@
 			);
 			name = ZXKitFPS;
 			productName = ZXKitFPS;
-			productReference = A553BAB397DD90263B8D229A27AC8796 /* ZXKitFPS.framework */;
+			productReference = A553BAB397DD90263B8D229A27AC8796 /* ZXKitFPS */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -363,22 +464,23 @@
 		BFDFE7DC352907FC980B868725387E98 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1100;
-				LastUpgradeCheck = 1100;
+				LastSwiftUpdateCheck = 1240;
+				LastUpgradeCheck = 1240;
 			};
 			buildConfigurationList = 4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 10.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				en,
 				Base,
+				en,
 			);
 			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
-			productRefGroup = 5086469BDD19A98A1639C959CCE5070B /* Products */;
+			productRefGroup = 4248CCAF5AC67B7B4DA3FBB4A8A95B2D /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
+				6083682834ABE0AE7BD1CBF06CADD036 /* CocoaAsyncSocket */,
 				129F6382F6A1DD6DA10334DEE39602F6 /* Pods-ZXKitLogger */,
 				DD3F864B84973D4FBC8C8BBD06F4C19D /* ZXKitFPS */,
 				4B09DDD2A3083E311C984F301582897A /* ZXKitUtil */,
@@ -387,21 +489,28 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		13E263F412BAB6DCAB139620D3F57CEE /* Resources */ = {
+		1844A281D70294544345E90F2D6F5D16 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		406E284914673AD37AA96B91367610A0 /* Resources */ = {
+		3D473FD104BFCD98C99B267430355524 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		79E031D0FBE799810034370D7EB4AA03 /* Resources */ = {
+		EE11089E9CD4502878358C28934A9001 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FCD5F44CC61845C9A96DC5D4D42865E1 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -411,101 +520,81 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		38BE124BB7C60A54F9FA7B28DDEBD875 /* Sources */ = {
+		09AA8DB85784FC4D6664059FEC3BA532 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				94F4E0AF1A9F7B7614A768420F786839 /* Data+zx.swift in Sources */,
-				AB6B0A59FD66CF148BE7456187D4717E /* Date+zx.swift in Sources */,
-				41E111DACD1133CCDB0819883B924D53 /* String+zx.swift in Sources */,
-				4168BBE5D703B9E6719B96D50BF96C05 /* UIColor+zx.swift in Sources */,
-				D7AD8E88E0D86998B2BC7B7FBFC90B29 /* UIImage+zx.swift in Sources */,
-				2FF126982AB087A159BB26E0439FBB74 /* UIView+zx.swift in Sources */,
-				A105A5AA56FD758F35C65F2633238A15 /* ZXKitNameSpace.swift in Sources */,
-				8EE578EDF3F60EFEDB60D05DC8144577 /* ZXKitUtil+file.swift in Sources */,
-				2238DB5DDB0ABA905F1CC1B6AD60E68B /* ZXKitUtil+media.swift in Sources */,
-				7E9A0EEA2C410C3B73210F1B6C82E485 /* ZXKitUtil+permission.swift in Sources */,
-				A7F5BB93CE9B85824D5E08AA52644F0B /* ZXKitUtil+system.swift in Sources */,
-				FC79D3C9016CF788EFB8C0BE202801A8 /* ZXKitUtil+UI.swift in Sources */,
-				40CFF7103759120E4D4F758E023F4C3C /* ZXKitUtil-dummy.m in Sources */,
-				AA096AC01A69FA202D63DF2A5EC83F87 /* ZXKitUtil.swift in Sources */,
+				CC247A63A351C0FF6486B3CF8DF2F793 /* Data+zx.swift in Sources */,
+				9A9EA8B08293F5DAC1D4611DD7AB6EB8 /* Date+zx.swift in Sources */,
+				E22F3FADD60EB684EBA97F54A7CC4E0C /* String+zx.swift in Sources */,
+				17E294030C45A7BAADF28E7BAA6F4DB1 /* UIColor+zx.swift in Sources */,
+				A335214357119B8AF2279D2B481FC5D8 /* UIImage+zx.swift in Sources */,
+				B03289FBACFC20CA9C93CACBC66290FB /* UIView+zx.swift in Sources */,
+				C33714F5056BBB87435CB1A5B674CEB5 /* ZXKitNameSpace.swift in Sources */,
+				9D75967CBF63DD2D9CC0D6D185FD6C67 /* ZXKitUtil.swift in Sources */,
+				081E7B51BB5DE281BD7B15EF0CF1D1B7 /* ZXKitUtil+file.swift in Sources */,
+				B8490BD1495D160B9F064DF7D28EE41D /* ZXKitUtil+media.swift in Sources */,
+				F9AE3B50AB13CF0843151CA81EE0D564 /* ZXKitUtil+permission.swift in Sources */,
+				FFC68853A341457F6425A100951ECF29 /* ZXKitUtil+system.swift in Sources */,
+				1C42218500C7AA6276A7FBB140BFC11F /* ZXKitUtil+UI.swift in Sources */,
+				9DCDDB78B0451EF9048C56CE04BACE27 /* ZXKitUtil-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D83F68779E9C61D72F9B1533EDD9A3CE /* Sources */ = {
+		33CFBF4FBC492A7C5BD039008DE70C46 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04291CC1B25DA8D6B4B47CAAA8A5A458 /* Pods-ZXKitLogger-dummy.m in Sources */,
+				63F5994FB8925406A9A61A29EF3243CB /* ZXKitFPS.swift in Sources */,
+				AF77540AF2F3C7DC1E060D65C717E966 /* ZXKitFPS-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		F2EF61C1F53E7ECBB24F527314AB5054 /* Sources */ = {
+		B9BA2F3E20981E6576E8626EADB9300B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				88E56AB129ACB499DB2E862EA566F95E /* ZXKitFPS-dummy.m in Sources */,
-				8F42373229CF282BE60DD90670F168E0 /* ZXKitFPS.swift in Sources */,
+				12F482FE2022286A223FFC9BFA84F83A /* CocoaAsyncSocket-dummy.m in Sources */,
+				4FC2272F4C11472C903CFCC6A101313E /* GCDAsyncSocket.m in Sources */,
+				37B0BF2484BE142772F5429AEE5CF0B1 /* GCDAsyncUdpSocket.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ED2389F3E543024063ED1D011DF74EFC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E07C4195F14073DA5047E0C0D31AA595 /* Pods-ZXKitLogger-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		3F511E64C23BF50B67118EB9CFBD9ADF /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = ZXKitFPS;
-			target = DD3F864B84973D4FBC8C8BBD06F4C19D /* ZXKitFPS */;
-			targetProxy = 9CFC46918E4BDB58413CE2AC659434E0 /* PBXContainerItemProxy */;
-		};
-		88B4AAF903B81E021FCFB85EBE941249 /* PBXTargetDependency */ = {
+		0F557B0690C76C7B88EEAB3B3860AE3B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = ZXKitUtil;
 			target = 4B09DDD2A3083E311C984F301582897A /* ZXKitUtil */;
-			targetProxy = C9C575A43C35D4EB55A2F1E2CFCDF548 /* PBXContainerItemProxy */;
+			targetProxy = A6E8F35FD2223FB1AF1D630A48802765 /* PBXContainerItemProxy */;
+		};
+		3818AF4D146F0A58F1A409E77491D8D6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = ZXKitFPS;
+			target = DD3F864B84973D4FBC8C8BBD06F4C19D /* ZXKitFPS */;
+			targetProxy = A3147B7EC2D8B247BE895E520E32A487 /* PBXContainerItemProxy */;
+		};
+		59559F92A3A63EE11BB84CFEB6DE30E8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = CocoaAsyncSocket;
+			target = 6083682834ABE0AE7BD1CBF06CADD036 /* CocoaAsyncSocket */;
+			targetProxy = 23D8141B6846603DFB8B7847DB0EEF99 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		4CB13FD2F8FE39ED9752851FDC6D1602 /* Release */ = {
+		455DD3AD2AAC5CC7EA749C651BE6F06A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E72FC65EC3AC68D88337A0E6A2685540 /* ZXKitUtil.release.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/ZXKitUtil/ZXKitUtil-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/ZXKitUtil/ZXKitUtil-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MODULEMAP_FILE = "Target Support Files/ZXKitUtil/ZXKitUtil.modulemap";
-				PRODUCT_MODULE_NAME = ZXKitUtil;
-				PRODUCT_NAME = ZXKitUtil;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		5660145FEA5162809443152ACADBE162 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = BDECACC88705C8EA8DBF2803893C7760 /* ZXKitFPS.debug.xcconfig */;
+			baseConfigurationReference = 0936CB3B76510C6D0D04308666AD1F89 /* ZXKitFPS.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -528,6 +617,76 @@
 				MODULEMAP_FILE = "Target Support Files/ZXKitFPS/ZXKitFPS.modulemap";
 				PRODUCT_MODULE_NAME = ZXKitFPS;
 				PRODUCT_NAME = ZXKitFPS;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		577A02FD81FE870C69C3E4F29CBADA64 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D8DB49611AC1D372322CE36774EF0C34 /* ZXKitFPS.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/ZXKitFPS/ZXKitFPS-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/ZXKitFPS/ZXKitFPS-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/ZXKitFPS/ZXKitFPS.modulemap";
+				PRODUCT_MODULE_NAME = ZXKitFPS;
+				PRODUCT_NAME = ZXKitFPS;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		88E73531C68FEC995B656F125B9BD903 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 03F340557580BADDCC27FABD23FE4479 /* CocoaAsyncSocket.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/CocoaAsyncSocket/CocoaAsyncSocket-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/CocoaAsyncSocket/CocoaAsyncSocket-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/CocoaAsyncSocket/CocoaAsyncSocket.modulemap";
+				PRODUCT_MODULE_NAME = CocoaAsyncSocket;
+				PRODUCT_NAME = CocoaAsyncSocket;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
@@ -600,11 +759,10 @@
 			};
 			name = Release;
 		};
-		AE2BC37698AB2B58D141CB650292C5EF /* Debug */ = {
+		9DD09D0D00249C022E2A3426A4917732 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D5EDDA1701E5ACF4267BBD1610DD7A45 /* ZXKitUtil.debug.xcconfig */;
+			baseConfigurationReference = D8C84B10C82FB388D38CA11E012A6DA9 /* CocoaAsyncSocket.release.xcconfig */;
 			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = NO;
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
@@ -613,53 +771,18 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/ZXKitUtil/ZXKitUtil-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/ZXKitUtil/ZXKitUtil-Info.plist";
+				GCC_PREFIX_HEADER = "Target Support Files/CocoaAsyncSocket/CocoaAsyncSocket-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/CocoaAsyncSocket/CocoaAsyncSocket-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MODULEMAP_FILE = "Target Support Files/ZXKitUtil/ZXKitUtil.modulemap";
-				PRODUCT_MODULE_NAME = ZXKitUtil;
-				PRODUCT_NAME = ZXKitUtil;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		AEE51764E60FDAABF557115FBE9514E6 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = DD481925BCC2C82E4F4025AD6B2A3012 /* ZXKitFPS.release.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/ZXKitFPS/ZXKitFPS-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/ZXKitFPS/ZXKitFPS-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MODULEMAP_FILE = "Target Support Files/ZXKitFPS/ZXKitFPS.modulemap";
-				PRODUCT_MODULE_NAME = ZXKitFPS;
-				PRODUCT_NAME = ZXKitFPS;
+				MODULEMAP_FILE = "Target Support Files/CocoaAsyncSocket/CocoaAsyncSocket.modulemap";
+				PRODUCT_MODULE_NAME = CocoaAsyncSocket;
+				PRODUCT_NAME = CocoaAsyncSocket;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
@@ -737,7 +860,78 @@
 			};
 			name = Debug;
 		};
-		CF6441EAEBA9D96DA28AECA966C62076 /* Release */ = {
+		C8B1EBDE15203E5D8D3E25E8124C5329 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 40DBEE0120F3052995A8180D9C218438 /* ZXKitUtil.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/ZXKitUtil/ZXKitUtil-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/ZXKitUtil/ZXKitUtil-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/ZXKitUtil/ZXKitUtil.modulemap";
+				PRODUCT_MODULE_NAME = ZXKitUtil;
+				PRODUCT_NAME = ZXKitUtil;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		D2AB4610A62DC4923E81075C3E858DBF /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CDDED678B3D976EEF409E16B27872673 /* ZXKitUtil.release.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/ZXKitUtil/ZXKitUtil-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/ZXKitUtil/ZXKitUtil-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/ZXKitUtil/ZXKitUtil.modulemap";
+				PRODUCT_MODULE_NAME = ZXKitUtil;
+				PRODUCT_NAME = ZXKitUtil;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		DBC515203D731B5B592337E42E448DE3 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B784B8C51C0C48744D1752DAA358F07F /* Pods-ZXKitLogger.release.xcconfig */;
 			buildSettings = {
@@ -775,7 +969,7 @@
 			};
 			name = Release;
 		};
-		E493C590D17F8B1DD205F042AB24D95B /* Debug */ = {
+		DE2A784B8F4D5BF3406341D6052EEA2A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 45BA910E940BDA3F50BD7DD1B034EA8C /* Pods-ZXKitLogger.debug.xcconfig */;
 			buildSettings = {
@@ -815,6 +1009,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		307B8D7BFC3F9E36C5C6E6B870B9D2AD /* Build configuration list for PBXNativeTarget "ZXKitFPS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				577A02FD81FE870C69C3E4F29CBADA64 /* Debug */,
+				455DD3AD2AAC5CC7EA749C651BE6F06A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -824,29 +1027,29 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4D644C31D8CB96C4576F329B7753238A /* Build configuration list for PBXNativeTarget "Pods-ZXKitLogger" */ = {
+		8D917E6996FE62321D9BAAAB67DDE543 /* Build configuration list for PBXNativeTarget "ZXKitUtil" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				E493C590D17F8B1DD205F042AB24D95B /* Debug */,
-				CF6441EAEBA9D96DA28AECA966C62076 /* Release */,
+				C8B1EBDE15203E5D8D3E25E8124C5329 /* Debug */,
+				D2AB4610A62DC4923E81075C3E858DBF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A49C9B3864715450675C06E890560427 /* Build configuration list for PBXNativeTarget "ZXKitFPS" */ = {
+		B0A95C19FCB7B5FAAC46BE001C359756 /* Build configuration list for PBXNativeTarget "CocoaAsyncSocket" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				5660145FEA5162809443152ACADBE162 /* Debug */,
-				AEE51764E60FDAABF557115FBE9514E6 /* Release */,
+				88E73531C68FEC995B656F125B9BD903 /* Debug */,
+				9DD09D0D00249C022E2A3426A4917732 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C000C37D689D27917546BC6E8E870E83 /* Build configuration list for PBXNativeTarget "ZXKitUtil" */ = {
+		D5332FCA1990898DA723D64275E112BF /* Build configuration list for PBXNativeTarget "Pods-ZXKitLogger" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				AE2BC37698AB2B58D141CB650292C5EF /* Debug */,
-				4CB13FD2F8FE39ED9752851FDC6D1602 /* Release */,
+				DE2A784B8F4D5BF3406341D6052EEA2A /* Debug */,
+				DBC515203D731B5B592337E42E448DE3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

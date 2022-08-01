@@ -91,6 +91,7 @@ public func printPrivacy(_ log:Any ..., file:String = #file, funcName:String = #
 public class ZXKitLogger {
     public static let shared = ZXKitLogger()
     public static var isFullLogOut = true    //是否完整输出日志文件名等调试内容
+    
     public static var isSyncConsole = true   //是否在xcode底部的调试栏同步输出内容
     public static var storageLevels: ZXKitLogType = [.info, .warn, .error, .privacy]    //存储到数据库的级别
     public static var logExpiryDay = 30        //本地日志文件的有效期（天），超出有效期的本地日志会被删除，0为没有有效期，默认为30天
@@ -106,6 +107,13 @@ public class ZXKitLogger {
     public static var privacyLogPassword = "12345678901234561234567890123456"
     public static var privacyLogIv = "abcdefghijklmnop"
     public static var privacyResultEncodeType = ZXKitUtilEncodeType.hex
+
+    /**
+     如果集成实时日志功能
+     */
+    #if canImport(CocoaAsyncSocket)
+    public static var socketPort: UInt16 = 888 //UDP的端口
+    #endif
 
     //MARK: - Private变量
     private let mFPSTools = ZXKitFPS()
@@ -193,6 +201,9 @@ public class ZXKitLogger {
             if self.storageLevels.contains(logType) {
                 self.shared._writeDB(log: loggerItem)
             }
+            #if canImport(CocoaAsyncSocket)
+            ZXKitLoggerSocket.shared.sendMsg(logType: logType, msg: loggerItem.getFullContentString())
+            #endif
         }
     }
     

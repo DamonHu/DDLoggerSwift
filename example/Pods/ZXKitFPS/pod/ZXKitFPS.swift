@@ -32,9 +32,6 @@ open class ZXKitFPS {
     }
 
     public func stop() {
-        #if canImport(ZXKitCore)
-        ZXKit.resetFloatButton()
-        #endif
         lastTime = 0
         count = 0
         isRunning = false

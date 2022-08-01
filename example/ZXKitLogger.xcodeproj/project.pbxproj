@@ -13,6 +13,7 @@
 		E48AABFE22C05EF600CC5F1C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E48AABFC22C05EF600CC5F1C /* Main.storyboard */; };
 		E48AAC0022C05EF700CC5F1C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E48AABFF22C05EF700CC5F1C /* Assets.xcassets */; };
 		E48AAC0322C05EF700CC5F1C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E48AAC0122C05EF700CC5F1C /* LaunchScreen.storyboard */; };
+		E4A014A128979B860042C5F4 /* ZXKitLoggerSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A014A028979B860042C5F4 /* ZXKitLoggerSocket.swift */; };
 		E4AC94A3263162FA001FC322 /* ZXKitLoggerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AC949B263162FA001FC322 /* ZXKitLoggerItem.swift */; };
 		E4AC94A4263162FA001FC322 /* ZXKitLoggerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AC949C263162FA001FC322 /* ZXKitLoggerTableViewCell.swift */; };
 		E4AC94A5263162FA001FC322 /* LogContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AC949D263162FA001FC322 /* LogContent.swift */; };
@@ -40,6 +41,7 @@
 		E48AAC0422C05EF700CC5F1C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E48AAC3022C0818700CC5F1C /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		E48AAC3122C0818700CC5F1C /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		E4A014A028979B860042C5F4 /* ZXKitLoggerSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZXKitLoggerSocket.swift; sourceTree = "<group>"; };
 		E4AC949B263162FA001FC322 /* ZXKitLoggerItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZXKitLoggerItem.swift; sourceTree = "<group>"; };
 		E4AC949C263162FA001FC322 /* ZXKitLoggerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZXKitLoggerTableViewCell.swift; sourceTree = "<group>"; };
 		E4AC949D263162FA001FC322 /* LogContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogContent.swift; sourceTree = "<group>"; };
@@ -108,9 +110,18 @@
 			path = ZXKitLogger;
 			sourceTree = "<group>";
 		};
+		E4A0149F28979B510042C5F4 /* socket */ = {
+			isa = PBXGroup;
+			children = (
+				E4A014A028979B860042C5F4 /* ZXKitLoggerSocket.swift */,
+			);
+			path = socket;
+			sourceTree = "<group>";
+		};
 		E4AC9497263162FA001FC322 /* pod */ = {
 			isa = PBXGroup;
 			children = (
+				E4A0149F28979B510042C5F4 /* socket */,
 				E4AC951D26356932001FC322 /* zxkit */,
 				E4AC9518263566C8001FC322 /* assets */,
 				E4AC949B263162FA001FC322 /* ZXKitLoggerItem.swift */,
@@ -289,6 +300,7 @@
 				E4AC94A3263162FA001FC322 /* ZXKitLoggerItem.swift in Sources */,
 				E4AC94A9263162FA001FC322 /* ZXKitLoggerWindow.swift in Sources */,
 				E4AC951F2635694C001FC322 /* ZXLogger+zxkit.swift in Sources */,
+				E4A014A128979B860042C5F4 /* ZXKitLoggerSocket.swift in Sources */,
 				E4EC33D826578A4C00074E19 /* ZXKitLoggerMenuCollectionViewCell.swift in Sources */,
 				E4AC965126395F22001FC322 /* ZXKitLoggerFloatWindow.swift in Sources */,
 				E4AC94A5263162FA001FC322 /* LogContent.swift in Sources */,

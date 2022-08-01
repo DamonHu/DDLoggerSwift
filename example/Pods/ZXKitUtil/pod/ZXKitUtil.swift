@@ -7,12 +7,18 @@
 //
 
 import Foundation
+import UIKit
 
 open class ZXKitUtil: NSObject {
     private static let instance = ZXKitUtil()
     open class var shared: ZXKitUtil {
         return instance
     }
+
+    //缓存的数据
+    var cacheHomeIndicatorHeight: CGFloat?
+    var cacheDefaultNavigationBarHeight: CGFloat?
+    var cacheDefaultTabbarHeight: CGFloat?
 }
 
 public enum ZXMainThreadType {
