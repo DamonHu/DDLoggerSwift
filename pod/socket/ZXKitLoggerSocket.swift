@@ -33,14 +33,14 @@ class ZXKitLoggerSocket: NSObject {
 }
 
 extension ZXKitLoggerSocket {
-    func sendMsg(logType:ZXKitLogType, msg: String) {
+    func sendMsg(loggerItem: ZXKitLoggerItem) {
         guard !self.addressList.isEmpty else { return }
         //如果有订阅的才发送
         for address in addressList {
             guard let host = GCDAsyncUdpSocket.host(fromAddress: address) else { continue }
             let port = GCDAsyncUdpSocket.port(fromAddress: address)
-            if let data = "\(logType.rawValue)-\(msg)".data(using: .utf8) {
-                serverSocket.send(data, toHost: host, port: port, withTimeout: 60, tag: logType.rawValue)
+            if let data = "\(loggerItem.mLogItemType.rawValue)|\(loggerItem.mLogDebugContent)|\(loggerItem.mCreateDate.timeIntervalSince1970)|\(loggerItem.getLogContent())".data(using: .utf8) {
+                serverSocket.send(data, toHost: host, port: port, withTimeout: 60, tag: Int(loggerItem.mCreateDate.timeIntervalSince1970))
             }
         }
     }

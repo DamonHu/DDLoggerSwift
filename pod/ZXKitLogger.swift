@@ -202,7 +202,7 @@ public class ZXKitLogger {
                 self.shared._writeDB(log: loggerItem)
             }
             #if canImport(CocoaAsyncSocket)
-            ZXKitLoggerSocket.shared.sendMsg(logType: logType, msg: loggerItem.getFullContentString())
+            ZXKitLoggerSocket.shared.sendMsg(loggerItem: loggerItem)
             #endif
         }
     }
