@@ -27,13 +27,13 @@ class ZXKitLoggerTCPSocket: NSObject {
 }
 
 extension ZXKitLoggerTCPSocket {
-    func start(host: String, port: UInt16) {
-        do {
-            try self.serverSocket.connect(toHost: host, onPort: port, withTimeout: 200)
-        } catch {
-            print("connect error", error)
-        }
-    }
+//    func start(host: String, port: UInt16) {
+//        do {
+//            try self.serverSocket.connect(toHost: host, onPort: port, withTimeout: 200)
+//        } catch {
+//            print("connect error", error)
+//        }
+//    }
 
     func send(loggerItem: ZXKitLoggerItem) {
         if self.serverSocket.isConnected, let data = "\(loggerItem.mLogItemType.rawValue)|\(loggerItem.mLogDebugContent)|\(loggerItem.mCreateDate.timeIntervalSince1970)|\(loggerItem.getLogContent())".data(using: .utf8) {
@@ -46,6 +46,7 @@ extension ZXKitLoggerTCPSocket {
 extension ZXKitLoggerTCPSocket: GCDAsyncSocketDelegate {
     func socket(_ sock: GCDAsyncSocket, didAcceptNewSocket newSocket: GCDAsyncSocket) {
         print("didAcceptNewSocket")
+        sock.delegate = self
         newSocket.delegate = self
         socketList.append(newSocket)
     }
@@ -60,6 +61,18 @@ extension ZXKitLoggerTCPSocket: GCDAsyncSocketDelegate {
 
     func socket(_ sock: GCDAsyncSocket, didWriteDataWithTag tag: Int) {
         print("didWriteDataWithTag")
+    }
+
+    func socket(_ sock: GCDAsyncSocket, didConnectTo url: URL) {
+        print("didConnectTo")
+    }
+
+    func socket(_ sock: GCDAsyncSocket, didReceive trust: SecTrust, completionHandler: @escaping (Bool) -> Void) {
+        print("didReceive")
+    }
+
+    func socket(_ sock: GCDAsyncSocket, didReadPartialDataOfLength partialLength: UInt, tag: Int) {
+        print("didReadPartialDataOfLength")
     }
 
     func socket(_ sock: GCDAsyncSocket, didRead data: Data, withTag tag: Int) {
