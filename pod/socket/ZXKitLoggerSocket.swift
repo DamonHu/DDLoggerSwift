@@ -65,8 +65,13 @@ extension ZXKitLoggerSocket: GCDAsyncUdpSocketDelegate {
     func udpSocket(_ sock: GCDAsyncUdpSocket, didNotSendDataWithTag tag: Int, dueToError error: Error?) {
         print("didNotSendDataWithTag", error)
     }
+
+    func udpSocketDidClose(_ sock: GCDAsyncUdpSocket, withError error: Error?) {
+        print("udpSocketDidClose", error)
+    }
     
     func udpSocket(_ sock: GCDAsyncUdpSocket, didReceive data: Data, fromAddress address: Data, withFilterContext filterContext: Any?) {
+        printLog("didReceive", String(data: data, encoding: .utf8), GCDAsyncUdpSocket.host(fromAddress: address), GCDAsyncUdpSocket.port(fromAddress: address))
         //接受到需要log传输的消息，记录
         guard let receiveMsg = String(data: data, encoding: .utf8), receiveMsg == "ZXKitLogger_auth" else {
             return

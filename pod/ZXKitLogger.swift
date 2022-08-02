@@ -203,7 +203,6 @@ public class ZXKitLogger {
             }
             #if canImport(CocoaAsyncSocket)
             DispatchQueue.global().async {
-                ZXKitLoggerSocket.shared.start()
                 ZXKitLoggerSocket.shared.sendMsg(loggerItem: loggerItem)
             }
             #endif
@@ -331,6 +330,11 @@ public class ZXKitLogger {
         if ZXKitLogger.logExpiryDay > 0 {
             self._checkValidity()
         }
+
+        #if canImport(CocoaAsyncSocket)
+        ZXKitLoggerBonjour.shared.start()
+        ZXKitLoggerSocket.shared.start()
+        #endif
     }
 }
 
