@@ -15,11 +15,6 @@ class ZXKitLoggerTCPSocket: NSObject {
     private lazy var serverSocket: GCDAsyncSocket = {
         let queue = DispatchQueue.init(label: "zxkitlogger_socket")
         let socket = GCDAsyncSocket(delegate: self, delegateQueue: queue, socketQueue: queue)
-        do {
-            try socket.accept(onPort: ZXKitLogger.socketPort)
-        } catch {
-            print("accept error", error)
-        }
         return socket
     }()
 
@@ -27,17 +22,20 @@ class ZXKitLoggerTCPSocket: NSObject {
 }
 
 extension ZXKitLoggerTCPSocket {
-//    func start(host: String, port: UInt16) {
-//        do {
-//            try self.serverSocket.connect(toHost: host, onPort: port, withTimeout: 200)
-//        } catch {
-//            print("connect error", error)
-//        }
-//    }
+    func start() {
+        do {
+            try serverSocket.accept(onPort: ZXKitLogger.socketPort)
+        } catch {
+            print("accept error", error)
+        }
+    }
 
     func send(loggerItem: ZXKitLoggerItem) {
-        if self.serverSocket.isConnected, let data = "\(loggerItem.mLogItemType.rawValue)|\(loggerItem.mLogDebugContent)|\(loggerItem.mCreateDate.timeIntervalSince1970)|\(loggerItem.getLogContent())".data(using: .utf8) {
-            self.serverSocket.write(data, withTimeout: 20, tag: Int(loggerItem.mCreateDate.timeIntervalSince1970))
+        guard let data = "\(loggerItem.mLogItemType.rawValue)|\(loggerItem.mLogDebugContent)|\(loggerItem.mCreateDate.timeIntervalSince1970)|\(loggerItem.getLogContent())".data(using: .utf8) else { return }
+        for socket in self.socketList {
+            if socket.isConnected {
+                socket.write(data, withTimeout: 20, tag: Int(loggerItem.mCreateDate.timeIntervalSince1970))
+            }
         }
     }
 
@@ -46,9 +44,10 @@ extension ZXKitLoggerTCPSocket {
 extension ZXKitLoggerTCPSocket: GCDAsyncSocketDelegate {
     func socket(_ sock: GCDAsyncSocket, didAcceptNewSocket newSocket: GCDAsyncSocket) {
         print("didAcceptNewSocket")
-        sock.delegate = self
+        
         newSocket.delegate = self
         socketList.append(newSocket)
+        newSocket.readData(withTimeout: -1, tag: 0)
     }
 
     func socket(_ sock: GCDAsyncSocket, didConnectToHost host: String, port: UInt16) {
@@ -77,5 +76,6 @@ extension ZXKitLoggerTCPSocket: GCDAsyncSocketDelegate {
 
     func socket(_ sock: GCDAsyncSocket, didRead data: Data, withTag tag: Int) {
         print("didReceive", String(data: data, encoding: .utf8))
+        sock.readData(withTimeout: -1, tag: tag)
     }
 }

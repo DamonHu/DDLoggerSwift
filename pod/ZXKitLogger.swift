@@ -112,8 +112,10 @@ public class ZXKitLogger {
      如果集成实时日志功能
      */
     #if canImport(CocoaAsyncSocket)
-    public static var socketPort: UInt16 = 888 //链接的端口
-    public static var isTCP: Bool = true //是否TCP链接，UDP支持一对多，但是APP需要申请权限
+    public static var isTCP: Bool = true //是否TCP链接，UDP在iOS14以后需要向App Store申请权限
+    public static var socketPort: UInt16 = 888 //连接的端口
+    public static var socketDomain: String = "local" //支持自定义
+    public static var socketType: String = "_zxkitlogger"//支持自定义
     #endif
 
     //MARK: - Private变量
@@ -340,6 +342,8 @@ public class ZXKitLogger {
         //发起服务
         ZXKitLoggerBonjour.shared.start()
         if ZXKitLogger.isTCP {
+            ZXKitLoggerTCPSocket.shared.start()
+        } else {
             ZXKitLoggerUDPSocket.shared.start()
         }
         #endif

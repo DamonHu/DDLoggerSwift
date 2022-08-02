@@ -70,8 +70,9 @@ class ViewController: UIViewController {
     @objc func onClickButton() {
 //        ZXKit.show()
         printInfo("点击了按钮111")
-//        printError("错误出现")
-//        printInfo("调试数据文件地址", ZXKitLogger.getDBFolder().path)
+        printError("错误出现")
+        printInfo("调试数据文件地址", ZXKitLogger.getDBFolder().path)
+        printWarn("警告提示")
 //
 //        for _ in 0..<10 {
 //            printLog("测试输出，默认不会写入数据库")

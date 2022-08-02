@@ -14,7 +14,8 @@ class ZXKitLoggerBonjour: NSObject {
     static let shared = ZXKitLoggerBonjour()
 
     lazy var mService: NetService = {
-        let service = NetService(domain: "local.", type: "_zxkitlogger._tcp", name: ZXKitLogger.userID + "-" + UIDevice.current.name, port: Int32(ZXKitLogger.socketPort))
+        let type = ZXKitLogger.isTCP ? "_tcp" : "_udp"
+        let service = NetService(domain: "\(ZXKitLogger.socketDomain).", type: "\(ZXKitLogger.socketType).\(type)", name: ZXKitLogger.userID + "-" + UIDevice.current.name, port: Int32(ZXKitLogger.socketPort))
         service.schedule(in: .current, forMode: .common)
         service.includesPeerToPeer = true
         service.delegate = self
