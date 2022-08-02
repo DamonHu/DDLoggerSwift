@@ -112,7 +112,8 @@ public class ZXKitLogger {
      如果集成实时日志功能
      */
     #if canImport(CocoaAsyncSocket)
-    public static var socketPort: UInt16 = 888 //UDP的端口
+    public static var socketPort: UInt16 = 888 //链接的端口
+    public static var isTCP: Bool = true //是否TCP链接，UDP支持一对多，但是APP需要申请权限
     #endif
 
     //MARK: - Private变量
@@ -203,7 +204,11 @@ public class ZXKitLogger {
             }
             #if canImport(CocoaAsyncSocket)
             DispatchQueue.global().async {
-                ZXKitLoggerSocket.shared.sendMsg(loggerItem: loggerItem)
+                if ZXKitLogger.isTCP {
+                    ZXKitLoggerTCPSocket.shared.send(loggerItem: loggerItem)
+                } else {
+                    ZXKitLoggerUDPSocket.shared.send(loggerItem: loggerItem)
+                }
             }
             #endif
         }
@@ -332,8 +337,11 @@ public class ZXKitLogger {
         }
 
         #if canImport(CocoaAsyncSocket)
+        //发起服务
         ZXKitLoggerBonjour.shared.start()
-        ZXKitLoggerSocket.shared.start()
+        if ZXKitLogger.isTCP {
+            ZXKitLoggerUDPSocket.shared.start()
+        }
         #endif
     }
 }
