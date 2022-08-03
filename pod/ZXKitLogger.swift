@@ -207,9 +207,9 @@ public class ZXKitLogger {
             #if canImport(CocoaAsyncSocket)
             DispatchQueue.global().async {
                 if ZXKitLogger.isTCP {
-                    ZXKitLoggerTCPSocket.shared.send(loggerItem: loggerItem)
+                    ZXKitLoggerTCPSocketManager.shared.send(loggerItem: loggerItem)
                 } else {
-                    ZXKitLoggerUDPSocket.shared.send(loggerItem: loggerItem)
+                    ZXKitLoggerUDPSocketManager.shared.send(loggerItem: loggerItem)
                 }
             }
             #endif
@@ -342,9 +342,9 @@ public class ZXKitLogger {
         //发起服务
         ZXKitLoggerBonjour.shared.start()
         if ZXKitLogger.isTCP {
-            ZXKitLoggerTCPSocket.shared.start()
+            ZXKitLoggerTCPSocketManager.shared.start()
         } else {
-            ZXKitLoggerUDPSocket.shared.start()
+            ZXKitLoggerUDPSocketManager.shared.start()
         }
         #endif
     }

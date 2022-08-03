@@ -9,8 +9,8 @@
 import Foundation
 import CocoaAsyncSocket
 
-class ZXKitLoggerUDPSocket: NSObject {
-    public static let shared = ZXKitLoggerUDPSocket()
+class ZXKitLoggerUDPSocketManager: NSObject {
+    public static let shared = ZXKitLoggerUDPSocketManager()
 
     private lazy var serverSocket: GCDAsyncUdpSocket = {
         let queue = DispatchQueue.init(label: "zxkitlogger_socket")
@@ -22,7 +22,7 @@ class ZXKitLoggerUDPSocket: NSObject {
     private var addressList: [Data] = []
 }
 
-extension ZXKitLoggerUDPSocket {
+extension ZXKitLoggerUDPSocketManager {
     func start() {
         if serverSocket.isConnected() {
             print("isConnected")
@@ -52,7 +52,7 @@ extension ZXKitLoggerUDPSocket {
     }
 }
 
-extension ZXKitLoggerUDPSocket: GCDAsyncUdpSocketDelegate {
+extension ZXKitLoggerUDPSocketManager: GCDAsyncUdpSocketDelegate {
     func udpSocket(_ sock: GCDAsyncUdpSocket, didConnectToAddress address: Data) {
         print("address")
     }

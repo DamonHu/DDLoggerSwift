@@ -1,5 +1,5 @@
 //
-//  ZXKitLoggerTCPSocket.swift
+//  ZXKitLoggerTCPSocketManager.swift
 //  ZXKitLogger
 //
 //  Created by Damon on 2022/8/2.
@@ -9,8 +9,8 @@
 import Foundation
 import CocoaAsyncSocket
 
-class ZXKitLoggerTCPSocket: NSObject {
-    public static let shared = ZXKitLoggerTCPSocket()
+class ZXKitLoggerTCPSocketManager: NSObject {
+    public static let shared = ZXKitLoggerTCPSocketManager()
 
     private lazy var serverSocket: GCDAsyncSocket = {
         let queue = DispatchQueue.init(label: "zxkitlogger_socket")
@@ -18,10 +18,10 @@ class ZXKitLoggerTCPSocket: NSObject {
         return socket
     }()
 
-    private var socketList: [GCDAsyncSocket] = []
+    private var acceptSocketList: [GCDAsyncSocket] = []
 }
 
-extension ZXKitLoggerTCPSocket {
+extension ZXKitLoggerTCPSocketManager {
     func start() {
         do {
             try serverSocket.accept(onPort: ZXKitLogger.socketPort)
@@ -32,7 +32,7 @@ extension ZXKitLoggerTCPSocket {
 
     func send(loggerItem: ZXKitLoggerItem) {
         guard let data = "\(loggerItem.mLogItemType.rawValue)|\(loggerItem.mLogDebugContent)|\(loggerItem.mCreateDate.timeIntervalSince1970)|\(loggerItem.getLogContent())".data(using: .utf8) else { return }
-        for socket in self.socketList {
+        for socket in self.acceptSocketList {
             if socket.isConnected {
                 socket.write(data, withTimeout: 20, tag: Int(loggerItem.mCreateDate.timeIntervalSince1970))
             }
@@ -41,12 +41,13 @@ extension ZXKitLoggerTCPSocket {
 
 }
 
-extension ZXKitLoggerTCPSocket: GCDAsyncSocketDelegate {
+extension ZXKitLoggerTCPSocketManager: GCDAsyncSocketDelegate {
     func socket(_ sock: GCDAsyncSocket, didAcceptNewSocket newSocket: GCDAsyncSocket) {
         print("didAcceptNewSocket")
-        
-        newSocket.delegate = self
-        socketList.append(newSocket)
+        if !acceptSocketList.contains(newSocket) {
+            newSocket.delegate = self
+            acceptSocketList.append(newSocket)
+        }
         newSocket.readData(withTimeout: -1, tag: 0)
     }
 
