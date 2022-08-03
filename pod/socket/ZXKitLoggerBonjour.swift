@@ -47,6 +47,6 @@ extension ZXKitLoggerBonjour: NetServiceDelegate {
         let data = sender.txtRecordData()
         let dict = NetService.dictionary(fromTXTRecord: data!)
         let info = String.init(data: dict["node"]!, encoding: String.Encoding.utf8)
-        print("mac info = ",info);
+        print("mac info = ",info)
     }
 }
