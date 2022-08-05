@@ -57,28 +57,31 @@ class HDSqliteTools {
         self._insertVirtualLog(log: log)
     }
 
-    func getAllLog(name: String? = nil) -> [String] {
+    func getAllLog(name: String? = nil) -> [ZXKitLoggerItem] {
         let databasePath = self._getDataBasePath(name: name)
         guard FileManager.default.fileExists(atPath: databasePath.path) else {
             //数据库文件不存在
-            return [String]()
+            return []
         }
         let queryDB = self._openDatabase(name: name)
         let queryString = "SELECT * FROM hdlog;"
         var queryStatement: OpaquePointer?
         //第一步
-        var logList = [String]()
+        var logList = [ZXKitLoggerItem]()
         if sqlite3_prepare_v2(queryDB, queryString, -1, &queryStatement, nil) == SQLITE_OK {
             //第二步
             while(sqlite3_step(queryStatement) == SQLITE_ROW) {
                 //第三步
-//                let id = sqlite3_column_int(queryStatement, 0)
-                let log = sqlite3_column_text(queryStatement, 1)
-//                let logType = sqlite3_column_int(queryStatement, 2)
-//                let time = sqlite3_column_double(queryStatement, 3)
-                if let log = log {
-                    logList.append("\(String(cString: log))")
-                }
+                let item = ZXKitLoggerItem()
+//                item.id = Int(sqlite3_column_int(queryStatement, 0))
+                item.mLogItemType = ZXKitLogType.init(rawValue: Int(sqlite3_column_int(queryStatement, 2)))
+                item.mLogDebugContent = String(cString: sqlite3_column_text(queryStatement, 4))
+                //更新内容
+                item.mLogContent = String(cString: sqlite3_column_text(queryStatement, 5))
+                //时间
+                let time = sqlite3_column_double(queryStatement, 3)
+                item.mCreateDate = Date(timeIntervalSince1970: time)
+                logList.append(item)
             }
         }
         //第四步

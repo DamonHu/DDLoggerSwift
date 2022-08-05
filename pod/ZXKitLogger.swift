@@ -217,7 +217,7 @@ public class ZXKitLogger {
     }
     
     ///获取log日志数组
-    public class func getAllLog(date: Date? = nil) -> [String] {
+    public class func getAllLog(date: Date? = nil) -> [ZXKitLoggerItem] {
         if let date = date {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd"
