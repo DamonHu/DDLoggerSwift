@@ -325,6 +325,31 @@ This library uses `SQLite` to store log information. So you can use [ZXKitLogger
 
 ![](./readmeResources/Jietu20220731-212644.png)
 
+## local network real-time log
+
+After the `3.0.0` version, it can be used with the above log viewing tool to realize real-time log viewing on the local area network, and use the simple configuration interface
+
+1. Increase the local network function
+
+````
+pod 'ZXKitLogger/socket'
+````
+
+2. Add the local network description and the service field of `Bonjour` in the project `info.plist`.
+
+````
+<key>NSBonjourServices</key>
+<array>
+<string>_zxkitlogger._tcp</string>
+</array>
+<key>NSLocalNetworkUsageDescription</key>
+<string>Find the local network to use the Bonjour feature</string>
+````
+
+**Note: The type value of `NSBonjourServices` is consistent with `ZXKitLogger.socketType`. The `socketType` in the ZXKitLogger code can be customized. After modification, the `info.plist` should be modified accordingly **
+
+No other configuration is required, you can view the device logs under the same local network by [ZXKitLogger_Mac](https://github.com/DamonHu/ZXKitLogger_Mac)
+
 ## Other Tips
 
 1. For the convenience of viewing, it is divided into three types: info, warning and error. It corresponds to three different colors for easy viewing.

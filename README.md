@@ -331,13 +331,30 @@ printPrivacy("这个是加密数据的测试数据222")
 
 ## 六、局域网实时日志
 
-`3.0.0`版本之后，可配合上面的日志查看工具，可实现局域网实时日志查看，简单配置接口使用
+`3.0.0` 版本之后，可配合上面的日志查看工具，可实现局域网实时日志查看，简单配置接口使用
 
+1、增加局域网功能
 
+```
+pod 'ZXKitLogger/socket'
+```
 
-1、在项目`info.plist`
+2、在项目`info.plist`增加局域网描述，和`Bonjour`的服务字段。
 
-## 六、其他说明tips
+```
+<key>NSBonjourServices</key>
+	<array>
+		<string>_zxkitlogger._tcp</string>
+	</array>
+<key>NSLocalNetworkUsageDescription</key>
+<string>查找本地网络以便使用Bonjour功能</string>
+```
+
+**注意：`NSBonjourServices`的type值和`ZXKitLogger.socketType`保持一致，ZXKitLogger代码中的`socketType`可以自定义，修改之后info.plist也做对应的修改即可**
+
+无需其他配置，即可在通过[ZXKitLogger_Mac](https://github.com/DamonHu/ZXKitLogger_Mac)查看同一局域网下的设备日志
+
+## 七、其他说明tips
 
 1. 为了查看方便，分为普通、警告、错误三种类型，对应了三种不同的颜色，方便查看
 2. 点击对应的cell可以直接将输出log复制到系统剪贴板
