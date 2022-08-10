@@ -18,16 +18,19 @@ import ZXKitUtil
 class HDSqliteTools {
     static let shared = HDSqliteTools()
 
+    private let virtualDBVersion = "3.0.0" //数据库当前版本
+    private let virtualDBVersionUserdefaultKey = "ZXKitLogger_VirtualDBVersionUserdefaultKey"
+
     private var logDB: OpaquePointer?
     private var indexDB: OpaquePointer?
-    
+
     init() {
         //开始新的数据
         self.logDB = self._openDatabase()
         self.indexDB = self._openVirtualDatabase()
         self._createTable()
     }
-    
+
     //获取数据库文件夹
     func getDBFolder() -> URL {
         let dbFolder = ZXKitLogger.userID.zx.hashString(hashType: .md5) ?? "ZXKitLog"
@@ -44,7 +47,7 @@ class HDSqliteTools {
         if status == SQLITE_OK {
             //第三步
             if sqlite3_step(insertStatement) == SQLITE_DONE {
-//                print("插入数据成功")
+                //                print("插入数据成功")
             } else {
                 print("插入数据失败")
             }
@@ -73,7 +76,7 @@ class HDSqliteTools {
             while(sqlite3_step(queryStatement) == SQLITE_ROW) {
                 //第三步
                 let item = ZXKitLoggerItem()
-//                item.id = Int(sqlite3_column_int(queryStatement, 0))
+                //                item.id = Int(sqlite3_column_int(queryStatement, 0))
                 item.mLogItemType = ZXKitLogType.init(rawValue: Int(sqlite3_column_int(queryStatement, 2)))
                 item.mLogDebugContent = String(cString: sqlite3_column_text(queryStatement, 4))
                 //更新内容
@@ -88,11 +91,11 @@ class HDSqliteTools {
         sqlite3_finalize(queryStatement)
         return logList
     }
-    
+
     func searchLog(keyword: String) -> [String] {
         return self._searchLog(keyword: keyword)
     }
-    
+
     func deleteLog(timeStamp: Double) {
         self._deleteLog(timeStamp: timeStamp)
     }
@@ -117,7 +120,7 @@ private extension HDSqliteTools {
         var db: OpaquePointer?
         let dbPath = self._getDataBasePath(name: name)
         if sqlite3_open_v2(dbPath.path, &db, SQLITE_OPEN_READWRITE|SQLITE_OPEN_CREATE|SQLITE_OPEN_FULLMUTEX, nil) == SQLITE_OK {
-//            print("成功打开数据库\(dbPath.absoluteString)")
+            //            print("成功打开数据库\(dbPath.absoluteString)")
             return db
         } else {
             print("打开数据库失败")
@@ -132,7 +135,7 @@ private extension HDSqliteTools {
         if sqlite3_prepare_v2(logDB, createTableString, -1, &createTableStatement, nil) == SQLITE_OK {
             // 第二步
             if sqlite3_step(createTableStatement) == SQLITE_DONE {
-//                print("成功创建表")
+                //                print("成功创建表")
             } else {
                 print("未成功创建表")
             }
@@ -159,7 +162,7 @@ private extension HDSqliteTools {
         var db: OpaquePointer?
         let dbPath = self._getDataVirtualBasePath()
         if sqlite3_open_v2(dbPath.path, &db, SQLITE_OPEN_READWRITE|SQLITE_OPEN_CREATE|SQLITE_OPEN_FULLMUTEX, nil) == SQLITE_OK {
-//            print("成功打开数据库\(dbPath.absoluteString)")
+            //            print("成功打开数据库\(dbPath.absoluteString)")
             return db
         } else {
             print("打开数据库失败")
@@ -168,12 +171,29 @@ private extension HDSqliteTools {
     }
     //创建索引虚拟表
     func _createVirtualTable() {
+        //判断更新还是创建
+        if UserDefaults.standard.string(forKey: virtualDBVersionUserdefaultKey) != self.virtualDBVersion {
+            //删除老的
+            self.indexDB = nil
+            do {
+                let basePath = self._getDataVirtualBasePath()
+                let newBasePath = self._getDataVirtualBasePath().appendingPathExtension("_back")
+                try FileManager.default.moveItem(at: basePath, to: newBasePath)
+                try FileManager.default.removeItem(at: newBasePath)
+            } catch {
+                print("删除老的虚拟表错误", error.localizedDescription)
+            }
+            print("成功删除老的虚拟表")
+            self.indexDB = self._openVirtualDatabase()
+        }
+        //创建
         let createTableString = "CREATE VIRTUAL TABLE IF NOT EXISTS logindex USING fts4(log, logType, time, debugContent, contentString, tokenize=unicode61);"
         var createTableStatement: OpaquePointer?
         if sqlite3_prepare_v2(self.indexDB, createTableString, -1, &createTableStatement, nil) == SQLITE_OK {
             // 第二步
             if sqlite3_step(createTableStatement) == SQLITE_DONE {
-//                print("成功创建虚拟表")
+                print("成功创建虚拟表")
+                UserDefaults.standard.set(self.virtualDBVersion, forKey: virtualDBVersionUserdefaultKey)
             } else {
                 print("未成功创建虚拟表")
             }
@@ -183,17 +203,18 @@ private extension HDSqliteTools {
         //第三步
         sqlite3_finalize(createTableStatement)
     }
-    
+
     //插入数据
     func _insertVirtualLog(log: ZXKitLoggerItem) {
         let insertRowString = String(format: "INSERT OR REPLACE INTO logindex(log, logType, time, debugContent, contentString) VALUES ('%@', '%d', '%f', '%@', '%@')", log.getFullContentString(), log.mLogItemType.rawValue, Date().timeIntervalSince1970, log.mLogDebugContent, log.getLogContent())
+        print(insertRowString)
         var insertStatement: OpaquePointer?
         //第一步
         let status = sqlite3_prepare_v2(self.indexDB, insertRowString, -1, &insertStatement, nil)
         if status == SQLITE_OK {
             //第三步
             if sqlite3_step(insertStatement) == SQLITE_DONE {
-//                print("虚拟库插入数据成功")
+                //                print("虚拟库插入数据成功")
             } else {
                 print("插入数据失败")
             }
@@ -203,7 +224,7 @@ private extension HDSqliteTools {
         //第四步
         sqlite3_finalize(insertStatement)
     }
-    
+
     func _searchLog(keyword: String) -> [String] {
         let databasePath = self._getDataBasePath()
         guard FileManager.default.fileExists(atPath: databasePath.path) else {
@@ -212,7 +233,7 @@ private extension HDSqliteTools {
         }
         let queryDB = self.indexDB
         //TODO: 虚拟表全文查询需要分词，所以使用LIKE
-//        var queryString = "SELECT * FROM logindex WHERE log MATCH '\(keyword)*'"
+        //        var queryString = "SELECT * FROM logindex WHERE log MATCH '\(keyword)*'"
         var queryString = "SELECT * FROM logindex WHERE log LIKE '%\(keyword)%'"
         if keyword.isEmpty {
             queryString = "SELECT * FROM logindex"
@@ -226,8 +247,8 @@ private extension HDSqliteTools {
                 //第三步
                 //虚拟表中未存储id
                 let log = sqlite3_column_text(queryStatement, 0)
-//                let logType = sqlite3_column_int(queryStatement, 1)
-//                let time = sqlite3_column_double(queryStatement, 2)
+                //                let logType = sqlite3_column_int(queryStatement, 1)
+                //                let time = sqlite3_column_double(queryStatement, 2)
                 if let log = log {
                     logList.append("\(String(cString: log))")
                 }
@@ -237,7 +258,7 @@ private extension HDSqliteTools {
         sqlite3_finalize(queryStatement)
         return logList
     }
-    
+
     func _deleteLog(timeStamp: Double) {
         print(timeStamp)
         let insertRowString = "DELETE FROM logindex WHERE time < \(timeStamp) "
@@ -247,7 +268,7 @@ private extension HDSqliteTools {
         if status == SQLITE_OK {
             //第三步
             if sqlite3_step(insertStatement) == SQLITE_DONE {
-//                print("删除过期数据成功")
+                //                print("删除过期数据成功")
             } else {
                 print("删除过期数据失败")
             }
