@@ -36,17 +36,16 @@ extension ZXKitLoggerBonjour {
 
 extension ZXKitLoggerBonjour: NetServiceDelegate {
     func netServiceWillPublish(_ sender: NetService) {
-        print("netServiceWillPublish")
+        print("ZXKitLogger_netServiceWillPublish")
     }
     func netService(_ sender: NetService, didNotPublish errorDict: [String : NSNumber]) {
-        print("didNotPublish", errorDict)
+        print("ZXKitLogger_didNotPublish", errorDict)
     }
 
     func netServiceDidResolveAddress(_ sender: NetService) {
-        print("----netService didResolveAddress", sender.name, sender.addresses, sender.hostName, sender.addresses?.first)
-        let data = sender.txtRecordData()
-        let dict = NetService.dictionary(fromTXTRecord: data!)
-        let info = String.init(data: dict["node"]!, encoding: String.Encoding.utf8)
-        print("mac info = ",info)
+//        print("----netService didResolveAddress", sender.name, sender.addresses, sender.hostName, sender.addresses?.first)
+//        let data = sender.txtRecordData()
+//        let dict = NetService.dictionary(fromTXTRecord: data!)
+//        let info = String.init(data: dict["node"]!, encoding: String.Encoding.utf8)
     }
 }

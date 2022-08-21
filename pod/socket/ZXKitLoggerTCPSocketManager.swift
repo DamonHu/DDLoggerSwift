@@ -26,7 +26,7 @@ extension ZXKitLoggerTCPSocketManager {
         do {
             try serverSocket.accept(onPort: ZXKitLogger.socketPort)
         } catch {
-            print("accept error", error)
+            print("ZXKitLogger_accept error", error)
         }
     }
 
@@ -43,7 +43,7 @@ extension ZXKitLoggerTCPSocketManager {
 
 extension ZXKitLoggerTCPSocketManager: GCDAsyncSocketDelegate {
     func socket(_ sock: GCDAsyncSocket, didAcceptNewSocket newSocket: GCDAsyncSocket) {
-        print("didAcceptNewSocket")
+        print("ZXKitLogger_didAcceptNewSocket")
         if !acceptSocketList.contains(newSocket) {
             newSocket.delegate = self
             acceptSocketList.append(newSocket)
@@ -52,11 +52,11 @@ extension ZXKitLoggerTCPSocketManager: GCDAsyncSocketDelegate {
     }
 
     func socket(_ sock: GCDAsyncSocket, didConnectToHost host: String, port: UInt16) {
-        print("didConnectToHost", host, port)
+        print("ZXKitLogger_didConnectToHost", host, port)
     }
 
     func socketDidDisconnect(_ sock: GCDAsyncSocket, withError err: Error?) {
-        print("socketDidDisconnect", err)
+        print("ZXKitLogger_socketDidDisconnect", err ?? "")
     }
 
     func socket(_ sock: GCDAsyncSocket, didWriteDataWithTag tag: Int) {
@@ -64,11 +64,10 @@ extension ZXKitLoggerTCPSocketManager: GCDAsyncSocketDelegate {
     }
 
     func socket(_ sock: GCDAsyncSocket, didConnectTo url: URL) {
-        print("didConnectTo")
+        print("ZXKitLogger_didConnectTo")
     }
 
     func socket(_ sock: GCDAsyncSocket, didRead data: Data, withTag tag: Int) {
-//        print("didRead", String(data: data, encoding: .utf8))
         if let readString = String(data: data, encoding: .utf8), readString == "ZXKitLogger_tcp_auth" {
             //首次连接发送历史信息
             for loggerItem in ZXKitLogger.getAllLog() {

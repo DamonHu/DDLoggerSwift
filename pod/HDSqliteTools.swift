@@ -49,10 +49,10 @@ class HDSqliteTools {
             if sqlite3_step(insertStatement) == SQLITE_DONE {
                 //                print("插入数据成功")
             } else {
-                print("插入数据失败")
+                print("ZXKitLogger_插入数据失败")
             }
         } else {
-            print("插入时打开数据库失败")
+            print("ZXKitLogger_插入时打开数据库失败")
         }
         //第四步
         sqlite3_finalize(insertStatement)
@@ -123,7 +123,7 @@ private extension HDSqliteTools {
             //            print("成功打开数据库\(dbPath.absoluteString)")
             return db
         } else {
-            print("打开数据库失败")
+            print("ZXKitLogger_打开数据库失败")
             return nil
         }
     }
@@ -137,7 +137,7 @@ private extension HDSqliteTools {
             if sqlite3_step(createTableStatement) == SQLITE_DONE {
                 //                print("成功创建表")
             } else {
-                print("未成功创建表")
+                print("ZXKitLogger_未成功创建表")
             }
         } else {
 
@@ -165,7 +165,7 @@ private extension HDSqliteTools {
             //            print("成功打开数据库\(dbPath.absoluteString)")
             return db
         } else {
-            print("打开数据库失败")
+            print("ZXKitLogger_打开数据库失败")
             return nil
         }
     }
@@ -181,9 +181,9 @@ private extension HDSqliteTools {
                 try FileManager.default.moveItem(at: basePath, to: newBasePath)
                 try FileManager.default.removeItem(at: newBasePath)
             } catch {
-                print("删除老的虚拟表错误", error.localizedDescription)
+                print("ZXKitLogger_删除老的虚拟表错误", error.localizedDescription)
             }
-            print("成功删除老的虚拟表")
+            print("ZXKitLogger_成功删除老的虚拟表")
             self.indexDB = self._openVirtualDatabase()
         }
         //创建
@@ -192,13 +192,13 @@ private extension HDSqliteTools {
         if sqlite3_prepare_v2(self.indexDB, createTableString, -1, &createTableStatement, nil) == SQLITE_OK {
             // 第二步
             if sqlite3_step(createTableStatement) == SQLITE_DONE {
-                print("成功创建虚拟表")
+//                print("ZXKitLogger_成功创建虚拟表")
                 UserDefaults.standard.set(self.virtualDBVersion, forKey: virtualDBVersionUserdefaultKey)
             } else {
-                print("未成功创建虚拟表")
+                print("ZXKitLogger_未成功创建虚拟表")
             }
         } else {
-            print("创建虚拟表", sqlite3_prepare_v2(self.indexDB, createTableString, -1, &createTableStatement, nil), SQLITE_OK, SQLITE_BUSY, SQLITE_ERROR)
+            print("ZXKitLogger_创建虚拟表失败")
         }
         //第三步
         sqlite3_finalize(createTableStatement)
@@ -216,10 +216,10 @@ private extension HDSqliteTools {
             if sqlite3_step(insertStatement) == SQLITE_DONE {
                 //                print("虚拟库插入数据成功")
             } else {
-                print("插入数据失败")
+                print("ZXKitLogger_插入数据失败")
             }
         } else {
-            print("插入时打开虚拟数据库失败")
+            print("ZXKitLogger_插入时打开虚拟数据库失败")
         }
         //第四步
         sqlite3_finalize(insertStatement)
@@ -260,7 +260,6 @@ private extension HDSqliteTools {
     }
 
     func _deleteLog(timeStamp: Double) {
-        print(timeStamp)
         let insertRowString = "DELETE FROM logindex WHERE time < \(timeStamp) "
         var insertStatement: OpaquePointer?
         //第一步
@@ -270,10 +269,10 @@ private extension HDSqliteTools {
             if sqlite3_step(insertStatement) == SQLITE_DONE {
                 //                print("删除过期数据成功")
             } else {
-                print("删除过期数据失败")
+                print("ZXKitLogger_删除过期数据失败")
             }
         } else {
-            print("删除时打开虚拟数据库失败")
+            print("ZXKitLogger_删除时打开虚拟数据库失败")
         }
         //第四步
         sqlite3_finalize(insertStatement)
