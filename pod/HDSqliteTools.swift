@@ -207,7 +207,7 @@ private extension HDSqliteTools {
     //插入数据
     func _insertVirtualLog(log: ZXKitLoggerItem) {
         let insertRowString = String(format: "INSERT OR REPLACE INTO logindex(log, logType, time, debugContent, contentString) VALUES ('%@', '%d', '%f', '%@', '%@')", log.getFullContentString(), log.mLogItemType.rawValue, Date().timeIntervalSince1970, log.mLogDebugContent, log.getLogContent())
-        print(insertRowString)
+
         var insertStatement: OpaquePointer?
         //第一步
         let status = sqlite3_prepare_v2(self.indexDB, insertRowString, -1, &insertStatement, nil)
