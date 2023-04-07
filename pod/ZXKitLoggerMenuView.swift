@@ -53,7 +53,7 @@ private extension ZXKitLoggerMenuView {
 
     func _loadData() {
         mCollectionList.removeAll()
-        var titleList = ["Back".ZXLocaleString, "Hide".ZXLocaleString, "Exit".ZXLocaleString, "Share".ZXLocaleString, "Decrypt".ZXLocaleString, "Filter".ZXLocaleString, "Total Search".ZXLocaleString, "Auto scroll".ZXLocaleString, "Analyse".ZXLocaleString]
+        var titleList = ["Back".ZXLocaleString, "Hide".ZXLocaleString, "Exit".ZXLocaleString, "Share".ZXLocaleString, "Decrypt".ZXLocaleString, "Filter".ZXLocaleString, "Search Today's Log".ZXLocaleString, "Auto scroll".ZXLocaleString, "Analyse".ZXLocaleString]
         var imageList = [UIImageHDBoundle(named: "icon_back"), UIImageHDBoundle(named: "icon_hide"), UIImageHDBoundle(named: "icon_exit"), UIImageHDBoundle(named: "icon_share"), UIImageHDBoundle(named: "icon_decrypt"),  UIImageHDBoundle(named: "icon_scroll"), UIImageHDBoundle(named: "icon_search"), UIImageHDBoundle(named: "icon_scroll"), UIImageHDBoundle(named: "icon_analyse")]
 
         if ZXKitLogger.uploadComplete != nil {

@@ -236,7 +236,22 @@ class ZXKitLoggerWindow: UIWindow {
                             }
                         }
                     }
-                    let info = "\n" + "current log count".ZXLocaleString + ": \(self.mLogDataArray.count)" +  "\n" + "LogFile count".ZXLocaleString + ": \(count)" + "\n" + "LogFile total size".ZXLocaleString + ": \(size/1024.0)kb"
+                    let info = """
+
+                        📅 \("Number of Today's Logs".ZXLocaleString): \(ZXKitLogger.getItemCount(type: nil))
+
+                        ✅ Info count: \(ZXKitLogger.getItemCount(type: .info))
+
+                        ⚠️ Warn count: \(ZXKitLogger.getItemCount(type: .warn))
+
+                        ❌ Error count: \(ZXKitLogger.getItemCount(type: .error))
+
+                        ⛔️ Privacy count: \(ZXKitLogger.getItemCount(type: .privacy))
+
+                        📊 \("LogFile count".ZXLocaleString): \(count)
+
+                        📈 \("LogFile total size".ZXLocaleString): \(size/1024.0)kb
+                    """
                     printWarn(info)
                 case 9:
                     ZXKitLogger.showUpload(isCloseWhenComplete: false)

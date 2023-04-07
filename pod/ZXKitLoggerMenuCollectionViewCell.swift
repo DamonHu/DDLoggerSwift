@@ -44,7 +44,7 @@ class ZXKitLoggerMenuCollectionViewCell: UICollectionViewCell {
         let tLabel = UILabel()
         tLabel.translatesAutoresizingMaskIntoConstraints = false
         tLabel.textAlignment = NSTextAlignment.center
-        tLabel.numberOfLines = 1
+        tLabel.numberOfLines = 3
         tLabel.font = UIFont.systemFont(ofSize: 13)
         tLabel.textColor = UIColor.zx.color(hexValue: 0xffffff)
         return tLabel

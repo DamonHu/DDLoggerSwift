@@ -4,9 +4,8 @@
 
 [English](./README_en.md)
 
-如果您需要的是快速集成多个调试功能，例如日志查看、网速测试、文件查看等功能，请使用 [DamonHu/ZXKitSwift](https://github.com/DamonHu/ZXKitSwift)。
+> 如果您需要的是快速集成多个调试功能，例如日志查看、网速测试、文件查看等功能，可使用 [DamonHu/ZXKitSwift](https://github.com/DamonHu/ZXKitSwift)。
 
-**该插件已经默认集成在[ZXKitSwift](https://github.com/DamonHu/ZXKitSwift)中，如果您已经集成了`ZXKitSwift`，无需重复集成该插件**
 
 iOS端将输出日志log悬浮显示在屏幕上，可以生成日志文件分享，便于在真机没有连接xcode的情况下调试信息。可以分享、筛选log等操作。
 

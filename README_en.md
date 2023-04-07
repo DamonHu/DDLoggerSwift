@@ -4,9 +4,7 @@
 
 [中文文档](./README.md)
 
-If you need to quickly integrate multiple debugging functions, such as log viewing, network speed testing, file viewing and so on, please use [DamonHu/ZXKitSwift](https://github.com/DamonHu/ZXKitSwift)
-
-The plug-in has been integrated in [ZXKitSwift](https://github.com/DamonHu/ZXKitSwift) by default, if you have already integrated `ZXKitSwift`, there is no need to repeat the integration
+> If you need to quickly integrate multiple debugging functions, such as log viewing, network speed testing, file viewing and so on, please use [DamonHu/ZXKitSwift](https://github.com/DamonHu/ZXKitSwift)
 
 
 The iOS terminal will display the output log suspended on the screen, which can generate log file sharing, and debug information when the real machine is not connected to Xcode. You can share, filter logs and other operations. Use SQLite to store log information, support system sharing and screen FPS display

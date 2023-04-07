@@ -31,12 +31,12 @@
 "Back" = "Back";
 "Upload" = "Upload";
 "Search" = "Search";
-"Total Search" = "Total Search";
+"Search Today's Log" = "Search Today's Log";
 "Filter" = "Filter";
 "Scroll" = "Scroll";
 "More" = "More";
 "Done" = "Done";
 "LogFile count" = "LogFile count";
 "LogFile total size" = "LogFile total size";
-"current log count" = "current log count";
+"Number of Today's Logs" = "Number of Today's Logs";
 "Invalid encryption" = "Invalid encryption";

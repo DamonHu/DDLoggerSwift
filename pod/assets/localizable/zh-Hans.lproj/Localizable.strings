@@ -31,12 +31,12 @@
 "Back" = "返回";
 "Upload" = "上传";
 "Search" = "搜索";
-"Total Search" = "全局搜索";
+"Search Today's Log" = "搜索今日日志";
 "Filter" = "筛选";
 "Scroll" = "滚动";
 "More" = "更多";
 "Done" = "完成";
 "LogFile count" = "日志文件数量";
 "LogFile total size" = "日志文件总大小";
-"current log count" = "当前日志条数";
+"Number of Today's Logs" = "今日日志数量";
 "Invalid encryption" = "加密无效";
