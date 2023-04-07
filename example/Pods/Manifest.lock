@@ -3,9 +3,9 @@ PODS:
   - ZXKitFPS (1.0.0):
     - ZXKitFPS/core (= 1.0.0)
   - ZXKitFPS/core (1.0.0)
-  - ZXKitUtil (3.2.5):
-    - ZXKitUtil/core (= 3.2.5)
-  - ZXKitUtil/core (3.2.5)
+  - ZXKitUtil (3.2.8):
+    - ZXKitUtil/core (= 3.2.8)
+  - ZXKitUtil/core (3.2.8)
 
 DEPENDENCIES:
   - CocoaAsyncSocket
@@ -21,7 +21,7 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   ZXKitFPS: 6364ac5b6b70b6b39aab983532b8d15e723af1f4
-  ZXKitUtil: fa61c5dd98a14db684802337323481ea65548d7b
+  ZXKitUtil: 5093c681acc5c82d009e276b154878529b8b4448
 
 PODFILE CHECKSUM: 6c741cd1fca2998376480a855d9ca783d71e93f6
 

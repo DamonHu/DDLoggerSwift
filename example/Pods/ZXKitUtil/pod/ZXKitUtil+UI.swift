@@ -8,18 +8,29 @@
 
 import UIKit
 
-public enum ZXKitUtilGradientDirection {
-    case leftToRight            //AC - BD
-    case topToBottom            //AB - CD
-    case leftTopToRightBottom   //A - D
-    case leftBottomToRightTop   //C - B
-}
 //      A         B
 //       _________
 //      |         |
 //      |         |
 //       ---------
 //      C         D
+public enum ZXKitUtilGradientDirection {
+    case minXToMaxX         //AC - BD
+    case minYToMaxY         //AB - CD
+    case minXMinYToMaxXMaxY //A - D
+    case minXMaxYToMaxXminY //C - B
+    
+    
+    @available(*, deprecated, message: "user minXToMaxX")
+    case leftToRight            //AC - BD
+    @available(*, deprecated, message: "user minYToMaxY")
+    case topToBottom            //AB - CD
+    @available(*, deprecated, message: "user minXMinYToMaxXMaxY")
+    case leftTopToRightBottom   //A - D
+    @available(*, deprecated, message: "user minXMaxYToMaxXminY")
+    case leftBottomToRightTop   //C - B
+}
+
 
 public extension ZXKitUtil {
     ///获取当前的normalwindow
@@ -118,16 +129,16 @@ public extension ZXKitUtil {
         gradientLayer.colors = cgColors
         gradientLayer.locations = locations
         
-        if (directionType == .leftToRight) {
+        if (directionType == .leftToRight || directionType == .minXToMaxX) {
             gradientLayer.startPoint = CGPoint(x: 0, y: 0)
             gradientLayer.endPoint = CGPoint(x: 1, y: 0)
-        } else if (directionType == .topToBottom){
+        } else if (directionType == .topToBottom || directionType == .minYToMaxY){
             gradientLayer.startPoint = CGPoint(x: 0, y: 0)
             gradientLayer.endPoint = CGPoint(x: 0, y: 1)
-        } else if (directionType == .leftTopToRightBottom){
+        } else if (directionType == .leftTopToRightBottom || directionType == .minXMinYToMaxXMaxY){
             gradientLayer.startPoint = CGPoint(x: 0, y: 0)
             gradientLayer.endPoint = CGPoint(x: 1, y: 1)
-        } else if (directionType == .leftBottomToRightTop){
+        } else if (directionType == .leftBottomToRightTop || directionType == .minXMaxYToMaxXminY){
             gradientLayer.startPoint = CGPoint(x: 0, y: 1)
             gradientLayer.endPoint = CGPoint(x: 1, y: 0)
         }
