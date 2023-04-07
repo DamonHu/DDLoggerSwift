@@ -8,8 +8,6 @@
 
 import UIKit
 import ZXKitUtil
-import CommonCrypto
-import ZXKitFPS
 
 ///log的级别，对应不同的颜色
 public struct ZXKitLogType : OptionSet {
@@ -42,6 +40,10 @@ extension ZXKitLogType {
             return UIColor.black
         }
     }
+}
+
+public extension NSNotification.Name {
+    static let ZXKitLogDBUpdate = NSNotification.Name("ZXKitLogDBUpdate")
 }
 
 /////测试输出，不会写入到悬浮窗中
@@ -97,7 +99,7 @@ public class ZXKitLogger {
     public static var logExpiryDay = 30        //本地日志文件的有效期（天），超出有效期的本地日志会被删除，0为没有有效期，默认为30天
     public static var maxDisplayCount = 100       //屏幕最大的显示数量，适量即可，0为不限制
     public static var userID = "0"             //为不同用户创建的独立的日志库
-    public static var isShowFPS = true         //是否显示屏幕FPS状态
+    public static var DBParentFolder = ZXKitUtil.shared.getFileDirectory(type: .documents)
     public static var uploadComplete: ((URL) ->Void)?   //点击上传日志的回调
     /*隐私数据采用AESCBC加密
      *需要设置密码privacyLogPassword
@@ -119,7 +121,6 @@ public class ZXKitLogger {
     #endif
 
     //MARK: - Private变量
-    private let mFPSTools = ZXKitFPS()
     private lazy var loggerWindow: ZXKitLoggerWindow? = {
         var window: ZXKitLoggerWindow?
         if #available(iOS 13.0, *) {
@@ -151,33 +152,6 @@ public class ZXKitLogger {
     private var floatWindow: ZXKitLoggerFloatWindow?
     var isPasswordCorrect: Bool = false
     private let logQueue = DispatchQueue(label:"com.ZXKitLogger.logQueue", qos:.utility, attributes:.concurrent)
-    //是否显示屏幕FPS状态
-    private static var _isShowFPS = true {
-        willSet {
-            if newValue {
-                shared.mFPSTools.start { (fps) in
-                    DispatchQueue.main.async {
-                        shared.floatWindow?.mButton.setTitle("\(fps)FPS", for: UIControl.State.normal)
-                        shared.floatWindow?.mButton.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .bold)
-                        if fps >= 55 {
-                            shared.floatWindow?.mButton.backgroundColor = UIColor.zx.color(hexValue: 0x5dae8b)
-                        } else if (fps >= 50 && fps < 55) {
-                            shared.floatWindow?.mButton.backgroundColor = UIColor.zx.color(hexValue: 0xf0a500)
-                        } else {
-                            shared.floatWindow?.mButton.backgroundColor = UIColor.zx.color(hexValue: 0xaa2b1d)
-                        }
-                    }
-                }
-            } else {
-                DispatchQueue.main.async {
-                    shared.mFPSTools.stop()
-                    shared.floatWindow?.mButton.titleLabel?.font = UIFont.systemFont(ofSize: 23, weight: .bold)
-                    shared.floatWindow?.mButton.backgroundColor = UIColor.zx.color(hexValue: 0x5dae8b)
-                    shared.floatWindow?.mButton.setTitle("H".ZXLocaleString, for: UIControl.State.normal)
-                }
-            }
-        }
-    }
 
     //MARK: - Public函数
     /// 根据日志的输出类型去输出相应的日志，不同日志类型颜色不一样
@@ -242,6 +216,10 @@ public class ZXKitLogger {
         let logFilePath = dbFolder.appendingPathComponent("\(dateString).db", isDirectory: false)
         return logFilePath
     }
+
+    public class func getItemCount(type: ZXKitLogType?) -> Int {
+        return HDSqliteTools.shared.getItemCount(type: type)
+    }
     
     ///  删除log日志
     public class func cleanLog() {
@@ -255,7 +233,6 @@ public class ZXKitLogger {
         DispatchQueue.main.async {
             self.shared.floatWindow?.isHidden = true
             self.shared.loggerWindow?.isHidden = false
-            self._isShowFPS = false
         }
     }
     
@@ -284,9 +261,6 @@ public class ZXKitLogger {
                 }
                 self.shared.floatWindow?.isHidden = false
             }
-            if self.isShowFPS {
-                self._isShowFPS = true
-            }
             #endif
         }
     }
@@ -297,7 +271,6 @@ public class ZXKitLogger {
             self.shared.loggerWindow?.isHidden = true
             self.shared.floatWindow?.isHidden = true
             self.shared.pickerWindow?.isHidden = true
-            self._isShowFPS = false
         }
     }
 
@@ -382,53 +355,4 @@ private extension ZXKitLogger {
         //删除过期索引
         HDSqliteTools.shared.deleteLog(timeStamp: (Date().timeIntervalSince1970 - Double(Self.logExpiryDay * 3600 * 24)))
     }
-}
-
-
-//MARK: - deprecated method
-//测试输出，不会写入到悬浮窗中
-@available(*, deprecated, message: "use printDebug() instand of it")
-public func ZXDebugLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    printLog(log, file: file, funcName: funcName, lineNum: lineNum)
-}
-@available(*, deprecated, message: "use printDebug() instand of it")
-public func ZXDebugLog(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    printLog(log, file: file, funcName: funcName, lineNum: lineNum)
-}
-
-//普通类型的输出
-@available(*, deprecated, message: "use printInfo() instand of it")
-public func ZXNormalLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    printInfo(log, file: file, funcName: funcName, lineNum: lineNum)
-}
-@available(*, deprecated, message: "use printInfo() instand of it")
-public func ZXNormalLog(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    printInfo(log, file: file, funcName: funcName, lineNum: lineNum)
-}
-//警告类型的输出
-@available(*, deprecated, message: "use printWarn() instand of it")
-public func ZXWarnLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    printWarn(log, file: file, funcName: funcName, lineNum: lineNum)
-}
-@available(*, deprecated, message: "use printWarn() instand of it")
-public func ZXWarnLog(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    printWarn(log, file: file, funcName: funcName, lineNum: lineNum)
-}
-//错误类型的输出
-@available(*, deprecated, message: "use printError() instand of it")
-public func ZXErrorLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    printError(log, file: file, funcName: funcName, lineNum: lineNum)
-}
-@available(*, deprecated, message: "use printError() instand of it")
-public func ZXErrorLog(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    printError(log, file: file, funcName: funcName, lineNum: lineNum)
-}
-//加密类型的输出
-@available(*, deprecated, message: "use printPrivacy() instand of it")
-public func ZXPrivacyLog(_ log:Any, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    printPrivacy(log, file: file, funcName: funcName, lineNum: lineNum)
-}
-@available(*, deprecated, message: "use printPrivacy() instand of it")
-public func ZXPrivacyLog(_ log:Any ..., file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
-    printPrivacy(log, file: file, funcName: funcName, lineNum: lineNum)
 }

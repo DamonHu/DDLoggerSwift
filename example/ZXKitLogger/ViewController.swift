@@ -93,6 +93,8 @@ class ViewController: UIViewController {
 //            let arrayObj = ["1111111","22222222","sdjkhfsjkdfjkhsdhjfk","3333sjdhgfhjg"]
 //            printInfo(arrayObj)
 //        }
+
+        print(ZXKitLogger.getItemCount(type: .info))
     }
     
     @objc func onClickdeleteButton() {
