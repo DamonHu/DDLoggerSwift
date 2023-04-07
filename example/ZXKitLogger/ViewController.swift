@@ -16,7 +16,7 @@ class ViewController: UIViewController {
     lazy var clickButton: UIButton = {
         let button = UIButton(type: UIButton.ButtonType.custom)
         button.backgroundColor = UIColor.red
-        button.frame = CGRect(x: 0, y: UIScreen.main.bounds.size.height - 130, width: 100, height: 60)
+        button.frame = CGRect(x: 0, y: UIScreen.main.bounds.size.height - 230, width: 100, height: 60)
         button.setTitle("添加日志", for: UIControl.State.normal)
         return button
     }()
@@ -37,16 +37,26 @@ class ViewController: UIViewController {
            return button
     }()
     
+    lazy var filterButton: UIButton = {
+        let button = UIButton(type: UIButton.ButtonType.custom)
+        button.backgroundColor = UIColor.red
+        button.frame = CGRect(x: 0, y: UIScreen.main.bounds.size.height - 130, width: 100, height: 60)
+        button.setTitle("过滤错误", for: UIControl.State.normal)
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.white
         self.view.addSubview(self.clickButton)
         self.view.addSubview(self.showButton)
         self.view.addSubview(self.deleteButton)
+        self.view.addSubview(filterButton)
         
         self.showButton.addTarget(self, action: #selector(showButtonClick), for: UIControl.Event.touchUpInside)
         self.clickButton.addTarget(self, action: #selector(onClickButton), for: UIControl.Event.touchUpInside)
         self.deleteButton.addTarget(self, action: #selector(onClickdeleteButton), for: UIControl.Event.touchUpInside)
+        self.filterButton.addTarget(self, action: #selector(filterButtonClick), for: UIControl.Event.touchUpInside)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -67,6 +77,11 @@ class ViewController: UIViewController {
 //        ZXKitLogger.showShare()
     }
 
+    @objc func filterButtonClick(){
+        ZXKitLogger.show(filterType: .error)
+    }
+    
+    
     @objc func onClickButton() {
 //        ZXKit.show()
         printInfo("点击了按钮111")

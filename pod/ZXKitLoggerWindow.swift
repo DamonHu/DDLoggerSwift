@@ -373,8 +373,8 @@ extension ZXKitLoggerWindow {
             self.mLogDataArray.removeFirst()
         }
         self.mLogDataArray.append(model)
-        if !self.isHidden {
-            self._reloadView(model: model, reloadTableView: false)
+        if !self.isHidden && self.inputType != .search {
+            self._reloadView(reloadTableView: false)
         }
     }
 
@@ -424,7 +424,7 @@ private extension ZXKitLoggerWindow {
     }
 
     //过滤刷新
-    private func _reloadView(model: ZXKitLoggerItem? = nil, reloadTableView: Bool) {
+    private func _reloadView(reloadTableView: Bool) {
         self.mFilterIndexArray.removeAll()
         self.mPreviousButton.isEnabled = false
         self.mNextButton.isEnabled = false
@@ -440,6 +440,15 @@ private extension ZXKitLoggerWindow {
                 self.mNextButton.isEnabled = true
                 self.mCurrentSearchIndex = self.mFilterIndexArray.count - 1;
                 self.mSearchNumLabel.text = "\(self.mCurrentSearchIndex + 1)/\(self.mFilterIndexArray.count)"
+            }
+            if reloadTableView {
+                self.mTableView.reloadData()
+            } else {
+                if self.mFullSearchLogArray.count == self.mTableView.numberOfRows(inSection: 0) {
+                    self.mTableView.reloadData()
+                } else {
+                    self.mTableView.insertRows(at: [IndexPath(row: self.mFullSearchLogArray.count - 1, section: 0)], with: .none)
+                }
             }
         } else {
             self.mDisplayLogDataArray = self.mLogDataArray
@@ -458,11 +467,15 @@ private extension ZXKitLoggerWindow {
                     self.mSearchNumLabel.text = "\(self.mCurrentSearchIndex + 1)/\(self.mFilterIndexArray.count)"
                 }
             }
-        }
-        if reloadTableView {
-            self.mTableView.reloadData()
-        } else {
-            self.mTableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+            if reloadTableView {
+                self.mTableView.reloadData()
+            } else {
+                if self.mDisplayLogDataArray.count == self.mTableView.numberOfRows(inSection: 0) {
+                    self.mTableView.reloadData()
+                } else {
+                    self.mTableView.insertRows(at: [IndexPath(row: self.mDisplayLogDataArray.count - 1, section: 0)], with: .none)
+                }
+            }
         }
         if self.mMenuView.isAutoScrollSwitch {
             if inputType == .search {
