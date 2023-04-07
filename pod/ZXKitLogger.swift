@@ -229,10 +229,11 @@ public class ZXKitLogger {
     }
     
     /// 显示log窗口
-    public class func show() {
+    public class func show(filterType: ZXKitLogType? = nil) {
         DispatchQueue.main.async {
             self.shared.floatWindow?.isHidden = true
             self.shared.loggerWindow?.isHidden = false
+            self.shared.loggerWindow?.filterType = filterType
         }
     }
     

@@ -52,7 +52,8 @@ class ZXKitLoggerWindow: UIWindow {
         self._init()
     }
 
-    private var mLogDataArray = [ZXKitLoggerItem]()  //输出的日志信息
+    private var mLogDataArray = [ZXKitLoggerItem]()  //本次打开所有展示的日志信息
+    private var mDisplayLogDataArray = [ZXKitLoggerItem]()  //tableview显示的logger
     private var mFullSearchLogArray = [String]()     //全文搜索的索引
     
     private var mFilterIndexArray = [IndexPath]()   //索引的排序
@@ -69,7 +70,7 @@ class ZXKitLoggerWindow: UIWindow {
             } else {
                 self.mSearchBar.resignFirstResponder()
             }
-            self._reloadView()
+            self._reloadView(reloadTableView: true)
         }
     }          //搜索类型
     
@@ -78,16 +79,22 @@ class ZXKitLoggerWindow: UIWindow {
             super.isHidden = newValue
             if !newValue {
                 self.changeWindowFrame()
-                if self.mLogDataArray.isEmpty {
+                if self.mDisplayLogDataArray.isEmpty {
                     //第一条信息
                     let loggerItem = ZXKitLoggerItem()
                     loggerItem.mLogItemType = ZXKitLogType.warn
                     loggerItem.mCreateDate = Date()
                     loggerItem.mLogContent = "ZXKitLogger: Click Log To Copy".ZXLocaleString
-                    self.mLogDataArray.append(loggerItem)
+                    self.mDisplayLogDataArray.append(loggerItem)
                 }
-                self._reloadView()
+                self._reloadView(reloadTableView: true)
             }
+        }
+    }
+
+    var filterType: ZXKitLogType? {
+        didSet {
+            self._reloadView(reloadTableView: true)
         }
     }
 
@@ -362,12 +369,12 @@ class ZXKitLoggerWindow: UIWindow {
 //MARK: - Function
 extension ZXKitLoggerWindow {
     func insert(model: ZXKitLoggerItem) {
-        if ZXKitLogger.maxDisplayCount != 0 && self.mLogDataArray.count > ZXKitLogger.maxDisplayCount {
+        if ZXKitLogger.maxDisplayCount != 0 && self.mDisplayLogDataArray.count > ZXKitLogger.maxDisplayCount {
             self.mLogDataArray.removeFirst()
         }
         self.mLogDataArray.append(model)
         if !self.isHidden {
-            self._reloadView(model: model)
+            self._reloadView(model: model, reloadTableView: false)
         }
     }
 
@@ -375,7 +382,7 @@ extension ZXKitLoggerWindow {
     func cleanDataArray() {
         self.mLogDataArray.removeAll()
         self.mFilterIndexArray.removeAll()
-        self._reloadView()
+        self._reloadView(reloadTableView: true)
     }
 }
 
@@ -417,7 +424,7 @@ private extension ZXKitLoggerWindow {
     }
 
     //过滤刷新
-    private func _reloadView(model: ZXKitLoggerItem? = nil) {
+    private func _reloadView(model: ZXKitLoggerItem? = nil, reloadTableView: Bool) {
         self.mFilterIndexArray.removeAll()
         self.mPreviousButton.isEnabled = false
         self.mNextButton.isEnabled = false
@@ -435,8 +442,13 @@ private extension ZXKitLoggerWindow {
                 self.mSearchNumLabel.text = "\(self.mCurrentSearchIndex + 1)/\(self.mFilterIndexArray.count)"
             }
         } else {
-            let dataList = self.mLogDataArray
-            for (index, item) in dataList.enumerated() {
+            self.mDisplayLogDataArray = self.mLogDataArray
+            if let filterType = self.filterType {
+                self.mDisplayLogDataArray = self.mLogDataArray.filter({ item in
+                    return item.mLogItemType == filterType
+                })
+            }
+            for (index, item) in self.mDisplayLogDataArray.enumerated() {
                 if item.getFullContentString().localizedCaseInsensitiveContains(searchText) {
                     let indexPath = IndexPath(row: index, section: 0)
                     self.mFilterIndexArray.append(indexPath)
@@ -447,8 +459,11 @@ private extension ZXKitLoggerWindow {
                 }
             }
         }
-        
-        self.mTableView.reloadData()
+        if reloadTableView {
+            self.mTableView.reloadData()
+        } else {
+            self.mTableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+        }
         if self.mMenuView.isAutoScrollSwitch {
             if inputType == .search {
                 guard self.mFullSearchLogArray.count > 1 else { return }
@@ -456,12 +471,14 @@ private extension ZXKitLoggerWindow {
                     self.mTableView.scrollToRow(at: IndexPath(row: self.mFullSearchLogArray.count - 1, section: 0), at: .bottom, animated: true)
                 }
             } else {
-                guard self.mLogDataArray.count > 1 else { return }
+                guard self.mDisplayLogDataArray.count > 1 else { return }
                 DispatchQueue.main.async {
-                    self.mTableView.scrollToRow(at: IndexPath(row: self.mLogDataArray.count - 1, section: 0), at: .bottom, animated: true)
+                    self.mTableView.scrollToRow(at: IndexPath(row: self.mDisplayLogDataArray.count - 1, section: 0), at: .bottom, animated: true)
                 }
             }
         }
+
+
     }
 
     @objc private func _previous() -> Void {
@@ -614,7 +631,7 @@ extension ZXKitLoggerWindow: UITableViewDataSource, UITableViewDelegate {
         if inputType == .search {
             return self.mFullSearchLogArray.count
         }
-        return self.mLogDataArray.count
+        return self.mDisplayLogDataArray.count
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -627,7 +644,7 @@ extension ZXKitLoggerWindow: UITableViewDataSource, UITableViewDelegate {
             loggerCell.update(content: loggerContent)
             return loggerCell
         } else {
-            let loggerItem = self.mLogDataArray[indexPath.row]
+            let loggerItem = self.mDisplayLogDataArray[indexPath.row]
             
             let loggerCell = tableView.dequeueReusableCell(withIdentifier: "ZXKitLoggerTableViewCell") as! ZXKitLoggerTableViewCell
             loggerCell.backgroundColor = UIColor.clear
@@ -643,7 +660,7 @@ extension ZXKitLoggerWindow: UITableViewDataSource, UITableViewDelegate {
             let pasteboard = UIPasteboard.general
             pasteboard.string = loggerContent
         } else {
-            let loggerItem = self.mLogDataArray[indexPath.row]
+            let loggerItem = self.mDisplayLogDataArray[indexPath.row]
             let pasteboard = UIPasteboard.general
             pasteboard.string = loggerItem.getFullContentString()
             
@@ -691,7 +708,7 @@ extension ZXKitLoggerWindow: UITableViewDataSource, UITableViewDelegate {
 extension ZXKitLoggerWindow: UISearchBarDelegate {
     //UISearchBarDelegate
     public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        self._reloadView()
+        self._reloadView(reloadTableView: true)
     }
     
     public func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
