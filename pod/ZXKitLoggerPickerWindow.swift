@@ -165,7 +165,7 @@ private extension ZXKitLoggerPickerWindow {
     
     @objc private func _confirmPicker() {
         if self.pickerType == .share {
-            let dataList = HDSqliteTools.shared.getAllLog(name: self.mShareFileName).reversed().map { item in
+            let dataList = HDSqliteTools.shared.getAllLog(name: self.mShareFileName, keyword: nil).reversed().map { item in
                 return item.getFullContentString()
             }
             //写入到text文件好解析

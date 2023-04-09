@@ -61,14 +61,23 @@ class HDSqliteTools {
         sqlite3_finalize(insertStatement)
     }
 
-    func getAllLog(name: String? = nil) -> [ZXKitLoggerItem] {
+    func getAllLog(name: String? = nil, keyword: String? = nil, type: ZXKitLogType? = nil) -> [ZXKitLoggerItem] {
         let databasePath = self._getDataBasePath(name: name)
         guard FileManager.default.fileExists(atPath: databasePath.path) else {
             //数据库文件不存在
             return []
         }
         let queryDB = self._openDatabase(name: name)
-        let queryString = "SELECT * FROM hdlog;"
+        var queryString = "SELECT * FROM hdlog;"
+        if let keyword = keyword, !keyword.isEmpty {
+            if let type = type {
+                queryString = "SELECT * FROM hdlog WHERE log LIKE '%\(keyword)%' and logType == \(type.rawValue)"
+            } else {
+                queryString = "SELECT * FROM hdlog WHERE log LIKE '%\(keyword)%'"
+            }
+        } else if let type = type {
+            queryString = "SELECT * FROM hdlog WHERE logType == \(type.rawValue)"
+        }
         var queryStatement: OpaquePointer?
         //第一步
         var logList = [ZXKitLoggerItem]()
@@ -91,10 +100,6 @@ class HDSqliteTools {
         //第四步
         sqlite3_finalize(queryStatement)
         return logList
-    }
-
-    func searchLog(keyword: String) -> [String] {
-        return self._searchLog(keyword: keyword)
     }
 
     func getItemCount(type: ZXKitLogType?) -> Int {
@@ -149,40 +154,6 @@ private extension HDSqliteTools {
         }
         //第三步
         sqlite3_finalize(createTableStatement)
-    }
-
-    func _searchLog(keyword: String) -> [String] {
-        let databasePath = self._getDataBasePath()
-        guard FileManager.default.fileExists(atPath: databasePath.path) else {
-            //数据库文件不存在
-            return [String]()
-        }
-        let queryDB = self.logDB
-        //TODO: 虚拟表全文查询需要分词，所以使用LIKE
-        //        var queryString = "SELECT * FROM logindex WHERE log MATCH '\(keyword)*'"
-        var queryString = "SELECT * FROM hdlog WHERE log LIKE '%\(keyword)%'"
-        if keyword.isEmpty {
-            queryString = "SELECT * FROM hdlog"
-        }
-        var queryStatement: OpaquePointer?
-        //第一步
-        var logList = [String]()
-        if sqlite3_prepare_v2(queryDB, queryString, Int32(strlen(queryString)), &queryStatement, nil) == SQLITE_OK {
-            //第二步
-            while(sqlite3_step(queryStatement) == SQLITE_ROW) {
-                //第三步
-                //虚拟表中未存储id
-                let log = sqlite3_column_text(queryStatement, 1)
-                //                let logType = sqlite3_column_int(queryStatement, 1)
-                //                let time = sqlite3_column_double(queryStatement, 2)
-                if let log = log {
-                    logList.append("\(String(cString: log))")
-                }
-            }
-        }
-        //第四步
-        sqlite3_finalize(queryStatement)
-        return logList
     }
 
     func _getItemCount(type: ZXKitLogType?) -> Int {

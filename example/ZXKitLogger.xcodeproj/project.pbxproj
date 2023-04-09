@@ -80,6 +80,16 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		E46BF94129E299E700B13D3D /* view */ = {
+			isa = PBXGroup;
+			children = (
+				E4AC949C263162FA001FC322 /* ZXKitLoggerTableViewCell.swift */,
+				E4EC33D726578A4B00074E19 /* ZXKitLoggerMenuCollectionViewCell.swift */,
+				E4EC33D5265789BB00074E19 /* ZXKitLoggerMenuView.swift */,
+			);
+			path = view;
+			sourceTree = "<group>";
+		};
 		E48AABEA22C05EF600CC5F1C = {
 			isa = PBXGroup;
 			children = (
@@ -125,17 +135,15 @@
 		E4AC9497263162FA001FC322 /* pod */ = {
 			isa = PBXGroup;
 			children = (
+				E46BF94129E299E700B13D3D /* view */,
 				E4A0149F28979B510042C5F4 /* socket */,
 				E4AC9518263566C8001FC322 /* assets */,
 				E4AC949B263162FA001FC322 /* ZXKitLoggerItem.swift */,
-				E4AC949C263162FA001FC322 /* ZXKitLoggerTableViewCell.swift */,
 				E4AC949D263162FA001FC322 /* LogContent.swift */,
 				E4AC949E263162FA001FC322 /* HDSqliteTools.swift */,
 				E4AC94A0263162FA001FC322 /* ZXKitLogger.swift */,
 				E4AC94A1263162FA001FC322 /* ZXKitLoggerWindow.swift */,
 				E4AC965026395F22001FC322 /* ZXKitLoggerFloatWindow.swift */,
-				E4EC33D5265789BB00074E19 /* ZXKitLoggerMenuView.swift */,
-				E4EC33D726578A4B00074E19 /* ZXKitLoggerMenuCollectionViewCell.swift */,
 				E4ADD75A26BD7804000BD07F /* ZXKitLoggerPickerWindow.swift */,
 			);
 			name = pod;
