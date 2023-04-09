@@ -288,16 +288,15 @@ class ZXKitLoggerWindow: UIWindow {
         return searchBar
     }()
     
-    private lazy var mPreviousButton: UIButton = {
+    private lazy var mFilterButton: UIButton = {
         let button = UIButton(type: UIButton.ButtonType.custom)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor(red: 255.0/255.0, green: 118.0/255.0, blue: 118.0/255.0, alpha: 1.0)
         button.setTitleColor(UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0), for: UIControl.State.normal)
         button.setTitleColor(UIColor(red: 102.0/255.0, green: 102.0/255.0, blue: 102.0/255.0, alpha: 1.0), for: UIControl.State.disabled)
-        button.setTitle("Previous".ZXLocaleString, for: UIControl.State.normal)
+        button.setTitle("Filter".ZXLocaleString, for: UIControl.State.normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
-        button.isEnabled = false
-        button.addTarget(self, action: #selector(_previous), for: UIControl.Event.touchUpInside)
+        button.addTarget(self, action: #selector(_showFilterPop), for: UIControl.Event.touchUpInside)
         return button
     }()
     
@@ -336,6 +335,12 @@ class ZXKitLoggerWindow: UIWindow {
         tLabel.textColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 0.9)
         tLabel.backgroundColor = UIColor.clear
         return tLabel
+    }()
+    
+    lazy var mFilterTypeView: ZXKitLoggerFilterTypeView = {
+        let view = ZXKitLoggerFilterTypeView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
 }
 
@@ -395,12 +400,25 @@ private extension ZXKitLoggerWindow {
     //过滤刷新
     private func _reloadView(newModel: ZXKitLoggerItem?) {
         self.mFilterIndexArray.removeAll()
-        self.mPreviousButton.isEnabled = false
         self.mNextButton.isEnabled = false
         self.mSearchNumLabel.text = "0"
         
         if let newModel = newModel {
-            self.mDisplayLogDataArray.append(newModel)
+            if let keyword = self.mSearchBar.text {
+                if let filterType = self.filterType {
+                    if newModel.mLogItemType == filterType &&  newModel.getFullContentString().localizedCaseInsensitiveContains(keyword) {
+                        self.mDisplayLogDataArray.append(newModel)
+                    }
+                } else if newModel.getFullContentString().localizedCaseInsensitiveContains(keyword) {
+                    self.mDisplayLogDataArray.append(newModel)
+                }
+            } else if let filterType = self.filterType {
+                if newModel.mLogItemType == filterType {
+                    self.mDisplayLogDataArray.append(newModel)
+                }
+            } else {
+                self.mDisplayLogDataArray.append(newModel)
+            }
         } else {
             self.mDisplayLogDataArray = HDSqliteTools.shared.getAllLog(keyword: self.mSearchBar.text, type: self.filterType)
         }
@@ -409,7 +427,6 @@ private extension ZXKitLoggerWindow {
             if item.getFullContentString().localizedCaseInsensitiveContains(self.mSearchBar.text ?? "") {
                 let indexPath = IndexPath(row: index, section: 0)
                 self.mFilterIndexArray.append(indexPath)
-                self.mPreviousButton.isEnabled = true
                 self.mNextButton.isEnabled = true
                 self.mCurrentSearchIndex = self.mFilterIndexArray.count - 1;
                 self.mSearchNumLabel.text = "\(self.mCurrentSearchIndex + 1)/\(self.mFilterIndexArray.count)"
@@ -434,15 +451,16 @@ private extension ZXKitLoggerWindow {
         }
     }
 
-    @objc private func _previous() -> Void {
-        if (self.mFilterIndexArray.count > 0) {
-            self.mCurrentSearchIndex = self.mCurrentSearchIndex - 1;
-            if (self.mCurrentSearchIndex < 0) {
-                self.mCurrentSearchIndex = self.mFilterIndexArray.count - 1;
-            }
-            self.mSearchNumLabel.text = "\(self.mCurrentSearchIndex + 1)/\(self.mFilterIndexArray.count)"
-            self.mTableView.scrollToRow(at: self.mFilterIndexArray[self.mCurrentSearchIndex], at: UITableView.ScrollPosition.top, animated: true)
-        }
+    @objc private func _showFilterPop() -> Void {
+//        if (self.mFilterIndexArray.count > 0) {
+//            self.mCurrentSearchIndex = self.mCurrentSearchIndex - 1;
+//            if (self.mCurrentSearchIndex < 0) {
+//                self.mCurrentSearchIndex = self.mFilterIndexArray.count - 1;
+//            }
+//            self.mSearchNumLabel.text = "\(self.mCurrentSearchIndex + 1)/\(self.mFilterIndexArray.count)"
+//            self.mTableView.scrollToRow(at: self.mFilterIndexArray[self.mCurrentSearchIndex], at: UITableView.ScrollPosition.top, animated: true)
+//        }
+        
     }
 
     @objc private func _next() -> Void {
@@ -534,6 +552,12 @@ private extension ZXKitLoggerWindow {
         self.mTableView.rightAnchor.constraint(equalTo: self.mContentBGView.rightAnchor).isActive = true
         self.mTableView.topAnchor.constraint(equalTo: self.mNavigationBar.bottomAnchor).isActive = true
         self.mTableView.bottomAnchor.constraint(equalTo: self.mContentBGView.bottomAnchor).isActive = true
+        
+        self.mContentBGView.addSubview(mFilterTypeView)
+        mFilterTypeView.leftAnchor.constraint(equalTo: self.mContentBGView.leftAnchor, constant: UIScreenWidth / 1.5).isActive = true
+        mFilterTypeView.widthAnchor.constraint(equalToConstant: 90).isActive = true
+        mFilterTypeView.bottomAnchor.constraint(equalTo: self.mContentBGView.bottomAnchor, constant: -40).isActive = true
+        mFilterTypeView.heightAnchor.constraint(equalToConstant: 200).isActive = true
 
         //私密解锁
         view.addSubview(self.mPasswordTextField)
@@ -551,6 +575,13 @@ private extension ZXKitLoggerWindow {
 }
 
 //MARK: Delegate
+extension ZXKitLoggerWindow: ZXKitLoggerFilterTypeViewDelegate {
+    func filterSelected(filterType: ZXKitLogType?) {
+        self.filterType = filterType
+    }
+}
+
+
 extension ZXKitLoggerWindow: UITableViewDataSource, UITableViewDelegate {
     func scrollViewDidScrollToTop(_ scrollView: UIScrollView) {
         print("didScrollToTop")
@@ -620,16 +651,16 @@ extension ZXKitLoggerWindow: UITableViewDataSource, UITableViewDelegate {
         self.mSearchBar.heightAnchor.constraint(equalToConstant: 40).isActive = true
         self.mSearchBar.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1.0/1.5).isActive = true
 
-        view.addSubview(self.mPreviousButton)
-        self.mPreviousButton.leftAnchor.constraint(equalTo: self.mSearchBar.rightAnchor).isActive = true
-        self.mPreviousButton.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        self.mPreviousButton.topAnchor.constraint(equalTo: self.mSearchBar.topAnchor).isActive = true
-        self.mPreviousButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1.0/9.0).isActive = true
+        view.addSubview(self.mFilterButton)
+        self.mFilterButton.leftAnchor.constraint(equalTo: self.mSearchBar.rightAnchor).isActive = true
+        self.mFilterButton.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        self.mFilterButton.topAnchor.constraint(equalTo: self.mSearchBar.topAnchor).isActive = true
+        self.mFilterButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1.0/9.0).isActive = true
 
         view.addSubview(self.mNextButton)
         self.mNextButton.topAnchor.constraint(equalTo: self.mSearchBar.topAnchor).isActive = true
         self.mNextButton.bottomAnchor.constraint(equalTo: self.mSearchBar.bottomAnchor).isActive = true
-        self.mNextButton.leftAnchor.constraint(equalTo: self.mPreviousButton.rightAnchor).isActive = true
+        self.mNextButton.leftAnchor.constraint(equalTo: self.mFilterButton.rightAnchor).isActive = true
         self.mNextButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1.0/9.0).isActive = true
 
         view.addSubview(self.mSearchNumLabel)
@@ -637,6 +668,7 @@ extension ZXKitLoggerWindow: UITableViewDataSource, UITableViewDelegate {
         self.mSearchNumLabel.bottomAnchor.constraint(equalTo: self.mSearchBar.bottomAnchor).isActive = true
         self.mSearchNumLabel.leftAnchor.constraint(equalTo: self.mNextButton.rightAnchor).isActive = true
         self.mSearchNumLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1.0/9.0).isActive = true
+        
         return view
     }
 }
