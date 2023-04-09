@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9D4EB7EB041C697184564EFC /* Pods_ZXKitLogger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B91D3A8ABB0C8265D4D720F /* Pods_ZXKitLogger.framework */; };
+		E46BF94329E29BFD00B13D3D /* ZXKitLoggerFilterTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46BF94229E29BFD00B13D3D /* ZXKitLoggerFilterTypeView.swift */; };
 		E48AABF722C05EF600CC5F1C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48AABF622C05EF600CC5F1C /* AppDelegate.swift */; };
 		E48AABFB22C05EF600CC5F1C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48AABFA22C05EF600CC5F1C /* ViewController.swift */; };
 		E48AABFE22C05EF600CC5F1C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E48AABFC22C05EF600CC5F1C /* Main.storyboard */; };
@@ -33,6 +34,7 @@
 		5B91D3A8ABB0C8265D4D720F /* Pods_ZXKitLogger.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ZXKitLogger.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CE82FAC490744A4AFEFF14B /* Pods-ZXKitLogger.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZXKitLogger.release.xcconfig"; path = "Target Support Files/Pods-ZXKitLogger/Pods-ZXKitLogger.release.xcconfig"; sourceTree = "<group>"; };
 		CB8CD0C462E3AD915D241470 /* Pods-ZXKitLogger.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZXKitLogger.debug.xcconfig"; path = "Target Support Files/Pods-ZXKitLogger/Pods-ZXKitLogger.debug.xcconfig"; sourceTree = "<group>"; };
+		E46BF94229E29BFD00B13D3D /* ZXKitLoggerFilterTypeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZXKitLoggerFilterTypeView.swift; sourceTree = "<group>"; };
 		E48AABF322C05EF600CC5F1C /* ZXKitLogger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZXKitLogger.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E48AABF622C05EF600CC5F1C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E48AABFA22C05EF600CC5F1C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -86,6 +88,7 @@
 				E4AC949C263162FA001FC322 /* ZXKitLoggerTableViewCell.swift */,
 				E4EC33D726578A4B00074E19 /* ZXKitLoggerMenuCollectionViewCell.swift */,
 				E4EC33D5265789BB00074E19 /* ZXKitLoggerMenuView.swift */,
+				E46BF94229E29BFD00B13D3D /* ZXKitLoggerFilterTypeView.swift */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -306,6 +309,7 @@
 				E4A014A128979B860042C5F4 /* ZXKitLoggerUDPSocketManager.swift in Sources */,
 				E4EC33D826578A4C00074E19 /* ZXKitLoggerMenuCollectionViewCell.swift in Sources */,
 				E4AC965126395F22001FC322 /* ZXKitLoggerFloatWindow.swift in Sources */,
+				E46BF94329E29BFD00B13D3D /* ZXKitLoggerFilterTypeView.swift in Sources */,
 				E4AC94A5263162FA001FC322 /* LogContent.swift in Sources */,
 				E4ADD75B26BD7804000BD07F /* ZXKitLoggerPickerWindow.swift in Sources */,
 				E4AC94A6263162FA001FC322 /* HDSqliteTools.swift in Sources */,
