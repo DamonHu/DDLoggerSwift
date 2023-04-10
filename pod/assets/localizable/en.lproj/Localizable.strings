@@ -8,6 +8,7 @@
 "ZXKitLogger: Click Log To Copy" = "ZXKitLogger: Click Log To Copy";
 "Please select the log to share" = "Please select the log to share";
 "Please select the log to upload" = "Please select the log to upload";
+"Please select the log" = "Please select the log";
 "Clean Log" = "Clean Log";
 "Scale" = "Scale";
 "Hide" = "Hide";
@@ -40,3 +41,4 @@
 "LogFile total size" = "LogFile total size";
 "Number of Today's Logs" = "Number of Today's Logs";
 "Invalid encryption" = "Invalid encryption";
+"History" = "History";

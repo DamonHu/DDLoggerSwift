@@ -53,8 +53,8 @@ private extension ZXKitLoggerMenuView {
 
     func _loadData() {
         mCollectionList.removeAll()
-        var titleList = ["Back".ZXLocaleString, "Hide".ZXLocaleString, "Exit".ZXLocaleString, "Share".ZXLocaleString, "Decrypt".ZXLocaleString, "Filter".ZXLocaleString, "Search Today's Log".ZXLocaleString, "Auto scroll".ZXLocaleString, "Analyse".ZXLocaleString]
-        var imageList = [UIImageHDBoundle(named: "icon_back"), UIImageHDBoundle(named: "icon_hide"), UIImageHDBoundle(named: "icon_exit"), UIImageHDBoundle(named: "icon_share"), UIImageHDBoundle(named: "icon_decrypt"),  UIImageHDBoundle(named: "icon_scroll"), UIImageHDBoundle(named: "icon_search"), UIImageHDBoundle(named: "icon_scroll"), UIImageHDBoundle(named: "icon_analyse")]
+        var titleList = ["Back".ZXLocaleString, "Hide".ZXLocaleString, "Exit".ZXLocaleString, "Share".ZXLocaleString, "Decrypt".ZXLocaleString, "History".ZXLocaleString, "Auto scroll".ZXLocaleString, "Analyse".ZXLocaleString]
+        var imageList = [UIImageHDBoundle(named: "icon_back"), UIImageHDBoundle(named: "icon_hide"), UIImageHDBoundle(named: "icon_exit"), UIImageHDBoundle(named: "icon_share"), UIImageHDBoundle(named: "icon_decrypt"), UIImageHDBoundle(named: "icon_search"), UIImageHDBoundle(named: "icon_scroll"), UIImageHDBoundle(named: "icon_analyse")]
 
         if ZXKitLogger.uploadComplete != nil {
             titleList.append("Upload".ZXLocaleString)
@@ -63,7 +63,7 @@ private extension ZXKitLoggerMenuView {
 
         for i in 0..<titleList.count {
             var model = ZXKitLoggerMenuCollectionViewCellModel(title: titleList[i], image: imageList[i])
-            if i == 7 {
+            if i == 6 {
                 model.isSwitchItem = true
             }
             mCollectionList.append(model)
@@ -91,7 +91,7 @@ extension ZXKitLoggerMenuView: UICollectionViewDelegate,UICollectionViewDataSour
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let clickSubject = clickSubject {
+        if indexPath.item != 6, let clickSubject = clickSubject {
             clickSubject(indexPath.item)
         }
     }

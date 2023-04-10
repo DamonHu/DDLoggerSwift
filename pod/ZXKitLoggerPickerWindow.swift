@@ -9,6 +9,12 @@
 import UIKit
 import ZXKitUtil
 
+enum PickerType {
+    case filter
+    case share
+    case upload
+}
+
 class ZXKitLoggerPickerWindow: UIWindow {
     @available(iOS 13.0, *)
     override init(windowScene: UIWindowScene) {
@@ -34,6 +40,15 @@ class ZXKitLoggerPickerWindow: UIWindow {
                 mPickerTipLabel.text = "Please select the log to share".ZXLocaleString
             } else if newValue == .upload {
                 mPickerTipLabel.text = "Please select the log to upload".ZXLocaleString
+            }
+            switch newValue {
+                case .share:
+                    mPickerTipLabel.text = "Please select the log to share".ZXLocaleString
+                case .upload:
+                    mPickerTipLabel.text = "Please select the log to upload".ZXLocaleString
+                case .filter:
+                    mPickerTipLabel.text = "Please select the log".ZXLocaleString
+
             }
         }
     }
@@ -194,7 +209,7 @@ private extension ZXKitLoggerPickerWindow {
                 ZXKitLogger.hide()
             }
             ZXKitUtil.shared.getCurrentVC()?.present(activityVC, animated: true, completion: nil)
-        } else if let complete = ZXKitLogger.uploadComplete {
+        } else if self.pickerType == .upload, let complete = ZXKitLogger.uploadComplete {
             let path = HDSqliteTools.shared.getDBFolder().appendingPathComponent(self.mShareFileName)
             complete(path)
             if isCloseWhenComplete {
@@ -202,6 +217,10 @@ private extension ZXKitLoggerPickerWindow {
             } else {
                 ZXKitLogger.hide()
             }
+        } else if self.pickerType == .filter, let complete = ZXKitLogger.fileSelectedComplete {
+            let path = HDSqliteTools.shared.getDBFolder().appendingPathComponent(self.mShareFileName)
+            complete(path, self.mShareFileName)
+            self.isHidden = true
         }
     }
 }

@@ -13,7 +13,7 @@ protocol ZXKitLoggerFilterTypeViewDelegate: AnyObject {
 }
 
 class ZXKitLoggerFilterTypeView: UIView {
-    private let dataList = ["none", "debug", "info", "warn", "error"]
+    private let dataList = ["none", "debug", "info", "warn", "error", "privacy"]
     weak var delegate: ZXKitLoggerFilterTypeViewDelegate?
     
     override init(frame: CGRect) {
@@ -87,6 +87,8 @@ extension ZXKitLoggerFilterTypeView: UITableViewDelegate, UITableViewDataSource 
                 delegate.filterSelected(filterType: .warn)
             case 4:
                 delegate.filterSelected(filterType: .error)
+            case 5:
+                delegate.filterSelected(filterType: .privacy)
             default:
                 break
             }

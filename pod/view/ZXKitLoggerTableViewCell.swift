@@ -50,11 +50,11 @@ class ZXKitLoggerTableViewCell: UITableViewCell {
         self.mContentLabel.textColor = loggerItem.mLogItemType.textColor()
         loggerItem.getHighlightAttributedString(highlightString: highlightText) { (hasHighlightStr, hightlightAttributedString) in
             self.mContentLabel.attributedText = hightlightAttributedString
-            if hasHighlightStr {
-                self.contentView.backgroundColor = UIColor.zx.color(hexValue: 0xe58e23)
-            } else {
-                self.contentView.backgroundColor = UIColor.clear
-            }
+//            if hasHighlightStr {
+//                self.contentView.backgroundColor = UIColor.zx.color(hexValue: 0xe58e23)
+//            } else {
+//                self.contentView.backgroundColor = UIColor.clear
+//            }
         }
         
     }

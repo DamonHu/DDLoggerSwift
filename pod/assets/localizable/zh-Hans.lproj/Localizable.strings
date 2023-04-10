@@ -8,6 +8,7 @@
 "ZXKitLogger: Click Log To Copy" = "ZXKitLogger: 点击对应日志可快速复制";
 "Please select the log to share" = "请选择要分享的日志";
 "Please select the log to upload" = "请选择要上传的日志";
+"Please select the log" = "请选择日志文件";
 "Clean Log" = "清除Log";
 "Scale" = "伸缩";
 "Hide" = "隐藏";
@@ -40,3 +41,4 @@
 "LogFile total size" = "日志文件总大小";
 "Number of Today's Logs" = "今日日志数量";
 "Invalid encryption" = "加密无效";
+"History" = "历史文件";

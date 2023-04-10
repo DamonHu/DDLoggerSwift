@@ -40,6 +40,23 @@ extension ZXKitLogType {
             return UIColor.black
         }
     }
+
+    func typeName() -> String {
+        switch self {
+            case .debug:
+                return "debug"
+            case .info:
+                return "info"
+            case .warn:
+                return "warn"
+            case .error:
+                return "error"
+            case .privacy:
+                return "privacy"
+            default:
+                return "none"
+        }
+    }
 }
 
 public extension NSNotification.Name {
@@ -118,6 +135,9 @@ public class ZXKitLogger {
     public static var socketDomain: String = "local" //支持自定义
     public static var socketType: String = "_zxkitlogger"//支持自定义
     #endif
+
+    //MARK: 内部
+    static var fileSelectedComplete: ((URL, String) ->Void)?   //选择历史文件过滤回调
 
     //MARK: - Private变量
     private lazy var loggerWindow: ZXKitLoggerWindow? = {
@@ -303,6 +323,12 @@ public class ZXKitLogger {
     public class func showUpload(date: Date? = nil, isCloseWhenComplete: Bool = true) {
         self.shared.pickerWindow?.isHidden = date != nil
         self.shared.pickerWindow?.showPicker(pickType: .upload, date: date, isCloseWhenComplete: isCloseWhenComplete)
+    }
+
+    ///选择的弹窗
+    public class func showFileFilter(date: Date? = nil) {
+        self.shared.pickerWindow?.isHidden = date != nil
+        self.shared.pickerWindow?.showPicker(pickType: .filter, date: date, isCloseWhenComplete: false)
     }
 
     //MARK: init

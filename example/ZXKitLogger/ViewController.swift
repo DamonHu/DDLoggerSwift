@@ -64,8 +64,8 @@ class ViewController: UIViewController {
         
         //输出加密内容
         ZXKitLogger.privacyLogPassword = "12345678901234561234567890123456" //设置加密内容密码
-        ZXKitLogger.uploadComplete = { file in
-            print(file)
+        ZXKitLogger.uploadComplete = { filePath in
+            print(filePath)
         }
         
         printWarn(HDSqliteTools.shared.getDBFolder().path)
@@ -84,6 +84,8 @@ class ViewController: UIViewController {
     
     @objc func onClickButton() {
 //        ZXKit.show()
+        printDebug("debug")
+        printLog("ssss")
         printInfo("点击了按钮111")
         printError("错误出现")
         printInfo("调试数据文件地址", ZXKitLogger.getDBFolder().path)
