@@ -67,14 +67,10 @@ class ViewController: UIViewController {
         ZXKitLogger.uploadComplete = { filePath in
             print(filePath)
         }
-        
-        printWarn(HDSqliteTools.shared.getDBFolder().path)
     }
     
     @objc func showButtonClick(){
         ZXKitLogger.show()
-//        ZXKitLogger.showUpload()
-//        ZXKitLogger.showShare()
     }
 
     @objc func filterButtonClick(){
@@ -90,6 +86,7 @@ class ViewController: UIViewController {
         printError("错误出现")
         printInfo("调试数据文件地址", ZXKitLogger.getDBFolder().path)
         printWarn("警告提示")
+        printPrivacy("这个是加密数据的测试数据222")
 //
 //        for _ in 0..<10 {
 //            printLog("测试输出，默认不会写入数据库")
