@@ -27,7 +27,7 @@ extension ZXKitLogType {
     func textColor() -> UIColor {
         switch self {
         case .debug:
-            return UIColor.zx.color(hexValue: 0xbf8bfb)
+            return UIColor.zx.color(hexValue: 0xD1B6E1)
         case .info:
             return UIColor(red: 80.0/255.0, green: 216.0/255.0, blue: 144.0/255.0, alpha: 1.0)
         case .warn:
@@ -378,7 +378,5 @@ private extension ZXKitLogger {
                 }
             }
         }
-        //删除过期索引
-        HDSqliteTools.shared.deleteLog(timeStamp: (Date().timeIntervalSince1970 - Double(Self.logExpiryDay * 3600 * 24)))
     }
 }
