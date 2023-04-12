@@ -41,7 +41,6 @@ class ZXKitLoggerWindow: UIWindow {
         self._init()
     }
     private var mDisplayLogDataArray = [ZXKitLoggerItem]()  //tableview显示的logger
-    
     private var mFilterIndexArray = [IndexPath]()   //索引的排序
     private var mCurrentSearchIndex = 0             //当前搜索到的索引
     
@@ -50,11 +49,6 @@ class ZXKitLoggerWindow: UIWindow {
             super.isHidden = newValue
             if !newValue {
                 self.changeWindowFrame()
-                if self.mDisplayLogDataArray.isEmpty {
-                    //第一条信息
-                    let loggerItem = ZXKitLoggerItem()
-                    self.mDisplayLogDataArray.append(loggerItem)
-                }
                 self._reloadView(newModel: nil)
             }
         }
@@ -361,6 +355,8 @@ extension ZXKitLoggerWindow {
 
     //
     func cleanDataArray() {
+        //删除指定数据
+        HDSqliteTools.shared.deleteLog(timeStamp: Date().timeIntervalSince1970)
         self.mDisplayLogDataArray.removeAll()
         self.mFilterIndexArray.removeAll()
         self._reloadView(newModel: ZXKitLoggerItem())
@@ -405,18 +401,26 @@ private extension ZXKitLoggerWindow {
 
     //过滤刷新
     private func _reloadView(newModel: ZXKitLoggerItem?) {
-        self.mFilterIndexArray.removeAll()
-        self.mNextButton.isEnabled = false
-        self.mSearchNumLabel.text = "0"
-        
         if let newModel = newModel {
             if let keyword = self.mSearchBar.text, !keyword.isEmpty {
                 if let filterType = self.filterType {
                     if newModel.mLogItemType == filterType &&  newModel.getFullContentString().localizedCaseInsensitiveContains(keyword) {
                         self.mDisplayLogDataArray.append(newModel)
+                        //插入检索的
+                        let indexPath = IndexPath(row: self.mDisplayLogDataArray.count - 1, section: 0)
+                        self.mFilterIndexArray.append(indexPath)
+                        self.mNextButton.isEnabled = true
+                        self.mCurrentSearchIndex = self.mFilterIndexArray.count - 1;
+                        self.mSearchNumLabel.text = "\(self.mCurrentSearchIndex + 1)/\(self.mFilterIndexArray.count)"
                     }
                 } else if newModel.getFullContentString().localizedCaseInsensitiveContains(keyword) {
                     self.mDisplayLogDataArray.append(newModel)
+                    //插入检索的
+                    let indexPath = IndexPath(row: self.mDisplayLogDataArray.count - 1, section: 0)
+                    self.mFilterIndexArray.append(indexPath)
+                    self.mNextButton.isEnabled = true
+                    self.mCurrentSearchIndex = self.mFilterIndexArray.count - 1;
+                    self.mSearchNumLabel.text = "\(self.mCurrentSearchIndex + 1)/\(self.mFilterIndexArray.count)"
                 }
             } else if let filterType = self.filterType {
                 if newModel.mLogItemType == filterType {
@@ -427,15 +431,25 @@ private extension ZXKitLoggerWindow {
             }
         } else {
             self.mDisplayLogDataArray = HDSqliteTools.shared.getAllLog(name: self.dataBaseName, keyword: self.mSearchBar.text, type: self.filterType)
-        }
-        
-        for (index, item) in self.mDisplayLogDataArray.enumerated() {
-            if item.getFullContentString().localizedCaseInsensitiveContains(self.mSearchBar.text ?? "") {
-                let indexPath = IndexPath(row: index, section: 0)
-                self.mFilterIndexArray.append(indexPath)
-                self.mNextButton.isEnabled = true
-                self.mCurrentSearchIndex = self.mFilterIndexArray.count - 1;
-                self.mSearchNumLabel.text = "\(self.mCurrentSearchIndex + 1)/\(self.mFilterIndexArray.count)"
+            if self.mDisplayLogDataArray.isEmpty {
+                //第一条信息
+                let loggerItem = ZXKitLoggerItem()
+                self.mDisplayLogDataArray.append(loggerItem)
+            }
+            self.mFilterIndexArray.removeAll()
+            self.mNextButton.isEnabled = false
+            self.mSearchNumLabel.text = "0"
+            //高亮
+            if let searchText = self.mSearchBar.text, !searchText.isEmpty {
+                for (index, item) in self.mDisplayLogDataArray.enumerated() {
+                    if item.getFullContentString().localizedCaseInsensitiveContains(self.mSearchBar.text ?? "") {
+                        let indexPath = IndexPath(row: index, section: 0)
+                        self.mFilterIndexArray.append(indexPath)
+                        self.mNextButton.isEnabled = true
+                        self.mCurrentSearchIndex = self.mFilterIndexArray.count - 1;
+                        self.mSearchNumLabel.text = "\(self.mCurrentSearchIndex + 1)/\(self.mFilterIndexArray.count)"
+                    }
+                }
             }
         }
         if newModel == nil {
@@ -445,7 +459,12 @@ private extension ZXKitLoggerWindow {
             if self.mDisplayLogDataArray.count <= self.mTableView.numberOfRows(inSection: 0) {
                 self.mTableView.reloadData()
             } else {
-                self.mTableView.insertRows(at: [IndexPath(row: self.mDisplayLogDataArray.count - 1, section: 0)], with: .none)
+                //修正insertRows时tableview的闪动
+                UIView.setAnimationsEnabled(false)
+                self.mTableView.insertRows(at: [IndexPath(row: self.mDisplayLogDataArray.count - 1, section: 0)], with: .bottom)
+                DispatchQueue.main.async {
+                    UIView.setAnimationsEnabled(true)
+                }
             }
         }
         
@@ -643,7 +662,7 @@ extension ZXKitLoggerWindow: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 10
+        return UITableView.automaticDimension
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
