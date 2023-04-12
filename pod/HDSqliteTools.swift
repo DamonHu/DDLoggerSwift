@@ -184,7 +184,7 @@ private extension HDSqliteTools {
     }
 
     func _deleteLog(timeStamp: Double) {
-        let insertRowString = "DELETE FROM logindex WHERE time < \(timeStamp) "
+        let insertRowString = "DELETE FROM hdlog WHERE time < \(timeStamp) "
         var insertStatement: OpaquePointer?
         //第一步
         let status = sqlite3_prepare_v2(self.logDB, insertRowString, -1, &insertStatement, nil)
