@@ -1,4 +1,3 @@
 ${PODS_ROOT}/Target Support Files/Pods-ZXKitLogger/Pods-ZXKitLogger-frameworks.sh
 ${BUILT_PRODUCTS_DIR}/CocoaAsyncSocket/CocoaAsyncSocket.framework
-${BUILT_PRODUCTS_DIR}/ZXKitFPS/ZXKitFPS.framework
 ${BUILT_PRODUCTS_DIR}/ZXKitUtil/ZXKitUtil.framework

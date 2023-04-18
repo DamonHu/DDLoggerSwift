@@ -1,6 +1,0 @@
-framework module ZXKitFPS {
-  umbrella header "ZXKitFPS-umbrella.h"
-
-  export *
-  module * { export * }
-}
