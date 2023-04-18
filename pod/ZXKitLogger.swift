@@ -61,6 +61,9 @@ extension ZXKitLogType {
 
 public extension NSNotification.Name {
     static let ZXKitLogDBUpdate = NSNotification.Name("ZXKitLogDBUpdate")
+    static let ZXKitLoggerDidShow = NSNotification.Name("ZXKitLoggerDidShow")
+    static let ZXKitLoggerDidHidden = NSNotification.Name("ZXKitLoggerDidHidden")
+    static let ZXKitLoggerDidClose = NSNotification.Name("ZXKitLoggerDidClose")
 }
 
 /////测试输出，不会写入到悬浮窗中
@@ -253,6 +256,7 @@ public class ZXKitLogger {
             self.shared.floatWindow?.isHidden = true
             self.shared.loggerWindow?.isHidden = false
             self.shared.loggerWindow?.filterType = filterType
+            NotificationCenter.default.post(name: .ZXKitLoggerDidShow, object: nil)
         }
     }
     
@@ -261,9 +265,6 @@ public class ZXKitLogger {
         DispatchQueue.main.async {
             self.shared.loggerWindow?.isHidden = true
             self.shared.pickerWindow?.isHidden = true
-            #if canImport(ZXKitCore)
-            print(NSLocalizedString("The float button already exists", comment: ""))
-            #else
             //float window
             if let window = self.shared.floatWindow {
                 window.isHidden = false
@@ -281,7 +282,7 @@ public class ZXKitLogger {
                 }
                 self.shared.floatWindow?.isHidden = false
             }
-            #endif
+            NotificationCenter.default.post(name: .ZXKitLoggerDidHidden, object: nil)
         }
     }
 
@@ -291,6 +292,7 @@ public class ZXKitLogger {
             self.shared.loggerWindow?.isHidden = true
             self.shared.floatWindow?.isHidden = true
             self.shared.pickerWindow?.isHidden = true
+            NotificationCenter.default.post(name: .ZXKitLoggerDidClose, object: nil)
         }
     }
 

@@ -182,6 +182,15 @@ class ZXKitLoggerWindow: UIWindow {
         return button
     }()
     
+    lazy var mCloseButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.tag = 3
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImageHDBoundle(named: "icon_exit"), for: .normal)
+        button.addTarget(self, action: #selector(_bindClick(button:)), for: .touchUpInside)
+        return button
+    }()
+    
     private lazy var mMenuView: ZXKitLoggerMenuView = {
         let tMenuView = ZXKitLoggerMenuView()
         tMenuView.translatesAutoresizingMaskIntoConstraints = false
@@ -394,6 +403,8 @@ private extension ZXKitLoggerWindow {
                 self.isShowMenu = true
             case 2:
                 self.cleanLog()
+            case 3:
+                ZXKitLogger.close()
             default:
                 break
         }
@@ -553,10 +564,16 @@ private extension ZXKitLoggerWindow {
         mDeleteButton.leftAnchor.constraint(equalTo: self.mScaleButton.rightAnchor, constant: 25).isActive = true
         mDeleteButton.widthAnchor.constraint(equalToConstant: 25).isActive = true
         mDeleteButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        //关闭
+        self.mNavigationBar.addSubview(self.mCloseButton)
+        mCloseButton.centerYAnchor.constraint(equalTo: self.mScaleButton.centerYAnchor).isActive = true
+        mCloseButton.rightAnchor.constraint(equalTo: self.mNavigationBar.rightAnchor, constant: -20).isActive = true
+        mCloseButton.widthAnchor.constraint(equalToConstant: 23).isActive = true
+        mCloseButton.heightAnchor.constraint(equalToConstant: 23).isActive = true
         //菜单
         self.mNavigationBar.addSubview(self.mMenuButton)
         mMenuButton.centerYAnchor.constraint(equalTo: self.mScaleButton.centerYAnchor).isActive = true
-        mMenuButton.rightAnchor.constraint(equalTo: self.mNavigationBar.rightAnchor, constant: -20).isActive = true
+        mMenuButton.rightAnchor.constraint(equalTo: self.mCloseButton.leftAnchor, constant: -25).isActive = true
         mMenuButton.widthAnchor.constraint(equalToConstant: 23).isActive = true
         mMenuButton.heightAnchor.constraint(equalToConstant: 23).isActive = true
         //标题
