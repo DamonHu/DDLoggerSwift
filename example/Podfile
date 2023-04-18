@@ -7,7 +7,5 @@ target 'ZXKitLogger' do
 
   # Pods for ZXKitLogger
   pod 'ZXKitUtil', '~>3.2.0'
-#  pod 'ZXKitCore/core'
-  pod 'ZXKitFPS'
   pod 'CocoaAsyncSocket'
 end
