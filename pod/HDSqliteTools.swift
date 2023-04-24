@@ -5,7 +5,12 @@
 //  Created by Damon on 2021/2/18.
 //  Copyright © 2021 Damon. All rights reserved.
 //
+
+#if canImport(WCDBSwift)
+import WCDBSwift
+#else
 import SQLite3
+#endif
 import ZXKitUtil
 
 class HDSqliteTools {
