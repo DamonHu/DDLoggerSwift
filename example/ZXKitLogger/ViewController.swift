@@ -85,8 +85,8 @@ class ViewController: UIViewController {
         printWarn("警告提示")
         printPrivacy("这个是加密数据的测试数据222")
 //
-//        for _ in 0..<10 {
-//            printLog("测试输出，默认不会写入数据库")
+        for i in 0..<10000 {
+            printLog("\(i)")
 //            printLog("测试输出，默认不会写入数据库","222222","3333333")
 //            //普通输出
 //            printInfo("点击了按钮111")
@@ -103,9 +103,9 @@ class ViewController: UIViewController {
 //            //输出数组
 //            let arrayObj = ["1111111","22222222","sdjkhfsjkdfjkhsdhjfk","3333sjdhgfhjg"]
 //            printInfo(arrayObj)
-//        }
+        }
 
-        print(ZXKitLogger.getItemCount(type: .info))
+        print("over")
     }
     
     @objc func onClickdeleteButton() {

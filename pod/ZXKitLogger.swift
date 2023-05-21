@@ -120,6 +120,7 @@ public class ZXKitLogger {
     public static var userID = "0"             //为不同用户创建的独立的日志库
     public static var DBParentFolder = ZXKitUtil.shared.getFileDirectory(type: .documents)
     public static var uploadComplete: ((URL) ->Void)?   //点击上传日志的回调
+    public static var chunkNum = 1
     /*隐私数据采用AESCBC加密
      *需要设置密码privacyLogPassword
      *初始向量privacyLogIv
@@ -128,7 +129,7 @@ public class ZXKitLogger {
     public static var privacyLogPassword = "12345678901234561234567890123456"
     public static var privacyLogIv = "abcdefghijklmnop"
     public static var privacyResultEncodeType = ZXKitUtilEncodeType.hex
-
+    
     /**
      如果集成实时日志功能
      */
@@ -173,8 +174,8 @@ public class ZXKitLogger {
     }()
     private var floatWindow: ZXKitLoggerFloatWindow?
     var isPasswordCorrect: Bool = false
-    private let logQueue = DispatchQueue(label:"com.ZXKitLogger.logQueue", qos:.utility, attributes:.concurrent)
-
+    private let logQueue = DispatchQueue(label:"com.ZXKitLogger.logQueue", qos:.utility, attributes: .concurrent)
+    private var chunkList = [ZXKitLoggerItem]()
     //MARK: - Public函数
     /// 根据日志的输出类型去输出相应的日志，不同日志类型颜色不一样
     /// - Parameter log: 日志内容
@@ -183,7 +184,6 @@ public class ZXKitLogger {
         shared.logQueue.async(group: nil, qos: .default, flags: .barrier) {
             let loggerItem = ZXKitLoggerItem()
             loggerItem.mLogItemType = logType
-            loggerItem.mCreateDate = Date()
 
             let fileName = (file as NSString).lastPathComponent;
             loggerItem.mLogDebugContent = "File: \(fileName) -- Line: \(lineNum) -- Function:\(fileName).\(funcName) ----"
@@ -192,9 +192,14 @@ public class ZXKitLogger {
             if self.isSyncConsole {
                 print(loggerItem.getFullContentString())
             }
+            
             //刷新列表
-            DispatchQueue.main.async {
-                self.shared.loggerWindow?.insert(model: loggerItem)
+            shared.chunkList.append(loggerItem)
+            if shared.chunkList.count >= chunkNum {
+                DispatchQueue.main.async {
+                    self.shared.loggerWindow?.insert(models: shared.chunkList)
+                    shared.chunkList.removeAll()
+                }
             }
             //写入文件
             if self.storageLevels.contains(logType) {
