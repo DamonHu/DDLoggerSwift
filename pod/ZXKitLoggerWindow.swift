@@ -481,7 +481,7 @@ private extension ZXKitLoggerWindow {
                     }
                 }
             }
-            //全局刷新
+            //全局刷  新
             self.mTableView.reloadData()
         }
         if self.mMenuView.isAutoScrollSwitch {
