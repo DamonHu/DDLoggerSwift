@@ -18,12 +18,12 @@ public class ZXKitLoggerItem {
     let identifier = UUID()                                 //用于hash计算
     public var mLogItemType = ZXKitLogType.debug             //log类型
     public var mLogDebugContent: String = ""              //log输出的文件、行数、函数名
-    public var mLogContent: Any? = "ZXKitLogger: Click Log To Copy".ZXLocaleString  //log的内容
+    public var mLogContent: Any? = "ZXKitLogger: Click Log To Copy"  //log的内容
     public var mCreateDate = Date()                      //log日期
     
     private var mCurrentHighlightString = ""            //当前需要高亮的字符串
     private var mCacheHasHighlightString = false        //上次查询是否包含高亮的字符串
-    var mCacheHighlightCompleteString = NSMutableAttributedString()   //上次包含高亮支付的富文本
+    var mCacheHighlightCompleteString: NSMutableAttributedString?   //上次包含高亮支付的富文本
 }
 
 public extension ZXKitLoggerItem {
@@ -82,7 +82,7 @@ public extension ZXKitLoggerItem {
     }
     
     //根据需要高亮内容查询组装高亮内容
-    func getHighlightAttributedString(highlightString: String, complete:(Bool, NSAttributedString)->Void) -> Void {
+    func getHighlightAttributedString(highlightString: String, complete:(Bool, NSAttributedString?)->Void) -> Void {
         if highlightString.isEmpty {
             //空的直接返回
             let contentString = self.getFullContentString()

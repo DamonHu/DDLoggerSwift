@@ -261,6 +261,15 @@ ZXKitLogger.uploadComplete = { file in
 }
 ```
 
+### 14、节流
+
+短期大量输出内容刷新界面，会导致cpu大量计算占用，所以可以采取节流的方式，设置定时刷新界面，单位秒，默认为0
+
+```
+ZXKitLogger.throttleTime = 2
+```
+
+
 ### LogContent协议
 
 如果你想自定义输出的内容，可以集成并该类型的LogContent协议，例如设置打印`URL`类型只输出它的`path`，可以直接设置返回的`logStringValue`即可。
