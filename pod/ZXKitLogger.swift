@@ -120,7 +120,7 @@ public class ZXKitLogger {
     public static var userID = "0"             //为不同用户创建的独立的日志库
     public static var DBParentFolder = ZXKitUtil.shared.getFileDirectory(type: .documents)
     public static var uploadComplete: ((URL) ->Void)?   //点击上传日志的回调
-    public static var throttleTime: TimeInterval = 1       //节流的时间
+    public static var throttleTime: TimeInterval = 0       //节流的时间，单位秒
     /*隐私数据采用AESCBC加密
      *需要设置密码privacyLogPassword
      *初始向量privacyLogIv
@@ -198,36 +198,34 @@ public class ZXKitLogger {
             //刷新列表
             if throttleTime > 0 {
                 //设置节流
-                if Date().timeIntervalSince1970 - shared.lastUpdateTime > throttleTime {
-                    shared.throttleTimer?.invalidate()
-                    shared.throttleTimer = nil
+                let currentTime = Date().timeIntervalSince1970
+                if currentTime - shared.lastUpdateTime > throttleTime {
+                    if shared.throttleTimer != nil {
+                        shared.throttleTimer?.invalidate()
+                        shared.throttleTimer = nil
+                    }
                     let chunkList = shared.chunkList
                     DispatchQueue.main.async {
                         self.shared.loggerWindow?.insert(models: chunkList)
                     }
                     shared.chunkList.removeAll()
-                    shared.lastUpdateTime = Date().timeIntervalSince1970
+                    shared.lastUpdateTime = currentTime
                 } else {
                     shared.chunkList.append(loggerItem)
-                    shared.throttleTimer =  Timer.scheduledTimer(withTimeInterval: throttleTime, repeats: false, block: { timer in
-                                                timer.invalidate()
-                                                let chunkList = shared.chunkList
-                                                DispatchQueue.main.async {
-                                                    self.shared.loggerWindow?.insert(models: chunkList)
-                                                }
-                                                shared.chunkList.removeAll()
-                                                shared.lastUpdateTime = Date().timeIntervalSince1970
-                    })
-//                    shared.throttleTimer = Timer(timeInterval: throttleTime * 2, repeats: false, block: { timer in
-//                        timer.invalidate()
-//                        let chunkList = shared.chunkList
-//                        DispatchQueue.main.async {
-//                            self.shared.loggerWindow?.insert(models: chunkList)
-//                        }
-//                        shared.chunkList.removeAll()
-//                        shared.lastUpdateTime = Date().timeIntervalSince1970
-//                    })
-//                    RunLoop.main.add(shared.throttleTimer!, forMode: .common)
+                    if shared.throttleTimer != nil {
+                        shared.throttleTimer?.invalidate()
+                        shared.throttleTimer = nil
+                    }
+                    shared.throttleTimer = Timer(timeInterval: 2, repeats: false) { timer in
+                        timer.invalidate()
+                        let chunkList = shared.chunkList
+                        DispatchQueue.main.async {
+                            self.shared.loggerWindow?.insert(models: chunkList)
+                        }
+                        shared.chunkList.removeAll()
+                        shared.lastUpdateTime = Date().timeIntervalSince1970
+                    }
+                    RunLoop.main.add(shared.throttleTimer!, forMode: .common)
                 }
             } else {
                 DispatchQueue.main.async {

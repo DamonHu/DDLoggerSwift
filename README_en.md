@@ -258,6 +258,14 @@ ZXKitLogger.uploadComplete = { file in
 }
 ```
 
+### 14、 Throttling
+
+Refreshing the interface with a large amount of output content in a short period of time can cause a large amount of CPU computation. Therefore, a throttling method can be adopted, and a timed refresh interface can be set in seconds, with a default value of 0
+
+```
+ZXKitLogger.throttleTime = 2
+```
+
 ### LogContent protocol
 
 If you want to customize the output content, you can integrate and use this type of `LogContent` protocol. For example, you can print the `URL` type to output only its` path`. You can directly set the returned `logStringValue`.
