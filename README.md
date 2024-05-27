@@ -1,75 +1,70 @@
-# ZXKitLogger
+# DDLoggerSwift
 
 ![](https://img.shields.io/badge/CocoaPods-supported-brightgreen) ![](https://img.shields.io/badge/Swift-5.0-brightgreen) ![](https://img.shields.io/badge/License-MIT-brightgreen) ![](https://img.shields.io/badge/version-iOS11.0-brightgreen)
 
-[English](./README_en.md)
+### [中文文档](https://ddceo.com/blog/1305.html)
 
-> 如果您需要的是快速集成多个调试功能，例如日志查看、网速测试、文件查看等功能，可使用 [DamonHu/ZXKitSwift](https://github.com/DamonHu/ZXKitSwift)。
+The iOS terminal will display the output log suspended on the screen, which can generate log file sharing, and debug information when the real machine is not connected to Xcode. You can share, filter logs and other operations. Use SQLite to store log information, support system sharing and screen FPS display
 
 
-iOS端将输出日志log悬浮显示在屏幕上，可以生成日志文件分享，便于在真机没有连接xcode的情况下调试信息。可以分享、筛选log等操作。
-
-该项目使用`sqlite`高效存储，后台运行期间只记录数据，不会影响界面性能，前台运行效率高，基本和Xcode同步输出日志，可以查看和xCode日志输出的对比gif图
-
-|预览gif图|Xcode对比gif图|
+|Preview GIF picture|Xcode debug GIF|
 |----|----|
 |![](./readmeResources/preview.gif)|![](./readmeResources/debug.gif)|
 
 
-|预览图|分享 & FPS|
+|preview|share & FPS|
 |----|----|
-|![](./readmeResources/mobile_preview.png)<br/>XCode预览图<br/>![](./readmeResources/xcode_preview.png)|![](./readmeResources/share_preview.png)|
+|![](./readmeResources/mobile_preview.png)<br/>Xcode Preview<br/>![](./readmeResources/xcode_preview.png)|![](./readmeResources/share_preview.png)|
 
 ![](./readmeResources/preview.png)
 
-## 一、安装
+## I. Installation
 
-你可以选择使用cocoaPod安装，也可以直接下载源文件拖入项目中
+You can choose to install using cocoaPod, or you can download the source file directly into the project.
 
-### 1.1、cocoaPod安装
-
-```
-pod 'ZXKitLogger'
-```
-
-### 1.2、文件安装
-
-可以将工程底下，`pod`文件夹内的文件拖入项目即可
-
-## 二、使用
-
-简单三步即可调用
-
-### 1、导入头文件
+### 1.1, cocoaPod installation
 
 ```
-import ZXKitLogger
+pod 'DDLoggerSwift'
 ```
 
-### 2、显示悬浮窗
+
+### 1.2, file installation
+
+You can drag the files in the `pod` folder into the project under the project.
+
+## II. Use
+
+### 1、Import header file
 
 ```
-ZXKitLogger.show()
+Import DDLoggerSwift
 ```
 
-### 3、打印日志内容
 
-四种输出方式字体颜色显示不同，对应的printLog不同的类型
-
-```
-printDebug(log)	//调试输出，默认不会写入数据库
-
-printLog(log)	//日志为绿色
-
-printWarn(log)	//日志为黄色
-
-printError(log)	//日志为红色
-
-printPrivacy(log)	//加密数据的输出，具体加密方式在下面的加密中说明
+### 2、 display the floating window
 
 ```
+DDLoggerSwift.show()
+```
 
-输出格式
+### 3 、 Print log content
+
+The font colors of the three output methods are different, and the corresponding types of printLog are different.
+
+```
+printDebug(log)	//the log will not be written to the window, only output in xcode
+
+printLog(log) // Log's textColor is green
+
+printWarn(log) // log's textColor is yellow
+
+printError(log) // Log's textColor is red
+
+printPrivacy(log) // Output of encrypted data, the specific encryption method is described in the following encryption
+```
+
+Output format
 
 ```
 2021-08-11 10:07:28.378 ---- ⚠️⚠️ ---- File: ViewController.swift -- Line: 82 -- Function:ViewController.swift.onClickButton() ----
@@ -91,39 +86,37 @@ AAuKjIm5hC2jiPqz7OKHAngWspeACyWZufDguqdOcugituhWV8jnbr/6SHYoK0/9
 测试输出，默认不会写入数据库
 ```
 
-## 三、更多设置
+## III. more settings
 
-通过其他设置可以实现获取更多功能
-
-### 1、设置是否输出全部信息
+### 1、Set whether to output all information
 
 ```
-ZXKitLogger.isFullLogOut = true
+DDLoggerSwift.isFullLogOut = true
 ```
 
-如果设置为`true`，那么输出的格式是下面这样的，包含了输出文件、调用的行数、和调用的函数
+If it is set to `true`, the output format is as follows, including the output file, the number of lines called, and the function name
 
 ```
-13:36:08.474 ---- ⚠️⚠️ ---- File: ViewController.swift -- Line: 82 -- Function:ViewController.swift.onClickButton() ----
+2021-08-11 10:07:28.378 ---- ⚠️⚠️ ---- File: ViewController.swift -- Line: 82 -- Function:ViewController.swift.onClickButton() ----
 警告提示
 
-13:36:08.476 ---- ❌❌ ---- File: ViewController.swift -- Line: 84 -- Function:ViewController.swift.onClickButton() ----
+2021-08-11 10:07:28.380 ---- ❌❌ ---- File: ViewController.swift -- Line: 84 -- Function:ViewController.swift.onClickButton() ----
 错误出现
 
-13:36:08.487 ---- ⛔️⛔️ ---- File: ViewController.swift -- Line: 86 -- Function:ViewController.swift.onClickButton() ----
+2021-08-11 10:07:28.381 ---- ⛔️⛔️ ---- File: ViewController.swift -- Line: 86 -- Function:ViewController.swift.onClickButton() ----
 AAuKjIm5hC2jiPqz7OKHAngWspeACyWZufDguqdOcugituhWV8jnbr/6SHYoK0/9
 
-13:36:08.489 ---- ✅✅ ---- File: ViewController.swift -- Line: 89 -- Function:ViewController.swift.onClickButton() ----
+2021-08-11 10:07:28.383 ---- ✅✅ ---- File: ViewController.swift -- Line: 89 -- Function:ViewController.swift.onClickButton() ----
 {
-  "hhhhhhh" : "撒旦法是打发斯蒂芬是打发斯蒂芬",
-  "77777" : "数据库的复健科花见花开会尽快圣诞节开发和金黄色的费四大皆空回复就开始和豆腐是砍价的回复斯柯达金凤凰"
+  "77777" : "数据库的复健科花见花开会尽快圣诞节开发和金黄色的费四大皆空回复就开始和豆腐是砍价的回复斯柯达金凤凰",
+  "hhhhhhh" : "撒旦法是打发斯蒂芬是打发斯蒂芬"
 }
 
 2021-08-11 10:07:28.388 ---- 💜💜 ---- File: ViewController.swift -- Line: 76 -- Function:ViewController.swift.onClickButton() ----
 测试输出，默认不会写入数据库
 ```
 
-设置为`false`的输出样式
+If it is set to `false`, the output format is as follows
 
 ```
 2021-08-11 10:10:33.309 ---- ⚠️⚠️ ---- 
@@ -145,222 +138,218 @@ AAuKjIm5hC2jiPqz7OKHAngWspeACyWZufDguqdOcugituhWV8jnbr/6SHYoK0/9
 测试输出，默认不会写入数据库
 ```
 
-### 2、是否在xcode底部的调试栏同步输出内容
+### 2、 Whether to output content synchronously in the debug bar at the bottom of xcode
 
 ```
-ZXKitLogger.isSyncConsole = true
+DDLoggerSwift.isSyncConsole = true
 ```
 
-### 3、针对不同用户设置独立日志文件夹
+### 3、Separate log folder for different users
 
 ```
-ZXKitLogger.userID = "1001"
+DDLoggerSwift.userID = "1001"
 ```
 
-### 4、清空log
+### 4、Clear the log
 
 ```
-ZXKitLogger.cleanLog()
+DDLoggerSwift.cleanLog()
 ```
 
-### 5、关闭整个log窗口
+### 5、close the entire log window
 
 ```
-ZXKitLogger.close()
+DDLoggerSwift.close()
 ```
 
-### 6、仅隐藏log输出窗口
+### 6、only hide the log output window
 
 ```
-ZXKitLogger.hide()
+DDLoggerSwift.hide()
 ```
 
-### 7、设置显示log最大记录数，0为不限制, 默认为100
+### 7、set the log maximum number of records,  0 is not limited, default value is 100
 
 ```
-ZXKitLogger.maxDisplayCount = 100
+DDLoggerSwift.maxDisplayCount = 100
 ```
-
-### 8、 删除本地日志文件
-
-```
-ZXKitLogger.deleteLogFile()
-```
-
-### 9、 本地日志文件的有效期（天），超出有效期的本地日志会被删除，0为没有有效期，默认为30天
+### 8、 delete the local LogFile
 
 ```
-ZXKitLogger.logExpiryDay = 30
+DDLoggerSwift.deleteLogFile()
 ```
 
-### 10、存储日志的级别
-
-包含在内的日志级别会被存储到数据库，默认debug级别不存储
+### 9、 The validity period of the local log file (days), the local log beyond the validity period will be deleted, 0 is no validity period, default is 30 days
 
 ```
+DDLoggerSwift.logExpiryDay = 30
+```
 
-ZXKitLogger.storageLevels = [.info, .warn, .error, .privacy]
+### 10、storageLevels
+
+The included log level will be stored in the database. By default, the debug level is not stored
 
 ```
 
-### 11、获取数据库存储的日志信息数组，也可以指定日期
+DDLoggerSwift.storageLevels = [.info, .warn, .error, .privacy]
 
 ```
-//获取今日的日志
-ZXKitLogger.getAllLog()
-//指定日期
-ZXKitLogger.getAllLog(date: Date(timeIntervalSinceNow: 1000))
-```
 
-
-如果你想获取所有日志文件，可以获取日志存储的文件夹，返回的是一个URL结果，然后自己进行遍历去处理
+### 11、Get the array of logs. You can specify the date
 
 ```
-ZXKitLogger.getDBFolder()
+//today
+DDLoggerSwift.getAllLog()
+
+//Special date
+DDLoggerSwift.getAllLog(date: Date(timeIntervalSinceNow: 1000))
 ```
 
-例如
+If you want to get all the log files, you can get the folder where the log is stored, return a URL result, and then traverse to process it yourself
 
 ```
-let dbFolder = ZXKitLogger.getDBFolder()
+DDLoggerSwift.getDBFolder()
+```
+
+for example
+
+```
+let dbFolder = DDLoggerSwift.getDBFolder()
         
 if let enumer = FileManager.default.enumerator(atPath: dbFolder.path) {
     while let file = enumer.nextObject() {
-         if let file: String = file as? String {
+       if let file: String = file as? String {
             if file.hasSuffix(".db") {
-            	//获取到具体的log文件日志
-                let logFilePath = dbFolder.appendingPathComponent(file, isDirectory: false)
-             }
-         }
+	            //Get the specific log file log
+                let logFilePath = dbFolder.appendingPathComponent(file, isDirectory: false)              
+            }
+        }
     }
 }
 ```
 
-### 12、直接显示日志分享window
+### 12. Directly display log sharing window
 
-如果你不想让用户看到日志输出的window，而仅仅是让分享日志，则可以调用
-
-```
-ZXKitLogger.showShare()
-```
-
-### 13、显示日志上传选择window和按钮
-
-如果你想让用户上传db文件，除了可以自己遍历，我们也提供了快捷方案，和分享一样，调用
+If you don't want users to see the log output window, but just let them share the log, you can call
 
 ```
-ZXKitLogger.showUpload()
+DDLoggerSwift.showShare()
 ```
 
-即可出现上传的选项，用户选择之后确定的回调在`uploadComplete`，你实现该回调即可，例如
+### 13、Display log upload, select window and button
+
+If you want users to upload DB files, in addition to traversing by themselves, we also provide a shortcut scheme. Like sharing, call
 
 ```
-ZXKitLogger.uploadComplete = { file in
+DDLoggerSwift.showUpload()
+```
+
+The upload option will appears. The callback determined after the user selects is in `uploadcomplete`. You can implement the callback, for example
+
+```
+DDLoggerSwift.uploadComplete = { file in
      print(file)
-     //处理上传
+     //Process upload
 }
 ```
 
-### 14、节流
+### 14、 Throttling
 
-短期大量输出内容刷新界面，会导致cpu大量计算占用，所以可以采取节流的方式，设置定时刷新界面，单位秒，默认为0
+Refreshing the interface with a large amount of output content in a short period of time can cause a large amount of CPU computation. Therefore, a throttling method can be adopted, and a timed refresh interface can be set in seconds, with a default value of 0
 
 ```
-ZXKitLogger.throttleTime = 2
+DDLoggerSwift.throttleTime = 2
 ```
 
+### LogContent protocol
 
-### LogContent协议
-
-如果你想自定义输出的内容，可以集成并该类型的LogContent协议，例如设置打印`URL`类型只输出它的`path`，可以直接设置返回的`logStringValue`即可。
+If you want to customize the output content, you can integrate and use this type of `LogContent` protocol. For example, you can print the `URL` type to output only its` path`. You can directly set the returned `logStringValue`.
 
 ```
 extension URL: LogContent {
-    public var logStringValue: String {
-        return self.path
-    }
+    public var logStringValue: String {
+        return self.path
+    }
 }
 ```
 
+## IV. sensitive information output encryption and decryption
 
-## 四、 敏感信息输出加密和解密
-
-如果存在敏感信息，不希望用户或者手机调试时看到，简单两步就可以设置加密
+If there is sensitive information that you don't want users to see when debugging, you can set encryption in two simple steps
 
 ```
-//1、设置加密密码，32个字符数字。默认为12345678901234561234567890123456
-ZXKitLogger.privacyLogPassword = "12345678901234561234567890123456"
+// 1. Set the encryption password,  32 characters
+DDLoggerSwift.privacyLogPassword = "12345678901234561234567890123456"
 
-//2、输出加密内容
-printPrivacy("这个是加密数据的测试数据222")
+// 2, output encrypted content
+printPrivacy("This is test data 222 for encrypted data")
 ```
 
-### 4.2、显示窗内容解密
+### 4.2 Decrypt the contents of the display window
 
-设置之后，在显示窗中的显示为`该内容已加密，请解密后查看`，输入设置的加密密码然后点击解密之后即可显示正常的加密内容。
+After the setting, the display in the display window is `This content is encrypted, please view it after decryption`, enter the set encryption password and click decrypt to display the info encrypted content.
 
-### 4.1、 分享文件解密
+### 4.1. Decrypting shared files
 
-* 如果已经在显示窗解密了数据，此时分享的文件内容不会加密，会显示所有内容。
-* 如果在显示窗中未解密，此时分享出的文件内容为AES加密内容，可以搜索`AES在线解密的网站`去解密内容，设置参照下图：
+* If the data has been decrypted in the display window, the content of the shared file will not be encrypted at this time, and all content will be displayed.
+* If it is not decrypted in the display window, the content of the file shared at this time is AES encrypted content, you can search the `AES Online Decryption Website` to decrypt the content, and the settings are as follows:
 
 ![](./readmeResources/decrypt.png)
 
-* 模式: CBC
-* 填充: Pkcs7
-* 数据块: 128位
-* 偏移量: abcdefghijklmnop
-* 编码: Base64
-* 字符集: UTF8
-* 密码: 你自己在sdk中设置的密码
+* Mode: CBC
+* Fill: Pkcs7
+* Data block: 128 bits
+* Offset: `abcdefghijklmnop`
+* Encoding: Base64
+* Character set: UTF8
+* Password: The password you set in the SDK yourself
 
-然后点击解密即可。
+Then click Decrypt.
 
-这里推荐几个在线的网站，你也可以自己百度
+Here are a few online sites recommended, you can also Google it by yourself
 
 * [https://oktools.net/aes](https://oktools.net/aes)
 * [http://tools.bugscaner.com/cryptoaes/](http://tools.bugscaner.com/cryptoaes/)
 * [http://tool.chacuo.net/cryptaes](http://tool.chacuo.net/cryptaes)
 
+## V. Log viewing client
 
-## 五、日志查看客户端
-
-该库使用SQLite存储日志信息，如果使用通用的SQLite查看工具，只是一条一条的表格，并且有的还收费。所以可以使用[ZXKitLogger_Mac](https://github.com/DamonHu/ZXKitLogger_Mac)的客户端配合查看`ZXKitLogger`导出的SQLite文件。
+This library uses `SQLite` to store log information. So you can use [DDLoggerSwift_Mac](https://github.com/DamonHu/DDLoggerSwift_Mac), the client of `DDLoggerSwift` cooperates to view the export SQLite data.
 
 ![](./readmeResources/Jietu20220731-212644.png)
 
-## 六、局域网实时日志
+## local network real-time log
 
-`3.0.0` 版本之后，可配合上面的日志查看工具，可实现局域网实时日志查看，简单配置接口使用
+After the `3.0.0` version, it can be used with the above log viewing tool to realize real-time log viewing on the local area network, and use the simple configuration interface
 
-1、增加局域网功能
+1. Increase the local network function
 
-```
-pod 'ZXKitLogger/socket'
-```
+````
+pod 'DDLoggerSwift/socket'
+````
 
-2、在项目`info.plist`增加局域网描述，和`Bonjour`的服务字段。
+2. Add the local network description and the service field of `Bonjour` in the project `info.plist`.
 
-```
+````
 <key>NSBonjourServices</key>
-	<array>
-		<string>_zxkitlogger._tcp</string>
-	</array>
+<array>
+<string>_DDLoggerSwift._tcp</string>
+</array>
 <key>NSLocalNetworkUsageDescription</key>
-<string>查找本地网络以便使用Bonjour功能</string>
-```
+<string>Find the local network to use the Bonjour feature</string>
+````
 
-**注意：`NSBonjourServices`的type值和`ZXKitLogger.socketType`保持一致，ZXKitLogger代码中的`socketType`可以自定义，修改之后info.plist也做对应的修改即可**
+**Note: The type value of `NSBonjourServices` is consistent with `DDLoggerSwift.socketType`. The `socketType` in the DDLoggerSwift code can be customized. After modification, the `info.plist` should be modified accordingly **
 
-无需其他配置，即可在通过[ZXKitLogger_Mac](https://github.com/DamonHu/ZXKitLogger_Mac)查看同一局域网下的设备日志
+No other configuration is required, you can view the device logs under the same local network by [DDLoggerSwift_Mac](https://github.com/DamonHu/DDLoggerSwift_Mac)
 
-## 七、其他说明tips
+## Other Tips
 
-1. 为了查看方便，分为普通、警告、错误三种类型，对应了三种不同的颜色，方便查看
-2. 点击对应的cell可以直接将输出log复制到系统剪贴板
-3. 分享调用的系统分享，可以分享到哪个软件取决于你手机上安装的有哪些软件。
-4.   分享出去的log文件可在任意文本编辑器查看，在`VSCode`查看会有代码高亮效果
+1. For the convenience of viewing, it is divided into three types: info, warning and error. It corresponds to three different colors for easy viewing.
+2. Click the corresponding cell to copy the output log directly to the system clipboard.
+3. Share the system share that is called. Which software you can share depends on which software is installed on your phone.
+4. The shared log file can be viewed in any text editor. When viewed in 'vscode', the code will be highlighted
 
 ## License
 
-该项目基于MIT协议，您可以自由修改使用
+The project is based on the MIT License

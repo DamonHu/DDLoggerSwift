@@ -9,12 +9,12 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-ZXKitLogger.xcscheme</key>
+		<key>DDUtils.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>ZXKitUtil.xcscheme</key>
+		<key>Pods-DDLoggerSwift.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>

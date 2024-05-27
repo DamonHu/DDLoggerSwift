@@ -1,11 +1,11 @@
 /* 
   Localizable.strings
-  ZXKitLogger
+  DDLoggerSwift
 
   Created by Damon on 2019/6/24.
   Copyright © 2019 Damon. All rights reserved.
 */
-"ZXKitLogger: Click Log To Copy" = "ZXKitLogger: 点击对应日志可快速复制";
+"DDLoggerSwift: Click Log To Copy" = "DDLoggerSwift: 点击对应日志可快速复制";
 "Please select the log to share" = "请选择要分享的日志";
 "Please select the log to upload" = "请选择要上传的日志";
 "Please select the log" = "请选择日志文件";

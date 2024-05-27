@@ -1,11 +1,11 @@
 /* 
   Localizable.strings
-  ZXKitLogger
+  DDLoggerSwift
 
   Created by Damon on 2019/6/24.
   Copyright © 2019 Damon. All rights reserved.
 */
-"ZXKitLogger: Click Log To Copy" = "ZXKitLogger: Click Log To Copy";
+"DDLoggerSwift: Click Log To Copy" = "DDLoggerSwift: Click Log To Copy";
 "Please select the log to share" = "Please select the log to share";
 "Please select the log to upload" = "Please select the log to upload";
 "Please select the log" = "Please select the log";
