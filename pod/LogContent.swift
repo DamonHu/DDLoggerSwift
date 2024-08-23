@@ -21,14 +21,12 @@ extension Dictionary: LogContent {
             let data = try? JSONSerialization.data(withJSONObject: self, options:JSONSerialization.WritingOptions.prettyPrinted)
             if let data = data {
                 let string = String(data: data, encoding: String.Encoding.utf8) ?? "\(self)"
-                return string.dd.unicodeDecode()
+                return string
             } else {
-                let string = "\(self)"
-                return string.dd.unicodeDecode()
+                return "\(self)"
             }
         } else {
-            let string = "\(self)"
-            return string.dd.unicodeDecode()
+            return "\(self)"
         }
     }
 }
@@ -39,20 +37,18 @@ extension Array: LogContent {
             let data = try? JSONSerialization.data(withJSONObject: self, options:JSONSerialization.WritingOptions.prettyPrinted)
             if let data = data {
                 let string = String(data: data, encoding: String.Encoding.utf8) ?? "\(self)"
-                return string.dd.unicodeDecode()
+                return string
             } else {
-                let string = "\(self)"
-                return string.dd.unicodeDecode()
+                return "\(self)"
             }
         } else {
-            let string = "\(self)"
-            return string.dd.unicodeDecode()
+            return "\(self)"
         }
     }
 }
 
 extension String: LogContent {
     public var logStringValue: String {
-        return self.dd.unicodeDecode()
+        return self
     }
 }

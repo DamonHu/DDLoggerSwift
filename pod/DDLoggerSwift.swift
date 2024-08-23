@@ -142,6 +142,12 @@ public class DDLoggerSwift {
 
     //MARK: 内部
     static var fileSelectedComplete: ((URL, String) ->Void)?   //选择历史文件过滤回调
+    static let dateFormatterISO8601 = ISO8601DateFormatter()
+    static let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        return formatter
+    }()
 
     //MARK: - Private变量
     private lazy var loggerWindow: DDLoggerSwiftWindow? = {
@@ -183,18 +189,17 @@ public class DDLoggerSwift {
     /// - Parameter log: 日志内容
     /// - Parameter logType: 日志类型
     public class func printLog(log:Any, logType:DDLogType, file:String = #file, funcName:String = #function, lineNum:Int = #line) -> Void {
+        let loggerItem = DDLoggerSwiftItem()
+        loggerItem.mLogItemType = logType
+
+        let fileName = (file as NSString).lastPathComponent;
+        loggerItem.mLogDebugContent = "File: \(fileName) -- Line: \(lineNum) -- Function:\(fileName).\(funcName) ----"
+        loggerItem.mLogContent = log
+
+        if self.isSyncConsole {
+            print(loggerItem.getFullContentString())
+        }
         shared.logQueue.async(group: nil, qos: .default, flags: .barrier) {
-            let loggerItem = DDLoggerSwiftItem()
-            loggerItem.mLogItemType = logType
-
-            let fileName = (file as NSString).lastPathComponent;
-            loggerItem.mLogDebugContent = "File: \(fileName) -- Line: \(lineNum) -- Function:\(fileName).\(funcName) ----"
-            loggerItem.mLogContent = log
-
-            if self.isSyncConsole {
-                print(loggerItem.getFullContentString())
-            }
-            
             //刷新列表
             if throttleTime > 0 {
                 //设置节流
@@ -210,6 +215,10 @@ public class DDLoggerSwift {
                     }
                     shared.chunkList.removeAll()
                     shared.lastUpdateTime = currentTime
+                    //写入文件
+                    if self.storageLevels.contains(logType) {
+                        self.shared._writeDB(log: loggerItem)
+                    }
                 } else {
                     shared.chunkList.append(loggerItem)
                     if shared.throttleTimer != nil {
@@ -224,6 +233,10 @@ public class DDLoggerSwift {
                         }
                         shared.chunkList.removeAll()
                         shared.lastUpdateTime = Date().timeIntervalSince1970
+                        //写入文件
+                        if self.storageLevels.contains(logType) {
+                            self.shared._writeDB(log: loggerItem)
+                        }
                     }
                     RunLoop.main.add(shared.throttleTimer!, forMode: .common)
                 }
@@ -231,10 +244,10 @@ public class DDLoggerSwift {
                 DispatchQueue.main.async {
                     self.shared.loggerWindow?.insert(models: [loggerItem])
                 }
-            }
-            //写入文件
-            if self.storageLevels.contains(logType) {
-                self.shared._writeDB(log: loggerItem)
+                //写入文件
+                if self.storageLevels.contains(logType) {
+                    self.shared._writeDB(log: loggerItem)
+                }
             }
             #if canImport(CocoaAsyncSocket)
             DispatchQueue.global().async {
@@ -251,9 +264,7 @@ public class DDLoggerSwift {
     ///获取log日志数组
     public class func getAllLog(date: Date? = nil, keyword: String? = nil, type: DDLogType? = nil) -> [DDLoggerSwiftItem] {
         if let date = date {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd"
-            let dateString = dateFormatter.string(from: date)
+            let dateString = DDLoggerSwift.dateFormatter.string(from: date)
             return HDSqliteTools.shared.getAllLog(name: dateString, keyword: keyword, type: type)
         } else {
             return HDSqliteTools.shared.getAllLog(name: nil, keyword: keyword, type: type)
@@ -268,9 +279,7 @@ public class DDLoggerSwift {
     ///获取log日志的数据库文件
     public class func getDBFile(date: Date) -> URL {
         let dbFolder = self.getDBFolder()
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        let dateString = dateFormatter.string(from: date)
+        let dateString = DDLoggerSwift.dateFormatter.string(from: date)
         let logFilePath = dbFolder.appendingPathComponent("\(dateString).db", isDirectory: false)
         return logFilePath
     }
@@ -393,9 +402,6 @@ private extension DDLoggerSwift {
     }
     
     func _checkValidity() {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-
         let cachePath = HDSqliteTools.shared.getDBFolder()
         if let enumer = FileManager.default.enumerator(atPath: cachePath.path) {
             while let file = enumer.nextObject() {
@@ -405,7 +411,7 @@ private extension DDLoggerSwift {
                         let index2 = file.startIndex
                         let index3 = file.index(index2, offsetBy: 9)
                         let dateString = file[index2...index3]
-                        let fileDate = dateFormatter.date(from: String(dateString))
+                        let fileDate = DDLoggerSwift.dateFormatter.date(from: String(dateString))
                         if let fileDate = fileDate {
                             if Date().timeIntervalSince(fileDate) > Double(Self.logExpiryDay * 3600 * 24) {
                                 let logFilePath = cachePath.appendingPathComponent(file, isDirectory: false)

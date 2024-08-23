@@ -123,9 +123,7 @@ private extension HDSqliteTools {
         if let name = name {
             return path.appendingPathComponent(name)
         } else {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd"
-            let dateString = dateFormatter.string(from: Date())
+            let dateString = DDLoggerSwift.dateFormatter.string(from: Date())
             return path.appendingPathComponent("\(dateString).db")
         }
     }

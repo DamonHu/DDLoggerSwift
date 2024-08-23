@@ -104,9 +104,7 @@ extension DDLoggerSwiftPickerWindow {
         self.isCloseWhenComplete = isCloseWhenComplete
         if let date = date {
             //指定日期
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd"
-            self.mShareFileName = dateFormatter.string(from: date) + ".db"
+            self.mShareFileName = DDLoggerSwift.dateFormatter.string(from: date) + ".db"
             self._confirmPicker()
         } else {
             self.mFileDateNameList = [String]()

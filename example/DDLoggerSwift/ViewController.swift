@@ -85,7 +85,9 @@ class ViewController: UIViewController {
         printWarn("警告提示")
         printPrivacy("这个是加密数据的测试数据222")
 //
-        for i in 0..<100 {
+        let startTime = DispatchTime.now()
+        for i in 0..<10000 {
+//            print("\(i)")
             printLog("\(i)")
 //            printLog("测试输出，默认不会写入数据库","222222","3333333")
 //            //普通输出
@@ -105,7 +107,9 @@ class ViewController: UIViewController {
 //            printInfo(arrayObj)
         }
 
-        print("over")
+        let endTime = DispatchTime.now()
+        let executionTime = Double(endTime.uptimeNanoseconds - startTime.uptimeNanoseconds) / 1_000_000_000
+        print("Execution time: \(executionTime) seconds")
     }
     
     @objc func onClickdeleteButton() {
