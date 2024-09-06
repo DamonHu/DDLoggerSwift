@@ -47,20 +47,26 @@ class HDSqliteTools {
 
     //插入数据
     func insertLog(log: DDLoggerSwiftItem) {
-        let insertRowString = String(format: "insert into hdlog(log, logType, time, debugContent, contentString) values ('%@','%d','%f', '%@', '%@')", log.getFullContentString(), log.mLogItemType.rawValue, Date().timeIntervalSince1970, log.mLogDebugContent, log.getLogContent())
+        let insertRowString = "INSERT INTO hdlog(log, logType, time, debugContent, contentString) VALUES (?, ?, ?, ?, ?)"
         var insertStatement: OpaquePointer?
         //第一步
         let status = sqlite3_prepare_v2(logDB, insertRowString, -1, &insertStatement, nil)
         if status == SQLITE_OK {
+            //绑定
+                        sqlite3_bind_text(insertStatement, 1, log.getFullContentString(), -1, nil)
+                        sqlite3_bind_int(insertStatement, 2, Int32(log.mLogItemType.rawValue))
+                        sqlite3_bind_double(insertStatement, 3, Date().timeIntervalSince1970)
+                        sqlite3_bind_text(insertStatement, 4, log.mLogDebugContent, -1, nil)
+                        sqlite3_bind_text(insertStatement, 5, log.getLogContent(), -1, nil)
             //第三步
             if sqlite3_step(insertStatement) == SQLITE_DONE {
                 //                print("插入数据成功")
                 NotificationCenter.default.post(name: .DDLoggerSwiftDBUpdate, object: ["type": "insert", "logType": log.mLogItemType] as [String : Any])
             } else {
-                print("DDLoggerSwift_插入数据失败")
+                print("Could not insert data: \(String(cString: sqlite3_errmsg(logDB)))")
             }
         } else {
-            print("DDLoggerSwift_插入时打开数据库失败")
+            print("Prepare failed: \(String(cString: sqlite3_errmsg(logDB)))")
         }
         //第四步
         sqlite3_finalize(insertStatement)
@@ -143,7 +149,7 @@ private extension HDSqliteTools {
 
     //创建日志表
     func _createTable() {
-        let createTableString = "create table if not exists 'hdlog' ('id' integer primary key autoincrement not null,'log' text,'logType' integer,'time' float, 'debugContent' text, 'contentString' text)"
+        let createTableString = "create table if not exists 'hdlog' ('id' integer primary key autoincrement not null,'log' text,'logType' integer,'time' double, 'debugContent' text, 'contentString' text)"
         var createTableStatement: OpaquePointer?
         if sqlite3_prepare_v2(logDB, createTableString, -1, &createTableStatement, nil) == SQLITE_OK {
             // 第二步
