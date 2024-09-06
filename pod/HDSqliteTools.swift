@@ -62,11 +62,11 @@ class HDSqliteTools {
             for log in logs {
                 if sqlite3_prepare_v2(logDB, insertRowString, -1, &insertStatement, nil) == SQLITE_OK {
                     // 绑定每个字段的值
-                    sqlite3_bind_text(insertStatement, 1, log.getFullContentString(), -1, nil)
+                    sqlite3_bind_text(insertStatement, 1, log.getFullContentString(), -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
                     sqlite3_bind_int(insertStatement, 2, Int32(log.mLogItemType.rawValue))
                     sqlite3_bind_double(insertStatement, 3, Date().timeIntervalSince1970)
-                    sqlite3_bind_text(insertStatement, 4, log.mLogDebugContent, -1, nil)
-                    sqlite3_bind_text(insertStatement, 5, log.getLogContent(), -1, nil)
+                    sqlite3_bind_text(insertStatement, 4, log.mLogDebugContent, -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
+                    sqlite3_bind_text(insertStatement, 5, log.getLogContent(), -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
                     if sqlite3_step(insertStatement) != SQLITE_DONE {
                         print("Insert failed: \(String(cString: sqlite3_errmsg(logDB)))")
                     }
@@ -115,7 +115,6 @@ class HDSqliteTools {
         } else if let type = type {
             queryString = "SELECT * FROM hdlog WHERE logType == \(type.rawValue)"
         }
-        //TODO//
         if let pagination = pagination {
             queryString = queryString + " LIMIT \(pagination.size) OFFSET \(pagination.page * pagination.size)"
         }

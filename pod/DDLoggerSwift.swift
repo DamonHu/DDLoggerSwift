@@ -256,13 +256,13 @@ public class DDLoggerSwift {
     }
     
     ///获取log日志数组
-    public class func getAllLog(date: Date? = nil, keyword: String? = nil, type: DDLogType? = nil) -> [DDLoggerSwiftItem] {
+    public class func getAllLog(date: Date? = nil, keyword: String? = nil, type: DDLogType? = nil, pagination: (page: Int, size:Int)? = nil) -> [DDLoggerSwiftItem] {
+        var name: String? = nil
         if let date = date {
             let dateString = DDLoggerSwift.dateFormatter.string(from: date)
-            return HDSqliteTools.shared.getAllLog(name: dateString, keyword: keyword, type: type)
-        } else {
-            return HDSqliteTools.shared.getAllLog(name: nil, keyword: keyword, type: type)
+            name = dateString
         }
+        return HDSqliteTools.shared.getLogs(name: name, keyword: keyword, type: type, pagination: pagination)
     }
 
     ///获取log日志的数据库
@@ -285,7 +285,7 @@ public class DDLoggerSwift {
     ///  删除log日志
     public class func cleanLog() {
         DispatchQueue.main.async {
-            self.shared.loggerWindow?.cleanDataArray()
+            self.shared.loggerWindow?.cleanLog()
         }
     }
     
