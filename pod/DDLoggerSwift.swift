@@ -113,14 +113,14 @@ public func printPrivacy(_ log:Any ..., file:String = #file, funcName:String = #
 public class DDLoggerSwift {
     public static let shared = DDLoggerSwift()
     public static var isFullLogOut = true    //是否完整输出日志文件名等调试内容
-    
     public static var isSyncConsole = true   //是否在xcode底部的调试栏同步输出内容
     public static var storageLevels: DDLogType = [.info, .warn, .error, .privacy]    //存储到数据库的级别
     public static var logExpiryDay = 30        //本地日志文件的有效期（天），超出有效期的本地日志会被删除，0为没有有效期，默认为30天
     public static var userID = "0"             //为不同用户创建的独立的日志库
     public static var DBParentFolder = DDUtils.shared.getFileDirectory(type: .documents)
     public static var uploadComplete: ((URL) ->Void)?   //点击上传日志的回调
-    public static var throttleTime: TimeInterval = 0       //节流的时间，单位秒
+    public static var throttleTime: TimeInterval = 2    //延迟写入数据库的时间，单位秒，频繁输出的话，通过该参数可批量写入提高运行和写入性能
+    public static var maxPageSize: Int = 100        //load more的最大条数
     /*隐私数据采用AESCBC加密
      *需要设置密码privacyLogPassword
      *初始向量privacyLogIv
@@ -181,8 +181,8 @@ public class DDLoggerSwift {
     private var floatWindow: DDLoggerSwiftFloatWindow?
     var isPasswordCorrect: Bool = false
     private let logQueue = DispatchQueue(label:"com.DDLoggerSwift.logQueue", qos:.utility, attributes: .concurrent)
-    private var chunkList = [DDLoggerSwiftItem]()
-    private var lastUpdateTime: TimeInterval = 0
+    private var chunkList = [DDLoggerSwiftItem]()   //分批的数量记录
+    private var lastUpdateTime: TimeInterval?
     private var throttleTimer: Timer?
     //MARK: - Public函数
     /// 根据日志的输出类型去输出相应的日志，不同日志类型颜色不一样
@@ -204,49 +204,43 @@ public class DDLoggerSwift {
             if throttleTime > 0 {
                 //设置节流
                 let currentTime = Date().timeIntervalSince1970
-                if currentTime - shared.lastUpdateTime > throttleTime {
+                if let lastUpdateTime = shared.lastUpdateTime, currentTime - lastUpdateTime > throttleTime {
                     if shared.throttleTimer != nil {
                         shared.throttleTimer?.invalidate()
                         shared.throttleTimer = nil
                     }
                     let chunkList = shared.chunkList
-                    DispatchQueue.main.async {
-                        self.shared.loggerWindow?.insert(models: chunkList)
-                    }
-                    shared.chunkList.removeAll()
-                    shared.lastUpdateTime = currentTime
                     //写入文件
                     if self.storageLevels.contains(logType) {
-                        self.shared._writeDB(log: loggerItem)
+                        self.shared._writeDB(logs: chunkList)
                     }
+                    shared.chunkList.removeAll()
+                    shared.lastUpdateTime = nil
                 } else {
                     shared.chunkList.append(loggerItem)
+                    if shared.lastUpdateTime == nil {
+                        shared.lastUpdateTime = Date().timeIntervalSince1970
+                    }
                     if shared.throttleTimer != nil {
                         shared.throttleTimer?.invalidate()
                         shared.throttleTimer = nil
                     }
-                    shared.throttleTimer = Timer(timeInterval: 2, repeats: false) { timer in
+                    shared.throttleTimer = Timer(timeInterval: throttleTime, repeats: false) { timer in
                         timer.invalidate()
                         let chunkList = shared.chunkList
-                        DispatchQueue.main.async {
-                            self.shared.loggerWindow?.insert(models: chunkList)
-                        }
-                        shared.chunkList.removeAll()
-                        shared.lastUpdateTime = Date().timeIntervalSince1970
                         //写入文件
                         if self.storageLevels.contains(logType) {
-                            self.shared._writeDB(log: loggerItem)
+                            self.shared._writeDB(logs: chunkList)
                         }
+                        shared.chunkList.removeAll()
+                        shared.lastUpdateTime = nil
                     }
                     RunLoop.main.add(shared.throttleTimer!, forMode: .common)
                 }
             } else {
-                DispatchQueue.main.async {
-                    self.shared.loggerWindow?.insert(models: [loggerItem])
-                }
                 //写入文件
                 if self.storageLevels.contains(logType) {
-                    self.shared._writeDB(log: loggerItem)
+                    self.shared._writeDB(logs: [loggerItem])
                 }
             }
             #if canImport(CocoaAsyncSocket)
@@ -397,8 +391,8 @@ public class DDLoggerSwift {
 }
 
 private extension DDLoggerSwift {
-    func _writeDB(log: DDLoggerSwiftItem) -> Void {
-        HDSqliteTools.shared.insertLog(log: log)
+    func _writeDB(logs: [DDLoggerSwiftItem]) -> Void {
+        HDSqliteTools.shared.insert(logs: logs)
     }
     
     func _checkValidity() {
