@@ -44,32 +44,51 @@ class HDSqliteTools {
         }
         return newFolder
     }
-
-    //插入数据
-    func insertLog(log: DDLoggerSwiftItem) {
+    
+    //批量插入数据
+    func insert(logs: [DDLoggerSwiftItem]) {
+        if (logs.isEmpty) {
+            return
+        }
+        if (logs.count == 1) {
+            self._insert(log: logs.first!)
+            return
+        }
+        //批量插入
         let insertRowString = "INSERT INTO hdlog(log, logType, time, debugContent, contentString) VALUES (?, ?, ?, ?, ?)"
         var insertStatement: OpaquePointer?
-        //第一步
-        let status = sqlite3_prepare_v2(logDB, insertRowString, -1, &insertStatement, nil)
-        if status == SQLITE_OK {
-            //绑定
-                        sqlite3_bind_text(insertStatement, 1, log.getFullContentString(), -1, nil)
-                        sqlite3_bind_int(insertStatement, 2, Int32(log.mLogItemType.rawValue))
-                        sqlite3_bind_double(insertStatement, 3, Date().timeIntervalSince1970)
-                        sqlite3_bind_text(insertStatement, 4, log.mLogDebugContent, -1, nil)
-                        sqlite3_bind_text(insertStatement, 5, log.getLogContent(), -1, nil)
-            //第三步
-            if sqlite3_step(insertStatement) == SQLITE_DONE {
-                //                print("插入数据成功")
-                NotificationCenter.default.post(name: .DDLoggerSwiftDBUpdate, object: ["type": "insert", "logType": log.mLogItemType] as [String : Any])
-            } else {
-                print("Could not insert data: \(String(cString: sqlite3_errmsg(logDB)))")
+        // 开启事务
+        if sqlite3_exec(logDB, "BEGIN TRANSACTION", nil, nil, nil) == SQLITE_OK {
+            for log in logs {
+                if sqlite3_prepare_v2(logDB, insertRowString, -1, &insertStatement, nil) == SQLITE_OK {
+                    // 绑定每个字段的值
+                    sqlite3_bind_text(insertStatement, 1, log.getFullContentString(), -1, nil)
+                    sqlite3_bind_int(insertStatement, 2, Int32(log.mLogItemType.rawValue))
+                    sqlite3_bind_double(insertStatement, 3, Date().timeIntervalSince1970)
+                    sqlite3_bind_text(insertStatement, 4, log.mLogDebugContent, -1, nil)
+                    sqlite3_bind_text(insertStatement, 5, log.getLogContent(), -1, nil)
+                    if sqlite3_step(insertStatement) != SQLITE_DONE {
+                        print("Insert failed: \(String(cString: sqlite3_errmsg(logDB)))")
+                    }
+                    // 重置语句以便于下一次使用
+                    sqlite3_reset(insertStatement)
+                } else {
+                    print("Prepare failed: \(String(cString: sqlite3_errmsg(logDB)))")
+                }
             }
+            
+            // 提交事务
+            if sqlite3_exec(logDB, "COMMIT", nil, nil, nil) == SQLITE_OK {
+                print("Transaction committed successfully")
+            } else {
+                print("Commit failed: \(String(cString: sqlite3_errmsg(logDB)))")
+                // 如果提交失败，可以选择回滚事务
+                sqlite3_exec(logDB, "ROLLBACK", nil, nil, nil)
+            }
+            sqlite3_finalize(insertStatement)
         } else {
-            print("Prepare failed: \(String(cString: sqlite3_errmsg(logDB)))")
+            print("Begin transaction failed: \(String(cString: sqlite3_errmsg(logDB)))")
         }
-        //第四步
-        sqlite3_finalize(insertStatement)
     }
 
     func getAllLog(name: String? = nil, keyword: String? = nil, type: DDLogType? = nil) -> [DDLoggerSwiftItem] {
@@ -190,6 +209,33 @@ private extension HDSqliteTools {
         //第四步
         sqlite3_finalize(queryStatement)
         return count
+    }
+    
+    //插入数据
+    func _insert(log: DDLoggerSwiftItem) {
+        let insertRowString = "INSERT INTO hdlog(log, logType, time, debugContent, contentString) VALUES (?, ?, ?, ?, ?)"
+        var insertStatement: OpaquePointer?
+        //第一步
+        let status = sqlite3_prepare_v2(logDB, insertRowString, -1, &insertStatement, nil)
+        if status == SQLITE_OK {
+            //绑定
+                        sqlite3_bind_text(insertStatement, 1, log.getFullContentString(), -1, nil)
+                        sqlite3_bind_int(insertStatement, 2, Int32(log.mLogItemType.rawValue))
+                        sqlite3_bind_double(insertStatement, 3, Date().timeIntervalSince1970)
+                        sqlite3_bind_text(insertStatement, 4, log.mLogDebugContent, -1, nil)
+                        sqlite3_bind_text(insertStatement, 5, log.getLogContent(), -1, nil)
+            //第三步
+            if sqlite3_step(insertStatement) == SQLITE_DONE {
+                //                print("插入数据成功")
+                NotificationCenter.default.post(name: .DDLoggerSwiftDBUpdate, object: ["type": "insert", "logType": log.mLogItemType] as [String : Any])
+            } else {
+                print("Could not insert data: \(String(cString: sqlite3_errmsg(logDB)))")
+            }
+        } else {
+            print("Prepare failed: \(String(cString: sqlite3_errmsg(logDB)))")
+        }
+        //第四步
+        sqlite3_finalize(insertStatement)
     }
 
     func _deleteLog(timeStamp: Double) {
