@@ -16,22 +16,22 @@ import DDUtils
 class HDSqliteTools {
     static let shared = HDSqliteTools()
     private var logDB: OpaquePointer?
-
+    
     init() {
         //开始新的数据
         self.logDB = self._openDatabase()
         self._createTable()
     }
-
+    
     //获取数据库文件夹
     func getDBFolder() -> URL {
         let dbFolder = DDLoggerSwift.userID.dd.hashString(hashType: .md5) ?? "DDLoggerSwift"
         //创建文件夹
         let manager = FileManager.default
         let superDirectory = DDLoggerSwift.DBParentFolder
-
+        
         let newFolder = superDirectory.appendingPathComponent(dbFolder, isDirectory: true)
-
+        
         var isDirectory: ObjCBool = false
         let isDirExist = manager.fileExists(atPath: newFolder.path, isDirectory: &isDirectory)
         if !isDirectory.boolValue || !isDirExist {
@@ -90,7 +90,7 @@ class HDSqliteTools {
             print("Begin transaction failed: \(String(cString: sqlite3_errmsg(logDB)))")
         }
     }
-
+    
     /// 获取数据库日志
     /// - Parameters:
     ///   - name: 数据库名称，格式 2022-01-01，默认为当天日志
@@ -141,11 +141,11 @@ class HDSqliteTools {
         sqlite3_finalize(queryStatement)
         return logList
     }
-
+    
     func getItemCount(type: DDLogType?) -> Int {
         return self._getItemCount(type: type)
     }
-
+    
     func deleteLog(timeStamp: Double) {
         self._deleteLog(timeStamp: timeStamp)
     }
@@ -163,7 +163,7 @@ private extension HDSqliteTools {
             return path.appendingPathComponent("\(dateString).db")
         }
     }
-
+    
     //打开数据库
     func _openDatabase(name: String? = nil) -> OpaquePointer? {
         var db: OpaquePointer?
@@ -176,7 +176,7 @@ private extension HDSqliteTools {
             return nil
         }
     }
-
+    
     //创建日志表
     func _createTable() {
         let createTableString = "create table if not exists 'hdlog' ('id' integer primary key autoincrement not null,'log' text,'logType' integer,'time' double, 'debugContent' text, 'contentString' text)"
@@ -189,12 +189,12 @@ private extension HDSqliteTools {
                 print("DDLoggerSwift_未成功创建表")
             }
         } else {
-
+            
         }
         //第三步
         sqlite3_finalize(createTableStatement)
     }
-
+    
     func _getItemCount(type: DDLogType?) -> Int {
         var count = 0
         let databasePath = self._getDataBasePath()
@@ -230,11 +230,11 @@ private extension HDSqliteTools {
         let status = sqlite3_prepare_v2(logDB, insertRowString, -1, &insertStatement, nil)
         if status == SQLITE_OK {
             //绑定
-                        sqlite3_bind_text(insertStatement, 1, log.getFullContentString(), -1, nil)
-                        sqlite3_bind_int(insertStatement, 2, Int32(log.mLogItemType.rawValue))
-                        sqlite3_bind_double(insertStatement, 3, Date().timeIntervalSince1970)
-                        sqlite3_bind_text(insertStatement, 4, log.mLogDebugContent, -1, nil)
-                        sqlite3_bind_text(insertStatement, 5, log.getLogContent(), -1, nil)
+            sqlite3_bind_text(insertStatement, 1, log.getFullContentString(), -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
+            sqlite3_bind_int(insertStatement, 2, Int32(log.mLogItemType.rawValue))
+            sqlite3_bind_double(insertStatement, 3, Date().timeIntervalSince1970)
+            sqlite3_bind_text(insertStatement, 4, log.mLogDebugContent, -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
+            sqlite3_bind_text(insertStatement, 5, log.getLogContent(), -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
             //第三步
             if sqlite3_step(insertStatement) == SQLITE_DONE {
                 //                print("插入数据成功")
@@ -248,7 +248,7 @@ private extension HDSqliteTools {
         //第四步
         sqlite3_finalize(insertStatement)
     }
-
+    
     func _deleteLog(timeStamp: Double) {
         let insertRowString = "DELETE FROM hdlog WHERE time < \(timeStamp) "
         var insertStatement: OpaquePointer?
