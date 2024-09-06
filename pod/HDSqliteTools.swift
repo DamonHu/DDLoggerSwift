@@ -126,7 +126,7 @@ class HDSqliteTools {
             while(sqlite3_step(queryStatement) == SQLITE_ROW) {
                 //第三步
                 let item = DDLoggerSwiftItem()
-                //                item.id = Int(sqlite3_column_int(queryStatement, 0))
+                item.databaseID = Int(sqlite3_column_int(queryStatement, 0))
                 item.mLogItemType = DDLogType.init(rawValue: Int(sqlite3_column_int(queryStatement, 2)))
                 item.mLogDebugContent = String(cString: sqlite3_column_text(queryStatement, 4))
                 //更新内容
