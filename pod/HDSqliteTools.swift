@@ -91,7 +91,14 @@ class HDSqliteTools {
         }
     }
 
-    func getAllLog(name: String? = nil, keyword: String? = nil, type: DDLogType? = nil) -> [DDLoggerSwiftItem] {
+    /// 获取数据库日志
+    /// - Parameters:
+    ///   - name: 数据库名称，格式 2022-01-01，默认为当天日志
+    ///   - keyword: 指定关键字
+    ///   - type: 过滤消息类型
+    ///   - pagination: 分页数据，page为页码，size为每页数量
+    /// - Returns: 获取的日志
+    func getLogs(name: String? = nil, keyword: String? = nil, type: DDLogType? = nil, pagination: (page: Int, size:Int)? = nil) -> [DDLoggerSwiftItem] {
         let databasePath = self._getDataBasePath(name: name)
         guard FileManager.default.fileExists(atPath: databasePath.path) else {
             //数据库文件不存在
@@ -107,6 +114,10 @@ class HDSqliteTools {
             }
         } else if let type = type {
             queryString = "SELECT * FROM hdlog WHERE logType == \(type.rawValue)"
+        }
+        //TODO//
+        if let pagination = pagination {
+            queryString = queryString + " LIMIT \(pagination.size) OFFSET \(pagination.page * pagination.size)"
         }
         var queryStatement: OpaquePointer?
         //第一步
@@ -143,6 +154,7 @@ class HDSqliteTools {
 
 private extension HDSqliteTools {
     //获取数据库地址
+    //name格式 2022-01-01
     func _getDataBasePath(name: String? = nil) -> URL {
         let path = self.getDBFolder()
         if let name = name {

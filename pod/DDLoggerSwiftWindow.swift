@@ -129,7 +129,7 @@ class DDLoggerSwiftWindow: UIWindow {
     }()
 
     private lazy var mTableView: UITableView = {
-        let tableView = UITableView(frame: CGRect.zero, style: UITableView.Style.plain)
+        let tableView = UITableView(frame: CGRect.zero, style: UITableView.Style.grouped)
         if #available(iOS 15.0, *) {
             tableView.sectionHeaderTopPadding = 0
         }
@@ -510,6 +510,10 @@ private extension DDLoggerSwiftWindow {
     @objc private func _show() {
         self.isHidden = false
     }
+    
+    @objc private func _loadMore() {
+        
+    }
 
     //只隐藏log的输出窗口，保留悬浮图标
     func _hide() {
@@ -708,12 +712,18 @@ extension DDLoggerSwiftWindow: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 0.1
+        return 44
     }
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let view = UIView()
-        return view
+//        let view = UIView()
+        let button = UIButton()
+        button.setTitle("Load More 🔄", for: .normal)
+        button.setTitleColor(UIColor.dd.color(hexValue: 0xffffff), for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 14, weight: .bold)
+        button.backgroundColor = UIColor.dd.color(hexValue: 0x333333)
+        button.addTarget(self, action: #selector(_loadMore), for: .touchUpInside)
+        return button
     }
 }
 
