@@ -135,7 +135,7 @@ class DDLoggerSwiftWindow: UIWindow {
     }()
 
     private lazy var mTableView: UITableView = {
-        let tableView = UITableView(frame: CGRect.zero, style: UITableView.Style.grouped)
+        let tableView = UITableView(frame: CGRect.zero, style: UITableView.Style.plain)
         if #available(iOS 15.0, *) {
             tableView.sectionHeaderTopPadding = 0
         }
@@ -438,7 +438,8 @@ private extension DDLoggerSwiftWindow {
         if self.mMenuView.isAutoScrollSwitch {
             guard self.mDisplayLogDataArray.count > 1 else { return }
             DispatchQueue.main.async {
-                self.mTableView.scrollToRow(at: IndexPath(row: self.mDisplayLogDataArray.count - 1, section: 0), at: .bottom, animated: true)
+                self.mTableView.updateFocusIfNeeded()
+                self.mTableView.scrollToRow(at: IndexPath(row: self.mDisplayLogDataArray.count - 1, section: 0), at: .bottom, animated: false)
             }
         }
     }
@@ -668,7 +669,7 @@ extension DDLoggerSwiftWindow: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-//        let view = UIView()
+        let view = UIView()
         let button = UIButton()
         button.setTitle("Load More 🔄", for: .normal)
         button.setTitleColor(UIColor.dd.color(hexValue: 0xffffff), for: .normal)

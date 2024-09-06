@@ -17,6 +17,16 @@ class DDLoggerSwiftTableViewCell: UITableViewCell {
         label.font = UIFont.systemFont(ofSize: 13)
         return label
     }()
+    
+    private lazy var mIDLabel: UILabel = {
+        var label = UILabel()
+        label.textColor = UIColor.dd.color(hexValue: 0xcccccc)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 1
+        label.font = UIFont.systemFont(ofSize: 12)
+        return label
+    }()
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -44,9 +54,14 @@ class DDLoggerSwiftTableViewCell: UITableViewCell {
         self.mContentLabel.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -10).isActive = true
         self.mContentLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 10).isActive = true
         self.mContentLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -2).isActive = true
+        
+        self.contentView.addSubview(self.mIDLabel)
+        self.mIDLabel.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -10).isActive = true
+        self.mIDLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 10).isActive = true
     }
     
     func updateWithLoggerItem(loggerItem:DDLoggerSwiftItem, highlightText:String) {
+        self.mIDLabel.text = "#\(loggerItem.databaseID)"
         self.mContentLabel.textColor = loggerItem.mLogItemType.textColor()
         loggerItem.getHighlightAttributedString(highlightString: highlightText) { (hasHighlightStr, hightlightAttributedString) in
             self.mContentLabel.attributedText = hightlightAttributedString

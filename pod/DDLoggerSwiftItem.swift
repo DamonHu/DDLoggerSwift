@@ -17,6 +17,7 @@ enum Section: CaseIterable {
 ///log的内容
 public class DDLoggerSwiftItem {
     let identifier = UUID()                                 //用于hash计算
+    var databaseID: Int = 0                                 //存在database的id
     public var mLogItemType = DDLogType.debug             //log类型
     public var mLogDebugContent: String = ""              //log输出的文件、行数、函数名
     public var mLogContent: Any? = "DDLoggerSwift: Click Log To Copy"  //log的内容
