@@ -41,7 +41,6 @@ class DDLoggerSwiftWindow: UIWindow {
         self._init()
     }
     private var mDisplayLogDataArray = [DDLoggerSwiftItem]()  //tableview显示的logger
-    private var mFilterIndexArray = [IndexPath]()   //索引的排序
     private var mCurrentSearchIndex = 0             //当前搜索到的索引
     private var page: Int = 1   //第几页数据
     private var totalCount: Int = 0 //数量
@@ -366,7 +365,6 @@ extension DDLoggerSwiftWindow {
         //删除指定数据
         HDSqliteTools.shared.deleteLog(timeStamp: Date().timeIntervalSince1970)
         self.mDisplayLogDataArray.removeAll()
-        self.mFilterIndexArray.removeAll()
         self.page = 1
         self._reloadView()
     }
@@ -427,21 +425,8 @@ private extension DDLoggerSwiftWindow {
             let loggerItem = DDLoggerSwiftItem()
             self.mDisplayLogDataArray.append(loggerItem)
         }
-        self.mFilterIndexArray.removeAll()
-        self.mNextButton.isEnabled = false
-        self.mSearchNumLabel.text = "0"
-        //高亮
-        if let searchText = self.mSearchBar.text, !searchText.isEmpty {
-            for (index, item) in self.mDisplayLogDataArray.enumerated() {
-                if item.getFullContentString().localizedCaseInsensitiveContains(self.mSearchBar.text ?? "") {
-                    let indexPath = IndexPath(row: index, section: 0)
-                    self.mFilterIndexArray.append(indexPath)
-                    self.mNextButton.isEnabled = true
-                    self.mCurrentSearchIndex = self.mFilterIndexArray.count - 1;
-                    self.mSearchNumLabel.text = "\(self.mCurrentSearchIndex + 1)/\(self.mFilterIndexArray.count)"
-                }
-            }
-        }
+        self.mNextButton.isEnabled = !self.mDisplayLogDataArray.isEmpty
+        self.mSearchNumLabel.text = "\(self.mDisplayLogDataArray.count)"
         //全局刷新
         self.mTableView.reloadData()
         if self.mMenuView.isAutoScrollSwitch {
@@ -458,13 +443,13 @@ private extension DDLoggerSwiftWindow {
     }
 
     @objc private func _next() -> Void {
-        if (self.mFilterIndexArray.count > 0) {
+        if (self.mDisplayLogDataArray.count > 0) {
             self.mCurrentSearchIndex = self.mCurrentSearchIndex + 1;
-            if (self.mCurrentSearchIndex == self.mFilterIndexArray.count) {
+            if (self.mCurrentSearchIndex == self.mDisplayLogDataArray.count) {
                 self.mCurrentSearchIndex = 0;
             }
-            self.mSearchNumLabel.text = "\(self.mCurrentSearchIndex + 1)/\(self.mFilterIndexArray.count)"
-            self.mTableView.scrollToRow(at: self.mFilterIndexArray[self.mCurrentSearchIndex], at: UITableView.ScrollPosition.top, animated: true)
+            self.mSearchNumLabel.text = "\(self.mCurrentSearchIndex + 1)/\(self.mDisplayLogDataArray.count)"
+            self.mTableView.scrollToRow(at: IndexPath(row: self.mCurrentSearchIndex, section: 0), at: UITableView.ScrollPosition.top, animated: true)
         }
     }
 
