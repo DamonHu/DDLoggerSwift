@@ -16,7 +16,7 @@ import DDUtils
 class HDSqliteTools {
     static let shared = HDSqliteTools()
     private var logDB: OpaquePointer?
-    
+    private(set) var currentLogDBFilePath: String?
     init() {
         //开始新的数据
         self.logDB = self._openDatabase()
@@ -105,18 +105,20 @@ class HDSqliteTools {
             return []
         }
         let queryDB = self._openDatabase(name: name)
-        var queryString = "SELECT * FROM hdlog;"
+        var queryString = "SELECT * FROM hdlog"
+        var whereClauses: [String] = []
         if let keyword = keyword, !keyword.isEmpty {
-            if let type = type {
-                queryString = "SELECT * FROM hdlog WHERE log LIKE '%\(keyword)%' and logType == \(type.rawValue)"
-            } else {
-                queryString = "SELECT * FROM hdlog WHERE log LIKE '%\(keyword)%'"
-            }
-        } else if let type = type {
-            queryString = "SELECT * FROM hdlog WHERE logType == \(type.rawValue)"
+            whereClauses.append("log LIKE '%\(keyword)%'")
+        }
+        if let type = type {
+            whereClauses.append("logType == \(type.rawValue)")
+        }
+        // 如果有条件，拼接 WHERE 子句
+        if !whereClauses.isEmpty {
+            queryString += " WHERE " + whereClauses.joined(separator: " AND ")
         }
         if let pagination = pagination {
-            queryString = queryString + " LIMIT \(pagination.size) OFFSET \(pagination.page * pagination.size)"
+            queryString = queryString + " LIMIT \(pagination.size) OFFSET \((pagination.page - 1) * pagination.size)"
         }
         var queryStatement: OpaquePointer?
         //第一步
@@ -142,8 +144,8 @@ class HDSqliteTools {
         return logList
     }
     
-    func getItemCount(type: DDLogType?) -> Int {
-        return self._getItemCount(type: type)
+    func getItemCount(keyword: String? = nil, type: DDLogType? = nil) -> Int {
+        return self._getItemCount(keyword: keyword, type: type)
     }
     
     func deleteLog(timeStamp: Double) {
@@ -170,8 +172,10 @@ private extension HDSqliteTools {
         let dbPath = self._getDataBasePath(name: name)
         if sqlite3_open_v2(dbPath.path, &db, SQLITE_OPEN_READWRITE|SQLITE_OPEN_CREATE|SQLITE_OPEN_FULLMUTEX, nil) == SQLITE_OK {
             //            print("成功打开数据库\(dbPath.absoluteString)")
+            self.currentLogDBFilePath = dbPath.path
             return db
         } else {
+            self.currentLogDBFilePath = nil
             print("DDLoggerSwift_打开数据库失败")
             return nil
         }
@@ -195,7 +199,7 @@ private extension HDSqliteTools {
         sqlite3_finalize(createTableStatement)
     }
     
-    func _getItemCount(type: DDLogType?) -> Int {
+    func _getItemCount(keyword: String? = nil, type: DDLogType? = nil) -> Int {
         var count = 0
         let databasePath = self._getDataBasePath()
         guard FileManager.default.fileExists(atPath: databasePath.path) else {
@@ -204,8 +208,16 @@ private extension HDSqliteTools {
         }
         let queryDB = self.logDB
         var queryString = "SELECT COUNT(*) FROM hdlog"
+        var whereClauses: [String] = []
+        if let keyword = keyword, !keyword.isEmpty {
+            whereClauses.append("log LIKE '%\(keyword)%'")
+        }
         if let type = type {
-            queryString = "SELECT COUNT(*) FROM hdlog WHERE logType == \(type.rawValue)"
+            whereClauses.append("logType == \(type.rawValue)")
+        }
+        // 如果有条件，拼接 WHERE 子句
+        if !whereClauses.isEmpty {
+            queryString += " WHERE " + whereClauses.joined(separator: " AND ")
         }
         var queryStatement: OpaquePointer?
         //第一步
