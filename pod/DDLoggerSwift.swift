@@ -120,7 +120,7 @@ public class DDLoggerSwift {
     public static var DBParentFolder = DDUtils.shared.getFileDirectory(type: .documents)
     public static var uploadComplete: ((URL) ->Void)?   //点击上传日志的回调
     public static var throttleTime: TimeInterval = 2    //延迟写入数据库的时间，单位秒，频繁输出的话，通过该参数可批量写入提高运行和写入性能
-    public static var maxPageSize: Int = 100        //load more的最大条数
+    public static var maxPageSize: Int = 100        //load more的最大条数, 0为不分页
     /*隐私数据采用AESCBC加密
      *需要设置密码privacyLogPassword
      *初始向量privacyLogIv
@@ -337,8 +337,15 @@ public class DDLoggerSwift {
 
     /// 删除本地日志文件，如不指定则删除所有文件
     public class func deleteLogFile(date: Date? = nil) {
+        let currentLogDBFilePath = HDSqliteTools.shared.currentLogDBFilePath
         if let date = date {
-            try? FileManager.default.removeItem(at: self.getDBFile(date: date))
+            //正在使用的数据库禁止删除
+            let removePath = self.getDBFile(date: date)
+            if removePath.path == currentLogDBFilePath {
+                print("permission deny")
+                return
+            }
+            try? FileManager.default.removeItem(at: removePath)
         } else {
             let dbFolder = self.getDBFolder()
             if let enumer = FileManager.default.enumerator(atPath: dbFolder.path) {
@@ -346,7 +353,11 @@ public class DDLoggerSwift {
                     if let file: String = file as? String {
                         if file.hasSuffix(".db") {
                             let logFilePath = dbFolder.appendingPathComponent(file, isDirectory: false)
-                            try? FileManager.default.removeItem(at: logFilePath)
+                            if logFilePath.path == currentLogDBFilePath {
+                                print("permission deny")
+                            } else {
+                                try? FileManager.default.removeItem(at: logFilePath)
+                            }
                         }
                     }
                 }
