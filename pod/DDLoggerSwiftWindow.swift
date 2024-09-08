@@ -44,6 +44,7 @@ class DDLoggerSwiftWindow: UIWindow {
     private var mFilterIndexArray = [IndexPath]()   //索引的排序
     private var mCurrentSearchIndex = 0             //当前搜索到的索引
     private var page: Int = 1   //第几页数据
+    private var totalCount: Int = 0 //数量
     
     override var isHidden: Bool {
         willSet {
@@ -407,11 +408,19 @@ private extension DDLoggerSwiftWindow {
 
     //过滤刷新
     private func _reloadView() {
-        let dataArray = HDSqliteTools.shared.getLogs(name: self.dataBaseName, keyword: self.mSearchBar.text, type: self.filterType, pagination: (self.page, DDLoggerSwift.maxPageSize))
-        if self.page == 1 {
-            self.mDisplayLogDataArray = dataArray
+        var dataArray = [DDLoggerSwiftItem]()
+        self.totalCount = HDSqliteTools.shared.getItemCount(keyword: self.mSearchBar.text, type: self.filterType)
+        if DDLoggerSwift.maxPageSize > 0 {
+            dataArray = HDSqliteTools.shared.getLogs(name: self.dataBaseName, keyword: self.mSearchBar.text, type: self.filterType, pagination: (self.page, DDLoggerSwift.maxPageSize))
+            if self.page == 1 {
+                self.mDisplayLogDataArray = dataArray
+            } else {
+                self.mDisplayLogDataArray.append(contentsOf: dataArray)
+            }
         } else {
-            self.mDisplayLogDataArray.append(contentsOf: dataArray)
+            //不分页
+            dataArray = HDSqliteTools.shared.getLogs(name: self.dataBaseName, keyword: self.mSearchBar.text, type: self.filterType)
+            self.mDisplayLogDataArray = dataArray
         }
         if self.mDisplayLogDataArray.isEmpty {
             //第一条信息
@@ -464,7 +473,15 @@ private extension DDLoggerSwiftWindow {
     }
     
     @objc private func _loadMore() {
-        self.page = self.page + 1
+        self.totalCount = HDSqliteTools.shared.getItemCount(keyword: self.mSearchBar.text, type: self.filterType)
+        if (DDLoggerSwift.maxPageSize > 0) {
+            let maxPage = self.totalCount / DDLoggerSwift.maxPageSize
+            if self.page >= maxPage {
+                self.page = maxPage
+            } else {
+                self.page = self.page + 1
+            }
+        }
         self._reloadView()
     }
 
@@ -669,9 +686,8 @@ extension DDLoggerSwiftWindow: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let view = UIView()
         let button = UIButton()
-        button.setTitle("Load More 🔄", for: .normal)
+        button.setTitle("🔄 Load More, 📊 (total count: \(self.totalCount))", for: .normal)
         button.setTitleColor(UIColor.dd.color(hexValue: 0xffffff), for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 14, weight: .bold)
         button.backgroundColor = UIColor.dd.color(hexValue: 0x333333)
