@@ -120,7 +120,7 @@ public class DDLoggerSwift {
     public static var DBParentFolder = DDUtils.shared.getFileDirectory(type: .documents)
     public static var uploadComplete: ((URL) ->Void)?   //点击上传日志的回调
     public static var throttleTime: TimeInterval = 2    //延迟写入数据库的时间，单位秒，频繁输出的话，通过该参数可批量写入提高运行和写入性能
-    public static var maxPageSize: Int = 100        //load more的最大条数, 0为不分页
+    public static var maxPageSize: Int = 0        //table展示的分页, 0为不分页
     /*隐私数据采用AESCBC加密
      *需要设置密码privacyLogPassword
      *初始向量privacyLogIv
