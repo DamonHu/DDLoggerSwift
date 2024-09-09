@@ -168,10 +168,10 @@ DDLoggerSwift.close()
 DDLoggerSwift.hide()
 ```
 
-### 7、set the log maximum number of records,  0 is not limited, default value is 100
+### 7、set the log maximum number of pagination,  0 is not limited, default value is 0
 
 ```
-DDLoggerSwift.maxDisplayCount = 100
+DDLoggerSwift.maxPageSize = 0
 ```
 ### 8、 delete the local LogFile
 
@@ -255,7 +255,7 @@ DDLoggerSwift.uploadComplete = { file in
 
 ### 14、 Throttling
 
-Refreshing the interface with a large amount of output content in a short period of time can cause a large amount of CPU computation. Therefore, a throttling method can be adopted, and a timed refresh interface can be set in seconds, with a default value of 0
+Refreshing the interface with a large amount of output content in a short period of time can cause a large amount of CPU computation. Therefore, a throttling method can be adopted, and a timed refresh interface can be set in seconds, with a default value of 2
 
 ```
 DDLoggerSwift.throttleTime = 2
