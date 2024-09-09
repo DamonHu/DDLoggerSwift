@@ -86,7 +86,7 @@ class ViewController: UIViewController {
         printPrivacy("这个是加密数据的测试数据222")
 //
         let startTime = DispatchTime.now()
-        for i in 0..<10 {
+        for i in 0..<100 {
 //            print("\(i)")
             printLog("\(i)")
 //            printLog("测试输出，默认不会写入数据库","222222","3333333")
