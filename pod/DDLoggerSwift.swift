@@ -120,7 +120,7 @@ public class DDLoggerSwift {
     public static var DBParentFolder = DDUtils.shared.getFileDirectory(type: .documents)
     public static var uploadComplete: ((URL) ->Void)?   //点击上传日志的回调
     public static var throttleTime: TimeInterval = 2    //延迟写入数据库的时间，单位秒，频繁输出的话，通过该参数可批量写入提高运行和写入性能
-    public static var maxPageSize: Int = 0        //table展示的分页, 0为不分页
+    public static var maxPageSize: Int = 10000        //table展示的分页, 0为不分页
     /*隐私数据采用AESCBC加密
      *需要设置密码privacyLogPassword
      *初始向量privacyLogIv
@@ -205,37 +205,13 @@ public class DDLoggerSwift {
                 //设置节流
                 let currentTime = Date().timeIntervalSince1970
                 if let lastUpdateTime = shared.lastUpdateTime, currentTime - lastUpdateTime > throttleTime {
-                    if shared.throttleTimer != nil {
-                        shared.throttleTimer?.invalidate()
-                        shared.throttleTimer = nil
-                    }
-                    let chunkList = shared.chunkList
-                    //写入文件
-                    if self.storageLevels.contains(logType) {
-                        self.shared._writeDB(logs: chunkList)
-                    }
-                    shared.chunkList.removeAll()
-                    shared.lastUpdateTime = nil
+                    self._flushLogs()
                 } else {
-                    shared.chunkList.append(loggerItem)
-                    if shared.lastUpdateTime == nil {
-                        shared.lastUpdateTime = Date().timeIntervalSince1970
+                    // 将日志添加到缓存列表中
+                    if self.storageLevels.contains(logType) {
+                        shared.chunkList.append(loggerItem)
                     }
-                    if shared.throttleTimer != nil {
-                        shared.throttleTimer?.invalidate()
-                        shared.throttleTimer = nil
-                    }
-                    shared.throttleTimer = Timer(timeInterval: throttleTime, repeats: false) { timer in
-                        timer.invalidate()
-                        let chunkList = shared.chunkList
-                        //写入文件
-                        if self.storageLevels.contains(logType) {
-                            self.shared._writeDB(logs: chunkList)
-                        }
-                        shared.chunkList.removeAll()
-                        shared.lastUpdateTime = nil
-                    }
-                    RunLoop.main.add(shared.throttleTimer!, forMode: .common)
+                    self._scheduleThrottle()
                 }
             } else {
                 //写入文件
@@ -404,6 +380,33 @@ public class DDLoggerSwift {
 private extension DDLoggerSwift {
     func _writeDB(logs: [DDLoggerSwiftItem]) -> Void {
         HDSqliteTools.shared.insert(logs: logs)
+    }
+    
+    // 计划节流机制
+    class func _scheduleThrottle() {
+        if shared.throttleTimer != nil {
+            shared.throttleTimer?.invalidate()
+        }
+        shared.throttleTimer = Timer(timeInterval: throttleTime, repeats: false) { _ in
+            self._flushLogs()
+        }
+        RunLoop.main.add(shared.throttleTimer!, forMode: .common)
+        // 更新最后一次操作时间
+        if shared.lastUpdateTime == nil {
+            shared.lastUpdateTime = Date().timeIntervalSince1970
+        }
+    }
+
+    // 刷新并写入缓存日志
+    class func _flushLogs() {
+        if shared.chunkList.isEmpty { return }
+
+        let chunkList = shared.chunkList
+        self.shared._writeDB(logs: chunkList)
+        shared.chunkList.removeAll()
+        shared.lastUpdateTime = nil
+        shared.throttleTimer?.invalidate()
+        shared.throttleTimer = nil
     }
     
     func _checkValidity() {
