@@ -79,7 +79,8 @@ class HDSqliteTools {
             
             // 提交事务
             if sqlite3_exec(logDB, "COMMIT", nil, nil, nil) == SQLITE_OK {
-                print("Transaction committed successfully")
+//                print("Transaction committed successfully")
+                NotificationCenter.default.post(name: .DDLoggerSwiftDBUpdate, object: ["type": "insert"] as [String : Any])
             } else {
                 print("Commit failed: \(String(cString: sqlite3_errmsg(logDB)))")
                 // 如果提交失败，可以选择回滚事务
