@@ -165,7 +165,25 @@ class DDLoggerSwiftWindow: UIWindow {
         let button = UIButton(type: .custom)
         button.tag = 0
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(UIImageHDBoundle(named: "icon_scale"), for: .normal)
+        button.setImage(UIImageHDBoundle(named: "log_icon_scale"), for: .normal)
+        button.addTarget(self, action: #selector(_bindClick(button:)), for: .touchUpInside)
+        return button
+    }()
+    
+    lazy var mCloseButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.tag = 3
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImageHDBoundle(named: "log_icon_close"), for: .normal)
+        button.addTarget(self, action: #selector(_bindClick(button:)), for: .touchUpInside)
+        return button
+    }()
+    
+    lazy var mHiddenButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.tag = 4
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImageHDBoundle(named: "log_icon_subtract"), for: .normal)
         button.addTarget(self, action: #selector(_bindClick(button:)), for: .touchUpInside)
         return button
     }()
@@ -188,14 +206,7 @@ class DDLoggerSwiftWindow: UIWindow {
         return button
     }()
     
-    lazy var mCloseButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.tag = 3
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(UIImageHDBoundle(named: "icon_exit"), for: .normal)
-        button.addTarget(self, action: #selector(_bindClick(button:)), for: .touchUpInside)
-        return button
-    }()
+    
     
     private lazy var mMenuView: DDLoggerSwiftMenuView = {
         let tMenuView = DDLoggerSwiftMenuView()
@@ -207,22 +218,18 @@ class DDLoggerSwiftWindow: UIWindow {
                 case 0:
                     break
                 case 1:
-                    self._hide()
-                case 2:
-                    self._close()
-                case 3:
                     DDLoggerSwift.showShare(isCloseWhenComplete: false)
-                case 4:
+                case 2:
                     self.isDecryptViewHidden = false
-                case 5:
+                case 3:
                     DDLoggerSwift.fileSelectedComplete = { filePath, name in
                         self.dataBaseName = name
                     }
                     DDLoggerSwift.showFileFilter()
                 break
-                case 6:
+                case 4:
                     break
-                case 7:
+                case 5:
                     let folder = DDLoggerSwift.getDBFolder()
                     let size = DDUtils.shared.getFileDirectorySize(fileDirectoryPth: folder)
                     //数据库条数
@@ -251,7 +258,7 @@ class DDLoggerSwiftWindow: UIWindow {
                         📈 \("LogFile total size".ZXLocaleString): \(size/1024.0)kb
                     """
                     printWarn(info)
-                case 8:
+                case 6:
                     DDLoggerSwift.showUpload(isCloseWhenComplete: false)
                 default:
                     break
@@ -399,6 +406,8 @@ private extension DDLoggerSwiftWindow {
                 self.cleanLog()
             case 3:
                 DDLoggerSwift.close()
+            case 4:
+                DDLoggerSwift.hide()
             default:
                 break
         }
@@ -516,30 +525,36 @@ private extension DDLoggerSwiftWindow {
         self.mNavigationBar.leftAnchor.constraint(equalTo: self.mContentBGView.leftAnchor).isActive = true
         self.mNavigationBar.rightAnchor.constraint(equalTo: self.mContentBGView.rightAnchor).isActive = true
         self.mNavigationBar.heightAnchor.constraint(equalToConstant: 40 + UIApplication.shared.statusBarFrame.height).isActive = true
-        //放大
-        self.mNavigationBar.addSubview(self.mScaleButton)
-        mScaleButton.bottomAnchor.constraint(equalTo: self.mNavigationBar.bottomAnchor, constant: -10).isActive = true
-        mScaleButton.leftAnchor.constraint(equalTo: self.mNavigationBar.leftAnchor, constant: 20).isActive = true
-        mScaleButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
-        mScaleButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        //清除
-        self.mNavigationBar.addSubview(self.mDeleteButton)
-        mDeleteButton.centerYAnchor.constraint(equalTo: self.mScaleButton.centerYAnchor).isActive = true
-        mDeleteButton.leftAnchor.constraint(equalTo: self.mScaleButton.rightAnchor, constant: 25).isActive = true
-        mDeleteButton.widthAnchor.constraint(equalToConstant: 25).isActive = true
-        mDeleteButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
         //关闭
         self.mNavigationBar.addSubview(self.mCloseButton)
-        mCloseButton.centerYAnchor.constraint(equalTo: self.mScaleButton.centerYAnchor).isActive = true
-        mCloseButton.rightAnchor.constraint(equalTo: self.mNavigationBar.rightAnchor, constant: -20).isActive = true
-        mCloseButton.widthAnchor.constraint(equalToConstant: 23).isActive = true
-        mCloseButton.heightAnchor.constraint(equalToConstant: 23).isActive = true
+        mCloseButton.bottomAnchor.constraint(equalTo: self.mNavigationBar.bottomAnchor, constant: -10).isActive = true
+        mCloseButton.leftAnchor.constraint(equalTo: self.mNavigationBar.leftAnchor, constant: 10).isActive = true
+        mCloseButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
+        mCloseButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        //隐藏
+        self.mNavigationBar.addSubview(self.mHiddenButton)
+        mHiddenButton.centerYAnchor.constraint(equalTo: self.mCloseButton.centerYAnchor).isActive = true
+        mHiddenButton.leftAnchor.constraint(equalTo: self.mCloseButton.rightAnchor, constant: 10).isActive = true
+        mHiddenButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
+        mHiddenButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        //放大
+        self.mNavigationBar.addSubview(self.mScaleButton)
+        mScaleButton.centerYAnchor.constraint(equalTo: self.mHiddenButton.centerYAnchor).isActive = true
+        mScaleButton.leftAnchor.constraint(equalTo: self.mHiddenButton.rightAnchor, constant: 10).isActive = true
+        mScaleButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
+        mScaleButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
         //菜单
         self.mNavigationBar.addSubview(self.mMenuButton)
         mMenuButton.centerYAnchor.constraint(equalTo: self.mScaleButton.centerYAnchor).isActive = true
-        mMenuButton.rightAnchor.constraint(equalTo: self.mCloseButton.leftAnchor, constant: -25).isActive = true
+        mMenuButton.rightAnchor.constraint(equalTo: self.mNavigationBar.rightAnchor, constant: -20).isActive = true
         mMenuButton.widthAnchor.constraint(equalToConstant: 23).isActive = true
         mMenuButton.heightAnchor.constraint(equalToConstant: 23).isActive = true
+        //清除
+        self.mNavigationBar.addSubview(self.mDeleteButton)
+        mDeleteButton.centerYAnchor.constraint(equalTo: self.mScaleButton.centerYAnchor).isActive = true
+        mDeleteButton.rightAnchor.constraint(equalTo: self.mMenuButton.leftAnchor, constant: -20).isActive = true
+        mDeleteButton.widthAnchor.constraint(equalToConstant: 25).isActive = true
+        mDeleteButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
         //标题
         self.mNavigationBar.addSubview(self.mTipLabel)
         self.mTipLabel.centerXAnchor.constraint(equalTo: self.mNavigationBar.centerXAnchor).isActive = true
