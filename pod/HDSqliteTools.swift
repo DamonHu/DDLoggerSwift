@@ -107,6 +107,7 @@ class HDSqliteTools {
         }
         let queryDB = self._openDatabase(name: name)
         var queryString = "SELECT * FROM hdlog"
+        //查询条件
         var whereClauses: [String] = []
         if let keyword = keyword, !keyword.isEmpty {
             whereClauses.append("log LIKE '%\(keyword)%'")
@@ -116,11 +117,14 @@ class HDSqliteTools {
         }
         // 如果有条件，拼接 WHERE 子句
         if !whereClauses.isEmpty {
-            queryString += " WHERE " + whereClauses.joined(separator: " AND ")
+            queryString += " WHERE " + whereClauses.joined(separator: " AND ") + " ORDER BY id DESC"
+        } else {
+            queryString = queryString + " ORDER BY id DESC"
         }
         if let pagination = pagination {
             queryString = queryString + " LIMIT \(pagination.size) OFFSET \((pagination.page - 1) * pagination.size)"
         }
+        
         var queryStatement: OpaquePointer?
         //第一步
         var logList = [DDLoggerSwiftItem]()

@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 s.name = 'DDLoggerSwift'
 s.swift_version = '5.0'
-s.version = '5.1.4'
+s.version = '5.1.5'
 s.license= { :type => "MIT", :file => "LICENSE" }
 s.summary = 'The iOS side displays the output log log on the screen, and can generate log file sharing, which is convenient for debugging information'
 s.homepage = 'https://github.com/DamonHu/DDLoggerSwift'
@@ -9,7 +9,7 @@ s.authors = { 'ZXKitCode' => 'dong765@qq.com' }
 s.source = { :git => "https://github.com/DamonHu/DDLoggerSwift.git", :tag => s.version}
 s.requires_arc = true
 s.ios.deployment_target = '11.0'
-s.documentation_url = 'https://ddceo.com/blog/1305.html'
+s.documentation_url = 'https://dongge.org/blog/1305.html'
 s.subspec 'core' do |cs|
     cs.resource_bundles = {
       'DDLoggerSwift' => ['pod/assets/**/*']

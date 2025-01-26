@@ -52,12 +52,12 @@ class DDLoggerSwiftTableViewCell: UITableViewCell {
         self.contentView.addSubview(self.mContentLabel)
         self.mContentLabel.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 10).isActive = true
         self.mContentLabel.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -10).isActive = true
-        self.mContentLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 10).isActive = true
+        self.mContentLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 15).isActive = true
         self.mContentLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -2).isActive = true
         
         self.contentView.addSubview(self.mIDLabel)
         self.mIDLabel.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -10).isActive = true
-        self.mIDLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 10).isActive = true
+        self.mIDLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 3).isActive = true
     }
     
     func updateWithLoggerItem(loggerItem:DDLoggerSwiftItem, highlightText:String) {
