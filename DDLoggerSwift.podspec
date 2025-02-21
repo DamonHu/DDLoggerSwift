@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 s.name = 'DDLoggerSwift'
 s.swift_version = '5.0'
-s.version = '5.1.6'
+s.version = '5.1.7'
 s.license= { :type => "MIT", :file => "LICENSE" }
 s.summary = 'The iOS side displays the output log log on the screen, and can generate log file sharing, which is convenient for debugging information'
 s.homepage = 'https://github.com/DamonHu/DDLoggerSwift'
@@ -15,7 +15,7 @@ s.subspec 'core' do |cs|
       'DDLoggerSwift' => ['pod/assets/**/*']
     }
     cs.library = 'sqlite3'
-    cs.source_files = "pod/*.swift", "pod/view/*.swift"
+    cs.source_files = "pod/*.swift", "pod/view/*.swift", "pod/model/*.swift"
     cs.dependency 'DDUtils/ui', '~>5'
     cs.dependency 'DDUtils/utils', '~>5'
 end
