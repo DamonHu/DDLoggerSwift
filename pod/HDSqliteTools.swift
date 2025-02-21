@@ -45,6 +45,28 @@ class HDSqliteTools {
         return newFolder
     }
     
+    //获取第一个id，以便判断是否有更多
+    func getMinLogID(name: String? = nil) -> Int? {
+        let databasePath = self._getDataBasePath(name: name)
+        guard FileManager.default.fileExists(atPath: databasePath.path) else {
+            return nil
+        }
+        let queryDB = self._openDatabase(name: name)
+        let queryString = "SELECT MIN(id) FROM hdlog"
+        
+        var queryStatement: OpaquePointer?
+        var minID: Int?
+        
+        if sqlite3_prepare_v2(queryDB, queryString, -1, &queryStatement, nil) == SQLITE_OK {
+            if sqlite3_step(queryStatement) == SQLITE_ROW {
+                minID = Int(sqlite3_column_int(queryStatement, 0))
+            }
+        }
+        
+        sqlite3_finalize(queryStatement)
+        return minID
+    }
+    
     //批量插入数据
     func insert(logs: [DDLoggerSwiftItem]) {
         if (logs.isEmpty) {
@@ -97,9 +119,10 @@ class HDSqliteTools {
     ///   - name: 数据库名称，格式 2022-01-01，默认为当天日志
     ///   - keyword: 指定关键字
     ///   - type: 过滤消息类型
-    ///   - pagination: 分页数据，page为页码，size为每页数量
+    ///   - startID: 查询开始的id，没有的话去最新数据
+    ///   - pageSize: 如果分页的话，每页数量
     /// - Returns: 获取的日志
-    func getLogs(name: String? = nil, keyword: String? = nil, type: DDLogType? = nil, pagination: (page: Int, size:Int)? = nil) -> [DDLoggerSwiftItem] {
+    func getLogs(name: String? = nil, keyword: String? = nil, type: DDLogType? = nil, startID: Int? = nil, pageSize: Int? = nil) -> [DDLoggerSwiftItem] {
         let databasePath = self._getDataBasePath(name: name)
         guard FileManager.default.fileExists(atPath: databasePath.path) else {
             //数据库文件不存在
@@ -115,14 +138,17 @@ class HDSqliteTools {
         if let type = type {
             whereClauses.append("logType == \(type.rawValue)")
         }
+        if let startID = startID {
+            whereClauses.append("id < \(startID)")
+        }
         // 如果有条件，拼接 WHERE 子句
         if !whereClauses.isEmpty {
             queryString += " WHERE " + whereClauses.joined(separator: " AND ") + " ORDER BY id DESC"
         } else {
             queryString = queryString + " ORDER BY id DESC"
         }
-        if let pagination = pagination {
-            queryString = queryString + " LIMIT \(pagination.size) OFFSET \((pagination.page - 1) * pagination.size)"
+        if let pageSize = pageSize {
+            queryString = queryString + " LIMIT \(pageSize)"
         }
         
         var queryStatement: OpaquePointer?

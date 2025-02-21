@@ -121,6 +121,7 @@ public class DDLoggerSwift {
     public static var uploadComplete: ((URL) ->Void)?   //点击上传日志的回调
     public static var throttleTime: TimeInterval = 2    //延迟写入数据库的时间，单位秒，频繁输出的话，通过该参数可批量写入提高运行和写入性能
     public static var maxPageSize: Int = 10000        //table展示的分页, 0为不分页
+    public static var cellDisplayCount: Int = 600     //tablecell展示的字数，太长布局会有效率问题
     /*隐私数据采用AESCBC加密
      *需要设置密码privacyLogPassword
      *初始向量privacyLogIv
@@ -238,7 +239,7 @@ public class DDLoggerSwift {
             let dateString = DDLoggerSwift.dateFormatter.string(from: date)
             name = dateString
         }
-        return HDSqliteTools.shared.getLogs(name: name, keyword: keyword, type: type, pagination: pagination)
+        return HDSqliteTools.shared.getLogs(name: name, keyword: keyword, type: type, startID: nil, pageSize: nil)
     }
 
     ///获取log日志的数据库

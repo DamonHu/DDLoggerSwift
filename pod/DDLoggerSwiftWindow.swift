@@ -40,20 +40,11 @@ class DDLoggerSwiftWindow: UIWindow {
         super.init(frame: frame)
         self._init()
     }
-    private var mDisplayLogDataArray = [DDLoggerSwiftItem]()  //tableview显示的logger
+    private var mDisplayLogDataArray = [DDLoggerSwiftTableCellModel]()  //tableview显示的logger
     private var mCurrentSearchIndex = 0             //当前搜索到的索引
-    private var page: Int = 1   //第几页数据
+    private var lastIndexID: Int? = nil   //最后索引的id
     private var hasMore = true
-    private var totalCount: Int = 0 {
-        didSet {
-            if DDLoggerSwift.maxPageSize > 0 {
-                let maxPage = self.totalCount / DDLoggerSwift.maxPageSize
-                self.hasMore = maxPage > self.page
-            } else {
-                self.hasMore = false
-            }
-        }
-    } //数量
+    private var totalCount: Int = 0//数量
     
     override var isHidden: Bool {
         willSet {
@@ -426,25 +417,33 @@ private extension DDLoggerSwiftWindow {
     }
 
     //过滤刷新
-    private func _reloadView() {
+    @objc private func _reloadView() {
         var dataArray = [DDLoggerSwiftItem]()
         self.totalCount = HDSqliteTools.shared.getItemCount(keyword: self.mSearchBar.text, type: self.filterType)
         if DDLoggerSwift.maxPageSize > 0 {
-            dataArray = HDSqliteTools.shared.getLogs(name: self.dataBaseName, keyword: self.mSearchBar.text, type: self.filterType, pagination: (self.page, DDLoggerSwift.maxPageSize))
-            if self.page == 1 {
-                self.mDisplayLogDataArray = dataArray
+            dataArray = HDSqliteTools.shared.getLogs(name: self.dataBaseName, keyword: self.mSearchBar.text, type: self.filterType, startID: self.lastIndexID, pageSize: DDLoggerSwift.maxPageSize)
+            if self.lastIndexID == nil {
+                self.mDisplayLogDataArray = dataArray.map({ item in
+                    return DDLoggerSwiftTableCellModel(model: item)
+                })
             } else {
-                self.mDisplayLogDataArray.append(contentsOf: dataArray)
+                self.mDisplayLogDataArray.append(contentsOf: dataArray.map({ item in
+                    return DDLoggerSwiftTableCellModel(model: item)
+                }))
             }
+            self.lastIndexID = self.mDisplayLogDataArray.last?.logItem.databaseID
+            self.hasMore = self.lastIndexID != HDSqliteTools.shared.getMinLogID()
         } else {
             //不分页
-            dataArray = HDSqliteTools.shared.getLogs(name: self.dataBaseName, keyword: self.mSearchBar.text, type: self.filterType)
-            self.mDisplayLogDataArray = dataArray
+            dataArray = HDSqliteTools.shared.getLogs(name: self.dataBaseName, keyword: self.mSearchBar.text, type: self.filterType, startID: nil, pageSize: nil)
+            self.mDisplayLogDataArray = dataArray.map({ item in
+                return DDLoggerSwiftTableCellModel(model: item)
+            })
+            self.hasMore = false
         }
         if self.mDisplayLogDataArray.isEmpty {
             //第一条信息
-            let loggerItem = DDLoggerSwiftItem()
-            self.mDisplayLogDataArray.append(loggerItem)
+            self.mDisplayLogDataArray.append(DDLoggerSwiftTableCellModel())
         }
         self.mNextButton.isEnabled = !self.mDisplayLogDataArray.isEmpty
         self.mSearchNumLabel.text = "\(self.mDisplayLogDataArray.count)"
@@ -473,21 +472,7 @@ private extension DDLoggerSwiftWindow {
     }
     
     @objc private func _resetData() {
-        self.page = 1
-        self._reloadView()
-    }
-    
-    @objc private func _loadMore() {
-        self.totalCount = HDSqliteTools.shared.getItemCount(keyword: self.mSearchBar.text, type: self.filterType)
-        if (DDLoggerSwift.maxPageSize > 0) {
-            let maxPage = self.totalCount / DDLoggerSwift.maxPageSize
-            if self.page >= maxPage {
-                self.page = maxPage
-                return
-            } else {
-                self.page = self.page + 1
-            }
-        }
+        self.lastIndexID = nil
         self._reloadView()
     }
 
@@ -653,20 +638,25 @@ extension DDLoggerSwiftWindow: UITableViewDataSource, UITableViewDelegate {
         let loggerCell = tableView.dequeueReusableCell(withIdentifier: "DDLoggerSwiftTableViewCell") as! DDLoggerSwiftTableViewCell
         loggerCell.backgroundColor = UIColor.clear
         loggerCell.selectionStyle = .none
-        loggerCell.updateWithLoggerItem(loggerItem: loggerItem, highlightText: self.mSearchBar.text ?? "")
+        loggerCell.updateWithLoggerItem(model: loggerItem, highlightText: self.mSearchBar.text ?? "")
         return loggerCell
     }
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let loggerItem = self.mDisplayLogDataArray[indexPath.row]
-        let pasteboard = UIPasteboard.general
-        pasteboard.string = loggerItem.getFullContentString()
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "HH:mm:ss.SSS"
-        let dateStr = dateFormatter.string(from: loggerItem.mCreateDate)
-        let tipString = dateStr + " " + "Log has been copied".ZXLocaleString
-        printWarn(tipString)
+        let model = self.mDisplayLogDataArray[indexPath.row]
+        if model.isCollapse {
+            model.isCollapse = false
+            tableView.reloadRows(at: [indexPath], with: .fade)
+        } else {
+            let pasteboard = UIPasteboard.general
+            pasteboard.string = model.logItem.getFullContentString()
+            //提醒
+            let alert = UIAlertController(title: "copy success", message: "Log has been copied".ZXLocaleString, preferredStyle: .alert)
+            self.rootViewController?.present(alert, animated: true)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                alert.dismiss(animated: true)
+            }
+        }
     }
 
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -704,7 +694,7 @@ extension DDLoggerSwiftWindow: UITableViewDataSource, UITableViewDelegate {
             button.setTitleColor(UIColor.dd.color(hexValue: 0xffffff), for: .normal)
             button.titleLabel?.font = .systemFont(ofSize: 14, weight: .bold)
             button.backgroundColor = UIColor.dd.color(hexValue: 0x333333)
-            button.addTarget(self, action: #selector(_loadMore), for: .touchUpInside)
+            button.addTarget(self, action: #selector(_reloadView), for: .touchUpInside)
         }
         return button
     }

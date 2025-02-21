@@ -29,6 +29,21 @@ public class DDLoggerSwiftItem {
 }
 
 public extension DDLoggerSwiftItem {
+    func icon() -> String {
+        switch mLogItemType {
+        case .info:
+            return "✅"
+        case .warn:
+            return "⚠️"
+        case .error:
+            return "❌"
+        case .privacy:
+            return "⛔️"
+        default:
+            return "💜"
+        }
+    }
+    
     //LogContent转字符串格式化
     func getLogContent() -> String {
         var contentString = ""
@@ -53,39 +68,16 @@ public extension DDLoggerSwiftItem {
         let contentString = self.getLogContent()
         //所有的内容
         if DDLoggerSwift.isFullLogOut {
-            switch mLogItemType {
-                case .info:
-                    return dateStr + " ---- ✅✅ ---- " +  mLogDebugContent + "\n" + contentString + "\n"
-                case .warn:
-                    return dateStr + " ---- ⚠️⚠️ ---- " +  mLogDebugContent + "\n" + contentString + "\n"
-                case .error:
-                    return dateStr + " ---- ❌❌ ---- " +  mLogDebugContent + "\n" + contentString + "\n"
-                case .privacy:
-                    return dateStr + " ---- ⛔️⛔️ ---- " +  mLogDebugContent + "\n" + contentString + "\n"
-                default:
-                    return dateStr + " ---- 💜💜 ---- " +  mLogDebugContent + "\n" + contentString + "\n"
-            }
+            return dateStr + " ---- \(self.icon())\(self.icon()) ---- " +  mLogDebugContent + "\n" + contentString + "\n"
         } else {
-            switch mLogItemType {
-                case .info:
-                    return dateStr + " ---- ✅✅ ---- " + "\n" + contentString + "\n"
-                case .warn:
-                    return dateStr + " ---- ⚠️⚠️ ---- " + "\n" + contentString + "\n"
-                case .error:
-                    return dateStr + " ---- ❌❌ ---- " + "\n" + contentString + "\n"
-                case .privacy:
-                    return dateStr + " ---- ⛔️⛔️ ---- " + "\n" + contentString + "\n"
-                default:
-                    return dateStr + " ---- 💜💜 ---- " + "\n" + contentString + "\n"
-            }
+            return dateStr + " ---- \(self.icon())\(self.icon()) ---- " + "\n" + contentString + "\n"
         }
     }
     
     //根据需要高亮内容查询组装高亮内容
-    func getHighlightAttributedString(highlightString: String, complete:(Bool, NSAttributedString?)->Void) -> Void {
+    func getHighlightAttributedString(contentString: String, highlightString: String, complete:(Bool, NSAttributedString?)->Void) -> Void {
         if highlightString.isEmpty {
             //空的直接返回
-            let contentString = self.getFullContentString()
             let newString = NSMutableAttributedString(string: contentString, attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 13)])
             self.mCacheHighlightCompleteString = newString
             self.mCacheHasHighlightString = false
@@ -95,7 +87,6 @@ public extension DDLoggerSwiftItem {
             complete(self.mCacheHasHighlightString, self.mCacheHighlightCompleteString)
         } else {
             self.mCurrentHighlightString = highlightString
-            let contentString = self.getFullContentString()
             let newString = NSMutableAttributedString(string: contentString, attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 13)])
             let regx = try? NSRegularExpression(pattern: highlightString, options: NSRegularExpression.Options.caseInsensitive)
             if let searchRegx = regx {

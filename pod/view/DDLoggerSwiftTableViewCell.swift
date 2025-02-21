@@ -9,6 +9,12 @@
 import UIKit
 
 class DDLoggerSwiftTableViewCell: UITableViewCell {
+    private lazy var mCollapseLabel: UILabel = {
+        var label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
+        return label
+    }()
     
     private lazy var mContentLabel: UILabel = {
         var label = UILabel()
@@ -49,8 +55,15 @@ class DDLoggerSwiftTableViewCell: UITableViewCell {
     
     private func _createUI() -> Void {
         self.backgroundColor = UIColor.clear
+        
+        self.contentView.addSubview(mCollapseLabel)
+        self.mCollapseLabel.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 10).isActive = true
+        self.mCollapseLabel.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor).isActive = true
+        self.mCollapseLabel.widthAnchor.constraint(equalToConstant: 20).isActive = true
+        self.mCollapseLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        
         self.contentView.addSubview(self.mContentLabel)
-        self.mContentLabel.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 10).isActive = true
+        self.mContentLabel.leftAnchor.constraint(equalTo: self.mCollapseLabel.rightAnchor, constant: 10).isActive = true
         self.mContentLabel.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -10).isActive = true
         self.mContentLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 15).isActive = true
         self.mContentLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -2).isActive = true
@@ -60,10 +73,18 @@ class DDLoggerSwiftTableViewCell: UITableViewCell {
         self.mIDLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 3).isActive = true
     }
     
-    func updateWithLoggerItem(loggerItem:DDLoggerSwiftItem, highlightText:String) {
+    func updateWithLoggerItem(model:DDLoggerSwiftTableCellModel, highlightText:String) {
+        let loggerItem = model.logItem
         self.mIDLabel.text = "#\(loggerItem.databaseID)"
         self.mContentLabel.textColor = loggerItem.mLogItemType.textColor()
-        loggerItem.getHighlightAttributedString(highlightString: highlightText) { (hasHighlightStr, hightlightAttributedString) in
+        var contentString = loggerItem.getFullContentString()
+        if model.isCollapse {
+            mCollapseLabel.text = "🗂"
+            contentString = contentString.dd.subString(rang: NSRange(location: 0, length: DDLoggerSwift.cellDisplayCount))
+        } else {
+            mCollapseLabel.text = loggerItem.icon()
+        }
+        loggerItem.getHighlightAttributedString(contentString: contentString, highlightString: highlightText) { (hasHighlightStr, hightlightAttributedString) in
             self.mContentLabel.attributedText = hightlightAttributedString
 //            if hasHighlightStr {
 //                self.contentView.backgroundColor = UIColor.dd.color(hexValue: 0xe58e23)
@@ -72,11 +93,5 @@ class DDLoggerSwiftTableViewCell: UITableViewCell {
 //            }
         }
         
-    }
-    
-    func update(content: String) {
-        self.contentView.backgroundColor = UIColor.clear
-        self.mContentLabel.textColor = UIColor(red: 80.0/255.0, green: 216.0/255.0, blue: 144.0/255.0, alpha: 1.0)
-        self.mContentLabel.text = content
     }
 }
