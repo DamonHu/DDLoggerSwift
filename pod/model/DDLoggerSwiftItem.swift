@@ -25,7 +25,7 @@ public class DDLoggerSwiftItem {
     
     private var mCurrentHighlightString = ""            //当前需要高亮的字符串
     private var mCacheHasHighlightString = false        //上次查询是否包含高亮的字符串
-    var mCacheHighlightCompleteString: NSMutableAttributedString?   //上次包含高亮支付的富文本
+    private var mCacheHighlightCompleteString = NSMutableAttributedString(string: "")   //上次包含高亮支付的富文本
 }
 
 public extension DDLoggerSwiftItem {
@@ -75,7 +75,7 @@ public extension DDLoggerSwiftItem {
     }
     
     //根据需要高亮内容查询组装高亮内容
-    func getHighlightAttributedString(contentString: String, highlightString: String, complete:(Bool, NSAttributedString?)->Void) -> Void {
+    func getHighlightAttributedString(contentString: String, highlightString: String, complete:(Bool, NSAttributedString)->Void) -> Void {
         if highlightString.isEmpty {
             //空的直接返回
             let newString = NSMutableAttributedString(string: contentString, attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 13)])
