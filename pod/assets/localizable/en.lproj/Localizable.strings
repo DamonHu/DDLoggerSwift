@@ -37,6 +37,8 @@
 "Scroll" = "Scroll";
 "More" = "More";
 "Done" = "Done";
+"Confirm" = "Confirm";
+"Cancel" = "Cancel";
 "LogFile count" = "LogFile count";
 "LogFile total size" = "LogFile total size";
 "Number of Today's Logs" = "Number of Today's Logs";

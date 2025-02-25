@@ -162,7 +162,7 @@ private extension DDLoggerSwiftPickerWindow {
 
         let closeBarItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.cancel, target: self, action: #selector(_closePicker))
         let fixBarItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
-        let doneBarItem = UIBarButtonItem(title: "Done".ZXLocaleString, style:.plain, target: self, action: #selector(_confirmPicker))
+        let doneBarItem = UIBarButtonItem(title: "Confirm".ZXLocaleString, style:.plain, target: self, action: #selector(_confirmPicker))
         self.mToolBar.setItems([closeBarItem, fixBarItem, doneBarItem], animated: true)
 
         self.mPickerBGView.addSubview(self.mPickerView)
@@ -178,7 +178,7 @@ private extension DDLoggerSwiftPickerWindow {
     
     @objc private func _confirmPicker() {
         if self.pickerType == .share {
-            let dataList = HDSqliteTools.shared.getLogs(name: self.mShareFileName, keyword: nil).reversed().map { item in
+            let dataList = HDSqliteTools.shared.getLogs(name: self.mShareFileName, keyword: nil).map { item in
                 return item.getFullContentString()
             }
             //写入到text文件好解析

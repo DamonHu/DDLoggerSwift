@@ -37,6 +37,8 @@
 "Scroll" = "滚动";
 "More" = "更多";
 "Done" = "完成";
+"Confirm" = "确定";
+"Cancel" = "取消";
 "LogFile count" = "日志文件数量";
 "LogFile total size" = "日志文件总大小";
 "Number of Today's Logs" = "今日日志数量";

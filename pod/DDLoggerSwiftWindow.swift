@@ -432,7 +432,12 @@ private extension DDLoggerSwiftWindow {
                 }))
             }
             self.lastIndexID = self.mDisplayLogDataArray.last?.logItem.databaseID
-            self.hasMore = self.lastIndexID != HDSqliteTools.shared.getMinLogID()
+            let minID = HDSqliteTools.shared.getMinLogID()
+            if minID == 0 || self.lastIndexID == nil {
+                self.hasMore = false
+            } else {
+                self.hasMore = self.lastIndexID != minID
+            }
         } else {
             //不分页
             dataArray = HDSqliteTools.shared.getLogs(name: self.dataBaseName, keyword: self.mSearchBar.text, type: self.filterType, startID: nil, pageSize: nil)
