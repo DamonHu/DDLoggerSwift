@@ -46,13 +46,13 @@ class HDSqliteTools {
     }
     
     //获取第一个id，以便判断是否有更多
-    func getMinLogID(name: String? = nil) -> Int? {
+    func getMinLogID(name: String? = nil) -> Int {
         let databasePath = self._getDataBasePath(name: name)
         guard FileManager.default.fileExists(atPath: databasePath.path) else {
-            return nil
+            return 0
         }
         let queryDB = self._openDatabase(name: name)
-        let queryString = "SELECT MIN(id) FROM hdlog"
+        let queryString = "SELECT IFNULL(MIN(id), 0) FROM hdlog"
         
         var queryStatement: OpaquePointer?
         var minID: Int?
@@ -64,7 +64,7 @@ class HDSqliteTools {
         }
         
         sqlite3_finalize(queryStatement)
-        return minID
+        return minID ?? 0
     }
     
     //批量插入数据
