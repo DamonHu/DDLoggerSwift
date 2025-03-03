@@ -194,7 +194,7 @@ public class DDLoggerSwift {
         loggerItem.mLogItemType = logType
 
         let fileName = (file as NSString).lastPathComponent;
-        loggerItem.mLogDebugContent = "File: \(fileName) -- Line: \(lineNum) -- Function:\(fileName).\(funcName) ----"
+        loggerItem.mLogDebugContent = "File: \(fileName) | Line: \(lineNum) | Function: \(funcName) |"
         loggerItem.mLogContent = log
 
         if self.isSyncConsole {

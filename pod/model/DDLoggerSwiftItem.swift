@@ -44,6 +44,21 @@ public extension DDLoggerSwiftItem {
         }
     }
     
+    func level() -> String {
+        switch mLogItemType {
+        case .info:
+            return "INFO"
+        case .warn:
+            return "WARN"
+        case .error:
+            return "ERROR"
+        case .privacy:
+            return "PRIVACY"
+        default:
+            return "DEBUG"
+        }
+    }
+    
     //LogContent转字符串格式化
     func getLogContent() -> String {
         var contentString = ""
@@ -64,13 +79,11 @@ public extension DDLoggerSwiftItem {
      func getFullContentString() -> String {
         //日期
          let dateStr = DDLoggerSwift.dateFormatterISO8601.string(from: mCreateDate)
-        //内容
-        let contentString = self.getLogContent()
         //所有的内容
         if DDLoggerSwift.isFullLogOut {
-            return dateStr + " ---- \(self.icon())\(self.icon()) ---- " +  mLogDebugContent + "\n" + contentString + "\n"
+            return "\(self.icon())" + " " + "[\(dateStr)]" + " " + "[\(self.level())]" + " " +  mLogDebugContent + "\n" + self.getLogContent() + "\n"
         } else {
-            return dateStr + " ---- \(self.icon())\(self.icon()) ---- " + "\n" + contentString + "\n"
+            return "\(self.icon())" + " " + "[\(dateStr)]" + " " + "[\(self.level())]" + "\n" + self.getLogContent() + "\n"
         }
     }
     
