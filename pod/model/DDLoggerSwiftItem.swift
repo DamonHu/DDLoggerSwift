@@ -81,9 +81,9 @@ public extension DDLoggerSwiftItem {
          let dateStr = DDLoggerSwift.dateFormatterISO8601.string(from: mCreateDate)
         //所有的内容
         if DDLoggerSwift.isFullLogOut {
-            return "\(self.icon())" + " " + "[\(dateStr)]" + " " + "[\(self.level())]" + " " +  mLogDebugContent + "\n" + self.getLogContent() + "\n"
+            return "\(self.icon())" + " " + "[\(dateStr)]" + " " + "[\(self.level())]" + " " +  mLogDebugContent + "\n---------------------------------\n" + self.getLogContent() + "\n"
         } else {
-            return "\(self.icon())" + " " + "[\(dateStr)]" + " " + "[\(self.level())]" + "\n" + self.getLogContent() + "\n"
+            return "\(self.icon())" + " " + "[\(dateStr)]" + " " + "[\(self.level())]" + "\n---------------------------------\n" + self.getLogContent() + "\n"
         }
     }
     
