@@ -1,10 +1,12 @@
 # DDLoggerSwift
 
-![](https://img.shields.io/badge/CocoaPods-supported-brightgreen) ![](https://img.shields.io/badge/Swift-5.0-brightgreen) ![](https://img.shields.io/badge/License-MIT-brightgreen) ![](https://img.shields.io/badge/version-iOS11.0-brightgreen)
+![](https://img.shields.io/badge/CocoaPods-supported-brightgreen) ![](https://img.shields.io/badge/Swift-5.0-brightgreen) ![](https://img.shields.io/badge/License-MIT-brightgreen) ![](https://img.shields.io/badge/version-iOS12.0-brightgreen)
 
 ### [中文文档](https://dongge.org/blog/1305.html)
 
-The iOS terminal will display the output log suspended on the screen, which can generate log file sharing, and debug information when the real machine is not connected to Xcode. You can share, filter logs and other operations. Use SQLite to store log information, support system sharing and screen FPS display
+**DDLoggerSwift** is an iOS library that displays log output as a floating overlay on the screen. It allows easy logging and supports log file sharing and uploading, making it convenient for debugging on a real device without an Xcode connection. Users can share and filter logs effortlessly.  
+
+This project uses **SQLite** for efficient log storage while ensuring insertion order. It does not affect UI performance or interactions, ensuring high runtime efficiency.Automatically converts `Array` and `Dictionary` into JSON strings for display.
 
 
 |Preview GIF picture|Xcode debug GIF|
@@ -12,343 +14,94 @@ The iOS terminal will display the output log suspended on the screen, which can 
 |![](./readmeResources/preview.gif)|![](./readmeResources/debug.gif)|
 
 
-|preview|share & FPS|
-|----|----|
-|![](./readmeResources/mobile_preview.png)<br/>Xcode Preview<br/>![](./readmeResources/xcode_preview.png)|![](./readmeResources/share_preview.png)|
+## **1. Installation**  
 
-![](./readmeResources/preview.png)
+You can install **DDLoggerSwift** using **CocoaPods** or manually by downloading the source files and adding them to your project.  
 
-## I. Installation
-
-You can choose to install using cocoaPod, or you can download the source file directly into the project.
-
-### 1.1, cocoaPod installation
-
-```
+### **1.1 CocoaPods Installation**  
+Add the following line to your `Podfile` and run `pod install`:  
+```ruby
 pod 'DDLoggerSwift'
 ```
 
+### **1.2 Manual Installation**  
+Drag and drop the files from the `pod` folder into your project.  
 
-### 1.2, file installation
+---
 
-You can drag the files in the `pod` folder into the project under the project.
+## **2. Usage**  
 
-## II. Use
-
-### 1、Import header file
-
+### **1. Import the Framework**  
+```swift
+import DDLoggerSwift
 ```
-Import DDLoggerSwift
-```
 
-
-### 2、 display the floating window
-
-```
+### **2. Show the Floating Log Window**  
+```swift
 DDLoggerSwift.show()
 ```
 
-### 3 、 Print log content
+### **3. Log Output**  
 
-The font colors of the three output methods are different, and the corresponding types of printLog are different.
+There are **five types of log outputs**, each with different font colors.  
+
+```swift
+printDebug(log)   // Debug output, only visible in Xcode, not stored in the log database.
+
+printLog(log)     // Logs displayed in green.
+
+printWarn(log)    // Logs displayed in yellow.
+
+printError(log)   // Logs displayed in red.
+
+printPrivacy(log) // Outputs encrypted data. Encryption details can be found in the encryption documentation.
+```
+
+### **4. Log Output Format**  
 
 ```
-printDebug(log)	//the log will not be written to the window, only output in xcode
+✅ [2025-03-19T03:11:59Z] [INFO] File: TalkViewModel.swift | Line: 730 | Function: _bindRequest() |
+---------------------------------
+Log message
 
-printLog(log) // Log's textColor is green
+⚠️ [2025-03-19T03:11:59Z] [WARN] File: TalkViewModel.swift | Line: 730 | Function: _bindRequest() |
+---------------------------------
+Warning message
 
-printWarn(log) // log's textColor is yellow
+❌ [2025-03-19T03:11:59Z] [ERROR] File: TalkViewModel.swift | Line: 730 | Function: _bindRequest() |
+---------------------------------
+Error message
 
-printError(log) // Log's textColor is red
-
-printPrivacy(log) // Output of encrypted data, the specific encryption method is described in the following encryption
-```
-
-Output format
-
-```
-2021-08-11 10:07:28.378 ---- ⚠️⚠️ ---- File: ViewController.swift -- Line: 82 -- Function:ViewController.swift.onClickButton() ----
-警告提示
-
-2021-08-11 10:07:28.380 ---- ❌❌ ---- File: ViewController.swift -- Line: 84 -- Function:ViewController.swift.onClickButton() ----
-错误出现
-
-2021-08-11 10:07:28.381 ---- ⛔️⛔️ ---- File: ViewController.swift -- Line: 86 -- Function:ViewController.swift.onClickButton() ----
+⛔️ [2025-03-19T03:11:59Z] [PRIVACY] File: TalkViewModel.swift | Line: 730 | Function: _bindRequest() |
+---------------------------------
 AAuKjIm5hC2jiPqz7OKHAngWspeACyWZufDguqdOcugituhWV8jnbr/6SHYoK0/9
 
-2021-08-11 10:07:28.383 ---- ✅✅ ---- File: ViewController.swift -- Line: 89 -- Function:ViewController.swift.onClickButton() ----
-{
-  "77777" : "数据库的复健科花见花开会尽快圣诞节开发和金黄色的费四大皆空回复就开始和豆腐是砍价的回复斯柯达金凤凰",
-  "hhhhhhh" : "撒旦法是打发斯蒂芬是打发斯蒂芬"
-}
-
-2021-08-11 10:07:28.388 ---- 💜💜 ---- File: ViewController.swift -- Line: 76 -- Function:ViewController.swift.onClickButton() ----
-测试输出，默认不会写入数据库
+💜 [2025-03-19T03:11:59Z] [DEBUG] File: TalkViewModel.swift | Line: 730 | Function: _bindRequest() |
+---------------------------------
+Test output, not stored in the database by default.
 ```
 
-## III. more settings
+## III. Advanced Usage
 
-### 1、Set whether to output all information
+For advanced features such as file encryption, custom formats, file retrieval, and sharing, please refer to the wiki for a complete list and detailed instructions. 
 
-```
-DDLoggerSwift.isFullLogOut = true
-```
+**[Wiki](https://github.com/DamonHu/DDLoggerSwift/wiki)**
 
-If it is set to `true`, the output format is as follows, including the output file, the number of lines called, and the function name
 
-```
-2021-08-11 10:07:28.378 ---- ⚠️⚠️ ---- File: ViewController.swift -- Line: 82 -- Function:ViewController.swift.onClickButton() ----
-警告提示
+## IV. Log viewing client
 
-2021-08-11 10:07:28.380 ---- ❌❌ ---- File: ViewController.swift -- Line: 84 -- Function:ViewController.swift.onClickButton() ----
-错误出现
+This library stores log information using SQLite. You can use any generic SQLite viewer or the [DDLoggerSwift_Mac](https://github.com/DamonHu/DDLoggerSwift_Mac) client to view the SQLite files exported by DDLoggerSwift.
 
-2021-08-11 10:07:28.381 ---- ⛔️⛔️ ---- File: ViewController.swift -- Line: 86 -- Function:ViewController.swift.onClickButton() ----
-AAuKjIm5hC2jiPqz7OKHAngWspeACyWZufDguqdOcugituhWV8jnbr/6SHYoK0/9
+The client is developed using SwiftUI and is specifically designed to parse logs from DDLoggerSwift, making log viewing more convenient.
 
-2021-08-11 10:07:28.383 ---- ✅✅ ---- File: ViewController.swift -- Line: 89 -- Function:ViewController.swift.onClickButton() ----
-{
-  "77777" : "数据库的复健科花见花开会尽快圣诞节开发和金黄色的费四大皆空回复就开始和豆腐是砍价的回复斯柯达金凤凰",
-  "hhhhhhh" : "撒旦法是打发斯蒂芬是打发斯蒂芬"
-}
-
-2021-08-11 10:07:28.388 ---- 💜💜 ---- File: ViewController.swift -- Line: 76 -- Function:ViewController.swift.onClickButton() ----
-测试输出，默认不会写入数据库
-```
-
-If it is set to `false`, the output format is as follows
-
-```
-2021-08-11 10:10:33.309 ---- ⚠️⚠️ ---- 
-警告提示
-
-2021-08-11 10:10:33.310 ---- ❌❌ ---- 
-错误出现
-
-2021-08-11 10:10:33.312 ---- ⛔️⛔️ ---- 
-AAuKjIm5hC2jiPqz7OKHAngWspeACyWZufDguqdOcugituhWV8jnbr/6SHYoK0/9
-
-2021-08-11 10:10:33.318 ---- ✅✅ ---- 
-{
-  "hhhhhhh" : "撒旦法是打发斯蒂芬是打发斯蒂芬",
-  "77777" : "数据库的复健科花见花开会尽快圣诞节开发和金黄色的费四大皆空回复就开始和豆腐是砍价的回复斯柯达金凤凰"
-}
-
-2021-08-11 10:10:33.323 ---- 💜💜 ---- 
-测试输出，默认不会写入数据库
-```
-
-### 2、 Whether to output content synchronously in the debug bar at the bottom of xcode
-
-```
-DDLoggerSwift.isSyncConsole = true
-```
-
-### 3、Separate log folder for different users
-
-```
-DDLoggerSwift.userID = "1001"
-```
-
-### 4、Clear the log
-
-```
-DDLoggerSwift.cleanLog()
-```
-
-### 5、close the entire log window
-
-```
-DDLoggerSwift.close()
-```
-
-### 6、only hide the log output window
-
-```
-DDLoggerSwift.hide()
-```
-
-### 7、set the log maximum number of pagination,  0 is not limited, default value is 0
-
-```
-DDLoggerSwift.maxPageSize = 0
-```
-### 8、 delete the local LogFile
-
-```
-DDLoggerSwift.deleteLogFile()
-```
-
-### 9、 The validity period of the local log file (days), the local log beyond the validity period will be deleted, 0 is no validity period, default is 30 days
-
-```
-DDLoggerSwift.logExpiryDay = 30
-```
-
-### 10、storageLevels
-
-The included log level will be stored in the database. By default, the debug level is not stored
-
-```
-
-DDLoggerSwift.storageLevels = [.info, .warn, .error, .privacy]
-
-```
-
-### 11、Get the array of logs. You can specify the date
-
-```
-//today
-DDLoggerSwift.getAllLog()
-
-//Special date
-DDLoggerSwift.getAllLog(date: Date(timeIntervalSinceNow: 1000))
-```
-
-If you want to get all the log files, you can get the folder where the log is stored, return a URL result, and then traverse to process it yourself
-
-```
-DDLoggerSwift.getDBFolder()
-```
-
-for example
-
-```
-let dbFolder = DDLoggerSwift.getDBFolder()
-        
-if let enumer = FileManager.default.enumerator(atPath: dbFolder.path) {
-    while let file = enumer.nextObject() {
-       if let file: String = file as? String {
-            if file.hasSuffix(".db") {
-	            //Get the specific log file log
-                let logFilePath = dbFolder.appendingPathComponent(file, isDirectory: false)              
-            }
-        }
-    }
-}
-```
-
-### 12. Directly display log sharing window
-
-If you don't want users to see the log output window, but just let them share the log, you can call
-
-```
-DDLoggerSwift.showShare()
-```
-
-### 13、Display log upload, select window and button
-
-If you want users to upload DB files, in addition to traversing by themselves, we also provide a shortcut scheme. Like sharing, call
-
-```
-DDLoggerSwift.showUpload()
-```
-
-The upload option will appears. The callback determined after the user selects is in `uploadcomplete`. You can implement the callback, for example
-
-```
-DDLoggerSwift.uploadComplete = { file in
-     print(file)
-     //Process upload
-}
-```
-
-### 14、 Throttling
-
-Refreshing the interface with a large amount of output content in a short period of time can cause a large amount of CPU computation. Therefore, a throttling method can be adopted, and a timed refresh interface can be set in seconds, with a default value of 2
-
-```
-DDLoggerSwift.throttleTime = 2
-```
-
-### LogContent protocol
-
-If you want to customize the output content, you can integrate and use this type of `LogContent` protocol. For example, you can print the `URL` type to output only its` path`. You can directly set the returned `logStringValue`.
-
-```
-extension URL: LogContent {
-    public var logStringValue: String {
-        return self.path
-    }
-}
-```
-
-## IV. sensitive information output encryption and decryption
-
-If there is sensitive information that you don't want users to see when debugging, you can set encryption in two simple steps
-
-```
-// 1. Set the encryption password,  32 characters
-DDLoggerSwift.privacyLogPassword = "12345678901234561234567890123456"
-
-// 2, output encrypted content
-printPrivacy("This is test data 222 for encrypted data")
-```
-
-### 4.2 Decrypt the contents of the display window
-
-After the setting, the display in the display window is `This content is encrypted, please view it after decryption`, enter the set encryption password and click decrypt to display the info encrypted content.
-
-### 4.1. Decrypting shared files
-
-* If the data has been decrypted in the display window, the content of the shared file will not be encrypted at this time, and all content will be displayed.
-* If it is not decrypted in the display window, the content of the file shared at this time is AES encrypted content, you can search the `AES Online Decryption Website` to decrypt the content, and the settings are as follows:
-
-![](./readmeResources/decrypt.png)
-
-* Mode: CBC
-* Fill: Pkcs7
-* Data block: 128 bits
-* Offset: `abcdefghijklmnop`
-* Encoding: Base64
-* Character set: UTF8
-* Password: The password you set in the SDK yourself
-
-Then click Decrypt.
-
-Here are a few online sites recommended, you can also Google it by yourself
-
-* [https://oktools.net/aes](https://oktools.net/aes)
-* [http://tools.bugscaner.com/cryptoaes/](http://tools.bugscaner.com/cryptoaes/)
-* [http://tool.chacuo.net/cryptaes](http://tool.chacuo.net/cryptaes)
-
-## V. Log viewing client
-
-This library uses `SQLite` to store log information. So you can use [DDLoggerSwift_Mac](https://github.com/DamonHu/DDLoggerSwift_Mac), the client of `DDLoggerSwift` cooperates to view the export SQLite data.
-
-![](./readmeResources/Jietu20220731-212644.png)
-
-## local network real-time log
+### local network real-time log
 
 After the `3.0.0` version, it can be used with the above log viewing tool to realize real-time log viewing on the local area network, and use the simple configuration interface
 
-1. Increase the local network function
+For local network real-time log viewing, refer to [Log Viewing Client](https://github.com/DamonHu/DDLoggerSwift/wiki/Log-Viewing-Client).
 
-````
-pod 'DDLoggerSwift/socket'
-````
+![](./readmeResources/Jietu20220731-212644.png)
 
-2. Add the local network description and the service field of `Bonjour` in the project `info.plist`.
-
-````
-<key>NSBonjourServices</key>
-<array>
-<string>_DDLoggerSwift._tcp</string>
-</array>
-<key>NSLocalNetworkUsageDescription</key>
-<string>Find the local network to use the Bonjour feature</string>
-````
-
-**Note: The type value of `NSBonjourServices` is consistent with `DDLoggerSwift.socketType`. The `socketType` in the DDLoggerSwift code can be customized. After modification, the `info.plist` should be modified accordingly **
-
-No other configuration is required, you can view the device logs under the same local network by [DDLoggerSwift_Mac](https://github.com/DamonHu/DDLoggerSwift_Mac)
-
-## Other Tips
-
-1. For the convenience of viewing, it is divided into three types: info, warning and error. It corresponds to three different colors for easy viewing.
-2. Click the corresponding cell to copy the output log directly to the system clipboard.
-3. Share the system share that is called. Which software you can share depends on which software is installed on your phone.
-4. The shared log file can be viewed in any text editor. When viewed in 'vscode', the code will be highlighted
 
 ## License
 
