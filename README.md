@@ -90,7 +90,7 @@ For advanced features such as file encryption, custom formats, file retrieval, a
 
 ## IV. Log viewing client
 
-This library stores log information using SQLite. You can use any generic SQLite viewer or the [DDLoggerSwift_Mac](https://github.com/DamonHu/DDLoggerSwift_Mac) client to view the SQLite files exported by DDLoggerSwift.
+This library stores log information using SQLite. You can use any generic SQLite viewer or the [DDLoggerClient](https://github.com/DamonHu/DDLoggerClient) client to view the SQLite files exported by DDLoggerSwift.
 
 The client is developed using SwiftUI and is specifically designed to parse logs from DDLoggerSwift, making log viewing more convenient.
 
