@@ -134,14 +134,11 @@ public class DDLoggerSwift {
     /**
      如果集成实时日志功能
      */
-    #if canImport(CocoaAsyncSocket)
-    public static var isTCP: Bool = true //是否TCP链接，UDP在iOS14以后需要向App Store申请权限
-    public static var socketPort: UInt16 = 888 //连接的端口
-    public static var socketDomain: String = "local" //支持自定义
+    public static var socketPort: Int32 = 888 //连接的端口
     public static var socketType: String = "_DDLoggerSwift"//支持自定义
-    #endif
 
     //MARK: 内部
+    static var isOpenBonjour = false    //开启实时日志功能
     static var fileSelectedComplete: ((URL, String) ->Void)?   //选择历史文件过滤回调
     static let dateFormatterISO8601 = ISO8601DateFormatter()
     static let dateFormatter: DateFormatter = {
@@ -220,15 +217,13 @@ public class DDLoggerSwift {
                     self.shared._writeDB(logs: [loggerItem])
                 }
             }
-            #if canImport(CocoaAsyncSocket)
-            DispatchQueue.global().async {
-                if DDLoggerSwift.isTCP {
-                    DDLoggerSwiftTCPSocketManager.shared.send(loggerItem: loggerItem)
+            if self.isOpenBonjour {
+                if #available(iOS 13.0, *) {
+                    DDLoggerSwiftSocketManager.shared.send(loggerItem: loggerItem)
                 } else {
-                    DDLoggerSwiftUDPSocketManager.shared.send(loggerItem: loggerItem)
+                    print("bonjour is not available")
                 }
             }
-            #endif
         }
     }
     
@@ -359,22 +354,35 @@ public class DDLoggerSwift {
         self.shared.pickerWindow?.isHidden = date != nil
         self.shared.pickerWindow?.showPicker(pickType: .filter, date: date, isCloseWhenComplete: false)
     }
+    
+    ///开启实时日志
+    public class func startBonjourService() {
+        if !isOpenBonjour {
+            //发起服务
+            if #available(iOS 13.0, *) {
+                DDLoggerSwiftSocketManager.shared.start()
+            } else {
+                print("bonjour is not available")
+            }
+            isOpenBonjour = true
+        }
+    }
+    
+    ///关闭实时日志
+    public class func stopBonjourService() {
+        if #available(iOS 13.0, *) {
+            DDLoggerSwiftSocketManager.shared.stop()
+        } else {
+            print("bonjour is not available")
+        }
+        isOpenBonjour = false
+    }
 
     //MARK: init
     init() {
         if DDLoggerSwift.logExpiryDay > 0 {
             self._checkValidity()
         }
-
-        #if canImport(CocoaAsyncSocket)
-        //发起服务
-        DDLoggerSwiftBonjour.shared.start()
-        if DDLoggerSwift.isTCP {
-            DDLoggerSwiftTCPSocketManager.shared.start()
-        } else {
-            DDLoggerSwiftUDPSocketManager.shared.start()
-        }
-        #endif
     }
 }
 

@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import CommonCrypto
 
 public enum DDUtilsFileDirectoryType {
     case home       //程序主目录

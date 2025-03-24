@@ -14,8 +14,6 @@
 		E48AABFE22C05EF600CC5F1C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E48AABFC22C05EF600CC5F1C /* Main.storyboard */; };
 		E48AAC0022C05EF700CC5F1C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E48AABFF22C05EF700CC5F1C /* Assets.xcassets */; };
 		E48AAC0322C05EF700CC5F1C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E48AAC0122C05EF700CC5F1C /* LaunchScreen.storyboard */; };
-		E4A014A128979B860042C5F4 /* DDLoggerSwiftUDPSocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A014A028979B860042C5F4 /* DDLoggerSwiftUDPSocketManager.swift */; };
-		E4A014A52898D87E0042C5F4 /* DDLoggerSwiftBonjour.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A014A42898D87E0042C5F4 /* DDLoggerSwiftBonjour.swift */; };
 		E4AC94A4263162FA001FC322 /* DDLoggerSwiftTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AC949C263162FA001FC322 /* DDLoggerSwiftTableViewCell.swift */; };
 		E4AC94A5263162FA001FC322 /* LogContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AC949D263162FA001FC322 /* LogContent.swift */; };
 		E4AC94A6263162FA001FC322 /* HDSqliteTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AC949E263162FA001FC322 /* HDSqliteTools.swift */; };
@@ -23,7 +21,7 @@
 		E4AC94A9263162FA001FC322 /* DDLoggerSwiftWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AC94A1263162FA001FC322 /* DDLoggerSwiftWindow.swift */; };
 		E4AC965126395F22001FC322 /* DDLoggerSwiftFloatWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AC965026395F22001FC322 /* DDLoggerSwiftFloatWindow.swift */; };
 		E4ADD75B26BD7804000BD07F /* DDLoggerSwiftPickerWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4ADD75A26BD7804000BD07F /* DDLoggerSwiftPickerWindow.swift */; };
-		E4BAF9CE28990F0C00C5643A /* DDLoggerSwiftTCPSocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BAF9CD28990F0C00C5643A /* DDLoggerSwiftTCPSocketManager.swift */; };
+		E4BAF9CE28990F0C00C5643A /* DDLoggerSwiftSocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BAF9CD28990F0C00C5643A /* DDLoggerSwiftSocketManager.swift */; };
 		E4D1A3EF266918C900420162 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E4D1A3EC266918C900420162 /* Localizable.strings */; };
 		E4DC3DF62D6886F300FC3E49 /* DDLoggerSwiftItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4DC3DF52D6886F300FC3E49 /* DDLoggerSwiftItem.swift */; };
 		E4DC3DF82D68870600FC3E49 /* DDLoggerSwiftTableCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4DC3DF72D68870600FC3E49 /* DDLoggerSwiftTableCellModel.swift */; };
@@ -45,8 +43,6 @@
 		E48AAC0422C05EF700CC5F1C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E48AAC3022C0818700CC5F1C /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		E48AAC3122C0818700CC5F1C /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
-		E4A014A028979B860042C5F4 /* DDLoggerSwiftUDPSocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDLoggerSwiftUDPSocketManager.swift; sourceTree = "<group>"; };
-		E4A014A42898D87E0042C5F4 /* DDLoggerSwiftBonjour.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDLoggerSwiftBonjour.swift; sourceTree = "<group>"; };
 		E4AC949C263162FA001FC322 /* DDLoggerSwiftTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDLoggerSwiftTableViewCell.swift; sourceTree = "<group>"; };
 		E4AC949D263162FA001FC322 /* LogContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogContent.swift; sourceTree = "<group>"; };
 		E4AC949E263162FA001FC322 /* HDSqliteTools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HDSqliteTools.swift; sourceTree = "<group>"; };
@@ -54,7 +50,7 @@
 		E4AC94A1263162FA001FC322 /* DDLoggerSwiftWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDLoggerSwiftWindow.swift; sourceTree = "<group>"; };
 		E4AC965026395F22001FC322 /* DDLoggerSwiftFloatWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDLoggerSwiftFloatWindow.swift; sourceTree = "<group>"; };
 		E4ADD75A26BD7804000BD07F /* DDLoggerSwiftPickerWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDLoggerSwiftPickerWindow.swift; sourceTree = "<group>"; };
-		E4BAF9CD28990F0C00C5643A /* DDLoggerSwiftTCPSocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDLoggerSwiftTCPSocketManager.swift; sourceTree = "<group>"; };
+		E4BAF9CD28990F0C00C5643A /* DDLoggerSwiftSocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDLoggerSwiftSocketManager.swift; sourceTree = "<group>"; };
 		E4D1A3ED266918C900420162 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		E4D1A3EE266918C900420162 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E4DC3DF52D6886F300FC3E49 /* DDLoggerSwiftItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDLoggerSwiftItem.swift; sourceTree = "<group>"; };
@@ -130,9 +126,7 @@
 		E4A0149F28979B510042C5F4 /* socket */ = {
 			isa = PBXGroup;
 			children = (
-				E4A014A028979B860042C5F4 /* DDLoggerSwiftUDPSocketManager.swift */,
-				E4A014A42898D87E0042C5F4 /* DDLoggerSwiftBonjour.swift */,
-				E4BAF9CD28990F0C00C5643A /* DDLoggerSwiftTCPSocketManager.swift */,
+				E4BAF9CD28990F0C00C5643A /* DDLoggerSwiftSocketManager.swift */,
 			);
 			path = socket;
 			sourceTree = "<group>";
@@ -314,9 +308,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E48AABFB22C05EF600CC5F1C /* ViewController.swift in Sources */,
-				E4A014A52898D87E0042C5F4 /* DDLoggerSwiftBonjour.swift in Sources */,
 				E4AC94A9263162FA001FC322 /* DDLoggerSwiftWindow.swift in Sources */,
-				E4A014A128979B860042C5F4 /* DDLoggerSwiftUDPSocketManager.swift in Sources */,
 				E4EC33D826578A4C00074E19 /* DDLoggerSwiftMenuCollectionViewCell.swift in Sources */,
 				E4AC965126395F22001FC322 /* DDLoggerSwiftFloatWindow.swift in Sources */,
 				E4DC3DF62D6886F300FC3E49 /* DDLoggerSwiftItem.swift in Sources */,
@@ -329,7 +321,7 @@
 				E4AC94A4263162FA001FC322 /* DDLoggerSwiftTableViewCell.swift in Sources */,
 				E4AC94A8263162FA001FC322 /* DDLoggerSwift.swift in Sources */,
 				E48AABF722C05EF600CC5F1C /* AppDelegate.swift in Sources */,
-				E4BAF9CE28990F0C00C5643A /* DDLoggerSwiftTCPSocketManager.swift in Sources */,
+				E4BAF9CE28990F0C00C5643A /* DDLoggerSwiftSocketManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -491,7 +483,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 29LH9MSG5N;
 				INFOPLIST_FILE = DDLoggerSwift/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -513,7 +505,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 29LH9MSG5N;
 				INFOPLIST_FILE = DDLoggerSwift/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

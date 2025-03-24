@@ -8,5 +8,4 @@ target 'DDLoggerSwift' do
   # Pods for DDLoggerSwift
   pod 'DDUtils/ui', '~>5.0.0'
   pod 'DDUtils/utils', '~>5.0.0'
-  pod 'CocoaAsyncSocket'
 end

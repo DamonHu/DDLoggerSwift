@@ -1,25 +1,21 @@
 PODS:
-  - CocoaAsyncSocket (7.6.5)
-  - DDUtils/core (5.0.2)
-  - DDUtils/ui (5.0.2):
+  - DDUtils/core (5.0.13)
+  - DDUtils/ui (5.0.13):
     - DDUtils/core
-  - DDUtils/utils (5.0.2):
+  - DDUtils/utils (5.0.13):
     - DDUtils/core
 
 DEPENDENCIES:
-  - CocoaAsyncSocket
   - DDUtils/ui (~> 5.0.0)
   - DDUtils/utils (~> 5.0.0)
 
 SPEC REPOS:
   trunk:
-    - CocoaAsyncSocket
     - DDUtils
 
 SPEC CHECKSUMS:
-  CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
-  DDUtils: 56b14d305b574751a3e5336717a6dfd56dd2c58c
+  DDUtils: 9d1dab6514cbe6687348bde7ea0f6f2187b55222
 
-PODFILE CHECKSUM: bef1458b05a91dc2e41c03d0bbc5804cf3785cf6
+PODFILE CHECKSUM: f70b9f6ae668409e3a6070317835af79c7ef2567
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.15.2
