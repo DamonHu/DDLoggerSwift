@@ -131,14 +131,7 @@ public class DDLoggerSwift {
     public static var privacyLogIv = "abcdefghijklmnop"
     public static var privacyResultEncodeType = DDUtilsEncodeType.hex
     
-    /**
-     如果集成实时日志功能
-     */
-    public static var socketPort: Int32 = 888 //连接的端口
-    public static var socketType: String = "_DDLoggerSwift"//支持自定义
-
     //MARK: 内部
-    static var isOpenBonjour = false    //开启实时日志功能
     static var fileSelectedComplete: ((URL, String) ->Void)?   //选择历史文件过滤回调
     static let dateFormatterISO8601 = ISO8601DateFormatter()
     static let dateFormatter: DateFormatter = {
@@ -215,13 +208,6 @@ public class DDLoggerSwift {
                 //写入文件
                 if self.storageLevels.contains(logType) {
                     self.shared._writeDB(logs: [loggerItem])
-                }
-            }
-            if self.isOpenBonjour {
-                if #available(iOS 13.0, *) {
-                    DDLoggerSwiftSocketManager.shared.send(loggerItem: loggerItem)
-                } else {
-                    print("bonjour is not available")
                 }
             }
         }
@@ -353,29 +339,6 @@ public class DDLoggerSwift {
     public class func showFileFilter(date: Date? = nil) {
         self.shared.pickerWindow?.isHidden = date != nil
         self.shared.pickerWindow?.showPicker(pickType: .filter, date: date, isCloseWhenComplete: false)
-    }
-    
-    ///开启实时日志
-    public class func startBonjourService() {
-        if !isOpenBonjour {
-            //发起服务
-            if #available(iOS 13.0, *) {
-                DDLoggerSwiftSocketManager.shared.start()
-            } else {
-                print("bonjour is not available")
-            }
-            isOpenBonjour = true
-        }
-    }
-    
-    ///关闭实时日志
-    public class func stopBonjourService() {
-        if #available(iOS 13.0, *) {
-            DDLoggerSwiftSocketManager.shared.stop()
-        } else {
-            print("bonjour is not available")
-        }
-        isOpenBonjour = false
     }
 
     //MARK: init

@@ -18,22 +18,6 @@ class ViewController: UIViewController {
         return button
     }()
     
-    lazy var socketButton: UIButton = {
-        let button = UIButton(type: UIButton.ButtonType.custom)
-        button.backgroundColor = UIColor.red
-        button.frame = CGRect(x: 120, y: UIScreen.main.bounds.size.height - 230, width: 100, height: 60)
-        button.setTitle("打开远程实时日志", for: UIControl.State.normal)
-        return button
-    }()
-    
-    lazy var sendButton: UIButton = {
-        let button = UIButton(type: UIButton.ButtonType.custom)
-        button.backgroundColor = UIColor.red
-        button.frame = CGRect(x: 240, y: UIScreen.main.bounds.size.height - 230, width: 100, height: 60)
-        button.setTitle("发送日志", for: UIControl.State.normal)
-        return button
-    }()
-    
     lazy var showButton: UIButton = {
         let button = UIButton(type: UIButton.ButtonType.custom)
         button.backgroundColor = UIColor.red
@@ -65,15 +49,11 @@ class ViewController: UIViewController {
         self.view.addSubview(self.showButton)
         self.view.addSubview(self.deleteButton)
         self.view.addSubview(filterButton)
-        self.view.addSubview(socketButton)
-        self.view.addSubview(sendButton)
         
         self.showButton.addTarget(self, action: #selector(showButtonClick), for: UIControl.Event.touchUpInside)
         self.clickButton.addTarget(self, action: #selector(onClickButton), for: UIControl.Event.touchUpInside)
         self.deleteButton.addTarget(self, action: #selector(onClickdeleteButton), for: UIControl.Event.touchUpInside)
         self.filterButton.addTarget(self, action: #selector(filterButtonClick), for: UIControl.Event.touchUpInside)
-        self.socketButton.addTarget(self, action: #selector(socketButtonClick), for: UIControl.Event.touchUpInside)
-        self.sendButton.addTarget(self, action: #selector(sendButtonClick), for: UIControl.Event.touchUpInside)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -92,14 +72,6 @@ class ViewController: UIViewController {
 
     @objc func filterButtonClick(){
         DDLoggerSwift.show(filterType: .error)
-    }
-    
-    @objc func socketButtonClick(){
-        DDLoggerSwift.startBonjourService()
-    }
-    
-    @objc func sendButtonClick(){
-        printLog("发送日志")
     }
     
     
