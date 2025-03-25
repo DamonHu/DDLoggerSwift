@@ -52,7 +52,7 @@ class HDSqliteTools {
             return 0
         }
         let queryDB = self._openDatabase(name: name)
-        let queryString = "SELECT IFNULL(MIN(id), 0) FROM hdlog"
+        let queryString = "SELECT IFNULL(MIN(id), 0) FROM DDLog"
         
         var queryStatement: OpaquePointer?
         var minID: Int?
@@ -77,7 +77,7 @@ class HDSqliteTools {
             return
         }
         //批量插入
-        let insertRowString = "INSERT INTO hdlog(logType, time, logFile, logLine, logFunction, content) VALUES (?, ?, ?, ?, ?, ?)"
+        let insertRowString = "INSERT INTO DDLog(logType, time, logFile, logLine, logFunction, content) VALUES (?, ?, ?, ?, ?, ?)"
         var insertStatement: OpaquePointer?
         // 开启事务
         if sqlite3_exec(logDB, "BEGIN TRANSACTION", nil, nil, nil) == SQLITE_OK {
@@ -130,7 +130,7 @@ class HDSqliteTools {
             return []
         }
         let queryDB = self._openDatabase(name: name)
-        var queryString = "SELECT * FROM hdlog"
+        var queryString = "SELECT * FROM DDLog"
         //查询条件
         var whereClauses: [String] = []
         if let keyword = keyword, !keyword.isEmpty {
@@ -217,7 +217,7 @@ private extension HDSqliteTools {
     
     //创建日志表
     func _createTable() {
-        let createTableString = "create table if not exists 'hdlog' ('id' integer primary key autoincrement not null, 'logType' integer,'time' double, 'logFile' text, 'logLine' text, 'logFunction' text, 'content' text)"
+        let createTableString = "create table if not exists 'DDLog' ('id' integer primary key autoincrement not null, 'logType' integer,'time' double, 'logFile' text, 'logLine' text, 'logFunction' text, 'content' text)"
         var createTableStatement: OpaquePointer?
         if sqlite3_prepare_v2(logDB, createTableString, -1, &createTableStatement, nil) == SQLITE_OK {
             // 第二步
@@ -241,7 +241,7 @@ private extension HDSqliteTools {
             return count
         }
         let queryDB = self.logDB
-        var queryString = "SELECT COUNT(*) FROM hdlog"
+        var queryString = "SELECT COUNT(*) FROM DDLog"
         var whereClauses: [String] = []
         if let keyword = keyword, !keyword.isEmpty {
             whereClauses.append("content LIKE '%\(keyword)%'")
@@ -270,7 +270,7 @@ private extension HDSqliteTools {
     
     //插入数据
     func _insert(log: DDLoggerSwiftItem) {
-        let insertRowString = "INSERT INTO hdlog(logType, time, logFile, logLine, logFunction, content) VALUES (?, ?, ?, ?, ?, ?)"
+        let insertRowString = "INSERT INTO DDLog(logType, time, logFile, logLine, logFunction, content) VALUES (?, ?, ?, ?, ?, ?)"
         var insertStatement: OpaquePointer?
         //第一步
         let status = sqlite3_prepare_v2(logDB, insertRowString, -1, &insertStatement, nil)
@@ -297,7 +297,7 @@ private extension HDSqliteTools {
     }
     
     func _deleteLog(timeStamp: Double) {
-        let insertRowString = "DELETE FROM hdlog WHERE time < \(timeStamp) "
+        let insertRowString = "DELETE FROM DDLog WHERE time < \(timeStamp) "
         var insertStatement: OpaquePointer?
         //第一步
         let status = sqlite3_prepare_v2(self.logDB, insertRowString, -1, &insertStatement, nil)
