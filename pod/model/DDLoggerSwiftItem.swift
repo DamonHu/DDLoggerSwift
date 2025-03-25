@@ -19,7 +19,9 @@ public class DDLoggerSwiftItem {
     let identifier = UUID()                                 //用于hash计算
     var databaseID: Int = 0                                 //存在database的id
     public var mLogItemType = DDLogType.debug             //log类型
-    public var mLogDebugContent: String = ""              //log输出的文件、行数、函数名
+    public var mLogFile: String = ""                        //log调用的文件
+    public var mLogLine: String = ""                        //log调用的行数
+    public var mLogFunction: String = ""                    //log调用的函数名
     public var mLogContent: Any? = "DDLoggerSwift: Click Log To Copy"  //log的内容
     public var mCreateDate = t                      //log日期
     
@@ -80,11 +82,7 @@ public extension DDLoggerSwiftItem {
         //日期
          let dateStr = DDLoggerSwift.dateFormatterISO8601.string(from: mCreateDate)
         //所有的内容
-        if DDLoggerSwift.isFullLogOut {
-            return "\(self.icon())" + " " + "[\(dateStr)]" + " " + "[\(self.level())]" + " " +  mLogDebugContent + "\n---------------------------------\n" + self.getLogContent() + "\n"
-        } else {
-            return "\(self.icon())" + " " + "[\(dateStr)]" + " " + "[\(self.level())]" + "\n---------------------------------\n" + self.getLogContent() + "\n"
-        }
+         return "\(self.icon())" + " " + "[\(dateStr)]" + " " + "[\(self.level())]" + " " +  "File: \(mLogFile) | Line: \(mLogLine) | Function: \(mLogFunction) " + "\n---------------------------------\n" + self.getLogContent() + "\n"
     }
     
     //根据需要高亮内容查询组装高亮内容

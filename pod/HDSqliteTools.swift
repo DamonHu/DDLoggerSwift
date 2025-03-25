@@ -77,18 +77,19 @@ class HDSqliteTools {
             return
         }
         //批量插入
-        let insertRowString = "INSERT INTO hdlog(log, logType, time, debugContent, contentString) VALUES (?, ?, ?, ?, ?)"
+        let insertRowString = "INSERT INTO hdlog(logType, time, logFile, logLine, logFunction, content) VALUES (?, ?, ?, ?, ?, ?)"
         var insertStatement: OpaquePointer?
         // 开启事务
         if sqlite3_exec(logDB, "BEGIN TRANSACTION", nil, nil, nil) == SQLITE_OK {
             for log in logs {
                 if sqlite3_prepare_v2(logDB, insertRowString, -1, &insertStatement, nil) == SQLITE_OK {
                     // 绑定每个字段的值
-                    sqlite3_bind_text(insertStatement, 1, log.getFullContentString(), -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
-                    sqlite3_bind_int(insertStatement, 2, Int32(log.mLogItemType.rawValue))
-                    sqlite3_bind_double(insertStatement, 3, Date().timeIntervalSince1970)
-                    sqlite3_bind_text(insertStatement, 4, log.mLogDebugContent, -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
-                    sqlite3_bind_text(insertStatement, 5, log.getLogContent(), -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
+                    sqlite3_bind_int(insertStatement, 1, Int32(log.mLogItemType.rawValue))
+                    sqlite3_bind_double(insertStatement, 2, Date().timeIntervalSince1970)
+                    sqlite3_bind_text(insertStatement, 3, log.mLogFile, -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
+                    sqlite3_bind_text(insertStatement, 4, log.mLogLine, -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
+                    sqlite3_bind_text(insertStatement, 5, log.mLogFunction, -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
+                    sqlite3_bind_text(insertStatement, 6, log.getLogContent(), -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
                     if sqlite3_step(insertStatement) != SQLITE_DONE {
                         print("Insert failed: \(String(cString: sqlite3_errmsg(logDB)))")
                     }
@@ -160,13 +161,15 @@ class HDSqliteTools {
                 //第三步
                 let item = DDLoggerSwiftItem()
                 item.databaseID = Int(sqlite3_column_int(queryStatement, 0))
-                item.mLogItemType = DDLogType.init(rawValue: Int(sqlite3_column_int(queryStatement, 2)))
-                item.mLogDebugContent = String(cString: sqlite3_column_text(queryStatement, 4))
-                //更新内容
-                item.mLogContent = String(cString: sqlite3_column_text(queryStatement, 5))
+                item.mLogItemType = DDLogType.init(rawValue: Int(sqlite3_column_int(queryStatement, 1)))
                 //时间
-                let time = sqlite3_column_double(queryStatement, 3)
+                let time = sqlite3_column_double(queryStatement, 2)
                 item.mCreateDate = Date(timeIntervalSince1970: time)
+                item.mLogFile = String(cString: sqlite3_column_text(queryStatement, 3))
+                item.mLogLine = String(cString: sqlite3_column_text(queryStatement, 4))
+                item.mLogFunction = String(cString: sqlite3_column_text(queryStatement, 5))
+                //更新内容
+                item.mLogContent = String(cString: sqlite3_column_text(queryStatement, 6))
                 logList.append(item)
             }
         }
@@ -214,7 +217,7 @@ private extension HDSqliteTools {
     
     //创建日志表
     func _createTable() {
-        let createTableString = "create table if not exists 'hdlog' ('id' integer primary key autoincrement not null,'log' text,'logType' integer,'time' double, 'debugContent' text, 'contentString' text)"
+        let createTableString = "create table if not exists 'hdlog' ('id' integer primary key autoincrement not null, 'logType' integer,'time' double, 'logFile' text, 'logLine' text, 'logFunction' text, 'content' text)"
         var createTableStatement: OpaquePointer?
         if sqlite3_prepare_v2(logDB, createTableString, -1, &createTableStatement, nil) == SQLITE_OK {
             // 第二步
@@ -267,17 +270,18 @@ private extension HDSqliteTools {
     
     //插入数据
     func _insert(log: DDLoggerSwiftItem) {
-        let insertRowString = "INSERT INTO hdlog(log, logType, time, debugContent, contentString) VALUES (?, ?, ?, ?, ?)"
+        let insertRowString = "INSERT INTO hdlog(logType, time, logFile, logLine, logFunction, content) VALUES (?, ?, ?, ?, ?, ?)"
         var insertStatement: OpaquePointer?
         //第一步
         let status = sqlite3_prepare_v2(logDB, insertRowString, -1, &insertStatement, nil)
         if status == SQLITE_OK {
             //绑定
-            sqlite3_bind_text(insertStatement, 1, log.getFullContentString(), -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
-            sqlite3_bind_int(insertStatement, 2, Int32(log.mLogItemType.rawValue))
-            sqlite3_bind_double(insertStatement, 3, Date().timeIntervalSince1970)
-            sqlite3_bind_text(insertStatement, 4, log.mLogDebugContent, -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
-            sqlite3_bind_text(insertStatement, 5, log.getLogContent(), -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
+            sqlite3_bind_int(insertStatement, 1, Int32(log.mLogItemType.rawValue))
+            sqlite3_bind_double(insertStatement, 2, Date().timeIntervalSince1970)
+            sqlite3_bind_text(insertStatement, 3, log.mLogFile, -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
+            sqlite3_bind_text(insertStatement, 4, log.mLogLine, -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
+            sqlite3_bind_text(insertStatement, 5, log.mLogFunction, -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
+            sqlite3_bind_text(insertStatement, 6, log.getLogContent(), -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
             //第三步
             if sqlite3_step(insertStatement) == SQLITE_DONE {
                 //                print("插入数据成功")

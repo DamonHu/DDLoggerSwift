@@ -61,7 +61,7 @@ private extension DDLoggerSwiftMenuView {
         }
 
         for i in 0..<titleList.count {
-            var model = DDLoggerSwiftMenuCollectionViewCellModel(title: titleList[i], image: imageList[i])
+            let model = DDLoggerSwiftMenuCollectionViewCellModel(title: titleList[i], image: imageList[i])
             mCollectionList.append(model)
         }
         self.mCollectionView.reloadData()
@@ -79,8 +79,7 @@ extension DDLoggerSwiftMenuView: UICollectionViewDelegate,UICollectionViewDataSo
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DDLoggerSwiftMenuCollectionViewCell", for: indexPath) as! DDLoggerSwiftMenuCollectionViewCell
         cell.updateUI(model: model)
         cell.tag = indexPath.item
-        cell.switchSubject = { [weak self] (tag, isOn) in
-            guard let self = self else { return }
+        cell.switchSubject = {  (tag, isOn) in
             
         }
         return cell
