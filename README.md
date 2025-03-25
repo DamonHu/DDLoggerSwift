@@ -94,11 +94,6 @@ This library stores log information using SQLite. You can use any generic SQLite
 
 The client is developed using SwiftUI and is specifically designed to parse logs from DDLoggerSwift, making log viewing more convenient.
 
-### local network real-time log
-
-After the `3.0.0` version, it can be used with the above log viewing tool to realize real-time log viewing on the local area network, and use the simple configuration interface
-
-For local network real-time log viewing, refer to [Log Viewing Client](https://github.com/DamonHu/DDLoggerSwift/wiki/Log-Viewing-Client).
 
 ![](./readmeResources/Jietu20220731-212644.png)
 
