@@ -134,7 +134,7 @@ class HDSqliteTools {
         //查询条件
         var whereClauses: [String] = []
         if let keyword = keyword, !keyword.isEmpty {
-            whereClauses.append("log LIKE '%\(keyword)%'")
+            whereClauses.append("content LIKE '%\(keyword)%'")
         }
         if let type = type {
             whereClauses.append("logType == \(type.rawValue)")
@@ -244,7 +244,7 @@ private extension HDSqliteTools {
         var queryString = "SELECT COUNT(*) FROM hdlog"
         var whereClauses: [String] = []
         if let keyword = keyword, !keyword.isEmpty {
-            whereClauses.append("log LIKE '%\(keyword)%'")
+            whereClauses.append("content LIKE '%\(keyword)%'")
         }
         if let type = type {
             whereClauses.append("logType == \(type.rawValue)")
