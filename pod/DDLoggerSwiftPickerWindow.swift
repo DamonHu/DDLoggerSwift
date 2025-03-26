@@ -183,7 +183,10 @@ private extension DDLoggerSwiftPickerWindow {
             }
             //写入到text文件好解析
             //文件路径
-            let logFilePathURL = DDUtils.shared.getFileDirectory(type: .caches).appendingPathComponent("DDLoggerSwift.log", isDirectory: false)
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd-HH_mm_ss_SSS"
+            let dateString = formatter.string(from: Date())
+            let logFilePathURL = DDUtils.shared.getFileDirectory(type: .tmp).appendingPathComponent("DDLoggerSwift-\(dateString).log", isDirectory: false)
             if FileManager.default.fileExists(atPath: logFilePathURL.path) {
                 try? FileManager.default.removeItem(at: logFilePathURL)
             }
