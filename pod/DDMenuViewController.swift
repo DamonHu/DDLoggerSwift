@@ -46,11 +46,13 @@ class DDMenuViewController: UIViewController {
                     DDLoggerSwift.showShare(isCloseWhenComplete: false)
                 case 2:
                     self.contentVC?.isDecryptViewHidden = false
+                    self.navigationController?.popViewController(animated: true)
                 case 3:
                     DDLoggerSwift.fileSelectedComplete = { filePath, name in
                         self.contentVC?.dataBaseName = name
                     }
                     DDLoggerSwift.showFileFilter()
+                    self.navigationController?.popViewController(animated: true)
                 case 4:
                     let folder = DDLoggerSwift.getDBFolder()
                     let size = DDUtils.shared.getFileDirectorySize(fileDirectoryPth: folder)
@@ -83,6 +85,7 @@ class DDMenuViewController: UIViewController {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                         self.contentVC?._resetData()
                     }
+                    self.navigationController?.popViewController(animated: true)
                 case 5:
                     DDLoggerSwift.showUpload(isCloseWhenComplete: false)
                 default:

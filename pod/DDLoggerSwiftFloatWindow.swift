@@ -28,18 +28,21 @@ class DDLoggerSwiftFloatWindow: UIWindow {
         fatalError("init(coder:) has not been implemented")
     }
 
+    lazy var mLogoImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImageHDBoundle(named: "zx_logo"))
+        imageView.isUserInteractionEnabled = false
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
     lazy var mButton: UIButton = {
         let button = UIButton(type: .custom)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor.dd.color(hexValue: 0x5dae8b)
-        button.setTitle("Z".ZXLocaleString, for: UIControl.State.normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 23, weight: .bold)
-        button.layer.borderColor = UIColor.dd.color(hexValue: 0xffffff).cgColor
-        button.dd.addLayerShadow(color: UIColor.dd.color(hexValue: 0x333333), offset: CGSize(width: 2, height: 2), radius: 4, cornerRadius: 30)
-        button.layer.borderWidth = 4.0
-        button.addTarget(self, action: #selector(_show), for: UIControl.Event.touchUpInside)
-        button.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
-
+        button.backgroundColor = UIColor.dd.color(hexValue: 0x333333)
+        button.dd.addLayerShadow(color: UIColor.dd.color(hexValue: 0x171619), offset: CGSize(width: 0, height: 0), radius: 5, cornerRadius: 30)
+        button.layer.borderColor = UIColor.dd.color(hexValue: 0xffffff, alpha: 0.9).cgColor
+        button.layer.borderWidth = 3.5
+        button.addTarget(self, action: #selector(_show), for: .touchUpInside)
         let pan = UIPanGestureRecognizer(target: self, action: #selector(_touchMove(p:)))
         button.addGestureRecognizer(pan)
         return button
@@ -64,10 +67,16 @@ private extension DDLoggerSwiftFloatWindow {
             return
         }
         rootViewController.view.addSubview(mButton)
-        mButton.leftAnchor.constraint(equalTo: rootViewController.view.leftAnchor).isActive = true
-        mButton.rightAnchor.constraint(equalTo: rootViewController.view.rightAnchor).isActive = true
-        mButton.topAnchor.constraint(equalTo: rootViewController.view.topAnchor).isActive = true
-        mButton.bottomAnchor.constraint(equalTo: rootViewController.view.bottomAnchor).isActive = true
+        mButton.centerXAnchor.constraint(equalTo: rootViewController.view.centerXAnchor).isActive = true
+        mButton.centerYAnchor.constraint(equalTo: rootViewController.view.centerYAnchor).isActive = true
+        mButton.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        mButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        
+        mButton.addSubview(mLogoImageView)
+        mLogoImageView.centerXAnchor.constraint(equalTo: mButton.centerXAnchor).isActive = true
+        mLogoImageView.centerYAnchor.constraint(equalTo: mButton.centerYAnchor).isActive = true
+        mLogoImageView.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        mLogoImageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
     }
 
     @objc private func _touchMove(p:UIPanGestureRecognizer) {
