@@ -42,9 +42,9 @@ class DDLoggerSwiftMenuView: UIView {
 
 private extension DDLoggerSwiftMenuView {
     func _createUI() {
-        self.backgroundColor = UIColor.dd.color(hexValue: 0x272d55, alpha: 0.8)
+        self.backgroundColor = UIColor.dd.color(hexValue: 0x000000, alpha: 0.7)
         self.addSubview(mCollectionView)
-        mCollectionView.topAnchor.constraint(equalTo: self.topAnchor, constant: 80).isActive = true
+        mCollectionView.topAnchor.constraint(equalTo: self.topAnchor, constant: 20).isActive = true
         mCollectionView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
         mCollectionView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
         mCollectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10).isActive = true
@@ -52,8 +52,8 @@ private extension DDLoggerSwiftMenuView {
 
     func _loadData() {
         mCollectionList.removeAll()
-        var titleList = ["Back".ZXLocaleString, "Share".ZXLocaleString, "Decrypt".ZXLocaleString, "History".ZXLocaleString, "Analyse".ZXLocaleString]
-        var imageList = [UIImageHDBoundle(named: "icon_back"), UIImageHDBoundle(named: "icon_share"), UIImageHDBoundle(named: "icon_decrypt"), UIImageHDBoundle(named: "icon_search"), UIImageHDBoundle(named: "icon_analyse")]
+        var titleList = ["Clean Log".ZXLocaleString, "Share".ZXLocaleString, "Decrypt".ZXLocaleString, "History".ZXLocaleString, "Analyse".ZXLocaleString]
+        var imageList = [UIImageHDBoundle(named: "icon_delete"), UIImageHDBoundle(named: "icon_share"), UIImageHDBoundle(named: "icon_decrypt"), UIImageHDBoundle(named: "icon_search"), UIImageHDBoundle(named: "icon_analyse")]
 
         if DDLoggerSwift.uploadComplete != nil {
             titleList.append("Upload".ZXLocaleString)

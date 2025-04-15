@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		663487E4A73B1990919D5829 /* Pods_DDLoggerSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1711809328176A5C4FF3C07F /* Pods_DDLoggerSwift.framework */; };
+		E40164A92DAE1D3600F16B5E /* DDMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40164A82DAE1D3500F16B5E /* DDMenuViewController.swift */; };
+		E40164AD2DAE2D1D00F16B5E /* DDContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40164AC2DAE2D1D00F16B5E /* DDContentViewController.swift */; };
 		E46BF94329E29BFD00B13D3D /* DDLoggerSwiftFilterTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46BF94229E29BFD00B13D3D /* DDLoggerSwiftFilterTypeView.swift */; };
 		E48AABF722C05EF600CC5F1C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48AABF622C05EF600CC5F1C /* AppDelegate.swift */; };
 		E48AABFB22C05EF600CC5F1C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48AABFA22C05EF600CC5F1C /* ViewController.swift */; };
@@ -32,6 +34,8 @@
 		1711809328176A5C4FF3C07F /* Pods_DDLoggerSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DDLoggerSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		284EE0FF74D3BAE4D31825D1 /* Pods-DDLoggerSwift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DDLoggerSwift.debug.xcconfig"; path = "Target Support Files/Pods-DDLoggerSwift/Pods-DDLoggerSwift.debug.xcconfig"; sourceTree = "<group>"; };
 		8EBBD4367069C1048CA257A5 /* Pods-DDLoggerSwift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DDLoggerSwift.release.xcconfig"; path = "Target Support Files/Pods-DDLoggerSwift/Pods-DDLoggerSwift.release.xcconfig"; sourceTree = "<group>"; };
+		E40164A82DAE1D3500F16B5E /* DDMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDMenuViewController.swift; sourceTree = "<group>"; };
+		E40164AC2DAE2D1D00F16B5E /* DDContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDContentViewController.swift; sourceTree = "<group>"; };
 		E46BF94229E29BFD00B13D3D /* DDLoggerSwiftFilterTypeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDLoggerSwiftFilterTypeView.swift; sourceTree = "<group>"; };
 		E48AABF322C05EF600CC5F1C /* DDLoggerSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DDLoggerSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E48AABF622C05EF600CC5F1C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -133,6 +137,8 @@
 				E4AC94A1263162FA001FC322 /* DDLoggerSwiftWindow.swift */,
 				E4AC965026395F22001FC322 /* DDLoggerSwiftFloatWindow.swift */,
 				E4ADD75A26BD7804000BD07F /* DDLoggerSwiftPickerWindow.swift */,
+				E40164A82DAE1D3500F16B5E /* DDMenuViewController.swift */,
+				E40164AC2DAE2D1D00F16B5E /* DDContentViewController.swift */,
 			);
 			name = pod;
 			path = ../../pod;
@@ -297,6 +303,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E48AABFB22C05EF600CC5F1C /* ViewController.swift in Sources */,
+				E40164A92DAE1D3600F16B5E /* DDMenuViewController.swift in Sources */,
 				E4AC94A9263162FA001FC322 /* DDLoggerSwiftWindow.swift in Sources */,
 				E4EC33D826578A4C00074E19 /* DDLoggerSwiftMenuCollectionViewCell.swift in Sources */,
 				E4AC965126395F22001FC322 /* DDLoggerSwiftFloatWindow.swift in Sources */,
@@ -305,6 +312,7 @@
 				E4DC3DF82D68870600FC3E49 /* DDLoggerSwiftTableCellModel.swift in Sources */,
 				E4AC94A5263162FA001FC322 /* LogContent.swift in Sources */,
 				E4ADD75B26BD7804000BD07F /* DDLoggerSwiftPickerWindow.swift in Sources */,
+				E40164AD2DAE2D1D00F16B5E /* DDContentViewController.swift in Sources */,
 				E4AC94A6263162FA001FC322 /* HDSqliteTools.swift in Sources */,
 				E4EC33D6265789BC00074E19 /* DDLoggerSwiftMenuView.swift in Sources */,
 				E4AC94A4263162FA001FC322 /* DDLoggerSwiftTableViewCell.swift in Sources */,

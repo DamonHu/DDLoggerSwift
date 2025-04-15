@@ -57,14 +57,14 @@ class DDLoggerSwiftPickerWindow: UIWindow {
     private lazy var mContentBGView: UIView = {
         let mContentBGView = UIView()
         mContentBGView.translatesAutoresizingMaskIntoConstraints = false
-        mContentBGView.backgroundColor = UIColor.dd.color(hexValue: 0x272d55)
+        mContentBGView.backgroundColor = UIColor.dd.color(hexValue: 0x333333)
         return mContentBGView
     }()
     
     private lazy var mPickerBGView: UIView = {
         let tView = UIView()
         tView.translatesAutoresizingMaskIntoConstraints = false
-        tView.backgroundColor = UIColor.dd.color(hexValue: 0x272d55)
+        tView.backgroundColor = UIColor.clear
         tView.layer.masksToBounds = true
         tView.layer.borderColor = UIColor(red: 57.0/255.0, green: 74.0/255.0, blue: 81.0/255.0, alpha: 1.0).cgColor
         tView.layer.borderWidth = 1.0
@@ -83,7 +83,7 @@ class DDLoggerSwiftPickerWindow: UIWindow {
     private lazy var mPickerView: UIPickerView = {
         let tPicker = UIPickerView()
         tPicker.translatesAutoresizingMaskIntoConstraints = false
-        tPicker.backgroundColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0)
+        tPicker.backgroundColor = UIColor.clear
         tPicker.isUserInteractionEnabled = true
         tPicker.dataSource = self
         tPicker.delegate = self
@@ -247,6 +247,7 @@ extension DDLoggerSwiftPickerWindow: UIPickerViewDelegate, UIPickerViewDataSourc
             titleView = label
         } else {
             let label = UILabel()
+            label.textColor = UIColor.dd.color(hexValue: 0xffffff)
             label.font = UIFont.systemFont(ofSize: 15, weight: .medium)
             label.text = self.mFileDateNameList[row]
             label.textAlignment = .center

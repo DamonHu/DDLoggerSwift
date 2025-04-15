@@ -68,7 +68,7 @@ class DDLoggerSwiftMenuCollectionViewCell: UICollectionViewCell {
 
 private extension DDLoggerSwiftMenuCollectionViewCell {
     func _createUI() {
-        self.backgroundColor = UIColor.dd.color(hexValue: 0x323764, alpha: 0.5)
+        self.backgroundColor = UIColor.dd.color(hexValue: 0x3333331)
         self.layer.cornerRadius = 15
         self.contentView.addSubview(mImageView)
         mImageView.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor).isActive = true
