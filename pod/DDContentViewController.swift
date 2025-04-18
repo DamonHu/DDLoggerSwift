@@ -12,7 +12,11 @@ class DDContentViewController: UIViewController {
     private var mDisplayLogDataArray = [DDLoggerSwiftTableCellModel]()  //tableview显示的logger
     private var mCurrentSearchIndex = 0             //当前搜索到的索引
     private var lastIndexID: Int? = nil   //最后索引的id
-    private var hasMore = true
+    private var hasMore: Bool {
+        get {
+            return self.totalCount > self.mDisplayLogDataArray.count
+        }
+    }
     private var totalCount: Int = 0//数量
     
     var filterType: DDLogType? {
@@ -32,6 +36,7 @@ class DDContentViewController: UIViewController {
         willSet {
             self.mPasswordTextField.isHidden = newValue
             self.mPasswordButton.isHidden = newValue
+            self.mPasswordCancelButton.isHidden = newValue
             if !newValue {
                 self.mPasswordTextField.becomeFirstResponder()
             } else {
@@ -65,10 +70,14 @@ class DDContentViewController: UIViewController {
         return mContentBGView
     }()
     
-    lazy var mPullImageView: UIImageView = {
-        let imageView = UIImageView(image: UIImageHDBoundle(named: "icon-pull"))
-        imageView.isHidden = true
-        imageView.translatesAutoresizingMaskIntoConstraints = false
+    lazy var mPullImageBGView: UIView = {
+        let view = UIView()
+        view.isHidden = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = UIColor.dd.color(hexValue: 0x333333)
+        view.dd.addLayerShadow(color: UIColor.dd.color(hexValue: 0x171619), offset: CGSize(width: 0, height: 0), radius: 5, cornerRadius: 15)
+        view.layer.borderColor = UIColor.dd.color(hexValue: 0xffffff, alpha: 0.9).cgColor
+        view.layer.borderWidth = 2
         let transformYAnimation = CABasicAnimation(keyPath: "transform.translation.y")
         transformYAnimation.fromValue = 0
         transformYAnimation.toValue = -10
@@ -78,12 +87,22 @@ class DDContentViewController: UIViewController {
         transformYAnimation.autoreverses = true  //原样返回
         transformYAnimation.repeatCount = MAXFLOAT
         transformYAnimation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.linear)
-        imageView.layer.add(transformYAnimation, forKey: "transformYAnimation")
+        view.layer.add(transformYAnimation, forKey: "transformYAnimation")
+        //添加点击
+        let tap = UITapGestureRecognizer(target: self, action: #selector(_resetData))
+        view.addGestureRecognizer(tap)
+        return view
+    }()
+    
+    lazy var mPullImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImageHDBoundle(named: "icon-pull-white"))
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
 
     private lazy var mTableView: UITableView = {
         let tableView = UITableView(frame: CGRect.zero, style: UITableView.Style.grouped)
+        tableView.contentInset = .zero
         if #available(iOS 15.0, *) {
             tableView.sectionHeaderTopPadding = 0
         }
@@ -105,6 +124,8 @@ class DDContentViewController: UIViewController {
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(_resetData), for: .valueChanged)
         tableView.refreshControl = refreshControl
+        //底部距离
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: -20, right: 0)
         return tableView
     }()
     
@@ -118,9 +139,8 @@ class DDContentViewController: UIViewController {
         let arrtibutedString = NSMutableAttributedString(string: "Enter password to view".ZXLocaleString, attributes: [NSAttributedString.Key.foregroundColor : UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 0.7), NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14)])
         tTextField.attributedPlaceholder = arrtibutedString
         tTextField.textColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0)
-        tTextField.layer.masksToBounds = true
-        tTextField.layer.borderColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0).cgColor
-        tTextField.layer.borderWidth = 1.0
+        tTextField.leftViewMode = .always
+        tTextField.leftView = UIView(frame: CGRect.init(x: 0, y: 0, width: 10, height: 0))
         return tTextField
     }()
     
@@ -128,13 +148,23 @@ class DDContentViewController: UIViewController {
         let button = UIButton(type: UIButton.ButtonType.custom)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.isHidden = true
-        button.backgroundColor = UIColor(red: 93.0/255.0, green: 174.0/255.0, blue: 139.0/255.0, alpha: 1.0)
+        button.backgroundColor = UIColor(red: 255.0/255.0, green: 118.0/255.0, blue: 118.0/255.0, alpha: 1.0)
         button.setTitleColor(UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0), for: UIControl.State.normal)
         button.setTitle("Decrypt".ZXLocaleString, for: UIControl.State.normal)
-        button.layer.masksToBounds = true
-        button.layer.borderColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0).cgColor
-        button.layer.borderWidth = 1.0
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         button.addTarget(self, action: #selector(_decrypt), for: UIControl.Event.touchUpInside)
+        return button
+    }()
+    
+    private lazy var mPasswordCancelButton: UIButton = {
+        let button = UIButton(type: UIButton.ButtonType.custom)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.isHidden = true
+        button.backgroundColor = UIColor(red: 93.0/255.0, green: 174.0/255.0, blue: 139.0/255.0, alpha: 1.0)
+        button.setTitleColor(UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0), for: UIControl.State.normal)
+        button.setTitle("Cancel".ZXLocaleString, for: UIControl.State.normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+        button.addTarget(self, action: #selector(_decryptCancel), for: UIControl.Event.touchUpInside)
         return button
     }()
     
@@ -197,7 +227,8 @@ class DDContentViewController: UIViewController {
 
 extension DDContentViewController {
     @objc func _resetData() {
-        self.mPullImageView.isHidden = true
+        self.mPullImageBGView.isHidden = true
+        self.mCurrentSearchIndex = 0
         self.lastIndexID = nil
         self._reloadView()
     }
@@ -206,36 +237,25 @@ extension DDContentViewController {
 private extension DDContentViewController {
     func _createUI() {
         self.view.addSubview(self.mContentBGView)
+        //列表放到最底部
+        self.mContentBGView.addSubview(self.mTableView)
+        //布局
         self.mContentBGView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         self.mContentBGView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         self.mContentBGView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         self.mContentBGView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
 
-        //滚动日志窗
-        self.mContentBGView.addSubview(self.mTableView)
-        self.mTableView.leftAnchor.constraint(equalTo: self.mContentBGView.leftAnchor).isActive = true
-        self.mTableView.rightAnchor.constraint(equalTo: self.mContentBGView.rightAnchor).isActive = true
-        self.mTableView.topAnchor.constraint(equalTo: self.mContentBGView.topAnchor).isActive = true
-        self.mTableView.bottomAnchor.constraint(equalTo: self.mContentBGView.bottomAnchor, constant: -40).isActive = true
-        
-        //新标签
-        self.mContentBGView.addSubview(mPullImageView)
-        self.mPullImageView.centerXAnchor.constraint(equalTo: self.mContentBGView.centerXAnchor).isActive = true
-        self.mPullImageView.topAnchor.constraint(equalTo: self.mContentBGView.topAnchor, constant: 13).isActive = true
-        self.mPullImageView.widthAnchor.constraint(equalToConstant: 28).isActive = true
-        self.mPullImageView.heightAnchor.constraint(equalToConstant: 28).isActive = true
-        
         //搜索框
         self.mContentBGView.addSubview(self.mSearchBar)
         self.mSearchBar.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        self.mSearchBar.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        self.mSearchBar.topAnchor.constraint(equalTo: mContentBGView.topAnchor).isActive = true
         self.mSearchBar.heightAnchor.constraint(equalToConstant: 40).isActive = true
         self.mSearchBar.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1.0/1.5).isActive = true
 
         self.mContentBGView.addSubview(self.mFilterButton)
         self.mFilterButton.leftAnchor.constraint(equalTo: self.mSearchBar.rightAnchor).isActive = true
-        self.mFilterButton.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         self.mFilterButton.topAnchor.constraint(equalTo: self.mSearchBar.topAnchor).isActive = true
+        self.mFilterButton.bottomAnchor.constraint(equalTo: mSearchBar.bottomAnchor).isActive = true
         self.mFilterButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1.0/9.0).isActive = true
 
         self.mContentBGView.addSubview(self.mNextButton)
@@ -253,26 +273,51 @@ private extension DDContentViewController {
         self.mContentBGView.addSubview(mFilterTypeView)
         mFilterTypeView.leftAnchor.constraint(equalTo: self.mFilterButton.leftAnchor).isActive = true
         mFilterTypeView.widthAnchor.constraint(equalToConstant: 90).isActive = true
-        mFilterTypeView.bottomAnchor.constraint(equalTo: self.mFilterButton.topAnchor).isActive = true
+        mFilterTypeView.topAnchor.constraint(equalTo: self.mFilterButton.bottomAnchor).isActive = true
         mFilterTypeView.heightAnchor.constraint(equalToConstant: 240).isActive = true
 
         //私密解锁
         view.addSubview(self.mPasswordTextField)
         self.mPasswordTextField.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        self.mPasswordTextField.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        self.mPasswordTextField.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         self.mPasswordTextField.heightAnchor.constraint(equalToConstant: 40).isActive = true
         self.mPasswordTextField.widthAnchor.constraint(equalTo: self.mContentBGView.widthAnchor, multiplier: 1.0/1.5).isActive = true
 
         view.addSubview(self.mPasswordButton)
         self.mPasswordButton.leftAnchor.constraint(equalTo: self.mPasswordTextField.rightAnchor).isActive = true
         self.mPasswordButton.topAnchor.constraint(equalTo: self.mPasswordTextField.topAnchor).isActive = true
-        self.mPasswordButton.widthAnchor.constraint(equalTo: self.mContentBGView.widthAnchor, multiplier: 1.0/3.0).isActive = true
+        self.mPasswordButton.widthAnchor.constraint(equalTo: self.mContentBGView.widthAnchor, multiplier: 1.0/6.0).isActive = true
         self.mPasswordButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        
+        view.addSubview(self.mPasswordCancelButton)
+        self.mPasswordCancelButton.leftAnchor.constraint(equalTo: self.mPasswordButton.rightAnchor).isActive = true
+        self.mPasswordCancelButton.topAnchor.constraint(equalTo: self.mPasswordButton.topAnchor).isActive = true
+        self.mPasswordCancelButton.widthAnchor.constraint(equalTo: self.mContentBGView.widthAnchor, multiplier: 1.0/6.0).isActive = true
+        self.mPasswordCancelButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        
+        //滚动日志窗
+        self.mTableView.leftAnchor.constraint(equalTo: self.mContentBGView.leftAnchor).isActive = true
+        self.mTableView.rightAnchor.constraint(equalTo: self.mContentBGView.rightAnchor).isActive = true
+        self.mTableView.topAnchor.constraint(equalTo: self.mPasswordTextField.bottomAnchor).isActive = true
+        self.mTableView.bottomAnchor.constraint(equalTo: self.mContentBGView.bottomAnchor).isActive = true
+        
+        //新标签
+        self.mContentBGView.addSubview(mPullImageBGView)
+        self.mPullImageBGView.centerXAnchor.constraint(equalTo: self.mContentBGView.centerXAnchor).isActive = true
+        self.mPullImageBGView.topAnchor.constraint(equalTo: self.mTableView.topAnchor, constant: 13).isActive = true
+        self.mPullImageBGView.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        self.mPullImageBGView.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        
+        self.mPullImageBGView.addSubview(mPullImageView)
+        self.mPullImageView.centerXAnchor.constraint(equalTo: self.mPullImageBGView.centerXAnchor).isActive = true
+        self.mPullImageView.centerYAnchor.constraint(equalTo: self.mPullImageBGView.centerYAnchor).isActive = true
+        self.mPullImageView.widthAnchor.constraint(equalToConstant: 16).isActive = true
+        self.mPullImageView.heightAnchor.constraint(equalToConstant: 16).isActive = true
     }
     
     @objc private func _reloadView() {
         var dataArray = [DDLoggerSwiftItem]()
-        self.totalCount = HDSqliteTools.shared.getItemCount(keyword: self.mSearchBar.text, type: self.filterType)
+        self.totalCount = HDSqliteTools.shared.getItemCount(name: self.dataBaseName, keyword: self.mSearchBar.text, type: self.filterType)
         if DDLoggerSwift.maxPageSize > 0 {
             dataArray = HDSqliteTools.shared.getLogs(name: self.dataBaseName, keyword: self.mSearchBar.text, type: self.filterType, startID: self.lastIndexID, pageSize: DDLoggerSwift.maxPageSize)
             if self.lastIndexID == nil {
@@ -285,26 +330,19 @@ private extension DDContentViewController {
                 }))
             }
             self.lastIndexID = self.mDisplayLogDataArray.last?.logItem.databaseID
-            let minID = HDSqliteTools.shared.getMinLogID()
-            if minID == 0 || self.lastIndexID == nil {
-                self.hasMore = false
-            } else {
-                self.hasMore = self.lastIndexID != minID
-            }
         } else {
             //不分页
             dataArray = HDSqliteTools.shared.getLogs(name: self.dataBaseName, keyword: self.mSearchBar.text, type: self.filterType, startID: nil, pageSize: nil)
             self.mDisplayLogDataArray = dataArray.map({ item in
                 return DDLoggerSwiftTableCellModel(model: item)
             })
-            self.hasMore = false
         }
         if self.mDisplayLogDataArray.isEmpty {
             //第一条信息
             self.mDisplayLogDataArray.append(DDLoggerSwiftTableCellModel())
         }
         self.mNextButton.isEnabled = !self.mDisplayLogDataArray.isEmpty
-        self.mSearchNumLabel.text = "\(self.mDisplayLogDataArray.count)"
+        self.mSearchNumLabel.text = "\(self.mCurrentSearchIndex + 1)/\(self.mDisplayLogDataArray.count)"
         //全局刷新
         self.mTableView.reloadData()
         self.mTableView.refreshControl?.endRefreshing()
@@ -337,11 +375,16 @@ private extension DDContentViewController {
         }
     }
     
+    @objc private func _decryptCancel() {
+        self.mPasswordTextField.resignFirstResponder()
+        self.mSearchBar.resignFirstResponder()
+        self.isDecryptViewHidden = true
+    }
+    
     @objc private func _dbUpdate(notice: Notification) {
-        guard let object = notice.object as? [String: String] else { return }
-        print("sss", object["type"])
-        if object["type"] == "insert" && self.mPullImageView.isHidden {
-            self.mPullImageView.isHidden = false
+        guard let object = notice.object as? [String: Any], let type = object["type"] as? String else { return }
+        if type == "insert" && self.mPullImageBGView.isHidden {
+            self.mPullImageBGView.isHidden = false
         }
         
     }
@@ -445,19 +488,28 @@ extension DDContentViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
-        return self.hasMore ? 45 : 0.1
+        return self.hasMore ? 50 : 0.1
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return self.hasMore ? 45 : 0.1
+        return self.hasMore ? 50 : 0.1
     }
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let button = UIButton()
         if self.hasMore {
-            button.setTitle("🔄 Load More, 📊 (total count: \(self.totalCount))", for: .normal)
+            let attributed = NSMutableAttributedString(string: "🔄 " + "Load More".ZXLocaleString, attributes: [.font: UIFont.systemFont(ofSize: 15, weight: .bold), .foregroundColor: UIColor.dd.color(hexValue: 0xffffff)])
+            let attributed1 = NSAttributedString(string: "\n" + "left count".ZXLocaleString + ": \(self.totalCount - self.mDisplayLogDataArray.count)", attributes: [.font: UIFont.systemFont(ofSize: 11), .foregroundColor: UIColor.dd.color(hexValue: 0xffffff, alpha: 0.6)])
+            
+            attributed.append(attributed1)
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.lineHeightMultiple = 1.3
+            paragraphStyle.alignment = .center
+            attributed.addAttributes([.paragraphStyle: paragraphStyle], range: NSRange(location: 0, length: attributed.length))
+            
+            button.setAttributedTitle(attributed, for: .normal)
             button.setTitleColor(UIColor.dd.color(hexValue: 0xffffff), for: .normal)
-            button.titleLabel?.font = .systemFont(ofSize: 14, weight: .bold)
+            button.titleLabel?.numberOfLines = 0
             button.backgroundColor = UIColor.dd.color(hexValue: 0x333333)
             button.addTarget(self, action: #selector(_reloadView), for: .touchUpInside)
         }

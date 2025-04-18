@@ -51,7 +51,6 @@ class DDLoggerSwiftFloatWindow: UIWindow {
 }
 
 private extension DDLoggerSwiftFloatWindow {
-
     func _initVC() {
         self.rootViewController = UIViewController()
         self.windowLevel =  UIWindow.Level.alert

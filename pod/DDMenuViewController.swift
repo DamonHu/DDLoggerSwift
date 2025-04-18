@@ -50,9 +50,9 @@ class DDMenuViewController: UIViewController {
                 case 3:
                     DDLoggerSwift.fileSelectedComplete = { filePath, name in
                         self.contentVC?.dataBaseName = name
+                        self.navigationController?.popViewController(animated: true)
                     }
                     DDLoggerSwift.showFileFilter()
-                    self.navigationController?.popViewController(animated: true)
                 case 4:
                     let folder = DDLoggerSwift.getDBFolder()
                     let size = DDUtils.shared.getFileDirectorySize(fileDirectoryPth: folder)
@@ -82,10 +82,10 @@ class DDMenuViewController: UIViewController {
                         📈 \("LogFile total size".ZXLocaleString): \(size/1024.0)kb
                     """
                     printWarn(info)
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                         self.contentVC?._resetData()
+                        self.navigationController?.popViewController(animated: true)
                     }
-                    self.navigationController?.popViewController(animated: true)
                 case 5:
                     DDLoggerSwift.showUpload(isCloseWhenComplete: false)
                 default:

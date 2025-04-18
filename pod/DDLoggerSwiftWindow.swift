@@ -40,6 +40,7 @@ class DDLoggerSwiftWindow: UIWindow {
     @available(iOS 13.0, *)
     override init(windowScene: UIWindowScene) {
         super.init(windowScene: windowScene)
+        self.windowScene = windowScene
         self._init()
     }
 
@@ -47,33 +48,10 @@ class DDLoggerSwiftWindow: UIWindow {
         super.init(frame: frame)
         self._init()
     }
-    
-    
-    override var isHidden: Bool {
-        willSet {
-            super.isHidden = newValue
-//            if !newValue {
-//                self.changeWindowFrame()
-//                if self.mDisplayLogDataArray.isEmpty {
-//                    self.currentVC._resetData()
-//                }
-//            }
-        }
-    }
 
     var filterType: DDLogType? {
         didSet {
             self.currentVC.filterType = filterType
-        }
-    }
-
-    var isFullScreen = false {
-        willSet {
-            if (newValue) {
-                self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height - 40)
-            } else {
-                self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 600)
-            }
         }
     }
 
@@ -97,14 +75,20 @@ extension DDLoggerSwiftWindow {
 
 //MARK: - private Function
 private extension DDLoggerSwiftWindow {
-    @objc func changeWindowFrame() {
-        self.isFullScreen = false
-    }
-
     //MARK: Private method
     private func _init() {
+        self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height)
         let rootVC = self.currentVC
         let navigationVC = UINavigationController(rootViewController: rootVC)
+        navigationVC.navigationBar.barTintColor = UIColor.white
+        navigationVC.navigationBar.isTranslucent = false
+        if #available(iOS 13.0, *) {
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = UIColor.white
+            navigationVC.navigationBar.standardAppearance = appearance
+            navigationVC.navigationBar.scrollEdgeAppearance = appearance
+        }
         self.rootViewController = navigationVC
         self.windowLevel =  UIWindow.Level.alert
         self.isUserInteractionEnabled = true
@@ -137,15 +121,7 @@ private extension DDLoggerSwiftWindow {
         NSLayoutConstraint(item: button1, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 25).isActive = true
         let leftbarItem1 = UIBarButtonItem(customView: button1)
         
-        let button2 = UIButton(frame: .init(x: 0, y: 0, width: 25, height: 25))
-        button2.translatesAutoresizingMaskIntoConstraints = false
-        button2.setImage(UIImageHDBoundle(named: "log_icon_scale"), for: .normal)
-        button2.addTarget(self, action: #selector(_clickScale), for: .touchUpInside)
-        NSLayoutConstraint(item: button2, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 25).isActive = true
-        NSLayoutConstraint(item: button2, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 25).isActive = true
-        let leftbarItem2 = UIBarButtonItem(customView: button2)
-        
-        rootVC.navigationItem.leftBarButtonItems = [leftbarItem, leftbarItem1, leftbarItem2]
+        rootVC.navigationItem.leftBarButtonItems = [leftbarItem, leftbarItem1]
         //right view
         let button5 = UIButton(frame: .init(x: 0, y: 0, width: 25, height: 25))
         button5.translatesAutoresizingMaskIntoConstraints = false
@@ -155,13 +131,6 @@ private extension DDLoggerSwiftWindow {
         NSLayoutConstraint(item: button5, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 25).isActive = true
         let leftbarItem5 = UIBarButtonItem(customView: button5)
         rootVC.navigationItem.rightBarButtonItems = [leftbarItem5]
-        //
-        self.changeWindowFrame()
-        NotificationCenter.default.addObserver(self, selector: #selector(changeWindowFrame), name: UIApplication.didChangeStatusBarFrameNotification, object: nil)
-    }
-    
-    @objc private func _clickScale() {
-        self.isFullScreen = !self.isFullScreen
     }
     
     @objc private func _clickClose() {

@@ -19,6 +19,7 @@ class DDLoggerSwiftPickerWindow: UIWindow {
     @available(iOS 13.0, *)
     override init(windowScene: UIWindowScene) {
         super.init(windowScene: windowScene)
+        self.windowScene = windowScene
         self._initVC()
         self._createUI()
     }
@@ -36,19 +37,13 @@ class DDLoggerSwiftPickerWindow: UIWindow {
     private var isCloseWhenComplete = false           //分享或者上传完毕之后是否关闭整个log
     private var pickerType: PickerType = .share {
         willSet {
-            if newValue == .share {
-                mPickerTipLabel.text = "Please select the log to share".ZXLocaleString
-            } else if newValue == .upload {
-                mPickerTipLabel.text = "Please select the log to upload".ZXLocaleString
-            }
             switch newValue {
                 case .share:
-                    mPickerTipLabel.text = "Please select the log to share".ZXLocaleString
+                    self.mConfirmButton.setTitle("Share".ZXLocaleString, for: .normal)
                 case .upload:
-                    mPickerTipLabel.text = "Please select the log to upload".ZXLocaleString
+                    self.mConfirmButton.setTitle("Upload".ZXLocaleString, for: .normal)
                 case .filter:
-                    mPickerTipLabel.text = "Please select the log".ZXLocaleString
-
+                    self.mConfirmButton.setTitle("Confirm".ZXLocaleString, for: .normal)
             }
         }
     }
@@ -61,25 +56,6 @@ class DDLoggerSwiftPickerWindow: UIWindow {
         return mContentBGView
     }()
     
-    private lazy var mPickerBGView: UIView = {
-        let tView = UIView()
-        tView.translatesAutoresizingMaskIntoConstraints = false
-        tView.backgroundColor = UIColor.clear
-        tView.layer.masksToBounds = true
-        tView.layer.borderColor = UIColor(red: 57.0/255.0, green: 74.0/255.0, blue: 81.0/255.0, alpha: 1.0).cgColor
-        tView.layer.borderWidth = 1.0
-        return tView
-    }()
-
-    private lazy var mPickerTipLabel: UILabel = {
-        let tipLabel = UILabel()
-        tipLabel.translatesAutoresizingMaskIntoConstraints = false
-        tipLabel.text = "Please select the log to share".ZXLocaleString
-        tipLabel.font = UIFont.systemFont(ofSize: 14, weight: UIFont.Weight.medium)
-        tipLabel.textColor = UIColor.dd.color(hexValue: 0xffffff)
-        return tipLabel
-    }()
-    
     private lazy var mPickerView: UIPickerView = {
         let tPicker = UIPickerView()
         tPicker.translatesAutoresizingMaskIntoConstraints = false
@@ -90,11 +66,28 @@ class DDLoggerSwiftPickerWindow: UIWindow {
         return tPicker
     }()
     
-    private lazy var mToolBar: UIToolbar = {
-        let tToolBar = UIToolbar()
-        tToolBar.translatesAutoresizingMaskIntoConstraints = false
-        tToolBar.barStyle = .default
-        return tToolBar
+    private lazy var mConfirmButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setTitleColor(UIColor.dd.color(hexValue: 0xffffff), for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 12)
+        button.backgroundColor = UIColor(red: 255.0/255.0, green: 118.0/255.0, blue: 118.0/255.0, alpha: 1.0)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(_confirmPicker), for: .touchUpInside)
+        button.layer.masksToBounds = true
+        button.layer.cornerRadius = 6
+        
+        let scaleAnimation = CABasicAnimation(keyPath: "transform")
+        scaleAnimation.fromValue = NSValue(caTransform3D: CATransform3DMakeScale(0.9, 0.9, 1))
+        scaleAnimation.toValue = NSValue(caTransform3D: CATransform3DMakeScale(1.1, 1.1, 1))
+        scaleAnimation.duration = 0.5
+        scaleAnimation.isCumulative = false
+        scaleAnimation.isRemovedOnCompletion = false
+        scaleAnimation.autoreverses = true  //原样返回
+        scaleAnimation.repeatCount = MAXFLOAT
+        scaleAnimation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.linear)
+        button.layer.add(scaleAnimation, forKey: "scale")
+        
+        return button
     }()
 }
 
@@ -128,48 +121,64 @@ extension DDLoggerSwiftPickerWindow {
 
 private extension DDLoggerSwiftPickerWindow {
     func _initVC() {
-        self.rootViewController = UIViewController()
+        self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height)
+        let rootVC = UIViewController()
+        let navigationVC = UINavigationController(rootViewController: rootVC)
+        navigationVC.navigationBar.barTintColor = UIColor.white
+        navigationVC.navigationBar.isTranslucent = false
+        if #available(iOS 13.0, *) {
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = UIColor.white
+            navigationVC.navigationBar.standardAppearance = appearance
+            navigationVC.navigationBar.scrollEdgeAppearance = appearance
+        }
+        self.rootViewController = navigationVC
         self.windowLevel =  UIWindow.Level.alert
         self.isUserInteractionEnabled = true
+        self.backgroundColor = UIColor.clear
+        //标题
+        let view = UIView()
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.attributedText = NSAttributedString(string: "Select Log File".ZXLocaleString, attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 18, weight: .medium), NSAttributedString.Key.foregroundColor:UIColor.black])
+        view.addSubview(label)
+        label.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        label.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        rootVC.navigationItem.titleView = view
+        
+        //
+        let button = UIButton(frame: .init(x: 0, y: 0, width: 25, height: 25))
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImageHDBoundle(named: "log_icon_close"), for: .normal)
+        button.addTarget(self, action: #selector(_closePicker), for: .touchUpInside)
+        NSLayoutConstraint(item: button, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 25).isActive = true
+        NSLayoutConstraint(item: button, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 25).isActive = true
+        let leftbarItem = UIBarButtonItem(customView: button)
+        rootVC.navigationItem.leftBarButtonItems = [leftbarItem]
+        
+        //
+        let rightButton = self.mConfirmButton
+        NSLayoutConstraint(item: rightButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 25).isActive = true
+        NSLayoutConstraint(item: rightButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 65).isActive = true
+        let rightBarItem = UIBarButtonItem(customView: rightButton)
+        rootVC.navigationItem.rightBarButtonItem = rightBarItem
     }
     
     private func _createUI() {
-        guard let view = self.rootViewController?.view else { return }
-        self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 420)
-        self.rootViewController?.view.addSubview(self.mContentBGView)
+        guard let rootVC = self.rootViewController as? UINavigationController, let view = rootVC.topViewController?.view else { return }
+        
+        view.addSubview(self.mContentBGView)
         self.mContentBGView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         self.mContentBGView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         self.mContentBGView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        self.mContentBGView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        self.mContentBGView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
 
-        self.mContentBGView.addSubview(self.mPickerBGView)
-        self.mPickerBGView.topAnchor.constraint(equalTo: self.mContentBGView.topAnchor).isActive = true
-        self.mPickerBGView.bottomAnchor.constraint(equalTo: self.mContentBGView.bottomAnchor).isActive = true
-        self.mPickerBGView.leftAnchor.constraint(equalTo: self.mContentBGView.leftAnchor).isActive = true
-        self.mPickerBGView.rightAnchor.constraint(equalTo: self.mContentBGView.rightAnchor).isActive = true
-
-        self.mPickerBGView.addSubview(mPickerTipLabel)
-        mPickerTipLabel.centerXAnchor.constraint(equalTo: self.mContentBGView.centerXAnchor).isActive = true
-        mPickerTipLabel.topAnchor.constraint(equalTo: self.mContentBGView.topAnchor, constant: 20).isActive = true
-        mPickerTipLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
-
-        self.mPickerBGView.addSubview(self.mToolBar)
-        self.mToolBar.topAnchor.constraint(equalTo: mPickerTipLabel.bottomAnchor).isActive = true
-        self.mToolBar.leftAnchor.constraint(equalTo: mPickerBGView.leftAnchor).isActive = true
-        self.mToolBar.rightAnchor.constraint(equalTo: mPickerBGView.rightAnchor).isActive = true
-        self.mToolBar.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        self.mToolBar.layoutIfNeeded()
-
-        let closeBarItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.cancel, target: self, action: #selector(_closePicker))
-        let fixBarItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
-        let doneBarItem = UIBarButtonItem(title: "Confirm".ZXLocaleString, style:.plain, target: self, action: #selector(_confirmPicker))
-        self.mToolBar.setItems([closeBarItem, fixBarItem, doneBarItem], animated: true)
-
-        self.mPickerBGView.addSubview(self.mPickerView)
-        self.mPickerView.topAnchor.constraint(equalTo: self.mToolBar.bottomAnchor).isActive = true
-        self.mPickerView.leftAnchor.constraint(equalTo: self.mPickerBGView.leftAnchor).isActive = true
-        self.mPickerView.rightAnchor.constraint(equalTo: self.mPickerBGView.rightAnchor).isActive = true
-        self.mPickerView.bottomAnchor.constraint(equalTo: self.mPickerBGView.bottomAnchor).isActive = true
+        self.mContentBGView.addSubview(self.mPickerView)
+        self.mPickerView.topAnchor.constraint(equalTo: self.mContentBGView.topAnchor).isActive = true
+        self.mPickerView.leftAnchor.constraint(equalTo: self.mContentBGView.leftAnchor).isActive = true
+        self.mPickerView.rightAnchor.constraint(equalTo: self.mContentBGView.rightAnchor).isActive = true
+        self.mPickerView.bottomAnchor.constraint(equalTo: self.mContentBGView.bottomAnchor).isActive = true
     }
     
     @objc private func _closePicker() {
@@ -183,10 +192,8 @@ private extension DDLoggerSwiftPickerWindow {
             }
             //写入到text文件好解析
             //文件路径
-            let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy-MM-dd-HH_mm_ss_SSS"
-            let dateString = formatter.string(from: Date())
-            let logFilePathURL = DDUtils.shared.getFileDirectory(type: .tmp).appendingPathComponent("DDLoggerSwift-\(dateString).log", isDirectory: false)
+            let fileName = self.mShareFileName.components(separatedBy: ".").first ?? self.mShareFileName
+            let logFilePathURL = DDUtils.shared.getFileDirectory(type: .tmp).appendingPathComponent("DDLoggerSwift-\(fileName).log", isDirectory: false)
             if FileManager.default.fileExists(atPath: logFilePathURL.path) {
                 try? FileManager.default.removeItem(at: logFilePathURL)
             }
@@ -195,7 +202,6 @@ private extension DDLoggerSwiftPickerWindow {
             } catch {
                 print(error)
             }
-
             //分享
             let activityVC = UIActivityViewController(activityItems: [logFilePathURL], applicationActivities: nil)
             if UIDevice.current.model == "iPad" {
