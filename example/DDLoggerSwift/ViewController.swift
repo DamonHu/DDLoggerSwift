@@ -88,7 +88,7 @@ class ViewController: UIViewController {
         let startTime = DispatchTime.now()
         for i in 0..<100 {
 //            print("\(i)")
-            printLog("\(i)")
+//            printLog("\(i)")
 //            printLog("测试输出，默认不会写入数据库","222222","3333333")
 //            //普通输出
 //            printInfo("点击了按钮111")

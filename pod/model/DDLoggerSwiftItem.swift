@@ -72,9 +72,6 @@ public extension DDLoggerSwiftItem {
             } else {
                 contentString = "\(mContent)"
             }
-            if self.mLogItemType == .privacy {
-                contentString = contentString.dd.aesCBCEncrypt(password: DDLoggerSwift.privacyLogPassword, ivString: DDLoggerSwift.privacyLogIv, encodeType: DDLoggerSwift.privacyResultEncodeType) ?? "Invalid encryption".ZXLocaleString
-            }
         }
         return contentString
     }
@@ -83,8 +80,12 @@ public extension DDLoggerSwiftItem {
      func getFullContentString() -> String {
         //日期
          let dateStr = DDLoggerSwift.dateFormatterISO8601.string(from: mCreateDate)
+         var logContent = self.getLogContent()
+         if self.mLogItemType == .privacy && DDLoggerSwift.shared.isPasswordCorrect {
+             logContent = logContent.dd.aesCBCDecrypt(password: DDLoggerSwift.privacyLogPassword, ivString: DDLoggerSwift.privacyLogIv, encodeType: DDLoggerSwift.privacyResultEncodeType) ?? logContent
+         }
         //所有的内容
-         return "\(self.icon())" + " " + "[\(dateStr)]" + " " + "[\(self.level())]" + " " +  "File: \(mLogFile) | Line: \(mLogLine) | Function: \(mLogFunction) " + "\n---------------------------------\n" + self.getLogContent() + "\n"
+         return "\(self.icon())" + " " + "[\(dateStr)]" + " " + "[\(self.level())]" + " " +  "File: \(mLogFile) | Line: \(mLogLine) | Function: \(mLogFunction) " + "\n---------------------------------\n" + logContent + "\n"
     }
     
     //根据需要高亮内容查询组装高亮内容

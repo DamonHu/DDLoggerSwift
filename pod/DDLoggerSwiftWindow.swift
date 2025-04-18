@@ -31,6 +31,8 @@ extension String{
     }
 }
 
+
+
 class DDLoggerSwiftWindow: UIWindow {
     var currentVC = DDContentViewController()
     required init?(coder: NSCoder) {

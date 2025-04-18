@@ -42,7 +42,7 @@ class DDLoggerSwiftMenuView: UIView {
 
 private extension DDLoggerSwiftMenuView {
     func _createUI() {
-        self.backgroundColor = UIColor.dd.color(hexValue: 0x000000, alpha: 0.7)
+        self.backgroundColor = UIColor.dd.color(hexValue: 0x2d353b)
         self.addSubview(mCollectionView)
         mCollectionView.topAnchor.constraint(equalTo: self.topAnchor, constant: 20).isActive = true
         mCollectionView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true

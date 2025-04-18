@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import DDUtils
 
 class DDContentViewController: UIViewController {
     private var mDisplayLogDataArray = [DDLoggerSwiftTableCellModel]()  //tableview显示的logger
@@ -66,7 +67,7 @@ class DDContentViewController: UIViewController {
     private lazy var mContentBGView: UIView = {
         let mContentBGView = UIView()
         mContentBGView.translatesAutoresizingMaskIntoConstraints = false
-        mContentBGView.backgroundColor = UIColor.dd.color(hexValue: 0x000000, alpha: 0.7)
+        mContentBGView.backgroundColor = UIColor.dd.color(hexValue: 0x2d353b)
         return mContentBGView
     }()
     
@@ -122,6 +123,7 @@ class DDContentViewController: UIViewController {
         tableView.register(DDLoggerSwiftTableViewCell.self, forCellReuseIdentifier: "DDLoggerSwiftTableViewCell")
         //添加下拉刷新
         let refreshControl = UIRefreshControl()
+        refreshControl.tintColor = UIColor.dd.color(hexValue: 0xffffff)
         refreshControl.addTarget(self, action: #selector(_resetData), for: .valueChanged)
         tableView.refreshControl = refreshControl
         //底部距离
@@ -382,11 +384,12 @@ private extension DDContentViewController {
     }
     
     @objc private func _dbUpdate(notice: Notification) {
-        guard let object = notice.object as? [String: Any], let type = object["type"] as? String else { return }
-        if type == "insert" && self.mPullImageBGView.isHidden {
-            self.mPullImageBGView.isHidden = false
+        guard let object = notice.object as? [String: Any], let type = object["type"] as? String, type == "insert" else { return }
+        DDUtils.shared.runInMainThread {
+            if self.mPullImageBGView.isHidden {
+                self.mPullImageBGView.isHidden = false
+            }
         }
-        
     }
 }
 

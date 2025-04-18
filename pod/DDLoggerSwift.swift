@@ -12,10 +12,10 @@ import DDUtils
 ///log的级别，对应不同的颜色
 public struct DDLogType : OptionSet {
     public static let debug = DDLogType([])        //only show in debug output
-    public static let info = DDLogType(rawValue: 1)    //textColor #50d890
+    public static let info = DDLogType(rawValue: 1)    //textColor #42e6a4
     public static let warn = DDLogType(rawValue: 2)         //textColor #f6f49d
     public static let error = DDLogType(rawValue: 4)        //textColor #ff7676
-    public static let privacy = DDLogType(rawValue: 8)      //textColor #42e6a4
+    public static let privacy = DDLogType(rawValue: 8)      //textColor #409eff
 
     public let rawValue: Int
     public init(rawValue: Int) {
@@ -29,13 +29,13 @@ extension DDLogType {
         case .debug:
             return UIColor.dd.color(hexValue: 0xD1B6E1)
         case .info:
-            return UIColor(red: 80.0/255.0, green: 216.0/255.0, blue: 144.0/255.0, alpha: 1.0)
+            return UIColor.dd.color(hexValue: 0x42e6a4)
         case .warn:
-            return UIColor(red: 246.0/255.0, green: 244.0/255.0, blue: 157.0/255.0, alpha: 1.0)
+            return UIColor.dd.color(hexValue: 0xf6f49d)
         case .error:
-            return UIColor.dd.color(hexValue: 0xFFAFAF)
+            return UIColor.dd.color(hexValue: 0xE67E80)
         case .privacy:
-            return UIColor(red: 66.0/255.0, green: 230.0/255.0, blue: 164.0/255.0, alpha: 1.0)
+            return UIColor.dd.color(hexValue: 0x409eff)
         default:
             return UIColor.black
         }
@@ -128,7 +128,7 @@ public class DDLoggerSwift {
      **/
     public static var privacyLogPassword = "12345678901234561234567890123456"
     public static var privacyLogIv = "abcdefghijklmnop"
-    public static var privacyResultEncodeType = DDUtilsEncodeType.hex
+    public static var privacyResultEncodeType = DDUtilsEncodeType.base64
     
     //MARK: 内部
     static var fileSelectedComplete: ((URL, String) ->Void)?   //选择历史文件过滤回调
@@ -187,6 +187,10 @@ public class DDLoggerSwift {
         loggerItem.mLogLine = "\(lineNum)"
         loggerItem.mLogFunction = funcName
         loggerItem.mLogContent = log
+        if logType == .privacy {
+            //转换加密
+            loggerItem.mLogContent = loggerItem.getLogContent().dd.aesCBCEncrypt(password: DDLoggerSwift.privacyLogPassword, ivString: DDLoggerSwift.privacyLogIv, encodeType: DDLoggerSwift.privacyResultEncodeType) ?? "Invalid encryption".ZXLocaleString
+        }
 
         if self.isSyncConsole {
             print(loggerItem.getFullContentString())

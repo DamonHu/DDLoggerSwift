@@ -52,7 +52,7 @@ class DDLoggerSwiftPickerWindow: UIWindow {
     private lazy var mContentBGView: UIView = {
         let mContentBGView = UIView()
         mContentBGView.translatesAutoresizingMaskIntoConstraints = false
-        mContentBGView.backgroundColor = UIColor.dd.color(hexValue: 0x333333)
+        mContentBGView.backgroundColor = UIColor.dd.color(hexValue: 0x2d353b)
         return mContentBGView
     }()
     
