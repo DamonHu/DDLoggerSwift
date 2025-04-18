@@ -47,11 +47,9 @@ class HDSqliteTools {
     
     //获取第一个id，以便判断是否有更多
     func getMinLogID(name: String? = nil) -> Int {
-        let databasePath = self._getDataBasePath(name: name)
-        guard FileManager.default.fileExists(atPath: databasePath.path) else {
+        guard let queryDB = self._openDatabase(name: name) else {
             return 0
         }
-        let queryDB = self._openDatabase(name: name)
         let queryString = "SELECT IFNULL(MIN(id), 0) FROM DDLog"
         
         var queryStatement: OpaquePointer?
@@ -76,6 +74,7 @@ class HDSqliteTools {
             self._insert(log: logs.first!)
             return
         }
+        guard let logDB = self.logDB else { return }
         //批量插入
         let insertRowString = "INSERT INTO DDLog(logType, time, logFile, logLine, logFunction, content) VALUES (?, ?, ?, ?, ?, ?)"
         var insertStatement: OpaquePointer?
@@ -124,12 +123,9 @@ class HDSqliteTools {
     ///   - pageSize: 如果分页的话，每页数量
     /// - Returns: 获取的日志
     func getLogs(name: String? = nil, keyword: String? = nil, type: DDLogType? = nil, startID: Int? = nil, pageSize: Int? = nil) -> [DDLoggerSwiftItem] {
-        let databasePath = self._getDataBasePath(name: name)
-        guard FileManager.default.fileExists(atPath: databasePath.path) else {
-            //数据库文件不存在
+        guard let queryDB = self._openDatabase(name: name) else {
             return []
         }
-        let queryDB = self._openDatabase(name: name)
         var queryString = "SELECT * FROM DDLog"
         //查询条件
         var whereClauses: [String] = []
@@ -178,8 +174,8 @@ class HDSqliteTools {
         return logList
     }
     
-    func getItemCount(keyword: String? = nil, type: DDLogType? = nil) -> Int {
-        return self._getItemCount(keyword: keyword, type: type)
+    func getItemCount(name: String? = nil, keyword: String? = nil, type: DDLogType? = nil) -> Int {
+        return self._getItemCount(name: name, keyword: keyword, type: type)
     }
     
     func deleteLog(timeStamp: Double) {
@@ -217,6 +213,7 @@ private extension HDSqliteTools {
     
     //创建日志表
     func _createTable() {
+        guard let logDB = self.logDB else { return }
         let createTableString = "create table if not exists 'DDLog' ('id' integer primary key autoincrement not null, 'logType' integer,'time' double, 'logFile' text, 'logLine' text, 'logFunction' text, 'content' text)"
         var createTableStatement: OpaquePointer?
         if sqlite3_prepare_v2(logDB, createTableString, -1, &createTableStatement, nil) == SQLITE_OK {
@@ -233,14 +230,11 @@ private extension HDSqliteTools {
         sqlite3_finalize(createTableStatement)
     }
     
-    func _getItemCount(keyword: String? = nil, type: DDLogType? = nil) -> Int {
+    func _getItemCount(name: String? = nil, keyword: String? = nil, type: DDLogType? = nil) -> Int {
         var count = 0
-        let databasePath = self._getDataBasePath()
-        guard FileManager.default.fileExists(atPath: databasePath.path) else {
-            //数据库文件不存在
+        guard let queryDB = self._openDatabase(name: name) else {
             return count
         }
-        let queryDB = self.logDB
         var queryString = "SELECT COUNT(*) FROM DDLog"
         var whereClauses: [String] = []
         if let keyword = keyword, !keyword.isEmpty {
@@ -259,7 +253,6 @@ private extension HDSqliteTools {
             //第二步
             while(sqlite3_step(queryStatement) == SQLITE_ROW) {
                 //第三步
-                //虚拟表中未存储id
                 count = Int(sqlite3_column_int(queryStatement, 0))
             }
         }
@@ -270,6 +263,7 @@ private extension HDSqliteTools {
     
     //插入数据
     func _insert(log: DDLoggerSwiftItem) {
+        guard let logDB = self.logDB else { return }
         let insertRowString = "INSERT INTO DDLog(logType, time, logFile, logLine, logFunction, content) VALUES (?, ?, ?, ?, ?, ?)"
         var insertStatement: OpaquePointer?
         //第一步
@@ -297,10 +291,11 @@ private extension HDSqliteTools {
     }
     
     func _deleteLog(timeStamp: Double) {
+        guard let logDB = self.logDB else { return }
         let insertRowString = "DELETE FROM DDLog WHERE time < \(timeStamp) "
         var insertStatement: OpaquePointer?
         //第一步
-        let status = sqlite3_prepare_v2(self.logDB, insertRowString, -1, &insertStatement, nil)
+        let status = sqlite3_prepare_v2(logDB, insertRowString, -1, &insertStatement, nil)
         if status == SQLITE_OK {
             //第三步
             if sqlite3_step(insertStatement) == SQLITE_DONE {
