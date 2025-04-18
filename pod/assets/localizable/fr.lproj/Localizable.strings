@@ -1,0 +1,47 @@
+/* 
+  Localizable.strings
+  DDLoggerSwift
+
+  Created by Damon on 2019/6/24.
+  Copyright © 2019 Damon. All rights reserved.
+*/
+"DDLoggerSwift: Click Log To Copy" = "DDLoggerSwift : Cliquez sur le journal pour copier";
+"Clean Log" = "Nettoyer le journal";
+"Scale" = "Échelle";
+"Hide" = "Cacher";
+"Exit" = "Quitter";
+"Share" = "Partager";
+"Auto scroll" = "Défilement auto";
+"Log has been copied" = "Le journal a été copié";
+"Log filter and search" = "Filtrer et rechercher des journaux";
+"Decrypt" = "Déchiffrer";
+"Enter password to view" = "Entrez le mot de passe pour voir";
+"The password requires 32 characters" = "Le mot de passe doit comporter 32 caractères";
+"Password is not set" = "Mot de passe non défini";
+"Password Error" = "Erreur de mot de passe";
+"result: 0" = "résultat : 0";
+"Previous" = "Préc.";
+"Next" = "Suiv.";
+"Logger" = "Journaliseur";
+"The float button already exists" = "Le bouton flottant existe déjà";
+"System basic plug-in cannot be stopped" = "Le module de base du système ne peut pas être arrêté";
+"Analyse" = "Analyser";
+"Back" = "Retour";
+"Upload" = "Téléverser";
+"Search" = "Rechercher";
+"Search Today's Log" = "Rechercher le journal d’aujourd’hui";
+"Filter" = "Filtrer";
+"Scroll" = "Faire défiler";
+"More" = "Plus";
+"Done" = "Terminé";
+"Confirm" = "Confirmer";
+"Cancel" = "Annuler";
+"LogFile count" = "Nombre de fichiers journaux";
+"LogFile total size" = "Taille totale des fichiers journaux";
+"Number of Today's Logs" = "Nombre de journaux d’aujourd’hui";
+"Invalid encryption" = "Chiffrement invalide";
+"History" = "Historique";
+"Select Log File" = "Sélectionner un fichier journal";
+"Load More" = "Charger plus";
+"left count" = "nombre restant";
+

@@ -1,0 +1,47 @@
+/* 
+  Localizable.strings
+  DDLoggerSwift
+
+  Created by Damon on 2019/6/24.
+  Copyright © 2019 Damon. All rights reserved.
+*/
+"DDLoggerSwift: Click Log To Copy" = "DDLoggerSwift：ログをクリックしてコピー";
+"Clean Log" = "ログをクリア";
+"Scale" = "スケール";
+"Hide" = "非表示";
+"Exit" = "終了";
+"Share" = "共有";
+"Auto scroll" = "自動スクロール";
+"Log has been copied" = "ログがコピーされました";
+"Log filter and search" = "ログのフィルターと検索";
+"Decrypt" = "復号";
+"Enter password to view" = "表示するにはパスワードを入力してください";
+"The password requires 32 characters" = "パスワードは32文字である必要があります";
+"Password is not set" = "パスワードが設定されていません";
+"Password Error" = "パスワードエラー";
+"result: 0" = "結果: 0";
+"Previous" = "前へ";
+"Next" = "次へ";
+"Logger" = "ロガー";
+"The float button already exists" = "フローティングボタンはすでに存在します";
+"System basic plug-in cannot be stopped" = "システムの基本プラグインは停止できません";
+"Analyse" = "分析";
+"Back" = "戻る";
+"Upload" = "アップロード";
+"Search" = "検索";
+"Search Today's Log" = "今日のログを検索";
+"Filter" = "フィルター";
+"Scroll" = "スクロール";
+"More" = "もっと見る";
+"Done" = "完了";
+"Confirm" = "確認";
+"Cancel" = "キャンセル";
+"LogFile count" = "ログファイル数";
+"LogFile total size" = "ログファイル合計サイズ";
+"Number of Today's Logs" = "今日のログ件数";
+"Invalid encryption" = "無効な暗号化";
+"History" = "履歴";
+"Select Log File" = "ログファイルを選択";
+"Load More" = "さらに読み込む";
+"left count" = "残り件数";
+

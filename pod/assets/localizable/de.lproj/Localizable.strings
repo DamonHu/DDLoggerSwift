@@ -1,0 +1,47 @@
+/* 
+  Localizable.strings
+  DDLoggerSwift
+
+  Created by Damon on 2019/6/24.
+  Copyright © 2019 Damon. All rights reserved.
+*/
+"DDLoggerSwift: Click Log To Copy" = "DDLoggerSwift: Klicken Sie auf das Log zum Kopieren";
+"Clean Log" = "Log löschen";
+"Scale" = "Skalieren";
+"Hide" = "Ausblenden";
+"Exit" = "Beenden";
+"Share" = "Teilen";
+"Auto scroll" = "Auto-Scroll";
+"Log has been copied" = "Log wurde kopiert";
+"Log filter and search" = "Log filtern und durchsuchen";
+"Decrypt" = "Entschlüsseln";
+"Enter password to view" = "Passwort zum Anzeigen eingeben";
+"The password requires 32 characters" = "Das Passwort muss 32 Zeichen lang sein";
+"Password is not set" = "Passwort ist nicht gesetzt";
+"Password Error" = "Passwortfehler";
+"result: 0" = "Ergebnis: 0";
+"Previous" = "Zurück";
+"Next" = "Weiter";
+"Logger" = "Logger";
+"The float button already exists" = "Der schwebende Button existiert bereits";
+"System basic plug-in cannot be stopped" = "Systemgrundmodul kann nicht gestoppt werden";
+"Analyse" = "Analysieren";
+"Back" = "Zurück";
+"Upload" = "Hochladen";
+"Search" = "Suchen";
+"Search Today's Log" = "Heutiges Log durchsuchen";
+"Filter" = "Filter";
+"Scroll" = "Scrollen";
+"More" = "Mehr";
+"Done" = "Fertig";
+"Confirm" = "Bestätigen";
+"Cancel" = "Abbrechen";
+"LogFile count" = "Anzahl der Logdateien";
+"LogFile total size" = "Gesamtgröße der Logdateien";
+"Number of Today's Logs" = "Anzahl der heutigen Logs";
+"Invalid encryption" = "Ungültige Verschlüsselung";
+"History" = "Verlauf";
+"Select Log File" = "Logdatei auswählen";
+"Load More" = "Mehr laden";
+"left count" = "verbleibende Anzahl";
+

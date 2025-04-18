@@ -1,0 +1,47 @@
+/* 
+  Localizable.strings
+  DDLoggerSwift
+
+  Created by Damon on 2019/6/24.
+  Copyright © 2019 Damon. All rights reserved.
+*/
+"DDLoggerSwift: Click Log To Copy" = "DDLoggerSwift: คลิกบันทึกเพื่อคัดลอก";
+"Clean Log" = "ล้างบันทึก";
+"Scale" = "ปรับขนาด";
+"Hide" = "ซ่อน";
+"Exit" = "ออก";
+"Share" = "แชร์";
+"Auto scroll" = "เลื่อนอัตโนมัติ";
+"Log has been copied" = "คัดลอกบันทึกแล้ว";
+"Log filter and search" = "ตัวกรองและค้นหาบันทึก";
+"Decrypt" = "ถอดรหัส";
+"Enter password to view" = "ใส่รหัสผ่านเพื่อดู";
+"The password requires 32 characters" = "รหัสผ่านต้องมี 32 ตัวอักษร";
+"Password is not set" = "ยังไม่ได้ตั้งรหัสผ่าน";
+"Password Error" = "รหัสผ่านไม่ถูกต้อง";
+"result: 0" = "ผลลัพธ์: 0";
+"Previous" = "ก่อนหน้า";
+"Next" = "ถัดไป";
+"Logger" = "ตัวบันทึก";
+"The float button already exists" = "มีปุ่มลอยอยู่แล้ว";
+"System basic plug-in cannot be stopped" = "ไม่สามารถหยุดปลั๊กอินพื้นฐานของระบบได้";
+"Analyse" = "วิเคราะห์";
+"Back" = "ย้อนกลับ";
+"Upload" = "อัปโหลด";
+"Search" = "ค้นหา";
+"Search Today's Log" = "ค้นหาบันทึกของวันนี้";
+"Filter" = "ตัวกรอง";
+"Scroll" = "เลื่อน";
+"More" = "เพิ่มเติม";
+"Done" = "เสร็จสิ้น";
+"Confirm" = "ยืนยัน";
+"Cancel" = "ยกเลิก";
+"LogFile count" = "จำนวนไฟล์บันทึก";
+"LogFile total size" = "ขนาดรวมไฟล์บันทึก";
+"Number of Today's Logs" = "จำนวนบันทึกของวันนี้";
+"Invalid encryption" = "การเข้ารหัสไม่ถูกต้อง";
+"History" = "ประวัติ";
+"Select Log File" = "เลือกไฟล์บันทึก";
+"Load More" = "โหลดเพิ่มเติม";
+"left count" = "จำนวนที่เหลือ";
+

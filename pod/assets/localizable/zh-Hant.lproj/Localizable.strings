@@ -1,0 +1,47 @@
+/* 
+  Localizable.strings
+  DDLoggerSwift
+
+  Created by Damon on 2019/6/24.
+  Copyright © 2019 Damon. All rights reserved.
+*/
+"DDLoggerSwift: Click Log To Copy" = "DDLoggerSwift：點擊日誌複製";
+"Clean Log" = "清除日誌";
+"Scale" = "縮放";
+"Hide" = "隱藏";
+"Exit" = "退出";
+"Share" = "分享";
+"Auto scroll" = "自動滾動";
+"Log has been copied" = "日誌已複製";
+"Log filter and search" = "日誌篩選與搜尋";
+"Decrypt" = "解密";
+"Enter password to view" = "請輸入密碼檢視";
+"The password requires 32 characters" = "密碼需為32個字元";
+"Password is not set" = "尚未設定密碼";
+"Password Error" = "密碼錯誤";
+"result: 0" = "結果：0";
+"Previous" = "上一個";
+"Next" = "下一個";
+"Logger" = "日誌";
+"The float button already exists" = "浮動按鈕已存在";
+"System basic plug-in cannot be stopped" = "系統基礎外掛無法停止";
+"Analyse" = "分析";
+"Back" = "返回";
+"Upload" = "上傳";
+"Search" = "搜尋";
+"Search Today's Log" = "搜尋今天的日誌";
+"Filter" = "篩選";
+"Scroll" = "滾動";
+"More" = "更多";
+"Done" = "完成";
+"Confirm" = "確認";
+"Cancel" = "取消";
+"LogFile count" = "日誌檔案數量";
+"LogFile total size" = "日誌檔案總大小";
+"Number of Today's Logs" = "今日日誌數量";
+"Invalid encryption" = "無效加密";
+"History" = "歷史";
+"Select Log File" = "選擇日誌檔案";
+"Load More" = "載入更多";
+"left count" = "剩餘數量";
+

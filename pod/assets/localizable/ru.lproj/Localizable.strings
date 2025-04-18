@@ -1,0 +1,47 @@
+/* 
+  Localizable.strings
+  DDLoggerSwift
+
+  Created by Damon on 2019/6/24.
+  Copyright © 2019 Damon. All rights reserved.
+*/
+"DDLoggerSwift: Click Log To Copy" = "DDLoggerSwift: Нажмите, чтобы скопировать лог";
+"Clean Log" = "Очистить лог";
+"Scale" = "Масштаб";
+"Hide" = "Скрыть";
+"Exit" = "Выход";
+"Share" = "Поделиться";
+"Auto scroll" = "Автопрокрутка";
+"Log has been copied" = "Лог скопирован";
+"Log filter and search" = "Фильтр и поиск логов";
+"Decrypt" = "Расшифровать";
+"Enter password to view" = "Введите пароль для просмотра";
+"The password requires 32 characters" = "Пароль должен содержать 32 символа";
+"Password is not set" = "Пароль не установлен";
+"Password Error" = "Ошибка пароля";
+"result: 0" = "результат: 0";
+"Previous" = "Пред.";
+"Next" = "След.";
+"Logger" = "Логгер";
+"The float button already exists" = "Плавающая кнопка уже существует";
+"System basic plug-in cannot be stopped" = "Базовый системный плагин нельзя остановить";
+"Analyse" = "Анализировать";
+"Back" = "Назад";
+"Upload" = "Загрузить";
+"Search" = "Поиск";
+"Search Today's Log" = "Поиск сегодняшнего лога";
+"Filter" = "Фильтр";
+"Scroll" = "Прокрутка";
+"More" = "Больше";
+"Done" = "Готово";
+"Confirm" = "Подтвердить";
+"Cancel" = "Отмена";
+"LogFile count" = "Количество файлов логов";
+"LogFile total size" = "Общий размер файлов логов";
+"Number of Today's Logs" = "Количество логов за сегодня";
+"Invalid encryption" = "Неверное шифрование";
+"History" = "История";
+"Select Log File" = "Выбрать файл лога";
+"Load More" = "Загрузить еще";
+"left count" = "оставшееся количество";
+

@@ -1,0 +1,47 @@
+/* 
+  Localizable.strings
+  DDLoggerSwift
+
+  Created by Damon on 2019/6/24.
+  Copyright © 2019 Damon. All rights reserved.
+*/
+"DDLoggerSwift: Click Log To Copy" = "DDLoggerSwift: 로그를 클릭하여 복사";
+"Clean Log" = "로그 지우기";
+"Scale" = "확대/축소";
+"Hide" = "숨기기";
+"Exit" = "종료";
+"Share" = "공유";
+"Auto scroll" = "자동 스크롤";
+"Log has been copied" = "로그가 복사되었습니다";
+"Log filter and search" = "로그 필터 및 검색";
+"Decrypt" = "복호화";
+"Enter password to view" = "보기 위해 비밀번호를 입력하세요";
+"The password requires 32 characters" = "비밀번호는 32자여야 합니다";
+"Password is not set" = "비밀번호가 설정되지 않았습니다";
+"Password Error" = "비밀번호 오류";
+"result: 0" = "결과: 0";
+"Previous" = "이전";
+"Next" = "다음";
+"Logger" = "로거";
+"The float button already exists" = "플로팅 버튼이 이미 존재합니다";
+"System basic plug-in cannot be stopped" = "시스템 기본 플러그인은 중지할 수 없습니다";
+"Analyse" = "분석";
+"Back" = "뒤로";
+"Upload" = "업로드";
+"Search" = "검색";
+"Search Today's Log" = "오늘의 로그 검색";
+"Filter" = "필터";
+"Scroll" = "스크롤";
+"More" = "더보기";
+"Done" = "완료";
+"Confirm" = "확인";
+"Cancel" = "취소";
+"LogFile count" = "로그 파일 수";
+"LogFile total size" = "로그 파일 총 크기";
+"Number of Today's Logs" = "오늘의 로그 수";
+"Invalid encryption" = "잘못된 암호화";
+"History" = "히스토리";
+"Select Log File" = "로그 파일 선택";
+"Load More" = "더 불러오기";
+"left count" = "남은 수";
+

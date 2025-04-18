@@ -146,17 +146,4 @@ private extension DDLoggerSwiftWindow {
         vc.contentVC = self.currentVC
         self.currentVC.navigationController?.pushViewController(vc, animated: true)
     }
-
-    @objc private func _show() {
-        self.isHidden = false
-    }
-
-    //只隐藏log的输出窗口，保留悬浮图标
-    func _hide() {
-        DDLoggerSwift.hide()
-    }
-    
-    func _close() {
-        DDLoggerSwift.close()
-    }
 }
