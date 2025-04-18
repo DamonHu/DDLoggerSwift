@@ -6,9 +6,6 @@
   Copyright © 2019 Damon. All rights reserved.
 */
 "DDLoggerSwift: Click Log To Copy" = "DDLoggerSwift: Click Log To Copy";
-"Please select the log to share" = "Please select the log to share";
-"Please select the log to upload" = "Please select the log to upload";
-"Please select the log" = "Please select the log";
 "Clean Log" = "Clean Log";
 "Scale" = "Scale";
 "Hide" = "Hide";
@@ -44,3 +41,6 @@
 "Number of Today's Logs" = "Number of Today's Logs";
 "Invalid encryption" = "Invalid encryption";
 "History" = "History";
+"Select Log File" = "Select Log File";
+"Load More" = "Load More";
+"left count" = "left count";
