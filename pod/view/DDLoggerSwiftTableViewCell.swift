@@ -68,7 +68,7 @@ class DDLoggerSwiftTableViewCell: UITableViewCell {
         if model.isCollapse {
             contentString = contentString.dd.subString(rang: NSRange(location: 0, length: DDLoggerSwift.cellDisplayCount))
         }
-        loggerItem.getHighlightAttributedString(contentString: contentString, highlightString: highlightText) { (hasHighlightStr, hightlightAttributedString) in
+        loggerItem.getHighlightAttributedString(contentString: contentString, highlightString: highlightText) { (hightlightAttributedString) in
             if model.isCollapse {
                 let read = NSAttributedString(string: "Read more", attributes: [NSAttributedString.Key.underlineStyle : NSUnderlineStyle.single.rawValue, .underlineColor: UIColor.dd.color(hexValue: 0xeeeeee), .foregroundColor: UIColor.dd.color(hexValue: 0xeeeeee)])
                 
@@ -80,12 +80,6 @@ class DDLoggerSwiftTableViewCell: UITableViewCell {
             } else {
                 self.mContentLabel.attributedText = hightlightAttributedString
             }
-            
-//            if hasHighlightStr {
-//                self.contentView.backgroundColor = UIColor.dd.color(hexValue: 0xe58e23)
-//            } else {
-//                self.contentView.backgroundColor = UIColor.clear
-//            }
         }
         
     }
