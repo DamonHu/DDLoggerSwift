@@ -2,7 +2,7 @@
 
 ![](https://img.shields.io/badge/CocoaPods-supported-brightgreen) ![](https://img.shields.io/badge/Swift-5.0-brightgreen) ![](https://img.shields.io/badge/License-MIT-brightgreen) ![](https://img.shields.io/badge/version-iOS12.0-brightgreen)
 
-### [中文文档](https://dongge.org/blog/1305.html)
+### [中文文档](https://blog.dongge.net/1305.html)
 
 **DDLoggerSwift** is an iOS library that displays log output as a floating overlay on the screen. It allows easy logging and supports log file sharing and uploading, making it convenient for debugging on a real device without an Xcode connection. Users can share and filter logs effortlessly.  
 
